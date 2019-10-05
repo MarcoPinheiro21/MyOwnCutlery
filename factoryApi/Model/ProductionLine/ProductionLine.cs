@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace factoryApi.Model
+namespace factoryApi.Model.ProductionLine
 {
     public class ProductionLine
     {
