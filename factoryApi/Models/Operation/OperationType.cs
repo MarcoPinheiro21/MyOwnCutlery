@@ -1,12 +1,12 @@
-namespace factoryApi.Model
+namespace factoryApi.Models.Operation
 {
     public class OperationType
     {
-        private string Desc { get; set; }
-
         protected OperationType(string desc)
         {
             Desc = desc;
         }
+
+        private string Desc { get; set; }
     }
 }

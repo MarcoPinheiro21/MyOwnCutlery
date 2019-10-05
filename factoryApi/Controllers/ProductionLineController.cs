@@ -1,9 +1,5 @@
+using factoryApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using factoryApi.Model.ProductionLine;
 
 namespace factoryApi.Controllers
 {
@@ -11,9 +7,9 @@ namespace factoryApi.Controllers
     [ApiController]
     public class ProductionLineController : ControllerBase
     {
-        private readonly ProductionLineContext _context;
+        private readonly MasterFactoryContext _context;
 
-        public ProductionLineController(ProductionLineContext context)
+        public ProductionLineController(MasterFactoryContext context)
         {
             _context = context;
         }

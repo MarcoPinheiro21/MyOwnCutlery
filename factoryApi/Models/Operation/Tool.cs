@@ -1,12 +1,12 @@
-namespace factoryApi.Model
+namespace factoryApi.Models.Operation
 {
     public class Tool
     {
-        private string Desc { get; set; }
-
         protected Tool(string desc)
         {
             Desc = desc;
         }
+
+        private string Desc { get; set; }
     }
 }

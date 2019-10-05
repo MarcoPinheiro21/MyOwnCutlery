@@ -1,3 +1,4 @@
+using factoryApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace factoryApi.Controllers
@@ -6,7 +7,13 @@ namespace factoryApi.Controllers
     [ApiController]
     public class OperationsController : ControllerBase
     {
-        
+        private readonly MasterFactoryContext _context;
+
+        public OperationsController(MasterFactoryContext context)
+        {
+            _context = context;
+        }
+
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
@@ -19,6 +26,5 @@ namespace factoryApi.Controllers
         public void Post([FromBody] string value)
         {
         }
-        
     }
 }
