@@ -6,13 +6,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Models\Operation\OperationContext.cs" />
     <Compile Remove="Models\ProductionLine\ProductionLineContext.cs" />
+    <Compile Remove="Model\Operation\OperationDto.cs" />
+    <Compile Remove="Model\Operation\ToolDto.cs" />
+    <Compile Remove="Model\Operation\OperationTypeDto.cs" />
+    <Compile Remove="Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Model\**" />
   </ItemGroup>
 
 </Project>

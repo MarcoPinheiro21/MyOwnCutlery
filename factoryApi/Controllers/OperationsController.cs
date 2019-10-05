@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+using System.Linq;
 using factoryApi.Models;
+using factoryApi.Models.Operation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace factoryApi.Controllers
 {
-    [Route("api/operations")]
+    [Route("factoryapi/operations")]
     [ApiController]
     public class OperationsController : ControllerBase
     {
@@ -16,15 +19,33 @@ namespace factoryApi.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<Operation> GetOperation(long id)
         {
-            return "value";
+            var operation = _context.Operations.Find(id);
+
+            if (operation == null)
+            {
+                return NotFound();
+            }
+
+            return operation;
+        }
+        
+        // GET: api/operations
+        [HttpGet]
+        public List<Operation> GetOperations()
+        {
+            return _context.Operations.ToList();
         }
 
-        // POST api/values
+        // POST: api/operations
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Operation> PostOperation([FromBody]Operation operation)
         {
+            _context.Operations.Add(operation); 
+            _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetOperation), new { Id = operation.Id }, operation);
         }
     }
 }

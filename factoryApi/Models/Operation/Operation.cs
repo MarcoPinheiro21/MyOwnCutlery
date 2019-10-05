@@ -8,9 +8,9 @@ namespace factoryApi.Models.Operation
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        private long Id { get; set; }
+        public long Id { get; set; }
 
-        private ICollection<Tool> Tools { get; set; }
-        private ICollection<OperationType> OperationTypes { get; set; }
+        private Tool Tools { get; set; }
+        private OperationType OperationTypes { get; set; }
     }
 }
