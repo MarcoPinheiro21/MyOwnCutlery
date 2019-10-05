@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using factoryApi.Model.ProductionLine;
 
-namespace FactoryApi.Model.ProductionLine
+namespace factoryApi.Model.ProductionLine
 {
     public class ProductionLineContext : DbContext
     {
-        public TodoContext(DbContextOptions<ProductionLineContext> options)
+        public ProductionLineContext(DbContextOptions<ProductionLineContext> options)
             : base(options)
         {
         }

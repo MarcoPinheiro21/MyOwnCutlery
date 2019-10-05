@@ -5,9 +5,9 @@ namespace factoryApi.Model
     public class MachineType
     {
         private string Desc { get; set; }
-        private List<Operation> Operations { get; set; }
+        private List<Operation.Operation> Operations { get; set; }
 
-        protected MachineType(string desc, List<Operation> operations)
+        protected MachineType(string desc, List<Operation.Operation> operations)
         {
             Desc = desc;
             Operations = operations;

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FactoryApi.Models;
+using factoryApi.Model.ProductionLine;
 
-namespace FactoryApi.Controllers
+namespace factoryApi.Controllers
 {
     [Route("api/productionline")]
     [ApiController]

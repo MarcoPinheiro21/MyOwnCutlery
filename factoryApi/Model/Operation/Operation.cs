@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace factoryApi.Model
+namespace factoryApi.Model.Operation
 {
     public class Operation
     {
