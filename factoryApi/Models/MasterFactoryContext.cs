@@ -6,7 +6,7 @@ namespace factoryApi.Models
     public class MasterFactoryContext : DbContext
     {
         private static string _connection = "Server=localhost,1433;Database=FactoryDB;Integrated Security=False;User Id=SA;Password=yourStrong(!)Password;MultipleActiveResultSets=True";
-        
+                
         public MasterFactoryContext(DbContextOptions<MasterFactoryContext> options)
             : base(options)
         {
@@ -21,7 +21,7 @@ namespace factoryApi.Models
 
         public DbSet<Operation.Operation> Operations { get; set; }
 
-        public DbSet<ProductionLine.ProductionLine> productionLines { get; set; }
+        public DbSet<ProductionLine.ProductionLine> ProductionLines { get; set; }
     }
     
     

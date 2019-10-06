@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace factoryApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("factoryapi/machines")]
     [ApiController]
     public class MachinesController : ControllerBase
     {
@@ -19,15 +19,15 @@ namespace factoryApi.Controllers
         }
 
 
-        // GET: api/Machine
+        // GET: factoryapi/machines
         [HttpGet]
         public IEnumerable<Machine> GetMachines()
         {
             return _context.Machines.ToList();
         }
 
-        // GET: api/Machine/5
-        [HttpGet("{id}")]
+        // GET: factoryapi/machines/5
+        [HttpGet("/{id}")]
         public async Task<ActionResult<Machine>> GetMachine(long id)
         {
             var todoItem = await _context.Machines.FindAsync(id);

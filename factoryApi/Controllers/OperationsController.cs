@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace factoryApi.Controllers
 {
-    [Route("factoryapi/operations")]
+    [Route("factoryapi/operations/")]
     [ApiController]
     public class OperationsController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace factoryApi.Controllers
             _context = context;
         }
 
-        // GET api/values/5
+        // GET factoryapi/operations/5
         [HttpGet("{id}")]
         public ActionResult<Operation> GetOperation(long id)
         {
@@ -31,14 +31,14 @@ namespace factoryApi.Controllers
             return operation;
         }
         
-        // GET: api/operations
+        // GET: factoryapi/operations
         [HttpGet]
         public List<Operation> GetOperations()
         {
             return _context.Operations.ToList();
         }
 
-        // POST: api/operations
+        // POST: factoryapi/operations
         [HttpPost]
         public ActionResult<Operation> PostOperation([FromBody]Operation operation)
         {

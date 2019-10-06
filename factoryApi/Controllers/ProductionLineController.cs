@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace factoryApi.Controllers
 {
-    [Route("api/productionline")]
+    [Route("factoryapi/productionline")]
     [ApiController]
     public class ProductionLineController : ControllerBase
     {
