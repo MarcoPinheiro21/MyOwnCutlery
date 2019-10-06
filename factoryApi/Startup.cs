@@ -1,6 +1,7 @@
 ﻿using factoryApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,8 @@ namespace factoryApi
         {
             services.AddDbContext<MasterFactoryContext>(opt =>
                 opt.UseSqlServer(Configuration["ConnectionString:factoryDB"]));
+            
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
