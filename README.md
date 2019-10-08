@@ -1,29 +1,28 @@
-# README #
+# Titulo do Projeto
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Projeto da edição 2019/2020 de Laboratório Projeto 5 (LAPR5) da Licenciatura em Engenharia Informática do ISEP.
 
-### What is this repository for? ###
+## Introdução
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Pretende-se desenvolver uma plataforma digital onde clientes possam encomendar talheres e acompanhar o estado de fabrico dos mesmos.
+O tipo de fábrica onde o sistema será implementado fabrica produtos que seguem processos de fabrico lineares ao longo de uma linha de produção.
 
-### How do I get set up? ###
+## Implementação
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+O projeto irá ser desenvolvido ao longo de todo o semestre num modo de Project Based Learning (PBL), divindo-se em 3 Sprints.
 
-### Contribution guidelines ###
+    Sprint 1
 
-* Writing tests
-* Code review
-* Other guidelines
+    * Master Data Fabrica
+    * Master Data Produção
 
-### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+## Autores
+
+* **Carlos Moreira** - *1161882*
+
+* **Marco Pinheiro** - *1170483*
+
+* **Pedro Barbosa** - *1150486*
+
+* **Pedro Mendes** - *1161871*
