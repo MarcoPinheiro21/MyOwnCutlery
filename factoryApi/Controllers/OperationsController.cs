@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using factoryApi.DTO;
 using factoryApi.Models;
 using factoryApi.Models.Operation;
+using factoryApi.Repositories;
+using factoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace factoryApi.Controllers
@@ -10,42 +13,36 @@ namespace factoryApi.Controllers
     [ApiController]
     public class OperationsController : ControllerBase
     {
-        private readonly MasterFactoryContext _context;
+        private readonly OperationService _service;
 
         public OperationsController(MasterFactoryContext context)
         {
-            _context = context;
+            _service = new OperationService(new OperationRepository(context));
         }
 
         // GET factoryapi/operations/5
         [HttpGet("{id}")]
-        public ActionResult<Operation> GetOperation(long id)
+        [ProducesResponseType(200, Type = typeof(OperationDto))]
+        [ProducesResponseType(404)]
+        public ActionResult GetById(int id)
         {
-            var operation = _context.Operations.Find(id);
-
-            if (operation == null)
-            {
-                return NotFound();
-            }
-
-            return operation;
+            return Ok(_service.FindById(id));
         }
-        
+
         // GET: factoryapi/operations
         [HttpGet]
-        public List<Operation> GetOperations()
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OperationDto>))]
+        public ActionResult GetOperations()
         {
-            return _context.Operations.ToList();
+            return Ok(_service.FindAll());
         }
 
         // POST: factoryapi/operations
         [HttpPost]
-        public ActionResult<Operation> PostOperation([FromBody]Operation operation)
+        public ActionResult<OperationDto> PostOperation([FromBody]OperationDto operationDto)
         {
-            _context.Operations.Add(operation); 
-            _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetOperation), new { Id = operation.Id }, operation);
+            _service.Add(operationDto);
+            return CreatedAtAction(nameof(GetOperations), new { Id = operationDto.Id }, operationDto);
         }
     }
 }

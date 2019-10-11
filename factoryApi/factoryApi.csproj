@@ -20,6 +20,7 @@
     <Compile Remove="Model\Operation\ToolDto.cs" />
     <Compile Remove="Model\Operation\OperationTypeDto.cs" />
     <Compile Remove="Model\**" />
+    <Compile Remove="Services\MachinesService.cs" />
   </ItemGroup>
 
   <ItemGroup>

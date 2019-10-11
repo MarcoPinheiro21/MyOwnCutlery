@@ -4,8 +4,8 @@ namespace factoryApi.DTO
 {
     public class OperationDto
     {
-        private long Id { get; set; }
-        private string ToolDesc { get; set; }
-        private string OperationTypeDesc{ get; set; }
+        public long Id { get; set; }
+        public string ToolDesc { get; set; }
+        public string OperationTypeDesc{ get; set; }
     }
 }
