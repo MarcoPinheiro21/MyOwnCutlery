@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using factoryApi.Context;
 using factoryApi.DTO;
-using factoryApi.Models.ProductionLine;
 using factoryApi.Repositories;
 using factoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -38,11 +37,20 @@ namespace factoryApi.Controllers
 
         // POST: factoryapi/productionLines
         [HttpPost]
-        public ActionResult<ProductionLineDto> PostOperation([FromBody] ProductionLineDto productionLineDto)
+        [ProducesResponseType(200, Type = typeof(ProductionLineDto))]
+        [ProducesResponseType(404)]
+        public ActionResult<ProductionLineDto> PostOperation(CreateProductionLineDto productionLineDto)
         {
-            _service.Add(productionLineDto);
-            return CreatedAtAction(nameof(GetOperations), new {ProductionLineId = productionLineDto.ProdutctLineId},
-                productionLineDto);
+            return Ok(_service.Add(productionLineDto));
+        }
+        
+        // PUT factoryapi/productionLines/5
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        public ActionResult Update(long id, [FromBody] CreateProductionLineDto productionLineDto)
+        {
+            ProductionLineDto result = _service.Update(id, productionLineDto);
+            return Ok(result);
         }
     }
 }

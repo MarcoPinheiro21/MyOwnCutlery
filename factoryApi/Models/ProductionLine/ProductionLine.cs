@@ -11,13 +11,13 @@ namespace factoryApi.Models.ProductionLine
         [Key]
         public long ProdutctLineId { get; set; }
 
-        private string Name { get; }
+        private string ProdutctLineName{ get; }
         private ICollection<Machine.Machine> MachinesList { get; }
 
 
         public ProductionLine(string name, ICollection<Machine.Machine> machinesList)
         {
-            Name = name;
+            ProdutctLineName = name;
             MachinesList = machinesList;
         }
 
@@ -25,7 +25,7 @@ namespace factoryApi.Models.ProductionLine
         {
             ProductionLineDto productionLineDto = new ProductionLineDto();
             productionLineDto.ProdutctLineId = ProdutctLineId;
-            productionLineDto.Name = Name;
+            productionLineDto.ProdutctLineName = ProdutctLineName;
             productionLineDto.MachinesList = MachinesList;
             return productionLineDto;
         }

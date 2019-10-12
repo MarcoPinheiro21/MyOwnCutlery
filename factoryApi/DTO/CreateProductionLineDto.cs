@@ -3,10 +3,10 @@ using factoryApi.Models.Machine;
 
 namespace factoryApi.DTO
 {
-    public class ProductionLineDto
+    public class CreateProductionLineDto
     {
-        public long ProdutctLineId { get; set; }
-        public string ProdutctLineName { get; set; }
+        public string ProductionLineName { get; set; }
+
         public ICollection<Machine> MachinesList { get; set; }
     }
 }
