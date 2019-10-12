@@ -11,8 +11,7 @@ namespace factoryApi.Context
     {
         private static string _connection = "Server=localhost,1433;Database=FactoryDB;Integrated Security=False;User Id=SA;Password=yourStrong(!)Password;MultipleActiveResultSets=True";
                 
-        public MasterFactoryContext(DbContextOptions<MasterFactoryContext> options)
-            : base(options)
+        public MasterFactoryContext(DbContextOptions<MasterFactoryContext> options) : base(options)
         {
         }
         
@@ -21,11 +20,13 @@ namespace factoryApi.Context
             optionsBuilder.UseSqlServer(_connection);
         }
 
-        public DbSet<Models.Machine.Machine> Machines { get; set; }
+        public DbSet<Machine> Machines { get; set; }
 
         public DbSet<Models.Operation.Operation> Operations { get; set; }
         
         public DbSet<Tool> Tools { get; set; }
+        
+        public DbSet<MachineType> MachineTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

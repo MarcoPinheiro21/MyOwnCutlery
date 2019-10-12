@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using factoryApi.DTO;
@@ -6,9 +7,8 @@ using factoryApi.Models.Machine;
 
 namespace factoryApi.Repositories
 {
-    public class MachineRepository : IBaseRepository<MachineDto, Machine>
+    public class MachineRepository : IBaseRepository<CreateMachineDto, MachineDto, Machine>
     {
-
         private Context.MasterFactoryContext _context;
 
         public MachineRepository(Context.MasterFactoryContext context)
@@ -21,40 +21,44 @@ namespace factoryApi.Repositories
             Machine machine = GetMachineById(id);
             return machine.toDto();
         }
-        
+
         private Machine GetMachineById(long id)
         {
-            return _context.Machines.Single(machine => machine.Id == id);
+            return _context.Machines.Single(machine => machine.MachineId == id);
         }
 
         public IEnumerable<MachineDto> GetAll()
         {
-            throw new System.NotImplementedException();
+            IEnumerable<Machine> Machines = GetAllMachines();
+            IEnumerable<MachineDto> MachinesDto = new List<MachineDto>();
+
+            foreach (var machine in Machines)
+            {
+                MachinesDto.Append(machine.toDto());
+            }
+
+            return MachinesDto;
         }
 
-        public Machine Add(MachineDto writeDto)
+        private IEnumerable<Machine> GetAllMachines()
         {
-            throw new System.NotImplementedException();
+            return _context.Machines.ToList();
         }
 
-        public MachineDto UpdateElement(int id, Machine Dto)
+        public Machine Add(CreateMachineDto createMachineDto)
         {
-            throw new System.NotImplementedException();
+            var machineType = _context.MachineTypes.Find(createMachineDto.MachineTypeId);
+            return new Machine(createMachineDto.Description,machineType);
         }
 
-        public MachineDto DeleteElement(int id)
+        public MachineDto UpdateElement(long id, CreateMachineDto Dto)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public MachineDto UpdateElement(long id, Machine Dto)
-        {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public MachineDto DeleteElement(long id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace factoryApi.Repositories
 {
-    public class OperationRepository
+    public class OperationRepository : IBaseRepository<CreateOperationDto, OperationDto, Operation>
     {
         private readonly MasterFactoryContext _context;
 
@@ -43,7 +43,7 @@ namespace factoryApi.Repositories
             return result;
         }
 
-        public OperationDto Update(long id, CreateOperationDto operationDto)
+        public OperationDto UpdateElement(long id, CreateOperationDto operationDto)
         {
             OperationDto op = GetById(id);
             op.OperationName = operationDto.OperationName;
@@ -52,10 +52,9 @@ namespace factoryApi.Repositories
             return GetById(id);
         }
 
-        public OperationDto Delete(long id)
+        public OperationDto DeleteElement(long id)
         {
-            //TODO
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Tool addTool(Tool tool)
@@ -69,5 +68,7 @@ namespace factoryApi.Repositories
         {
             return _context.Tools.ToList().FirstOrDefault(t => t.ToolId == id);
         }
+        
+        
     }
 }

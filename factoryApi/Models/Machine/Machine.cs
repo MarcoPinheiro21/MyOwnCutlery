@@ -8,16 +8,22 @@ namespace factoryApi.Models.Machine
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public long Id { get; set; }
+        public long MachineId { get; set; }
 
         [Required] public string Description { get; set; }
 
         [ForeignKey("MachineType")]
         public MachineType Type { get; set; }
 
+        public Machine(string description, MachineType type)
+        {
+            Description = description;
+            Type = type;
+        }
+
         public MachineDto toDto()
         {
-            return new MachineDto(this.Id, this.Description, this.Type.Desc);
+            return new MachineDto(this.MachineId, this.Description, this.Type.Desc);
             
         }
     }

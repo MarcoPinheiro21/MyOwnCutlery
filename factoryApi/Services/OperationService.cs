@@ -32,7 +32,7 @@ namespace factoryApi.Services
         
         public OperationDto Update(long id, CreateOperationDto operationDto)
         {
-            return _repo.Update(id, operationDto);
+            return _repo.UpdateElement(id, operationDto);
         }
         
     }

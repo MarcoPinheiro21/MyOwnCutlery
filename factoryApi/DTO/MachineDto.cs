@@ -4,7 +4,7 @@ namespace factoryApi.DTO
     {
         public long Id { get; set; }
         public string Description { get; set; }
-        private string MachineType { get; set; }
+        public string MachineType { get; set; }
 
         public MachineDto()
         {
