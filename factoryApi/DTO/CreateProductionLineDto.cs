@@ -7,6 +7,6 @@ namespace factoryApi.DTO
     {
         public string ProductionLineName { get; set; }
 
-        public ICollection<Machine> MachinesList { get; set; }
+        public List<long> MachinesListIds { get; set; }
     }
 }

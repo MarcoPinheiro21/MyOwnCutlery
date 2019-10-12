@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Models.Machine;
@@ -17,28 +17,38 @@ namespace factoryApi.Repositories
         {
             _context = context;
         }
-        
+
         public ProductionLineDto GetById(long id)
         {
             var productionLine = _context.ProductionLines.ToList().FirstOrDefault(pl => pl.ProdutctLineId == id);
-            return productionLine == null ? new ProductionLineDto() : productionLine.toDto() ;
+            return productionLine == null ? new ProductionLineDto() : productionLine.toDto();
         }
-        
+
         public IEnumerable<ProductionLineDto> GetAll()
         {
             return _context.ProductionLines.Include(productionLine => productionLine.ProdutctLineId)
                 .Select(productionLine => productionLine.toDto()).ToList();
         }
-        
+
         public ProductionLine Add(CreateProductionLineDto productionLineDto)
         {
-         //  ICollection<Machine> MachinesList = MachineRepository
-          
+            List<Machine> machines = new List<Machine>();
 
-            ProductionLine op = ProductionLineFactory
-                .Create(productionLineDto.ProductionLineName, productionLineDto.MachinesList);
-            
-            var result = _context.Add(op).Entity;
+            foreach (long id in productionLineDto.MachinesListIds)
+            {
+                Machine mac = _context.Machines.Single(machine => machine.MachineId == id);
+                if (mac == null)
+                {
+                    throw new HttpRequestException("Machine not found with the id: " + id + "!");
+                }
+
+                machines.Add(mac);
+            }
+
+            ProductionLine pl = ProductionLineFactory
+                .Create(productionLineDto.ProductionLineName, machines);
+
+            var result = _context.Add(pl).Entity;
             _context.SaveChanges();
 
             return result;
@@ -46,17 +56,51 @@ namespace factoryApi.Repositories
 
         public ProductionLineDto UpdateElement(long id, CreateProductionLineDto productionLineDto)
         {
-            ProductionLineDto pl = GetById(id);
+            ProductionLine pl = GetProductionLineById(id);
+            if (pl == null)
+            {
+                throw new HttpRequestException("Production Line not found with the id:  " + id + "!");
+            }
+
             pl.ProdutctLineName = productionLineDto.ProductionLineName;
-            pl.MachinesList = productionLineDto.MachinesList;
+
+            List<Machine> machines = new List<Machine>();
+
+            foreach (long machineId in productionLineDto.MachinesListIds)
+            {
+                Machine mac = _context.Machines.Single(machine => machine.MachineId == machineId);
+                if (mac == null)
+                {
+                    throw new HttpRequestException("Machine not found with the id: " + id + "!");
+                }
+
+                machines.Add(mac);
+            }
+
+            pl.MachinesList = machines;
+
+            _context.Update(pl);
             _context.SaveChanges();
             return GetById(id);
         }
 
         public ProductionLineDto DeleteElement(long id)
         {
-            throw new NotImplementedException();
+            var productionLineToDelete = GetProductionLineById(id);
+            if (productionLineToDelete == null)
+            {
+                throw new HttpRequestException("Production line not found with the id:  " + id + "!");
+            }
+
+            _context.Remove(productionLineToDelete);
+            _context.SaveChanges();
+
+            return productionLineToDelete.toDto();
         }
 
+        private ProductionLine GetProductionLineById(long id)
+        {
+            return _context.ProductionLines.ToList().FirstOrDefault(pl => pl.ProdutctLineId == id);
+        }
     }
 }

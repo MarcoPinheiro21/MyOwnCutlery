@@ -11,9 +11,12 @@ namespace factoryApi.Models.ProductionLine
         [Key]
         public long ProdutctLineId { get; set; }
 
-        private string ProdutctLineName{ get; }
-        private ICollection<Machine.Machine> MachinesList { get; }
+        public string ProdutctLineName { get; set; }
+        public ICollection<Machine.Machine> MachinesList { get; set; }
 
+        public ProductionLine()
+        {
+        }
 
         public ProductionLine(string name, ICollection<Machine.Machine> machinesList)
         {

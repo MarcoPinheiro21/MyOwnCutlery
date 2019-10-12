@@ -33,5 +33,10 @@ namespace factoryApi.Services
         {
             return _repo.UpdateElement(id, productionLineDto);
         }
+
+        public ProductionLineDto Delete(long id)
+        {
+            return _repo.DeleteElement(id);
+        }
     }
 }
