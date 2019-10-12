@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using factoryApi.Bootstrap;
 using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Models;
@@ -19,6 +20,10 @@ namespace factoryApi.Controllers
         public OperationsController(MasterFactoryContext context)
         {
             _service = new OperationService(new OperationRepository(context));
+            
+            //Charges all the tools needed.
+            BootstrapTools bootstrapTools = new BootstrapTools(context);
+            bootstrapTools.Execute();
         }
 
         // GET factoryapi/operations/5
@@ -40,10 +45,20 @@ namespace factoryApi.Controllers
 
         // POST: factoryapi/operations
         [HttpPost]
-        public ActionResult<OperationDto> PostOperation([FromBody]OperationDto operationDto)
+        [ProducesResponseType(200, Type = typeof(OperationDto))]
+        [ProducesResponseType(404)]
+        public ActionResult<OperationDto> PostOperation(CreateOperationDto operationDto)
         {
-            _service.Add(operationDto);
-            return CreatedAtAction(nameof(GetOperations), new { Id = operationDto.Id }, operationDto);
+            return Ok(_service.Add(operationDto));
+        }
+        
+        // PUT factoryapi/operations/5
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        public ActionResult Update(long id, [FromBody] CreateOperationDto operationDto)
+        {
+            OperationDto result = _service.Update(id, operationDto);
+            return Ok(result);
         }
     }
 }

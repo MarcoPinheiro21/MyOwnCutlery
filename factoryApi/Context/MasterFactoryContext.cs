@@ -1,4 +1,6 @@
+using factoryApi.Bootstrap;
 using factoryApi.Models.Machine;
+using factoryApi.Models.Operation;
 using factoryApi.Models.Relationships;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,18 +19,16 @@ namespace factoryApi.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_connection);
-            base.OnConfiguring(optionsBuilder);
         }
 
         public DbSet<Models.Machine.Machine> Machines { get; set; }
 
         public DbSet<Models.Operation.Operation> Operations { get; set; }
+        
+        public DbSet<Tool> Tools { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new OperationConfiguration());
-            base.OnModelCreating(modelBuilder);
-
 
             //modelBuilder.Entity<Machine.Machine>().HasKey(m => new {m.MachineId});
             //modelBuilder.Entity<MachineType>().HasKey(mt => new {mt.MachineTypeId});

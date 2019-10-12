@@ -2,11 +2,12 @@ namespace factoryApi.Models.Operation
 {
     public class OperationFactory
     {
-        public static Operation Create(string toolDesc, string operationTypeDesc)
+        public static Operation Create(string operationName, Tool tool)
         {
             return new Operation()
             {
-//                 Tool = new Tool(toolDesc),
+                OperationName = operationName,
+                Tool = tool
             };
         }
     }

@@ -13,6 +13,8 @@ namespace factoryApi.Models.Operation
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public long OperationId { get; set; }
+        
+        public string OperationName { get; set; }
 
         public Tool Tool { get; set; }
         [ForeignKey("MachineTypeId")]
@@ -21,8 +23,8 @@ namespace factoryApi.Models.Operation
         public OperationDto toDto()
         {
             OperationDto operationDto = new OperationDto();
-            operationDto.Id = OperationId;
-            operationDto.ToolDesc = Tool.Desc;
+            operationDto.OperationId = OperationId;
+            operationDto.ToolId = Tool.ToolId;
             return operationDto;
         }
     }

@@ -24,10 +24,15 @@ namespace factoryApi.Services
             return _repo.GetAll();
         }
         
-        public OperationDto Add(OperationDto operationDto)
+        public OperationDto Add(CreateOperationDto operationDto)
         {
             var operation = _repo.Add(operationDto);
             return _repo.GetById(operation.OperationId);
+        }
+        
+        public OperationDto Update(long id, CreateOperationDto operationDto)
+        {
+            return _repo.Update(id, operationDto);
         }
         
     }

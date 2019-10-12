@@ -1,14 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using factoryApi.Context;
 using factoryApi.DTO;
-using factoryApi.Models;
 using factoryApi.Models.Operation;
 using Microsoft.EntityFrameworkCore;
 
 namespace factoryApi.Repositories
 {
-    public class OperationRepository : IBaseRepository<OperationDto, Operation>
+    public class OperationRepository
     {
         private readonly MasterFactoryContext _context;
 
@@ -29,28 +29,45 @@ namespace factoryApi.Repositories
                         .Select(operation => operation.toDto()).ToList();
         }
         
-        public Operation Add(OperationDto operationDto)
+        public Operation Add(CreateOperationDto operationDto)
         {
 
+            Tool Tool = GetToolById(operationDto.ToolId);
+
             Operation op = OperationFactory
-                    .Create(operationDto.ToolDesc, operationDto.OperationTypeDesc);
+                    .Create(operationDto.OperationName, Tool);
+            
             var result = _context.Add(op).Entity;
             _context.SaveChanges();
 
             return result;
-
         }
 
-        public OperationDto UpdateElement(long id, Operation Dto)
+        public OperationDto Update(long id, CreateOperationDto operationDto)
+        {
+            OperationDto op = GetById(id);
+            op.OperationName = operationDto.OperationName;
+            op.ToolId = operationDto.ToolId;
+            _context.SaveChanges();
+            return GetById(id);
+        }
+
+        public OperationDto Delete(long id)
         {
             //TODO
             throw new System.NotImplementedException();
         }
 
-        public OperationDto DeleteElement(long id)
+        public Tool addTool(Tool tool)
+        { 
+            Tool newTool = _context.Tools.Add(tool).Entity;
+            _context.SaveChanges();
+            return newTool;
+        }
+        
+        public Tool GetToolById(long id)
         {
-            //TODO
-            throw new System.NotImplementedException();
+            return _context.Tools.ToList().FirstOrDefault(t => t.ToolId == id);
         }
     }
 }
