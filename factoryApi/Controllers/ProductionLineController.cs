@@ -67,7 +67,7 @@ namespace factoryApi.Controllers
             }
         }
         
-        // DELETE factoryapi/operations/5
+        // DELETE factoryapi/productionLines/5
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ProductionLineDto))]
         [ProducesResponseType(404)]
