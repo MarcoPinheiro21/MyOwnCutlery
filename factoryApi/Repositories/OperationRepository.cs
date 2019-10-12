@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace factoryApi.Repositories
 {
-    public class OperationRepository
+    public class OperationRepository : IBaseRepository<OperationDto, Operation>
     {
         private readonly MasterFactoryContext _context;
 
@@ -34,6 +34,18 @@ namespace factoryApi.Repositories
         {
             //TODO Ainda falta fazer isto.
             return new Operation();
+        }
+
+        public OperationDto UpdateElement(int id, Operation Dto)
+        {
+            //TODO
+            throw new System.NotImplementedException();
+        }
+
+        public OperationDto DeleteElement(int id)
+        {
+            //TODO
+            throw new System.NotImplementedException();
         }
     }
 }
