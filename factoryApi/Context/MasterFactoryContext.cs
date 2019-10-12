@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace factoryApi.Models
+namespace factoryApi.Context
 {
     public class MasterFactoryContext : DbContext
     {
@@ -15,13 +14,21 @@ namespace factoryApi.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_connection);
+            base.OnConfiguring(optionsBuilder);
         }
 
-        public DbSet<Machine.Machine> Machines { get; set; }
+        public DbSet<Models.Machine.Machine> Machines { get; set; }
 
-        public DbSet<Operation.Operation> Operations { get; set; }
+        public DbSet<Models.Operation.Operation> Operations { get; set; }
 
-        public DbSet<ProductionLine.ProductionLine> ProductionLines { get; set; }
+        public DbSet<Models.ProductionLine.ProductionLine> ProductionLines { get; set; }
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new OperationConfiguration());
+            base.OnModelCreating(builder);
+        }
+
     }
     
     

@@ -11,9 +11,9 @@ namespace factoryApi.Repositories
         
         Entity Add(Dto writeDto);
 
-        Dto UpdateElement(int id, Entity Dto);
+        Dto UpdateElement(long id, Entity Dto);
         
-        Dto DeleteElement(int id);
+        Dto DeleteElement(long id);
         
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using factoryApi.Context;
 using factoryApi.Models;
 using factoryApi.Models.Machine;
 using Microsoft.AspNetCore.Mvc;

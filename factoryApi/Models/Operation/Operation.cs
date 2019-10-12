@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using factoryApi.DTO;
+using factoryApi.Repositories;
 
 namespace factoryApi.Models.Operation
 {
@@ -8,9 +10,17 @@ namespace factoryApi.Models.Operation
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public long Id { get; set; }
+        public long OperationId { get; set; }
+        public Tool Tool { get; set; }
+        public OperationType OperationType { get; set; }
 
-        private Tool Tools { get; set; }
-        private OperationType OperationTypes { get; set; }
+        public OperationDto toDto()
+        {
+            OperationDto operationDto = new OperationDto();
+            operationDto.Id = OperationId;
+            operationDto.ToolDesc = Tool.Desc;
+            operationDto.OperationTypeDesc = OperationType.Desc;
+            return operationDto;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using factoryApi.Models;
+﻿using factoryApi.Context;
+using factoryApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

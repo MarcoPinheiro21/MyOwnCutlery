@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Models;
 using factoryApi.Models.Operation;
@@ -18,31 +19,35 @@ namespace factoryApi.Repositories
         
         public OperationDto GetById(long id)
         {
-            var operation = _context.Operations.ToList().FirstOrDefault(x => x.Id == id);
-            
-            //TODO Necessário pensar numa solução para o mapper.
-            return operation == null ? new OperationDto() : new OperationDto() ;
+            var operation = _context.Operations.ToList().FirstOrDefault(x => x.OperationId == id);
+            return operation == null ? new OperationDto() : operation.toDto() ;
         }
         
         public IEnumerable<OperationDto> GetAll()
         {
-            //TODO Isto não está feito. Cacete para não dar erro.
-            return _context.Operations.Include(x => x.Id).Select(x => new OperationDto()).ToList();
+            return _context.Operations.Include(operation => operation.OperationId)
+                        .Select(operation => operation.toDto()).ToList();
         }
         
         public Operation Add(OperationDto operationDto)
         {
-            //TODO Ainda falta fazer isto.
-            return new Operation();
+
+            Operation op = OperationFactory
+                    .Create(operationDto.ToolDesc, operationDto.OperationTypeDesc);
+            var result = _context.Add(op).Entity;
+            _context.SaveChanges();
+
+            return result;
+
         }
 
-        public OperationDto UpdateElement(int id, Operation Dto)
+        public OperationDto UpdateElement(long id, Operation Dto)
         {
             //TODO
             throw new System.NotImplementedException();
         }
 
-        public OperationDto DeleteElement(int id)
+        public OperationDto DeleteElement(long id)
         {
             //TODO
             throw new System.NotImplementedException();
