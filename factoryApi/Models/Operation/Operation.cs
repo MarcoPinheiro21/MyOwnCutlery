@@ -24,6 +24,7 @@ namespace factoryApi.Models.Operation
         {
             OperationDto operationDto = new OperationDto();
             operationDto.OperationId = OperationId;
+            operationDto.OperationName = OperationName;
             operationDto.ToolId = Tool.ToolId;
             return operationDto;
         }

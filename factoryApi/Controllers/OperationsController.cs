@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using factoryApi.Bootstrap;
@@ -32,7 +33,14 @@ namespace factoryApi.Controllers
         [ProducesResponseType(404)]
         public ActionResult GetById(int id)
         {
-            return Ok(_service.FindById(id));
+            try
+            {
+                return Ok(_service.FindById(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: factoryapi/operations
@@ -54,11 +62,35 @@ namespace factoryApi.Controllers
         
         // PUT factoryapi/operations/5
         [HttpPut("{id}")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(200, Type = typeof(OperationDto))]
+        [ProducesResponseType(404)]
         public ActionResult Update(long id, [FromBody] CreateOperationDto operationDto)
         {
-            OperationDto result = _service.Update(id, operationDto);
-            return Ok(result);
+            try
+            {
+                return Ok(_service.Update(id, operationDto));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+            
+        // DELETE factoryapi/operations/5
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200, Type = typeof(OperationDto))]
+        [ProducesResponseType(404)]
+        public ActionResult Delete(long id)
+        {
+            try
+            {
+                return Ok(_service.Delete(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
     }
 }

@@ -35,5 +35,10 @@ namespace factoryApi.Services
             return _repo.UpdateElement(id, operationDto);
         }
         
+        public OperationDto Delete(long id)
+        {
+            return _repo.DeleteElement(id);
+        }
+        
     }
 }

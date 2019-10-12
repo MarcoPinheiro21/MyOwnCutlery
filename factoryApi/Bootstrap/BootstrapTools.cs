@@ -7,11 +7,11 @@ namespace factoryApi.Bootstrap
     public class BootstrapTools
     {
         private readonly OperationRepository _operationRepository;
-        private static string TOOL_MARTELO_DESC = "Martelo";
-        private static long TOOL_MARTELO_ID = 1;
+        private static string TOOL_HAMMER_DESC = "Hammer";
+        private static long TOOL_HAMMER_ID = 1;
         
-        private static string TOOL_BROCA_DESC = "Broca";
-        private static long TOOL_BROCA_ID = 2;
+        private static string TOOL_DRILL_DESC = "Drill";
+        private static long TOOL_DRILL_ID = 2;
 
         public BootstrapTools(MasterFactoryContext context)
         {
@@ -19,18 +19,18 @@ namespace factoryApi.Bootstrap
         }
         public void Execute()
         {
-            var martelo = _operationRepository.GetToolById(TOOL_MARTELO_ID);
-            if (martelo == null)
+            var hammer = _operationRepository.GetToolById(TOOL_HAMMER_ID);
+            if (hammer == null)
             {
-                _operationRepository.addTool(new Tool(TOOL_MARTELO_ID, 
-                    TOOL_MARTELO_DESC));
+                _operationRepository.addTool(new Tool(TOOL_HAMMER_ID, 
+                    TOOL_HAMMER_DESC));
             }
             
-            var broca = _operationRepository.GetToolById(TOOL_BROCA_ID);
-            if (broca == null)
+            var drill = _operationRepository.GetToolById(TOOL_DRILL_ID);
+            if (drill == null)
             {
-                _operationRepository.addTool(new Tool(TOOL_BROCA_ID, 
-                    TOOL_BROCA_DESC));
+                _operationRepository.addTool(new Tool(TOOL_DRILL_ID, 
+                    TOOL_DRILL_DESC));
             }
             
         }
