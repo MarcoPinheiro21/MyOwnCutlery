@@ -9,7 +9,7 @@ namespace factoryApi.Context
      
         public void Configure(EntityTypeBuilder<Operation> builder)
         {
-            builder.OwnsOne(op => op.Tool, a =>
+/*            builder.OwnsOne(op => op.Tool, a =>
             {
                 a.Property(t => t.Desc)
                     .HasColumnName("Tool")
@@ -20,7 +20,7 @@ namespace factoryApi.Context
                 a.Property(opt => opt.Desc)
                     .HasColumnName("OperationType")
                     .HasDefaultValue("");
-            });
+            });*/
             
         }
         

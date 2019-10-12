@@ -1,3 +1,6 @@
+using factoryApi.Models.Machine;
+using factoryApi.Models.Relationships;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace factoryApi.Context
@@ -21,14 +24,28 @@ namespace factoryApi.Context
 
         public DbSet<Models.Operation.Operation> Operations { get; set; }
 
-        public DbSet<Models.ProductionLine.ProductionLine> ProductionLines { get; set; }
-        
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.ApplyConfiguration(new OperationConfiguration());
-            base.OnModelCreating(builder);
-        }
+            modelBuilder.ApplyConfiguration(new OperationConfiguration());
+            base.OnModelCreating(modelBuilder);
 
+
+            //modelBuilder.Entity<Machine.Machine>().HasKey(m => new {m.MachineId});
+            //modelBuilder.Entity<MachineType>().HasKey(mt => new {mt.MachineTypeId});
+            
+            modelBuilder.Entity<OperationMachineType>()
+                .HasKey(omt => new {omt.OperationId, omt.MachineTypeId});
+                
+            modelBuilder.Entity<OperationMachineType>()
+                .HasOne(omt => omt.MachineType)
+                .WithMany(o => o.OperationMachineType)
+                .HasForeignKey(ok => ok.MachineTypeId);
+
+            modelBuilder.Entity<OperationMachineType>()
+                .HasOne(omt => omt.Operation)
+                .WithMany(mt => mt.OperationMachineType)
+                .HasForeignKey(ok => ok.OperationId);
+        }
     }
     
     

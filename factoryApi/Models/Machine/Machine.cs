@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using factoryApi.DTO;
 
 namespace factoryApi.Models.Machine
 {
@@ -11,6 +12,13 @@ namespace factoryApi.Models.Machine
 
         [Required] public string Description { get; set; }
 
-        private MachineType Type { get; set; }
+        [ForeignKey("MachineType")]
+        public MachineType Type { get; set; }
+
+        public MachineDto toDto()
+        {
+            return new MachineDto(this.Id, this.Description, this.Type.Desc);
+            
+        }
     }
 }
