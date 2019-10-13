@@ -29,6 +29,8 @@ namespace factoryApi.Context
         public DbSet<MachineType> MachineTypes { get; set; }
         
         public DbSet<Models.ProductionLine.ProductionLine> ProductionLines { get; set; }
+        
+        public DbSet<OperationMachineType> OperationMachineTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -15,6 +15,10 @@ namespace factoryApi.Models.Machine
         [ForeignKey("MachineType")]
         public MachineType Type { get; set; }
 
+        public Machine()
+        {
+        }
+
         public Machine(string description, MachineType type)
         {
             Description = description;
@@ -23,7 +27,7 @@ namespace factoryApi.Models.Machine
 
         public MachineDto toDto()
         {
-            return new MachineDto(this.MachineId, this.Description, this.Type.Desc);
+            return new MachineDto(MachineId, Description, Type.MachineTypeId);
             
         }
     }

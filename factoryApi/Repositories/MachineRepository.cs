@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using factoryApi.DTO;
+using factoryApi.Exceptions;
 using factoryApi.Models;
 using factoryApi.Models.Machine;
 
@@ -18,8 +20,7 @@ namespace factoryApi.Repositories
 
         public MachineDto GetById(long id)
         {
-            Machine machine = GetMachineById(id);
-            return machine.toDto();
+            return GetMachineById(id).toDto();
         }
 
         private Machine GetMachineById(long id)
@@ -48,7 +49,15 @@ namespace factoryApi.Repositories
         public Machine Add(CreateMachineDto createMachineDto)
         {
             var machineType = _context.MachineTypes.Find(createMachineDto.MachineTypeId);
-            return new Machine(createMachineDto.Description,machineType);
+            if (machineType == null)
+            {
+                throw new ObjectNotFoundException(
+                    "Machine type with id "+ createMachineDto.MachineTypeId+" not found");
+            }
+            var result = _context.Machines
+                .Add(new Machine(createMachineDto.Description, machineType)).Entity;
+            _context.SaveChanges();
+            return result;
         }
 
         public MachineDto UpdateElement(long id, CreateMachineDto Dto)

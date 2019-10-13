@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using factoryApi.Context;
-using factoryApi.Models;
-using factoryApi.Models.Machine;
+using factoryApi.DTO;
+using factoryApi.Repositories;
+using factoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace factoryApi.Controllers
@@ -12,30 +12,54 @@ namespace factoryApi.Controllers
     [ApiController]
     public class MachinesController : ControllerBase
     {
-        private readonly MasterFactoryContext _context;
+        private readonly MachineService _service;
 
         public MachinesController(MasterFactoryContext context)
         {
-            _context = context;
+            _service = new MachineService(
+                new MachineRepository(context),
+                new MachineTypeRepository(context));
         }
 
 
         // GET: factoryapi/machines
         [HttpGet]
-        public IEnumerable<Machine> GetMachines()
+        [ProducesResponseType(200, Type = typeof(IEnumerable<MachineDto>))]
+        [ProducesResponseType(404)]
+        public IEnumerable<MachineDto> GetMachines()
         {
-            return _context.Machines.ToList();
+            return _service.FindAllMachines();
         }
 
         // GET: factoryapi/machines/5
         [HttpGet("/{id}")]
-        public async Task<ActionResult<Machine>> GetMachine(long id)
+        [ProducesResponseType(200, Type = typeof(MachineDto))]
+        [ProducesResponseType(404)]
+        public ActionResult<MachineDto> GetMachine(long id)
         {
-            var todoItem = await _context.Machines.FindAsync(id);
+            var todoItem = _service.FindMachineById(id);
 
             if (todoItem == null) return NotFound();
 
             return todoItem;
+        }
+
+        // POST: factoryapi/operations
+        [HttpPost]
+        [ProducesResponseType(200, Type = typeof(MachineDto))]
+        [ProducesResponseType(404)]
+        public ActionResult<MachineDto> PostMachine(CreateMachineDto createMachineDto)
+        {
+            try
+            {
+                return _service.AddMachine(createMachineDto);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.Message);
+            }
+
         }
     }
 }

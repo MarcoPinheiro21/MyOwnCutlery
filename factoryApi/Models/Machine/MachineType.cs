@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using factoryApi.DTO;
 using factoryApi.Models.Relationships;
 
 namespace factoryApi.Models.Machine
@@ -10,8 +12,30 @@ namespace factoryApi.Models.Machine
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public long MachineTypeId { get; set; }
+
         public string Desc { get; set; }
-        [ForeignKey("OperationId")]
-        public virtual ICollection<OperationMachineType> OperationMachineType { get; set; }
+        [ForeignKey("OperationId")] public virtual ICollection<OperationMachineType> OperationMachineType { get; set; }
+
+        public MachineType(string desc)
+        {
+            Desc = desc;
+            OperationMachineType = new List<OperationMachineType>();
+        }
+
+        public MachineType(string desc, ICollection<OperationMachineType> operationMachineType)
+        {
+            Desc = desc;
+            OperationMachineType = operationMachineType;
+        }
+
+        public MachineTypeDto toDto()
+        {
+            return new MachineTypeDto(MachineTypeId, Desc, GetOperationIdsList());
+        }
+
+        private List<long> GetOperationIdsList()
+        {
+            return OperationMachineType.Select(var => var.OperationId).ToList();
+        }
     }
 }
