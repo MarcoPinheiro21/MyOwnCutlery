@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using factoryApi.Context;
 using factoryApi.DTO;
+using factoryApi.Exceptions;
 using factoryApi.Models.Operation;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,7 @@ namespace factoryApi.Repositories
                 var operation = _context.Operations.ToList().FirstOrDefault(x => x.OperationId == id);
                 if (operation == null)
                 {
-                    throw new HttpRequestException("Operation not found with the id:  " + id + "!");
+                    throw new ObjectNotFoundException("Operation not found with the id:  " + id + "!");
                 }
                 
                 return operation?.toDto() ;
@@ -43,7 +44,7 @@ namespace factoryApi.Repositories
                 Tool tool = GetToolById(operationDto.ToolId);
                 if (tool == null)
                 {
-                    throw new HttpRequestException(
+                    throw new ObjectNotFoundException(
                         "Tool not found with the id:  " + operationDto.ToolId + "!");
                 }
 
@@ -61,14 +62,14 @@ namespace factoryApi.Repositories
                 Operation op = GetOperationById(id);
                 if (op == null)
                 {
-                    throw new HttpRequestException("Operation not found with the id:  " + id + "!");
+                    throw new ObjectNotFoundException("Operation not found with the id:  " + id + "!");
                 }
                 op.OperationName = operationDto.OperationName;
                 
                 op.Tool = GetToolById(operationDto.ToolId);
                 if (op.Tool == null)
                 {
-                    throw new HttpRequestException(
+                    throw new ObjectNotFoundException(
                         "Tool not found with the id:  " + operationDto.ToolId + "!");
                 }
                 
@@ -82,7 +83,7 @@ namespace factoryApi.Repositories
                 var operationToDelete = GetOperationById(id);
                 if (operationToDelete == null)
                 {
-                    throw new HttpRequestException("Operation not found with the id:  " + id + "!");
+                    throw new ObjectNotFoundException("Operation not found with the id:  " + id + "!");
                 }
                 _context.Remove(operationToDelete);
                 _context.SaveChanges();
