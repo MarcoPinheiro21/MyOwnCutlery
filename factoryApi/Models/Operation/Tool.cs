@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,6 +15,11 @@ namespace factoryApi.Models.Operation
         {
             ToolId = toolId;
             Desc = desc;
+        }
+
+        public Boolean isValid()
+        {
+            return !Desc.Equals("") || Desc != null;
         }
     }
 }

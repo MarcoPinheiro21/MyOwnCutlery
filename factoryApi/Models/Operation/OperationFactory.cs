@@ -4,11 +4,7 @@ namespace factoryApi.Models.Operation
     {
         public static Operation Create(string operationName, Tool tool)
         {
-            return new Operation()
-            {
-                OperationName = operationName,
-                Tool = tool
-            };
+            return new Operation(operationName, tool);
         }
     }
 }

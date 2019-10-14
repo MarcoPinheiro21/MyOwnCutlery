@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,13 +20,27 @@ namespace factoryApi.Models.Operation
         public Tool Tool { get; set; }
         [ForeignKey("MachineTypeId")]
         public virtual ICollection<OperationMachineType> OperationMachineType { get; set; }
+        
+        public Operation(string operationName, Tool tool)
+        {
+            this.OperationName = (operationName == null || operationName.Equals(""))
+                ? throw new ArgumentNullException("Operation name cannot be null or empty!")
+                : operationName;
+            this.Tool = (!tool.isValid()) ?
+                        throw new ArgumentNullException("Tool cannot be null or empty!") :
+                        tool;
+        }
+
+        protected Operation()
+        {
+        }
 
         public OperationDto toDto()
         {
             OperationDto operationDto = new OperationDto();
-            operationDto.OperationId = OperationId;
-            operationDto.OperationName = OperationName;
-            operationDto.ToolId = Tool.ToolId;
+            operationDto.OperationId = this.OperationId;
+            operationDto.OperationName = this.OperationName;
+            operationDto.ToolId = this.Tool.ToolId;
             return operationDto;
         }
     }

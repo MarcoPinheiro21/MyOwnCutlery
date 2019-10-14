@@ -4,6 +4,7 @@ using System.Linq;
 using factoryApi.Bootstrap;
 using factoryApi.Context;
 using factoryApi.DTO;
+using factoryApi.Exceptions;
 using factoryApi.Models;
 using factoryApi.Models.Operation;
 using factoryApi.Repositories;
@@ -37,7 +38,7 @@ namespace factoryApi.Controllers
             {
                 return Ok(_service.FindById(id));
             }
-            catch (Exception ex)
+            catch (ObjectNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -57,7 +58,14 @@ namespace factoryApi.Controllers
         [ProducesResponseType(404)]
         public ActionResult<OperationDto> PostOperation(CreateOperationDto operationDto)
         {
-            return Ok(_service.Add(operationDto));
+            try
+            {
+                return Ok(_service.Add(operationDto));
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         
         // PUT factoryapi/operations/5
@@ -70,7 +78,7 @@ namespace factoryApi.Controllers
             {
                 return Ok(_service.Update(id, operationDto));
             }
-            catch (Exception ex)
+            catch (ObjectNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -86,7 +94,7 @@ namespace factoryApi.Controllers
             {
                 return Ok(_service.Delete(id));
             }
-            catch (Exception ex)
+            catch (ObjectNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
