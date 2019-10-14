@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using factoryApi.Context;
 using factoryApi.DTO;
+using factoryApi.Exceptions;
 using factoryApi.Repositories;
 using factoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +45,7 @@ namespace factoryApi.Controllers
             return todoItem;
         }
 
-        // POST: factoryapi/operations
+        // POST: factoryapi/machines
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(MachineDto))]
         [ProducesResponseType(404)]
@@ -59,7 +60,23 @@ namespace factoryApi.Controllers
                 Console.WriteLine(e);
                 return BadRequest(e.Message);
             }
+        }
 
+        // POST: factoryapi/machines/type
+        [HttpPost("types")]
+        [ProducesResponseType(200, Type = typeof(MachineTypeDto))]
+        [ProducesResponseType(404)]
+        public ActionResult<MachineTypeDto> PostMachineType(CreateMachineTypeDto createMachineTypeDto)
+        {
+            try
+            {
+                return _service.AddMachineType(createMachineTypeDto);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.Message);
+            }
         }
     }
 }

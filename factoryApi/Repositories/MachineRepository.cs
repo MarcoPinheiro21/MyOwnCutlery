@@ -20,7 +20,14 @@ namespace factoryApi.Repositories
 
         public MachineDto GetById(long id)
         {
-            return GetMachineById(id).toDto();
+            var machine = GetMachineById(id);
+            if (machine == null)
+            {
+                throw new ObjectNotFoundException(
+                    "Machine type with id " + id + " not found");
+            }
+
+            return machine.toDto();
         }
 
         private Machine GetMachineById(long id)
@@ -52,8 +59,9 @@ namespace factoryApi.Repositories
             if (machineType == null)
             {
                 throw new ObjectNotFoundException(
-                    "Machine type with id "+ createMachineDto.MachineTypeId+" not found");
+                    "Machine type with id " + createMachineDto.MachineTypeId + " not found");
             }
+
             var result = _context.Machines
                 .Add(new Machine(createMachineDto.Description, machineType)).Entity;
             _context.SaveChanges();

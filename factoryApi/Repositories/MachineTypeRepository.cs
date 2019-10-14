@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using factoryApi.Context;
 using factoryApi.DTO;
+using factoryApi.Exceptions;
 using factoryApi.Models.Machine;
 using factoryApi.Models.Relationships;
 
@@ -46,14 +47,21 @@ namespace factoryApi.Repositories
 
         public MachineType Add(CreateMachineTypeDto writeDto)
         {
+            
             var machineType = _context.MachineTypes.Add(new MachineType(writeDto.Desc)).Entity;
-            _context.SaveChanges();
 
-            if (writeDto.OperationList.Count == 0)
+            if (writeDto.OperationList.Count != 0)
             {
                 foreach (long id in writeDto.OperationList)
                 {
                     var operation = _context.Operations.Find(id);
+                    
+                    if (operation == null)
+                    {
+                        throw new ObjectNotFoundException(
+                            "Operation with id " + id + " not found.");
+                    }
+                    
                     var operationMachineType = _context.OperationMachineTypes.Add(
                         new OperationMachineType()
                         {
@@ -65,7 +73,7 @@ namespace factoryApi.Repositories
                     ).Entity;
                 }
             }
-
+            _context.SaveChanges();
             return machineType;
         }
 
