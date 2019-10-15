@@ -6,6 +6,7 @@ using factoryApi.DTO;
 using factoryApi.Exceptions;
 using factoryApi.Models;
 using factoryApi.Models.Machine;
+using Microsoft.EntityFrameworkCore;
 
 namespace factoryApi.Repositories
 {
@@ -59,7 +60,7 @@ namespace factoryApi.Repositories
             if (machineType == null)
             {
                 throw new ObjectNotFoundException(
-                    "Machine type with id " + createMachineDto.MachineTypeId + " not found");
+                    "Machine type with id " + createMachineDto.MachineTypeId + " not found.");
             }
 
             var result = _context.Machines
@@ -70,12 +71,41 @@ namespace factoryApi.Repositories
 
         public MachineDto UpdateElement(long id, CreateMachineDto Dto)
         {
-            throw new NotImplementedException();
+
+            var machineToUpdate = _context.Machines.Include(t => t.Type)
+                .SingleOrDefault(i => i.MachineId == id);
+            
+            if (Dto.Description != null)
+            {
+                machineToUpdate.Description = Dto.Description;
+            }
+
+            if (Dto.MachineTypeId != 0)
+            {
+                var machineType = _context.MachineTypes.Find(Dto.MachineTypeId);
+                if (machineType == null)
+                {
+                    throw new ObjectNotFoundException(
+                        "MachineType with id " + Dto.MachineTypeId + " not found.");
+                }
+
+                machineToUpdate.Type = machineType;
+            }
+
+            _context.SaveChanges();
+            return machineToUpdate.toDto();
         }
 
         public MachineDto DeleteElement(long id)
         {
-            throw new NotImplementedException();
+            var machine = _context.Machines.Find(id);
+            if (machine == null)
+            {
+                throw new ObjectNotFoundException(
+                    "Machine with id " + id + " not found.");
+            }
+
+            return _context.Machines.Remove(machine).Entity.toDto();
         }
     }
 }

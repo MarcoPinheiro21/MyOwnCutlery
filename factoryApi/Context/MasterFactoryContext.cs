@@ -35,9 +35,9 @@ namespace factoryApi.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            //modelBuilder.Entity<Machine.Machine>().HasKey(m => new {m.MachineId});
-            //modelBuilder.Entity<MachineType>().HasKey(mt => new {mt.MachineTypeId});
-            
+            modelBuilder.Entity<Machine>()
+                .HasOne(t => t.Type);
+
             modelBuilder.Entity<OperationMachineType>()
                 .HasKey(omt => new {omt.OperationId, omt.MachineTypeId});
                 

@@ -78,5 +78,22 @@ namespace factoryApi.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        // PUT: factoryapi/machines
+        [HttpPut("{id}")]
+        [ProducesResponseType(200, Type = typeof(MachineDto))]
+        [ProducesResponseType(404)]
+        public ActionResult<MachineDto> PutMachineType(long id, [FromBody] CreateMachineDto createMachineDto)
+        {
+            try
+            {
+                return _service.UpdateMachine(id, createMachineDto);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
