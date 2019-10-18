@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using factoryApi.Context;
+using factoryApi.Controllers;
 using factoryApi.DTO;
 using factoryApi.Exceptions;
 using factoryApi.Models.Operation;
@@ -34,8 +35,20 @@ namespace factoryApi.Repositories
             
             public IEnumerable<OperationDto> GetAll()
             {
-                return _context.Operations.Include(operation => operation.OperationId)
-                            .Select(operation => operation.toDto()).ToList();
+                IEnumerable<Operation> operations = GetAllOperations();
+                var operationDtos = new List<OperationDto>();
+
+                foreach (var operation in operations)
+                {
+                    operationDtos.Add(operation.toDto());
+                }
+
+                return operationDtos;
+            }
+
+            private IEnumerable<Operation> GetAllOperations()
+            {
+                return _context.Operations.ToList();
             }
             
             public Operation Add(CreateOperationDto operationDto)
