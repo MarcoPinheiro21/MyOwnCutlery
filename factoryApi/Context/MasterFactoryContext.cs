@@ -17,7 +17,10 @@ namespace factoryApi.Context
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_connection);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(_connection);
+            }
         }
 
         public DbSet<Machine> Machines { get; set; }
