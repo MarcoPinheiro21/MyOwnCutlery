@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using factoryApi.Models;
+using factoryApi.Context;
 
 namespace factoryApi.Migrations
 {
-    [DbContext(typeof(Context.MasterFactoryContext))]
-    partial class MasterFactoryContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MasterFactoryContext))]
+    [Migration("20191012161257_Master")]
+    partial class Master
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +23,7 @@ namespace factoryApi.Migrations
 
             modelBuilder.Entity("factoryApi.Models.Machine.Machine", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long>("MachineId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -30,7 +32,7 @@ namespace factoryApi.Migrations
 
                     b.Property<long?>("MachineType");
 
-                    b.HasKey("Id");
+                    b.HasKey("MachineId");
 
                     b.HasIndex("MachineType");
 
@@ -45,7 +47,7 @@ namespace factoryApi.Migrations
 
                     b.HasKey("MachineTypeId");
 
-                    b.ToTable("MachineType");
+                    b.ToTable("MachineTypes");
                 });
 
             modelBuilder.Entity("factoryApi.Models.Operation.Operation", b =>
@@ -54,11 +56,13 @@ namespace factoryApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("ToolsToolId");
+                    b.Property<string>("OperationName");
+
+                    b.Property<long?>("ToolId");
 
                     b.HasKey("OperationId");
 
-                    b.HasIndex("ToolsToolId");
+                    b.HasIndex("ToolId");
 
                     b.ToTable("Operations");
                 });
@@ -71,18 +75,7 @@ namespace factoryApi.Migrations
 
                     b.HasKey("ToolId");
 
-                    b.ToTable("Tool");
-                });
-
-            modelBuilder.Entity("factoryApi.Models.ProductionLine.ProductionLine", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductionLines");
+                    b.ToTable("Tools");
                 });
 
             modelBuilder.Entity("factoryApi.Models.Relationships.OperationMachineType", b =>
@@ -107,9 +100,9 @@ namespace factoryApi.Migrations
 
             modelBuilder.Entity("factoryApi.Models.Operation.Operation", b =>
                 {
-                    b.HasOne("factoryApi.Models.Operation.Tool", "Tools")
+                    b.HasOne("factoryApi.Models.Operation.Tool", "Tool")
                         .WithMany()
-                        .HasForeignKey("ToolsToolId");
+                        .HasForeignKey("ToolId");
                 });
 
             modelBuilder.Entity("factoryApi.Models.Relationships.OperationMachineType", b =>

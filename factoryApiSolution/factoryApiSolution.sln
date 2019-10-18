@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "factoryApi", "factoryApi\factoryApi.csproj", "{C1119204-6124-4980-9516-83A4A3E8C290}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "factoryApi.UnitTests", "factoryApi.UnitTests\factoryApi.UnitTests.csproj", "{BFC524DB-5D24-421F-988A-8F35EA2F287B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1119204-6124-4980-9516-83A4A3E8C290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1119204-6124-4980-9516-83A4A3E8C290}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1119204-6124-4980-9516-83A4A3E8C290}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1119204-6124-4980-9516-83A4A3E8C290}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFC524DB-5D24-421F-988A-8F35EA2F287B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFC524DB-5D24-421F-988A-8F35EA2F287B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFC524DB-5D24-421F-988A-8F35EA2F287B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFC524DB-5D24-421F-988A-8F35EA2F287B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
