@@ -38,7 +38,7 @@ namespace factoryApiTest.Controllers
         }
         
         [Fact]
-        public async Task GetBadRequest_ShouldReturnBadRequestWhenOperationIdIsUnknown()
+        public async Task GetNotFound_ShouldReturnNotFoundWhenOperationIdIsUnknown()
         {
             //Arrange
             const int unknownOperationId = -1;
@@ -47,7 +47,7 @@ namespace factoryApiTest.Controllers
             var result = theController.GetById(unknownOperationId);
 
             //Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
         
         [Fact]
@@ -97,7 +97,7 @@ namespace factoryApiTest.Controllers
         }
         
         [Fact]
-        public async Task PostOperation_ShouldReturnBadRequestWhenToolIdIsUnknown()
+        public async Task PostOperation_ShouldReturnNotFoundWhenToolIdIsUnknown()
         {
             //Arrange
             var operationName = "anotherOperationToTestPost";
@@ -113,7 +113,7 @@ namespace factoryApiTest.Controllers
             var response = theController.PostOperation(request).Result;
 
             //Assert
-            Assert.IsType<BadRequestObjectResult>(response);
+            Assert.IsType<NotFoundObjectResult>(response);
         }
         
         [Fact]
@@ -141,7 +141,7 @@ namespace factoryApiTest.Controllers
         }
         
         [Fact]
-        public async Task PutOperation_ShouldReturnBadRequestWhenOperationIdIsUnknown()
+        public async Task PutOperation_ShouldReturnNotFoundWhenOperationIdIsUnknown()
         {
             //Arrange
             var operationName = "anotherOperationToTestPost";
@@ -158,12 +158,12 @@ namespace factoryApiTest.Controllers
             var response = theController.Update(operationId, body);
 
             //Assert
-            Assert.IsType<BadRequestObjectResult>(response);
+            Assert.IsType<NotFoundObjectResult>(response);
 
         }
         
         [Fact]
-        public async Task PutOperation_ShouldReturnBadRequestWhenToolIdIsUnknown()
+        public async Task PutOperation_ShouldReturnNotFoundWhenToolIdIsUnknown()
         {
             //Arrange
             var operationName = "anotherOperationToTestPost";
@@ -180,7 +180,7 @@ namespace factoryApiTest.Controllers
             var response = theController.Update(operationId, body);
 
             //Assert
-            Assert.IsType<BadRequestObjectResult>(response);
+            Assert.IsType<NotFoundObjectResult>(response);
 
         }
 
@@ -202,7 +202,7 @@ namespace factoryApiTest.Controllers
         }
         
         [Fact]
-        public async Task DeleteOperation_ShouldReturnBadRequestWhenOperationIdIsUnknown()
+        public async Task DeleteOperation_ShouldReturnNotFoundWhenOperationIdIsUnknown()
         {
             //Arrange
             const int unknownOperationId = -1;
@@ -211,7 +211,7 @@ namespace factoryApiTest.Controllers
             var result = theController.Delete(unknownOperationId);
 
             //Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result);
         }
 
     }

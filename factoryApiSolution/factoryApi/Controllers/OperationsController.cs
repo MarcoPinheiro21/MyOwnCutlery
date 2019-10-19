@@ -40,7 +40,7 @@ namespace factoryApi.Controllers
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -54,17 +54,17 @@ namespace factoryApi.Controllers
 
         // POST: factoryapi/operations
         [HttpPost]
-        [ProducesResponseType(200, Type = typeof(OperationDto))]
+        [ProducesResponseType(201, Type = typeof(OperationDto))]
         [ProducesResponseType(404)]
         public ActionResult<OperationDto> PostOperation(CreateOperationDto operationDto)
         {
             try
             {
-                return Ok(_service.Add(operationDto));
+                return Created("default",_service.Add(operationDto));
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         
@@ -80,7 +80,7 @@ namespace factoryApi.Controllers
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
             
@@ -96,7 +96,7 @@ namespace factoryApi.Controllers
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         
