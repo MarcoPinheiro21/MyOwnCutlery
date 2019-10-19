@@ -9,12 +9,13 @@ namespace factoryApi.Context
 {
     public class MasterFactoryContext : DbContext
     {
-        private static string _connection = "Server=localhost,1433;Database=FactoryDB;Integrated Security=False;User Id=SA;Password=yourStrong(!)Password;MultipleActiveResultSets=True";
-                
+        private static string _connection =
+            "Server=localhost,1433;Database=FactoryDB;Integrated Security=False;User Id=SA;Password=yourStrong(!)Password;MultipleActiveResultSets=True";
+
         public MasterFactoryContext(DbContextOptions<MasterFactoryContext> options) : base(options)
         {
         }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -26,24 +27,26 @@ namespace factoryApi.Context
         public DbSet<Machine> Machines { get; set; }
 
         public DbSet<Models.Operation.Operation> Operations { get; set; }
-        
+
         public DbSet<Tool> Tools { get; set; }
-        
+
         public DbSet<MachineType> MachineTypes { get; set; }
-        
+
         public DbSet<Models.ProductionLine.ProductionLine> ProductionLines { get; set; }
-        
+
         public DbSet<OperationMachineType> OperationMachineTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Machine>()
                 .HasOne(t => t.Type);
 
+            modelBuilder.Entity<Operation>()
+                .HasMany(o => o.OperationMachineType);
+            
             modelBuilder.Entity<OperationMachineType>()
                 .HasKey(omt => new {omt.OperationId, omt.MachineTypeId});
-                
+
             modelBuilder.Entity<OperationMachineType>()
                 .HasOne(omt => omt.MachineType)
                 .WithMany(o => o.OperationMachineType)
@@ -55,6 +58,4 @@ namespace factoryApi.Context
                 .HasForeignKey(ok => ok.OperationId);
         }
     }
-    
-    
 }

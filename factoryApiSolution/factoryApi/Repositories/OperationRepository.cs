@@ -24,7 +24,8 @@ namespace factoryApi.Repositories
         
             public OperationDto GetById(long id)
             {
-                var operation = _context.Operations.ToList().FirstOrDefault(x => x.OperationId == id);
+                var operation = _context.Operations.Include(t=>t.Tool)
+                    .ToList().FirstOrDefault(x => x.OperationId == id);
                 if (operation == null)
                 {
                     throw new ObjectNotFoundException("Operation not found with the id:  " + id + "!");

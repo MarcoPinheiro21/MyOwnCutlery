@@ -34,9 +34,9 @@ namespace factoryApi.Models.Machine
             return new MachineTypeDto(MachineTypeId, Desc, GetOperationIdsList());
         }
 
-        private ICollection<string> GetOperationIdsList()
+        private List<long> GetOperationIdsList()
         {
-            return OperationMachineType.Select(var => var.Operation.OperationName).ToList();
+            return OperationMachineType.Select(var => var.OperationId).ToList();
         }
     }
 }

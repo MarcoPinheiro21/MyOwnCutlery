@@ -19,41 +19,48 @@ namespace factoryApi.Controllers
         {
             _service = new MachineService(
                 new MachineRepository(context),
-                new MachineTypeRepository(context));
+                new MachineTypeRepository(context),
+                new OperationRepository(context));
         }
-
-
+        
         // GET: factoryapi/machines
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<MachineDto>))]
         [ProducesResponseType(404)]
-        public IEnumerable<MachineDto> GetMachines()
+        public ActionResult GetMachines()
         {
-            return _service.FindAllMachines();
+            return Ok(_service.FindAllMachines());
         }
 
         // GET: factoryapi/machines/5
-        [HttpGet("/{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(MachineDto))]
         [ProducesResponseType(404)]
-        public ActionResult<MachineDto> GetMachine(long id)
+        public ActionResult GetMachine(long id)
         {
-            var todoItem = _service.FindMachineById(id);
 
-            if (todoItem == null) return NotFound();
+            try
+            {
+                var machine = _service.FindMachineById(id);
+                return Ok(machine);
 
-            return todoItem;
+            }
+            catch (ObjectNotFoundException e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
         }
 
         // POST: factoryapi/machines
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(MachineDto))]
         [ProducesResponseType(404)]
-        public ActionResult<MachineDto> PostMachine(CreateMachineDto createMachineDto)
+        public ActionResult PostMachine(CreateMachineDto createMachineDto)
         {
             try
             {
-                return _service.AddMachine(createMachineDto);
+                return Ok(_service.AddMachine(createMachineDto));
             }
             catch (Exception e)
             {
@@ -62,24 +69,7 @@ namespace factoryApi.Controllers
             }
         }
 
-        // POST: factoryapi/machines/type
-        [HttpPost("types")]
-        [ProducesResponseType(200, Type = typeof(MachineTypeDto))]
-        [ProducesResponseType(404)]
-        public ActionResult<MachineTypeDto> PostMachineType(CreateMachineTypeDto createMachineTypeDto)
-        {
-            try
-            {
-                return _service.AddMachineType(createMachineTypeDto);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return BadRequest(e.Message);
-            }
-        }
-
-        // PUT: factoryapi/machines
+        // PUT: factoryapi/machines/5
         [HttpPut("{id}")]
         [ProducesResponseType(200, Type = typeof(MachineDto))]
         [ProducesResponseType(404)]
@@ -87,13 +77,91 @@ namespace factoryApi.Controllers
         {
             try
             {
-                return _service.UpdateMachine(id, createMachineDto);
+                return Ok(_service.UpdateMachine(id, createMachineDto));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest(e.Message);
             }
+        }
+
+        // DELETE: factoryapi/machines/5
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200, Type = typeof(MachineDto))]
+        [ProducesResponseType(404)]
+        public ActionResult DeleteMachine(long id)
+        {
+            try
+            {
+                var machine = _service.DeleteMachine(id);
+                return Ok(machine);
+            }
+            catch (ObjectNotFoundException e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
+        
+        
+        //MachineTypes
+        #region MachineTypes
+        
+        // GET: factoryapi/machines/types
+        [HttpGet("types")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<MachineTypeDto>))]
+        [ProducesResponseType(404)]
+        public ActionResult GetMachineTypes()
+        {
+            return Ok(_service.FindAllMachineTypes());
+        }
+        
+        // GET: factoryapi/machines/types/5
+        [HttpGet("types/{id}")]
+        [ProducesResponseType(200, Type = typeof(MachineTypeDto))]
+        [ProducesResponseType(404)]
+        public ActionResult GetMachineType(long id)
+        {
+            try
+            {
+                var machineType = _service.FindMachineTypeById(id);
+                return Ok(machineType);
+
+            }
+            catch (ObjectNotFoundException e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
+
+        // POST: factoryapi/machines/types
+        [HttpPost("types")]
+        [ProducesResponseType(200, Type = typeof(MachineTypeDto))]
+        [ProducesResponseType(404)]
+        public ActionResult<MachineTypeDto> PostMachineType(CreateMachineTypeDto createMachineTypeDto)
+        {
+            try
+            {
+                return Ok(_service.AddMachineType(createMachineTypeDto));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.Message);
+            }
+        }
+        
+        #endregion MachineTypes
+        
+        // GET: factoryapi/machines/types/5/operations
+        [HttpGet("types/{id}/operations")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OperationDto>))]
+        [ProducesResponseType(404)]
+        public ActionResult GetMachineTypeOperations(long id)
+        {
+            return Ok(_service.FindOperationByMachineType(id));
         }
     }
 }

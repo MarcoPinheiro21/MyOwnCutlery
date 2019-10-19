@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Exceptions;
 using factoryApi.Models.Machine;
 using factoryApi.Models.Relationships;
+using Microsoft.EntityFrameworkCore;
 
 namespace factoryApi.Repositories
 {
@@ -22,19 +24,29 @@ namespace factoryApi.Repositories
             return GetMachineTypeById(id).toDto();
         }
 
-        private MachineType GetMachineTypeById(long id)
+        public MachineType GetMachineTypeById(long id)
         {
-            return _context.MachineTypes.Single(mt => mt.MachineTypeId == id);
+            return _context.MachineTypes.Include(t=>t.OperationMachineType)
+                .SingleOrDefault(mt => mt.MachineTypeId == id);
+        }
+
+        private MachineType GetMachineTypeById(long id, bool includeOperations)
+        {
+            if (!includeOperations) return GetMachineTypeById(id);
+
+            return _context.MachineTypes
+                .Include(t => t.OperationMachineType)
+                .SingleOrDefault(i => i.MachineTypeId == id);
         }
 
         public IEnumerable<MachineTypeDto> GetAll()
         {
             var machineTypes = GetAllMachineTypes();
-            IEnumerable<MachineTypeDto> machineTypeDtos = new List<MachineTypeDto>();
+            var machineTypeDtos = new List<MachineTypeDto>();
 
             foreach (var machineType in machineTypes)
             {
-                machineTypeDtos.Append(machineType.toDto());
+                machineTypeDtos.Add(machineType.toDto());
             }
 
             return machineTypeDtos;
@@ -42,12 +54,12 @@ namespace factoryApi.Repositories
 
         private IEnumerable<MachineType> GetAllMachineTypes()
         {
-            return _context.MachineTypes.ToList();
+            return _context.MachineTypes
+                .Include(o => o.OperationMachineType).ToList();
         }
 
         public MachineType Add(CreateMachineTypeDto writeDto)
         {
-            
             var machineType = _context.MachineTypes.Add(new MachineType(writeDto.Desc)).Entity;
 
             if (writeDto.OperationList.Count != 0)
@@ -55,13 +67,13 @@ namespace factoryApi.Repositories
                 foreach (long id in writeDto.OperationList)
                 {
                     var operation = _context.Operations.Find(id);
-                    
+
                     if (operation == null)
                     {
                         throw new ObjectNotFoundException(
                             "Operation with id " + id + " not found.");
                     }
-                    
+
                     var operationMachineType = _context.OperationMachineTypes.Add(
                         new OperationMachineType()
                         {
@@ -73,6 +85,7 @@ namespace factoryApi.Repositories
                     ).Entity;
                 }
             }
+
             _context.SaveChanges();
             return machineType;
         }

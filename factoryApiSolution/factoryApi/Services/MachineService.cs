@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using factoryApi.DTO;
 using factoryApi.Repositories;
 
@@ -8,12 +9,15 @@ namespace factoryApi.Services
     {
         private readonly MachineRepository _machineRepository;
         private readonly MachineTypeRepository _machineTypeRepository;
+        private readonly OperationRepository _operationRepository;
 
         public MachineService(MachineRepository machineMachineRepository,
-            MachineTypeRepository machineTypeRepository)
+            MachineTypeRepository machineTypeRepository,
+            OperationRepository operationRepository)
         {
             _machineRepository = machineMachineRepository;
             _machineTypeRepository = machineTypeRepository;
+            _operationRepository = operationRepository;
         }
 
         public MachineDto FindMachineById(long id)
@@ -37,9 +41,39 @@ namespace factoryApi.Services
             return _machineRepository.UpdateElement(id, createMachineDto);
         }
 
+        public MachineDto DeleteMachine(long id)
+        {
+            return _machineRepository.DeleteElement(id);
+        }
+
+        public IEnumerable<MachineTypeDto> FindAllMachineTypes()
+        {
+            return _machineTypeRepository.GetAll();
+        }
+
         public MachineTypeDto AddMachineType(CreateMachineTypeDto createMachineTypeDto)
         {
             return _machineTypeRepository.Add(createMachineTypeDto).toDto();
+        }
+
+        public MachineTypeDto FindMachineTypeById(long id)
+        {
+            return _machineTypeRepository.GetById(id);
+        }
+
+        public IEnumerable<OperationDto> FindOperationByMachineType(long machineTypeId)
+        {
+            var result = new List<OperationDto>();
+            var machineType = _machineTypeRepository.GetMachineTypeById(machineTypeId);
+            
+            foreach (var op in machineType.OperationMachineType)
+            {
+                var operation = _operationRepository.GetById(op.OperationId);
+
+                result.Add(operation);
+            }
+
+            return result;
         }
     }
 }

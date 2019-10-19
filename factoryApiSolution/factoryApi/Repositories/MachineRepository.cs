@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using factoryApi.DTO;
 using factoryApi.Exceptions;
 using factoryApi.Models;
@@ -33,25 +34,34 @@ namespace factoryApi.Repositories
 
         private Machine GetMachineById(long id)
         {
-            return _context.Machines.Single(machine => machine.MachineId == id);
+            try
+            {
+                return _context.Machines.Include(t=>t.Type)
+                    .SingleOrDefault(machine => machine.MachineId == id);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new ObjectNotFoundException(
+                    "Machine with id " + id + " not found.");
+            }
         }
 
         public IEnumerable<MachineDto> GetAll()
         {
-            IEnumerable<Machine> Machines = GetAllMachines();
-            IEnumerable<MachineDto> MachinesDto = new List<MachineDto>();
+            IEnumerable<Machine> machines = GetAllMachines();
+            var machinesDto = new List<MachineDto>();
 
-            foreach (var machine in Machines)
+            foreach (var machine in machines)
             {
-                MachinesDto.Append(machine.toDto());
+                machinesDto.Add(machine.toDto());
             }
 
-            return MachinesDto;
+            return machinesDto;
         }
 
         private IEnumerable<Machine> GetAllMachines()
         {
-            return _context.Machines.ToList();
+            return _context.Machines.Include(t=>t.Type);
         }
 
         public Machine Add(CreateMachineDto createMachineDto)
@@ -71,10 +81,9 @@ namespace factoryApi.Repositories
 
         public MachineDto UpdateElement(long id, CreateMachineDto Dto)
         {
-
             var machineToUpdate = _context.Machines.Include(t => t.Type)
                 .SingleOrDefault(i => i.MachineId == id);
-            
+
             if (Dto.Description != null)
             {
                 machineToUpdate.Description = Dto.Description;
@@ -107,5 +116,6 @@ namespace factoryApi.Repositories
 
             return _context.Machines.Remove(machine).Entity.toDto();
         }
+        
     }
 }
