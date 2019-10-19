@@ -1,6 +1,7 @@
 using factoryApi.Context;
 using factoryApi.Models.Operation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace factoryApiTest.Context
 {
@@ -11,7 +12,7 @@ namespace factoryApiTest.Context
 
                 
             var options = new DbContextOptionsBuilder<MasterFactoryContext>()
-                                .UseInMemoryDatabase()
+                                .UseInMemoryDatabase("TestDB", new InMemoryDatabaseRoot())
                                 .Options;
 
             MasterFactoryContext dbContext = new MasterFactoryContext(options);
@@ -25,7 +26,9 @@ namespace factoryApiTest.Context
         private static void Seed(MasterFactoryContext dbContext)
         {
             dbContext.Operations.Add(new Operation("op1Test", new Tool(1, "hammer")));
-            dbContext.SaveChanges();
+            dbContext.Operations.Add(new Operation("op2Test", new Tool(2, "drill")));
+            dbContext.Operations.Add(new Operation("op3Test", new Tool(3, "screwdriver")));
+            dbContext.Operations.Add(new Operation("op4Test", new Tool(4, "saw")));
         }
     }
 }
