@@ -1,0 +1,267 @@
+{
+	"info": {
+		"_postman_id": "081c0226-b862-4ba7-bfb5-af4d8c62f4ad",
+		"name": "PostManTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"item": [
+				{
+					"name": "Create Operations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "273e98bd-1e8f-438c-ad45-1c3a138724f3",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"operationName is correct\"] = responseData.operationName==\"opTeste\";",
+									"tests[\"operationId is present\"] = responseData.operationId !== null;",
+									"",
+									"//Save returned operationId",
+									"pm.environment.set(\"envOperationId\", responseData.operationId);",
+									"console.log(pm.environment.get(\"envOperationId\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ToolId\": 1,\n\t\"OperationName\": \"opTeste\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/operations",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"operations"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "69bad144-fafb-4bc6-ac14-7bd2fc87eb01",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "160edc6a-5186-4282-829f-b1815ef1f6e4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Read",
+			"item": [
+				{
+					"name": "Read Operation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "61a11b90-66f7-46a0-af19-36e8828d9b2f",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"operationName is correct\"] = responseData.operationName==\"opTeste\";",
+									"tests[\"operationId is present\"] = responseData.operationId !== null;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/operations/{{envOperationId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"operations",
+								"{{envOperationId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Update",
+			"item": [
+				{
+					"name": "Update operation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "76689b18-310b-4f73-b380-6dea4a624c8a",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"operationName is correct\"] = responseData.operationName==\"newOperationNameTest\";",
+									"tests[\"operationId is present\"] = responseData.operationId !== null;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ToolId\": 1,\n\t\"OperationName\": \"newOperationNameTest\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/operations/{{envOperationId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"operations",
+								"{{envOperationId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Delete",
+			"item": [
+				{
+					"name": "Delete operation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bfc8c1b7-fd76-4dfe-83b1-6f61b8a6bed2",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"operationName is correct\"] = responseData.operationName==\"newOperationNameTest\";",
+									"tests[\"operationId is present\"] = responseData.operationId !== null;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "1",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/operations/{{envOperationId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"operations",
+								"{{envOperationId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
