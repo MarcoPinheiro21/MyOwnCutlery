@@ -23,7 +23,7 @@ namespace factoryApiTest.Controllers
         [Fact]
         public async Task GetAOperation_ShouldReturnTheSpecifiedOperation()
         {
-            //Arrange
+            //Arrange    
             const int id = 1;
 
             //Act
@@ -38,13 +38,13 @@ namespace factoryApiTest.Controllers
         }
         
         [Fact]
-        public async Task GetNotFound_ShouldReturnBadRequestWhenOperationIdIsUnknown()
+        public async Task GetBadRequest_ShouldReturnBadRequestWhenOperationIdIsUnknown()
         {
             //Arrange
-            const int id = -1;
+            const int unknownOperationId = -1;
 
             //Act
-            var result = theController.GetById(id);
+            var result = theController.GetById(unknownOperationId);
 
             //Assert
             Assert.IsType<BadRequestObjectResult>(result);
@@ -74,10 +74,10 @@ namespace factoryApiTest.Controllers
         }
 
         [Fact]
-        public async Task PostOperation_ShouldReturnCreateAnOperation()
+        public async Task PostOperation_ShouldReturnCreatedOperation()
         {
             //Arrange
-            var operationName = "operationPost";
+            var operationName = "operationToTestPost";
             
             var request = new CreateOperationDto
             {
@@ -94,6 +94,124 @@ namespace factoryApiTest.Controllers
             Assert.NotNull(theCreatedOperation);
             Assert.Equal(theCreatedOperation.OperationName, operationName);
 
+        }
+        
+        [Fact]
+        public async Task PostOperation_ShouldReturnBadRequestWhenToolIdIsUnknown()
+        {
+            //Arrange
+            var operationName = "anotherOperationToTestPost";
+            const int unknownToolId = -1;
+            
+            var request = new CreateOperationDto
+            {
+                OperationName = operationName,
+                ToolId = unknownToolId
+            };
+
+            //Act
+            var response = theController.PostOperation(request).Result;
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(response);
+        }
+        
+        [Fact]
+        public async Task PutOperation_ShouldReturnUpdatedOperation()
+        {
+            //Arrange
+            var operationName = "operationToTestPost";
+            var operationId = 1;
+            
+            var body = new CreateOperationDto
+            {
+                OperationName = operationName,
+                ToolId = 1
+            };
+
+            //Act
+            var response = theController.Update(operationId, body);
+            var result = response as OkObjectResult;
+            var theUpdatedOperation = result.Value as OperationDto;
+            
+            //Assert
+            Assert.NotNull(theUpdatedOperation);
+            Assert.Equal(theUpdatedOperation.OperationName, operationName);
+
+        }
+        
+        [Fact]
+        public async Task PutOperation_ShouldReturnBadRequestWhenOperationIdIsUnknown()
+        {
+            //Arrange
+            var operationName = "anotherOperationToTestPost";
+            var operationId = -1;
+            const int unknownToolId = 1;
+            
+            var body = new CreateOperationDto
+            {
+                OperationName = operationName,
+                ToolId = unknownToolId
+            };
+
+            //Act
+            var response = theController.Update(operationId, body);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(response);
+
+        }
+        
+        [Fact]
+        public async Task PutOperation_ShouldReturnBadRequestWhenToolIdIsUnknown()
+        {
+            //Arrange
+            var operationName = "anotherOperationToTestPost";
+            var operationId = 1;
+            const int unknownToolId = -1;
+            
+            var body = new CreateOperationDto
+            {
+                OperationName = operationName,
+                ToolId = unknownToolId
+            };
+
+            //Act
+            var response = theController.Update(operationId, body);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(response);
+
+        }
+
+        [Fact]
+        public async Task DeleteOperation_ShouldReturnDeletedOperation()
+        {
+            //Arrange    
+            const int id = 1;
+
+            //Act
+            var result = theController.Delete(id);
+            var okObjectResult = result as OkObjectResult;
+            var theOperation = okObjectResult.Value as OperationDto;
+            
+            //Assert
+            Assert.NotNull(result);
+            Assert.IsType<OperationDto>(theOperation);
+            Assert.Equal(id, theOperation.OperationId);
+        }
+        
+        [Fact]
+        public async Task DeleteOperation_ShouldReturnBadRequestWhenOperationIdIsUnknown()
+        {
+            //Arrange
+            const int unknownOperationId = -1;
+
+            //Act
+            var result = theController.Delete(unknownOperationId);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
     }
