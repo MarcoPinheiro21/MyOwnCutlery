@@ -87,7 +87,7 @@ namespace factoryApiTest.Controllers
 
             //Act
             var response = theController.PostOperation(request);
-            var result = response.Result as OkObjectResult;
+            var result = response.Result as CreatedResult;
             var theCreatedOperation = result.Value as OperationDto;
             
             //Assert
