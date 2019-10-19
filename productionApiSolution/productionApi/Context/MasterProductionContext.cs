@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using productionApi.Models.Plan;
 using productionApi.Models.Product;
 
 namespace productionApi.Context
@@ -18,6 +19,7 @@ namespace productionApi.Context
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Plan> Plans { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using factoryApi.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +18,9 @@ namespace productionApi.Controllers
         public ProductsController(MasterProductionContext context)
         {
             _service = new ProductService(new ProductRepository(context));
+            //Charges all the tools needed.
+            //BootstrapTools bootstrapTools = new BootstrapTools(context);
+            //bootstrapTools.Execute();
             
         }
 

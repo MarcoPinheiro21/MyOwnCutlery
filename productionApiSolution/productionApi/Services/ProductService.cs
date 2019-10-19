@@ -26,6 +26,7 @@ namespace productionApi.Services
         
         public ProductDto Add(CreateProductDto productDto)
         {
+            
             var product = _repo.Add(productDto);
             return _repo.GetById(product.ProductId);
         }

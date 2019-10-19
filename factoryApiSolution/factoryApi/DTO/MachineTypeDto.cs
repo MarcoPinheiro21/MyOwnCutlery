@@ -7,9 +7,9 @@ namespace factoryApi.DTO
         public long Id { get; set; }
         public string Desc { get; set; }
 
-        public List<string> OperationList { get; set; }
+        public ICollection<string> OperationList { get; set; }
 
-        public MachineTypeDto(long id, string desc, List<string> operationList)
+        public MachineTypeDto(long id, string desc, ICollection<string> operationList)
         {
             Id = id;
             Desc = desc;

@@ -18,6 +18,7 @@ namespace factoryApi.Models.Operation
         public string OperationName { get; set; }
 
         public Tool Tool { get; set; }
+        
         [ForeignKey("MachineTypeId")]
         public virtual ICollection<OperationMachineType> OperationMachineType { get; set; }
         
