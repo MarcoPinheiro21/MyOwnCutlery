@@ -86,7 +86,7 @@ namespace factoryApiTest.Controllers
 
             //Act
             var response = theController.PostMachine(request);
-            var result = response as OkObjectResult;
+            var result= response.Result as CreatedResult;
             var theCreatedMachine = result.Value as MachineDto;
 
             //Assert
@@ -111,7 +111,7 @@ namespace factoryApiTest.Controllers
             var response = theController.PostMachine(request);
 
             //Assert
-            Assert.IsType<BadRequestObjectResult>(response);
+            Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
         [Fact]
@@ -128,8 +128,8 @@ namespace factoryApiTest.Controllers
             };
 
             //Act
-            var response = theController.PostMachine(body);
-            var result = response as OkObjectResult;
+            var response = theController.PutMachine(machineId, body);
+            var result = response.Result as OkObjectResult;
             var theUpdatedMachine = result.Value as MachineDto;
 
             //Assert

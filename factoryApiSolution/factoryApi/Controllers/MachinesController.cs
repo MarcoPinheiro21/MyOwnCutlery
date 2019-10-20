@@ -29,7 +29,7 @@ namespace factoryApi.Controllers
         [ProducesResponseType(404)]
         public ActionResult GetMachines()
         {
-            if (Request.Query.ContainsKey("type"))
+            if (null != Request && Request.Query.ContainsKey("type"))
             {
                 try
                 {
@@ -67,7 +67,7 @@ namespace factoryApi.Controllers
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(MachineDto))]
         [ProducesResponseType(404)]
-        public ActionResult PostMachine(CreateMachineDto createMachineDto)
+        public ActionResult<MachineDto> PostMachine(CreateMachineDto createMachineDto)
         {
             try
             {

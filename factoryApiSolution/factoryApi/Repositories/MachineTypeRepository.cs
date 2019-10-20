@@ -27,8 +27,15 @@ namespace factoryApi.Repositories
 
         public MachineType GetMachineTypeById(long id)
         {
-            return _context.MachineTypes.Include(t => t.OperationMachineType)
+            var result = _context.MachineTypes.Include(t => t.OperationMachineType)
                 .SingleOrDefault(mt => mt.MachineTypeId == id);
+            if (result == null)
+            {
+                throw new ObjectNotFoundException(
+                    "Machine type with id " + id + " does not exist.");
+            }
+
+            return result;
         }
 
         private MachineType GetMachineTypeById(long id, bool includeOperations)
