@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using factoryApi.Models.Machine;
 
 namespace factoryApi.DTO
 {
@@ -8,5 +7,11 @@ namespace factoryApi.DTO
         public string ProductionLineName { get; set; }
 
         public List<long> MachinesListIds { get; set; }
+
+        public CreateProductionLineDto(string productionLineName, List<long> machinesListIds)
+        {
+            ProductionLineName = productionLineName;
+            MachinesListIds = machinesListIds;
+        }
     }
 }

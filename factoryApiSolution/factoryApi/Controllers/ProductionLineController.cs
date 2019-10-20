@@ -1,14 +1,14 @@
-using System;
 using System.Collections.Generic;
 using factoryApi.Context;
 using factoryApi.DTO;
+using factoryApi.Exceptions;
 using factoryApi.Repositories;
 using factoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace factoryApi.Controllers
 {
-    [Route("factoryapi/productionline")]
+    [Route("factoryapi/productionlines")]
     [ApiController]
     public class ProductionLineController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace factoryApi.Controllers
             _service = new ProductionLineService(new ProductionLineRepository(context));
         }
 
-        // GET factoryapi/productionsLines/5
+        // GET factoryapi/productionlines/5
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(ProductionLineDto))]
         [ProducesResponseType(404)]
@@ -29,45 +29,53 @@ namespace factoryApi.Controllers
             {
                 return Ok(_service.FindById(id));
             }
-            catch (Exception ex)
+            catch (ObjectNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        // GET: factoryapi/productionLines
+        // GET: factoryapi/productionlines
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ProductionLineDto>))]
-        public ActionResult GetOperations()
+        public ActionResult GetProductionLines()
         {
             return Ok(_service.FindAll());
         }
 
-        // POST: factoryapi/productionLines
+        // POST: factoryapi/productionlines
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(ProductionLineDto))]
         [ProducesResponseType(404)]
-        public ActionResult<ProductionLineDto> PostOperation(CreateProductionLineDto productionLineDto)
+        public ActionResult<ProductionLineDto> PostProductionLine(CreateProductionLineDto productionLineDto)
         {
-            return Ok(_service.Add(productionLineDto));
+            try
+            {
+                return Ok(_service.Add(productionLineDto));
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-        
-        // PUT factoryapi/productionLines/5
+
+        // PUT factoryapi/productionlines/5
         [HttpPut("{id}")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(200, Type = typeof(ProductionLineDto))]
+        [ProducesResponseType(404)]
         public ActionResult Update(long id, [FromBody] CreateProductionLineDto productionLineDto)
         {
             try
             {
                 return Ok(_service.Update(id, productionLineDto));
             }
-            catch (Exception ex)
+            catch (ObjectNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        
-        // DELETE factoryapi/productionLines/5
+
+        // DELETE factoryapi/productionlines/5
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ProductionLineDto))]
         [ProducesResponseType(404)]
@@ -77,7 +85,7 @@ namespace factoryApi.Controllers
             {
                 return Ok(_service.Delete(id));
             }
-            catch (Exception ex)
+            catch (ObjectNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }

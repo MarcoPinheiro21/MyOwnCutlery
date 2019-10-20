@@ -15,6 +15,9 @@ namespace factoryApi.Models.Machine
         [ForeignKey("MachineType")]
         public MachineType Type { get; set; }
 
+        [ForeignKey("ProductionLineId")]
+        public ProductionLine.ProductionLine ProductionLine { get; set; } 
+        
         public Machine()
         {
         }

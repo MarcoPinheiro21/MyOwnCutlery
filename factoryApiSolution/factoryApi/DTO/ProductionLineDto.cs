@@ -1,12 +1,19 @@
 using System.Collections.Generic;
-using factoryApi.Models.Machine;
 
 namespace factoryApi.DTO
 {
     public class ProductionLineDto
     {
-        public long ProdutctLineId { get; set; }
-        public string ProdutctLineName { get; set; }
-        public ICollection<Machine> MachinesList { get; set; }
+        public long ProductionLineId { get; set; }
+        public string ProductionLineName { get; set; }
+        
+        public List<MachineDto> MachinesListDtos { get; set; }
+
+        public ProductionLineDto(long productionLineId, string productionLineName, List<MachineDto> machinesListDtos)
+        {
+            ProductionLineId = productionLineId;
+            ProductionLineName = productionLineName;
+            MachinesListDtos = machinesListDtos;
+        }
     }
 }

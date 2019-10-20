@@ -26,7 +26,7 @@ namespace factoryApi.Services
         public ProductionLineDto Add(CreateProductionLineDto productionLineDto)
         {
             var productionLine = _repo.Add(productionLineDto);
-            return _repo.GetById(productionLine.ProdutctLineId);
+            return _repo.GetById(productionLine.ProductionLineId);
         }
 
         public ProductionLineDto Update(long id, CreateProductionLineDto productionLineDto)

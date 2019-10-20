@@ -1,8 +1,7 @@
-using factoryApi.Bootstrap;
 using factoryApi.Models.Machine;
 using factoryApi.Models.Operation;
+using factoryApi.Models.ProductionLine;
 using factoryApi.Models.Relationships;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace factoryApi.Context
@@ -24,20 +23,27 @@ namespace factoryApi.Context
             }
         }
 
+        public DbSet<ProductionLine> ProductionLines { get; set; }
+        
         public DbSet<Machine> Machines { get; set; }
-
-        public DbSet<Models.Operation.Operation> Operations { get; set; }
-
-        public DbSet<Tool> Tools { get; set; }
-
+        
         public DbSet<MachineType> MachineTypes { get; set; }
 
-        public DbSet<Models.ProductionLine.ProductionLine> ProductionLines { get; set; }
+        public DbSet<Operation> Operations { get; set; }
+
+        public DbSet<Tool> Tools { get; set; }
 
         public DbSet<OperationMachineType> OperationMachineTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ProductionLine>()
+                .HasMany(ml => ml.MachinesList);
+            
+            modelBuilder.Entity<Machine>()
+                .HasOne<ProductionLine>(pl => pl.ProductionLine)
+                .WithMany(m => m.MachinesList);
+            
             modelBuilder.Entity<Machine>()
                 .HasOne(t => t.Type);
 

@@ -9,9 +9,10 @@ namespace factoryApi.Models.ProductionLine
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public long ProdutctLineId { get; set; }
+        public long ProductionLineId { get; set; }
 
-        public string ProdutctLineName { get; set; }
+        [Required] public string ProductionLineName { get; set; }
+
         public ICollection<Machine.Machine> MachinesList { get; set; }
 
         public ProductionLine()
@@ -20,16 +21,19 @@ namespace factoryApi.Models.ProductionLine
 
         public ProductionLine(string name, ICollection<Machine.Machine> machinesList)
         {
-            ProdutctLineName = name;
+            ProductionLineName = name;
             MachinesList = machinesList;
         }
 
         public ProductionLineDto toDto()
         {
-            ProductionLineDto productionLineDto = new ProductionLineDto();
-            productionLineDto.ProdutctLineId = ProdutctLineId;
-            productionLineDto.ProdutctLineName = ProdutctLineName;
-            productionLineDto.MachinesList = MachinesList;
+            ProductionLineDto productionLineDto = new ProductionLineDto(ProductionLineId,ProductionLineName,new List<MachineDto>());
+            productionLineDto.ProductionLineId = ProductionLineId;
+            productionLineDto.ProductionLineName = ProductionLineName;
+            foreach (Machine.Machine machine in MachinesList)
+            {
+                productionLineDto.MachinesListDtos.Add(machine.toDto());
+            }
             return productionLineDto;
         }
     }
