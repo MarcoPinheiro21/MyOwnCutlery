@@ -12,17 +12,13 @@ namespace productionApi.Models.Plan
         [Key]
         public long PlanId { get; set; }
 
-        public string PlanName { get; set; }
-
         [ForeignKey("OperationId")] 
         public virtual ICollection<Operation> Operations { get; set; }
 
-        public Plan(string planName)
+        public Plan(ICollection<Operation> operations)
         {
-            this.PlanName = (planName == null || planName.Equals(""))
-                ? throw new ArgumentNullException("Name cannot be null or empty!")
-                : planName;
-            
+            this.Operations = operations;
+
         }
 
         protected Plan()
@@ -33,7 +29,6 @@ namespace productionApi.Models.Plan
         {
             PlanDto planDto = new PlanDto();
             planDto.PlanId = this.PlanId;
-            planDto.PlanName = this.PlanName;
             planDto.Operations = this.Operations;
             return planDto;
         }

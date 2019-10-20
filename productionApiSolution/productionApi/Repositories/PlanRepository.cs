@@ -49,7 +49,7 @@ namespace productionApi.Repositories
         public Plan Add(CreatePlanDto planDto)
         {
             Plan op = PlanFactory
-                .Create(planDto.PlanName);
+                .Create(planDto.Operations);
                 
             var result = _context.Add(op).Entity;
             _context.SaveChanges();
@@ -64,7 +64,6 @@ namespace productionApi.Repositories
             {
                 throw new ObjectNotFoundException("Plan not found with the id:  " + id + "!");
             }
-            op.PlanName = planDto.PlanName;
             _context.Update(op);
             _context.SaveChanges();
             return GetById(id);

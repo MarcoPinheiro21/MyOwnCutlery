@@ -20,11 +20,12 @@ namespace productionApi.Models.Product
         [ForeignKey("PlanId")]
         public Plan.Plan Plan { get; set; }
 
-        public Product(string productName)
+        public Product(string productName, Plan.Plan plan)
         {
             this.ProductName = (productName == null || productName.Equals(""))
                 ? throw new ArgumentNullException("Name cannot be null or empty!")
                 : productName;
+            this.Plan = plan;
         }
 
         protected Product()

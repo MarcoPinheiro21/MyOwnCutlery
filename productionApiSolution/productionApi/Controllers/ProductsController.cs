@@ -50,36 +50,20 @@ namespace productionApi.Controllers
 
         // POST: productionapi/products
         [HttpPost]
-        [ProducesResponseType(200, Type = typeof(ProductDto))]
+        [ProducesResponseType(201, Type = typeof(ProductDto))]
         [ProducesResponseType(404)]
         public ActionResult<ProductDto> PostProduct(CreateProductDto productDto)
         {
             try
             {
-                return Ok(_service.Add(productDto));
+                return Created("default",_service.Add(productDto));
             }
             catch (ObjectNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        
-        // PUT productionapi/products/5
-        [HttpPut("{id}")]
-        [ProducesResponseType(200, Type = typeof(ProductDto))]
-        [ProducesResponseType(404)]
-        public ActionResult Update(long id, [FromBody] CreateProductDto productDto)
-        {
-            try
-            {
-                return Ok(_service.Update(id, productDto));
-            }
-            catch (ObjectNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-            
+
         // DELETE productionapi/products/5
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ProductDto))]

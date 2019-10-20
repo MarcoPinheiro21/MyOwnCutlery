@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using factoryApi.Exceptions;
 using productionApi.DTO;
 using productionApi.Repositories;
 
@@ -6,40 +7,46 @@ namespace productionApi.Services
 {
     public class ProductService
     {
-
         private readonly ProductRepository _repo;
-        
+        private readonly OperationService _opService;
+
         public ProductService(ProductRepository repo)
         {
             _repo = repo;
+            _opService= new OperationService();
         }
-        
+
         public ProductDto FindById(int id)
         {
             return _repo.GetById(id);
         }
-        
+
         public IEnumerable<ProductDto> FindAll()
         {
             return _repo.GetAll();
         }
-        
+
         public ProductDto Add(CreateProductDto productDto)
         {
-            
-            var product = _repo.Add(productDto);
-            return _repo.GetById(product.ProductId);
+            if (_opService.validateOperations(productDto.Plan.Operations))
+            {
+                var product = _repo.Add(productDto);
+                return _repo.GetById(product.ProductId);
+            }
+            else
+            {
+                throw new ObjectNotFoundException();
+            }
         }
-        
+
         public ProductDto Update(long id, CreateProductDto productDto)
         {
             return _repo.UpdateElement(id, productDto);
         }
-        
+
         public ProductDto Delete(long id)
         {
             return _repo.DeleteElement(id);
         }
-        
     }
 }

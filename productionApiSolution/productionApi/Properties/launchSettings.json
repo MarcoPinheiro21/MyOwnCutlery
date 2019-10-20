@@ -19,7 +19,7 @@
     },
     "productionApi": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "api/values",
       "applicationUrl": "https://localhost:8090;http://localhost:8091",
       "environmentVariables": {

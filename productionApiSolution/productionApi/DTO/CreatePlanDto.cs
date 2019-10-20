@@ -5,7 +5,6 @@ namespace productionApi.DTO
 {
     public class CreatePlanDto
     {
-        public string PlanName { get; set; }
-        public ICollection<Operation> Operations { get; set; }
+        public ICollection<CreateOperationDto> Operations { get; set; }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using productionApi.Models.Plan;
+using productionApi.DTO;
 
 namespace productionApi.Services
 {
     public class OperationService
     {
-        public bool validateOperations(ICollection<Operation> operationIds)
+        public bool validateOperations(ICollection<CreateOperationDto> operationIds)
         {
             return true;
         }

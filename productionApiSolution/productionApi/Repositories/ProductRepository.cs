@@ -48,8 +48,8 @@ namespace productionApi.Repositories
             
         public Product Add(CreateProductDto productDto)
         {
-            Product op = ProductFactory
-                .Create(productDto.ProductName);
+            var op = ProductFactory
+                .Create(productDto.ProductName,productDto.Plan);
                 
             var result = _context.Add(op).Entity;
             _context.SaveChanges();
