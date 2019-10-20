@@ -21,5 +21,18 @@ namespace factoryApi.Models.Relationships
             OperationId = operationId;
             Operation = operation;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != GetType()) return false;
+
+            if (obj == null) return false;
+
+            var anotherObj = (OperationMachineType) obj;
+
+
+            return MachineTypeId.Equals(anotherObj.MachineTypeId) &&
+                   OperationId.Equals(anotherObj.OperationId);
+        }
     }
 }

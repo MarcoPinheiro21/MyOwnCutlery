@@ -25,6 +25,11 @@ namespace factoryApi.Services
             return _machineRepository.GetById(id);
         }
 
+        public IEnumerable<MachineDto> FindMachineByType(long id)
+        {
+            return _machineRepository.GetByType(id);
+        }
+
         public IEnumerable<MachineDto> FindAllMachines()
         {
             return _machineRepository.GetAll();
@@ -65,15 +70,20 @@ namespace factoryApi.Services
         {
             var result = new List<OperationDto>();
             var machineType = _machineTypeRepository.GetMachineTypeById(machineTypeId);
-            
+
             foreach (var op in machineType.OperationMachineType)
             {
                 var operation = _operationRepository.GetById(op.OperationId);
-
                 result.Add(operation);
             }
 
             return result;
+        }
+
+        public MachineTypeDto UpdateOperationsOfMachineType(long typeId, 
+            CreateMachineTypeDto createOperationDto)
+        {
+            return _machineTypeRepository.UpdateElement(typeId, createOperationDto);
         }
     }
 }

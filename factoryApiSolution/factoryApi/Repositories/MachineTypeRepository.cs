@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace factoryApi.Repositories
 
         public MachineType GetMachineTypeById(long id)
         {
-            return _context.MachineTypes.Include(t=>t.OperationMachineType)
+            return _context.MachineTypes.Include(t => t.OperationMachineType)
                 .SingleOrDefault(mt => mt.MachineTypeId == id);
         }
 
@@ -92,12 +93,59 @@ namespace factoryApi.Repositories
 
         public MachineTypeDto UpdateElement(long id, CreateMachineTypeDto Dto)
         {
-            throw new System.NotImplementedException();
+            var machineType = GetMachineTypeById(id);
+
+            if (machineType == null)
+            {
+                throw new ObjectNotFoundException(
+                    "Machine type with id " + id + " not found.");
+            }
+
+            if (null != Dto.Desc && Dto.Desc.Trim().Length > 0)
+            {
+                machineType.Desc = Dto.Desc;
+            }
+
+            var operationMachineTypeList = new List<OperationMachineType>();
+
+            foreach (var op in Dto.OperationList)
+            {
+                var operation = _context.Operations.Find(op);
+
+                if (operation == null)
+                {
+                    throw new ObjectNotFoundException(
+                        "Operation with id " + op + " not found.");
+                }
+
+                var operationMachineType = new OperationMachineType(machineType.MachineTypeId,
+                    machineType, op, operation);
+
+                if (operationMachineTypeList.Contains(operationMachineType))
+                {
+                    throw new ArgumentException("Duplicated operations not allowed.");
+                }
+
+                operationMachineTypeList.Add(operationMachineType);
+            }
+
+
+            machineType.OperationMachineType = operationMachineTypeList;
+            var result = machineType.toDto();
+
+            _context.SaveChanges();
+            return result;
         }
 
         public MachineTypeDto DeleteElement(long id)
         {
-            throw new System.NotImplementedException();
+            return DeleteMachineType(id).toDto();
+        }
+
+        private MachineType DeleteMachineType(long id)
+        {
+            var machineType = _context.MachineTypes.Find(id);
+            return _context.MachineTypes.Remove(machineType).Entity;
         }
     }
 }

@@ -36,13 +36,39 @@ namespace factoryApi.Repositories
         {
             try
             {
-                return _context.Machines.Include(t=>t.Type)
+                return _context.Machines.Include(t => t.Type)
                     .SingleOrDefault(machine => machine.MachineId == id);
             }
             catch (InvalidOperationException e)
             {
                 throw new ObjectNotFoundException(
                     "Machine with id " + id + " not found.");
+            }
+        }
+
+        public IEnumerable<MachineDto> GetByType(long typeId)
+        {
+            var result = new List<MachineDto>();
+            var machines = GetMachineByType(typeId);
+            foreach (var machine in machines)
+            {
+                result.Add(machine.toDto());
+            }
+
+            return result;
+        }
+
+        private IEnumerable<Machine> GetMachineByType(long typeId)
+        {
+            try
+            {
+                return _context.Machines.Include(t => t.Type)
+                    .Where(t => t.Type.MachineTypeId == typeId);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new ObjectNotFoundException(
+                    "Machine type with id " + typeId + " not found.");
             }
         }
 
@@ -61,7 +87,7 @@ namespace factoryApi.Repositories
 
         private IEnumerable<Machine> GetAllMachines()
         {
-            return _context.Machines.Include(t=>t.Type);
+            return _context.Machines.Include(t => t.Type);
         }
 
         public Machine Add(CreateMachineDto createMachineDto)
@@ -116,6 +142,5 @@ namespace factoryApi.Repositories
 
             return _context.Machines.Remove(machine).Entity.toDto();
         }
-        
     }
 }
