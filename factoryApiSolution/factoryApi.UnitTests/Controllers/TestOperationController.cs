@@ -12,7 +12,7 @@ namespace factoryApiTest.Controllers
     public class TestOperationController
     {
         private MasterFactoryContext _context = MasterFactoryMockContext.GetMasterFactoryContextMock();
-        
+
         private OperationsController theController;
 
         public TestOperationController()
@@ -30,13 +30,13 @@ namespace factoryApiTest.Controllers
             var result = theController.GetById(id);
             var okObjectResult = result as OkObjectResult;
             var theOperation = okObjectResult.Value as OperationDto;
-            
+
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OperationDto>(theOperation);
             Assert.Equal(id, theOperation.OperationId);
         }
-        
+
         [Fact]
         public async Task GetNotFound_ShouldReturnNotFoundWhenOperationIdIsUnknown()
         {
@@ -49,7 +49,7 @@ namespace factoryApiTest.Controllers
             //Assert
             Assert.IsType<NotFoundObjectResult>(result);
         }
-        
+
         [Fact]
         public async Task GetAllOperations_ShouldReturnAllOperations()
         {
@@ -58,19 +58,18 @@ namespace factoryApiTest.Controllers
 
             //Act
             var result = theController.GetOperations();
-            
+
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
 
             var okObjectResult = result as OkObjectResult;
             Assert.NotNull(okObjectResult);
-            
+
             List<OperationDto> list = okObjectResult.Value as List<OperationDto>;
             Assert.NotNull(list);
 
             Assert.Equal(expectedCount, list.Count);
-
         }
 
         [Fact]
@@ -78,7 +77,7 @@ namespace factoryApiTest.Controllers
         {
             //Arrange
             var operationName = "operationToTestPost";
-            
+
             var request = new CreateOperationDto
             {
                 OperationName = operationName,
@@ -89,20 +88,19 @@ namespace factoryApiTest.Controllers
             var response = theController.PostOperation(request);
             var result = response.Result as CreatedResult;
             var theCreatedOperation = result.Value as OperationDto;
-            
+
             //Assert
             Assert.NotNull(theCreatedOperation);
             Assert.Equal(theCreatedOperation.OperationName, operationName);
-
         }
-        
+
         [Fact]
         public async Task PostOperation_ShouldReturnNotFoundWhenToolIdIsUnknown()
         {
             //Arrange
             var operationName = "anotherOperationToTestPost";
             const int unknownToolId = -1;
-            
+
             var request = new CreateOperationDto
             {
                 OperationName = operationName,
@@ -115,14 +113,14 @@ namespace factoryApiTest.Controllers
             //Assert
             Assert.IsType<NotFoundObjectResult>(response);
         }
-        
+
         [Fact]
         public async Task PutOperation_ShouldReturnUpdatedOperation()
         {
             //Arrange
             var operationName = "operationToTestPost";
             var operationId = 1;
-            
+
             var body = new CreateOperationDto
             {
                 OperationName = operationName,
@@ -133,13 +131,12 @@ namespace factoryApiTest.Controllers
             var response = theController.Update(operationId, body);
             var result = response as OkObjectResult;
             var theUpdatedOperation = result.Value as OperationDto;
-            
+
             //Assert
             Assert.NotNull(theUpdatedOperation);
             Assert.Equal(theUpdatedOperation.OperationName, operationName);
-
         }
-        
+
         [Fact]
         public async Task PutOperation_ShouldReturnNotFoundWhenOperationIdIsUnknown()
         {
@@ -147,7 +144,7 @@ namespace factoryApiTest.Controllers
             var operationName = "anotherOperationToTestPost";
             var operationId = -1;
             const int unknownToolId = 1;
-            
+
             var body = new CreateOperationDto
             {
                 OperationName = operationName,
@@ -159,9 +156,8 @@ namespace factoryApiTest.Controllers
 
             //Assert
             Assert.IsType<NotFoundObjectResult>(response);
-
         }
-        
+
         [Fact]
         public async Task PutOperation_ShouldReturnNotFoundWhenToolIdIsUnknown()
         {
@@ -169,7 +165,7 @@ namespace factoryApiTest.Controllers
             var operationName = "anotherOperationToTestPost";
             var operationId = 1;
             const int unknownToolId = -1;
-            
+
             var body = new CreateOperationDto
             {
                 OperationName = operationName,
@@ -181,7 +177,6 @@ namespace factoryApiTest.Controllers
 
             //Assert
             Assert.IsType<NotFoundObjectResult>(response);
-
         }
 
         [Fact]
@@ -194,13 +189,13 @@ namespace factoryApiTest.Controllers
             var result = theController.Delete(id);
             var okObjectResult = result as OkObjectResult;
             var theOperation = okObjectResult.Value as OperationDto;
-            
+
             //Assert
             Assert.NotNull(result);
             Assert.IsType<OperationDto>(theOperation);
             Assert.Equal(id, theOperation.OperationId);
         }
-        
+
         [Fact]
         public async Task DeleteOperation_ShouldReturnNotFoundWhenOperationIdIsUnknown()
         {
@@ -213,6 +208,5 @@ namespace factoryApiTest.Controllers
             //Assert
             Assert.IsType<NotFoundObjectResult>(result);
         }
-
     }
 }

@@ -30,6 +30,7 @@ namespace factoryApi.Repositories
 
             return productionLine.toDto();
         }
+
         private ProductionLine GetProductionLineById(long id)
         {
             try
@@ -44,6 +45,7 @@ namespace factoryApi.Repositories
                     "Production Line with id " + id + " not found.");
             }
         }
+
         public IEnumerable<ProductionLineDto> GetAll()
         {
             IEnumerable<ProductionLine> productionLines = getAllProductionLines();
@@ -68,15 +70,23 @@ namespace factoryApi.Repositories
 
             foreach (long id in productionLineDto.MachinesListIds)
             {
-                var mac = _context.Machines.Include(t => t.Type)
-                    .ThenInclude(o => o.OperationMachineType)
-                    .Single(machine => machine.MachineId == id);
-                if (mac == null)
+                try
                 {
-                    throw new HttpRequestException("Machine not found with the id: " + id + "!");
-                }
+                    var mac = _context.Machines.Include(t => t.Type)
+                        .ThenInclude(o => o.OperationMachineType)
+                        .Single(machine => machine.MachineId == id);
 
-                machines.Add(mac);
+                    if (mac == null)
+                    {
+                        throw new ObjectNotFoundException("Machine not found with the id: " + id + "!");
+                    }
+
+                    machines.Add(mac);
+                }
+                catch (Exception e)
+                {
+                    throw new ObjectNotFoundException("Machine not found with the id: " + id + "!");
+                }
             }
 
             ProductionLine pl = ProductionLineFactory
@@ -93,7 +103,7 @@ namespace factoryApi.Repositories
             ProductionLine pl = GetProductionLineById(id);
             if (pl == null)
             {
-                throw new HttpRequestException("Production Line not found with the id:  " + id + "!");
+                throw new ObjectNotFoundException("Production Line not found with the id:  " + id + "!");
             }
 
             pl.ProductionLineName = productionLineDto.ProductionLineName;
@@ -102,15 +112,22 @@ namespace factoryApi.Repositories
 
             foreach (long machineId in productionLineDto.MachinesListIds)
             {
-                var mac = _context.Machines.Include(t => t.Type)
-                    .ThenInclude(o => o.OperationMachineType)
-                    .Single(machine => machine.MachineId == machineId);
-                if (mac == null)
+                try
                 {
-                    throw new HttpRequestException("Machine not found with the id: " + id + "!");
-                }
+                    var mac = _context.Machines.Include(t => t.Type)
+                        .ThenInclude(o => o.OperationMachineType)
+                        .Single(machine => machine.MachineId == machineId);
+                    if (mac == null)
+                    {
+                        throw new ObjectNotFoundException("Machine not found with the id: " + id + "!");
+                    }
 
-                machines.Add(mac);
+                    machines.Add(mac);
+                }
+                catch (Exception e)
+                {
+                    throw new ObjectNotFoundException("Machine not found with the id: " + id + "!");
+                }
             }
 
             pl.MachinesList = machines;
@@ -125,7 +142,7 @@ namespace factoryApi.Repositories
             var productionLineToDelete = GetProductionLineById(id);
             if (productionLineToDelete == null)
             {
-                throw new HttpRequestException("Production Line not found with the id:  " + id + "!");
+                throw new ObjectNotFoundException("Production Line not found with the id:  " + id + "!");
             }
 
             _context.Remove(productionLineToDelete);
