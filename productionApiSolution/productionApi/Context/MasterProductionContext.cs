@@ -20,10 +20,19 @@ namespace productionApi.Context
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Plan> Plans { get; set; }
+        public DbSet<Operation> Operations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Product>()
+                .HasOne(pr => pr.Plan);
 
+            modelBuilder.Entity<Plan>()
+                .HasMany(pl => pl.OperationList);
+            
+            modelBuilder.Entity<Operation>()
+                .HasOne<Plan>(pl => pl.Plan)
+                .WithMany(m => m.OperationList);
 
         }
     }

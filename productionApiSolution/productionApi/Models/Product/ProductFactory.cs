@@ -7,7 +7,7 @@ namespace productionApi.Models.Product
     {
         public static Product Create(string productName, CreatePlanDto plan)
         {
-            var plano = PlanFactory.Create(plan.Operations);
+            var plano = PlanFactory.Create(plan.OperationList);
             return new Product(productName,plano);
         }
     }

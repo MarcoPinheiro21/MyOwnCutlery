@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using factoryApi.Exceptions;
 using productionApi.Context;
 using productionApi.DTO;
 using productionApi.Models.Product;
+using Microsoft.EntityFrameworkCore;
 
 namespace productionApi.Repositories
 {
@@ -19,7 +21,9 @@ namespace productionApi.Repositories
 
         public ProductDto GetById(long id)
         {
-            var product = _context.Products.ToList().FirstOrDefault(x => x.ProductId == id);
+            var product = _context.Products.Include(ml => ml.Plan)
+                .Single(m => m.ProductId == id);
+            //var product = _context.Products.ToList().FirstOrDefault(x => x.ProductId == id);
             if (product == null)
             {
                 throw new ObjectNotFoundException("Product not found with the id:  " + id + "!");
@@ -43,7 +47,7 @@ namespace productionApi.Repositories
         
         private IEnumerable<Product> GetAllProducts()
         {
-            return _context.Products.ToList();
+            return _context.Products.Include(ml => ml.Plan);
         }
             
         public Product Add(CreateProductDto productDto)
@@ -59,7 +63,8 @@ namespace productionApi.Repositories
 
         public ProductDto UpdateElement(long id, CreateProductDto productDto)
         {
-            Product op = GetProductById(id);
+            throw new System.NotImplementedException();
+            /*Product op = GetProductById(id);
             if (op == null)
             {
                 throw new ObjectNotFoundException("Product not found with the id:  " + id + "!");
@@ -68,6 +73,7 @@ namespace productionApi.Repositories
             _context.Update(op);
             _context.SaveChanges();
             return GetById(id);
+            */
         }
 
         public ProductDto DeleteElement(long id)

@@ -12,8 +12,7 @@ namespace productionApi.Migrations
                 columns: table => new
                 {
                     PlanId = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PlanName = table.Column<string>(nullable: true)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
@@ -21,20 +20,21 @@ namespace productionApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Operation",
+                name: "Operations",
                 columns: table => new
                 {
-                    OperationId = table.Column<long>(nullable: false)
+                    OperationId = table.Column<long>(nullable: false),
+                    PlanId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Operation", x => x.OperationId);
+                    table.PrimaryKey("PK_Operations", x => x.OperationId);
                     table.ForeignKey(
-                        name: "FK_Operation_Plans_OperationId",
-                        column: x => x.OperationId,
+                        name: "FK_Operations_Plans_PlanId",
+                        column: x => x.PlanId,
                         principalTable: "Plans",
                         principalColumn: "PlanId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,6 +58,11 @@ namespace productionApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Operations_PlanId",
+                table: "Operations",
+                column: "PlanId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_PlanId",
                 table: "Products",
                 column: "PlanId");
@@ -66,7 +71,7 @@ namespace productionApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Operation");
+                name: "Operations");
 
             migrationBuilder.DropTable(
                 name: "Products");

@@ -10,7 +10,7 @@ using productionApi.Context;
 namespace productionApi.Migrations
 {
     [DbContext(typeof(MasterProductionContext))]
-    [Migration("20191019145651_Master")]
+    [Migration("20191020153413_Master")]
     partial class Master
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,9 +25,13 @@ namespace productionApi.Migrations
                 {
                     b.Property<long>("OperationId");
 
+                    b.Property<long?>("PlanId");
+
                     b.HasKey("OperationId");
 
-                    b.ToTable("Operation");
+                    b.HasIndex("PlanId");
+
+                    b.ToTable("Operations");
                 });
 
             modelBuilder.Entity("productionApi.Models.Plan.Plan", b =>
@@ -35,8 +39,6 @@ namespace productionApi.Migrations
                     b.Property<long>("PlanId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("PlanName");
 
                     b.HasKey("PlanId");
 
@@ -62,10 +64,9 @@ namespace productionApi.Migrations
 
             modelBuilder.Entity("productionApi.Models.Plan.Operation", b =>
                 {
-                    b.HasOne("productionApi.Models.Plan.Plan")
-                        .WithMany("Operations")
-                        .HasForeignKey("OperationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("productionApi.Models.Plan.Plan", "Plan")
+                        .WithMany("OperationList")
+                        .HasForeignKey("PlanId");
                 });
 
             modelBuilder.Entity("productionApi.Models.Product.Product", b =>

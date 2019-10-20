@@ -17,7 +17,7 @@ namespace productionApi.Controllers
 
         public ProductsController(MasterProductionContext context)
         {
-            _service = new ProductService(new ProductRepository(context));
+            _service = new ProductService(new ProductRepository(context), new OperationRepository(context));
             //Charges all the tools needed.
             //BootstrapTools bootstrapTools = new BootstrapTools(context);
             //bootstrapTools.Execute();
@@ -78,6 +78,16 @@ namespace productionApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+        
+        // GET: productionapi/products/5/plan
+        [HttpGet("{id}/plan")]
+        [ProducesResponseType(200, Type = typeof(PlanDto))]
+        [ProducesResponseType(404)]
+        public ActionResult GetMachineTypeOperations(long id)
+        {
+            
+            return Ok(_service.FindPlanByProduct(id));
         }
         
     }

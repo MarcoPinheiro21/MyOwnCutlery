@@ -11,13 +11,11 @@ namespace productionApi.Models.Plan
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public long PlanId { get; set; }
+        public virtual ICollection<Operation> OperationList { get; set; }
 
-        [ForeignKey("OperationId")] 
-        public virtual ICollection<Operation> Operations { get; set; }
-
-        public Plan(ICollection<Operation> operations)
+        public Plan(ICollection<Operation> operationList)
         {
-            this.Operations = operations;
+            this.OperationList = operationList;
 
         }
 
@@ -29,7 +27,7 @@ namespace productionApi.Models.Plan
         {
             PlanDto planDto = new PlanDto();
             planDto.PlanId = this.PlanId;
-            planDto.Operations = this.Operations;
+            planDto.OperationList = this.OperationList;
             return planDto;
         }
     }
