@@ -9,7 +9,7 @@
 			"name": "Create",
 			"item": [
 				{
-					"name": "Create Operations",
+					"name": "Create Operation",
 					"event": [
 						{
 							"listen": "test",
@@ -65,6 +65,119 @@
 									"key": "",
 									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Machine Type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "908ee349-105f-4111-9318-0de76a1154f1",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"desc is correct\"] = responseData.desc == \"T2\";",
+									"tests[\"id is present\"] = responseData.id !== null;",
+									"",
+									"//Save returned MachineTypeId",
+									"pm.environment.set(\"envMachineTypeId\", responseData.id);",
+									"console.log(pm.environment.get(\"envMachineTypeId\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Desc\" : \"T2\",\n\t\"OperationList\" : [1,2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/machines/types",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"machines",
+								"types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c7cb439c-901a-4e80-b283-eab8266ebee1",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"desc is correct\"] = responseData.description == \"Maquina3\";",
+									"tests[\"id is present\"] = responseData.id !== null;",
+									"",
+									"//Save returned MachineId",
+									"pm.environment.set(\"envMachineId\", responseData.id);",
+									"console.log(pm.environment.get(\"envMachineId\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"Description\" : \"Maquina3\",\n \"MachineTypeId\" : {{envMachineTypeId}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/machines",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"machines"
 							]
 						}
 					},
@@ -134,6 +247,81 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Read Machine Type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dc3d8dfb-349c-4ca4-a54f-6caa83f592ee",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"desc is correct\"] = responseData.desc==\"T2\";",
+									"tests[\"id is present\"] = responseData.id !== null;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/machines/types/{{envMachineTypeId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"machines",
+								"types",
+								"{{envMachineTypeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d78780ef-f750-4b35-8faf-f2a74aafc697",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"description is correct\"] = responseData.description==\"Maquina3\";",
+									"tests[\"id is present\"] = responseData.id !== null;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/machines/{{envMachineId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"machines",
+								"{{envMachineId}}"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -189,6 +377,59 @@
 								"factoryapi",
 								"operations",
 								"{{envOperationId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4812fee7-2290-4c28-afa4-096c34658820",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"desc is correct\"] = responseData.description == \"NovoTesteMaquina\";",
+									"tests[\"id is present\"] = responseData.id !== null;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"Description\" : \"NovoTesteMaquina\",\n \"MachineTypeId\" : {{envMachineTypeId}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/machines/{{envMachineId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"machines",
+								"{{envMachineId}}"
 							]
 						}
 					},
@@ -254,6 +495,43 @@
 								"factoryapi",
 								"operations",
 								"{{envOperationId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e559810a-52ff-4347-a38b-6de44900a13b",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"desc is correct\"] = responseData.description == \"NovoTesteMaquina\";",
+									"tests[\"id is present\"] = responseData.id !== null;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/machines/{{envMachineId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"machines",
+								"{{envMachineId}}"
 							]
 						}
 					},
