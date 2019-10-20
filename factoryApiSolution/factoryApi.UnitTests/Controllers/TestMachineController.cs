@@ -152,7 +152,7 @@ namespace factoryApiTest.Controllers
             };
 
             //Act
-            var response = theController.PutMachineType(machineId,body);
+            var response = theController.PutMachine(machineId,body);
 
             //Assert
             Assert.IsType<BadRequestObjectResult>(response.Result);
@@ -174,7 +174,7 @@ namespace factoryApiTest.Controllers
             };
 
             //Act
-            var response = theController.PutMachineType(machineId, body);
+            var response = theController.PutMachine(machineId, body);
 
             //Assert
             Assert.IsType<BadRequestObjectResult>(response.Result);

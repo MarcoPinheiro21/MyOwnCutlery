@@ -73,7 +73,7 @@ namespace factoryApi.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(200, Type = typeof(MachineDto))]
         [ProducesResponseType(404)]
-        public ActionResult<MachineDto> PutMachineType(long id, [FromBody] CreateMachineDto createMachineDto)
+        public ActionResult<MachineDto> PutMachine(long id, [FromBody] CreateMachineDto createMachineDto)
         {
             try
             {
@@ -144,12 +144,12 @@ namespace factoryApi.Controllers
         {
             try
             {
-                return Ok(_service.AddMachineType(createMachineTypeDto));
+                return Created("default", _service.AddMachineType(createMachineTypeDto));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return BadRequest(e.Message);
+                return NotFound(e.Message);
             }
         }
         
