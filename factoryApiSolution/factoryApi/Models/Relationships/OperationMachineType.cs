@@ -9,7 +9,7 @@ namespace factoryApi.Models.Relationships
         public long OperationId { get; set; }
         public Operation.Operation Operation { get; set; }
 
-        public OperationMachineType()
+        protected OperationMachineType()
         {
         }
 

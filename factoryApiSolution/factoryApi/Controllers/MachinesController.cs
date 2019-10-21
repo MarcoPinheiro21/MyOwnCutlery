@@ -157,7 +157,7 @@ namespace factoryApi.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return NotFound(e.Message);
+                return BadRequest(e.Message);
             }
         }
 
@@ -165,16 +165,25 @@ namespace factoryApi.Controllers
         [HttpGet("types/{id}/operations")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OperationDto>))]
         [ProducesResponseType(404)]
-        public ActionResult GetMachineTypeOperations(long id)
+        public ActionResult<OperationDto> GetMachineTypeOperations(long id)
         {
-            return Ok(_service.FindOperationByMachineType(id));
+            try
+            {
+                return Ok(_service.FindOperationByMachineType(id));
+
+            }
+            catch (ObjectNotFoundException e)
+            {
+                Console.WriteLine(e);
+                return NotFound(e);
+            }
         }
 
         // PUT: factoryapi/machines/types/5/operations
         [HttpPut("types/{id}/operations")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<MachineTypeDto>))]
         [ProducesResponseType(404)]
-        public ActionResult PutMachineTypeOperations(long id, CreateMachineTypeDto createMachineTypeDto)
+        public ActionResult<MachineTypeDto> PutMachineTypeOperations(long id, CreateMachineTypeDto createMachineTypeDto)
         {
             try
             {

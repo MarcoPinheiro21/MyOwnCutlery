@@ -78,8 +78,8 @@ namespace factoryApiTest.Context
             dbContext.OperationMachineTypes.Add(new OperationMachineType(
                 machineType1.MachineTypeId, machineType1,
                 operation2.OperationId, operation2));
-
-            //Machine type 2 has op2Test, op4Test and op4Test
+            
+            //Machine type 2 has op2Test, op3Test and op4Test
             dbContext.OperationMachineTypes.Add(new OperationMachineType(
                 machineType2.MachineTypeId, machineType2,
                 operation2.OperationId, operation2));

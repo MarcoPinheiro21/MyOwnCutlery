@@ -83,14 +83,10 @@ namespace factoryApi.Repositories
                     }
 
                     var operationMachineType = _context.OperationMachineTypes.Add(
-                        new OperationMachineType()
-                        {
-                            MachineType = machineType,
-                            Operation = operation,
-                            MachineTypeId = machineType.MachineTypeId,
-                            OperationId = operation.OperationId
-                        }
-                    ).Entity;
+                        new OperationMachineType(machineType.MachineTypeId,
+                            machineType,
+                            operation.OperationId,
+                            operation)).Entity;
                 }
             }
 
