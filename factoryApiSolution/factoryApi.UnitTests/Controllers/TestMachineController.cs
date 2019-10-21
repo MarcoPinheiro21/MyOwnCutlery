@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
 using factoryApi.Context;
 using factoryApi.Controllers;
 using factoryApi.DTO;
 using factoryApiTest.Context;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using Xunit;
 
 namespace factoryApiTest.Controllers
