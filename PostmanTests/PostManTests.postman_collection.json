@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "081c0226-b862-4ba7-bfb5-af4d8c62f4ad",
+		"_postman_id": "b943e9fd-9d1d-463e-956b-5fadbd7551c2",
 		"name": "PostManTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -50,7 +50,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/factoryapi/operations",
+							"raw": "https://localhost:5001/factoryapi/operations?=",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -178,6 +178,63 @@
 							"path": [
 								"factoryapi",
 								"machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Production Line",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5cf10490-c183-415f-a5d0-6bd7bf55024e",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"productionLineName is correct\"] = responseData.productionLineName==\"Linha Produção 1\";",
+									"tests[\"productionLineId is present\"] = responseData.productionLineId !== null;",
+									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length = 2;",
+									"",
+									"//Save returned productionLineId",
+									"pm.environment.set(\"envProductionLineId\", responseData.productionLineId);",
+									"console.log(pm.environment.get(\"envProductionLineId\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ProductionLineName\": \"Linha Produção 1\",\n\t\"MachinesListIds\": [1,2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/productionlines",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"productionlines"
 							]
 						}
 					},
@@ -322,6 +379,44 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Read Production Line",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "290be714-4d14-44c0-be74-5222021aa3be",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"productionLineName is correct\"] = responseData.productionLineName==\"Linha Produção 1\";",
+									"tests[\"productionLineId is present\"] = responseData.productionLineId !== null;",
+									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length = 2;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/productionlines/{{envProductionLineId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"productionlines",
+								"{{envProductionLineId}}"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -434,6 +529,60 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Update Production Line",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e122b3bf-25ab-469c-a87d-937a9f20945a",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"productionLineName is correct\"] = responseData.productionLineName==\"newProductionLineNameTest\";",
+									"tests[\"productionLineId is present\"] = responseData.productionLineId !== null;",
+									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length = 2;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ProductionLineName\": \"newProductionLineNameTest\",\n\t\"MachinesListIds\": [1,2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/productionlines/{{envProductionLineId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"productionlines",
+								"{{envProductionLineId}}"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -532,6 +681,44 @@
 								"factoryapi",
 								"machines",
 								"{{envMachineId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Production Line",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "716267a2-6056-4455-83ab-7a0b969e7de2",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"productionLineName is correct\"] = responseData.productionLineName==\"newProductionLineNameTest2\";",
+									"tests[\"productionLineId is present\"] = responseData.productionLineId !== null;",
+									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length = 2;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/productionlines/{{envProductionLineId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"productionlines",
+								"{{envProductionLineId}}"
 							]
 						}
 					},
