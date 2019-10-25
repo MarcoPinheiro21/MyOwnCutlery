@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "productionApi", "productionApi\productionApi.csproj", "{49443C42-A08B-4F0D-858C-F3458D3792B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "productionApi.UnitTests", "productionApi.UnitTests\productionApi.UnitTests.csproj", "{F319D0F9-AB83-4C07-BE5B-55175D215EB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{49443C42-A08B-4F0D-858C-F3458D3792B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49443C42-A08B-4F0D-858C-F3458D3792B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49443C42-A08B-4F0D-858C-F3458D3792B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F319D0F9-AB83-4C07-BE5B-55175D215EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F319D0F9-AB83-4C07-BE5B-55175D215EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F319D0F9-AB83-4C07-BE5B-55175D215EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F319D0F9-AB83-4C07-BE5B-55175D215EB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
