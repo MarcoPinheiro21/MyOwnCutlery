@@ -26,6 +26,10 @@ namespace factoryApi.Controllers
             //Charges all the tools needed.
             BootstrapTools bootstrapTools = new BootstrapTools(context);
             bootstrapTools.Execute();
+            
+            //Charges all the operationTypes needed.
+            BootstrapOperationTypes bootstrapOperationTypes = new BootstrapOperationTypes(context);
+            bootstrapOperationTypes.Execute();
         }
 
         // GET factoryapi/operations/5

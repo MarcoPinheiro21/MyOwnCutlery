@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fb2ea8e5-83cc-4f0e-88ea-0a1779663fb6",
+		"_postman_id": "cde98633-f12e-48fc-90d5-fd3dab7972bf",
 		"name": "PostManTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -19,7 +19,8 @@
 									"var responseData = JSON.parse(responseBody);",
 									"tests[\"Status code is 201\"] = responseCode.code === 201;",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"operationName is correct\"] = responseData.operationName==\"opTeste\";",
+									"console.log('cenas: ' + responseData.operationId);",
+									"tests[\"OperationType is correct\"] = responseData.operationType === \"op1\";",
 									"tests[\"operationId is present\"] = responseData.operationId !== null;",
 									"",
 									"//Save returned operationId",
@@ -42,7 +43,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"ToolId\": 1,\n\t\"OperationName\": \"opTeste\"\n}",
+							"raw": "{\n\t\"ToolId\": 1,\n\t\"OperationType\": \"op1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,8 +82,7 @@
 									"var responseData = JSON.parse(responseBody);",
 									"tests[\"Status code is 201\"] = responseCode.code === 201;",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"operationName is correct\"] = responseData.operationName === \"opTeste2\";",
-									"console.log(responseData.operationName);",
+									"tests[\"OperationType is correct\"] = responseData.operationType === \"op2\";",
 									"tests[\"operationId is present\"] = responseData.operationId !== null;",
 									"",
 									"//Save returned operationId",
@@ -105,7 +105,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"ToolId\": 2,\n\t\"OperationName\": \"opTeste2\"\n}",
+							"raw": "{\n\t\"ToolId\": 2,\n\t\"OperationType\": \"op2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -259,7 +259,7 @@
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
 									"tests[\"productionLineName is correct\"] = responseData.productionLineName==\"Linha Produção 1\";",
 									"tests[\"productionLineId is present\"] = responseData.productionLineId !== null;",
-									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length = 2;",
+									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length == 1;",
 									"",
 									"//Save returned productionLineId",
 									"pm.environment.set(\"envProductionLineId\", responseData.productionLineId);",
@@ -281,7 +281,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"ProductionLineName\": \"Linha Produção 1\",\n\t\"MachinesListIds\": [1]\n}",
+							"raw": "{\n\t\"ProductionLineName\": \"Linha Produção 1\",\n\t\"MachinesListIds\": [{{envMachineId}}]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -342,7 +342,7 @@
 									"var responseData = JSON.parse(responseBody);",
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"operationName is correct\"] = responseData.operationName==\"opTeste\";",
+									"tests[\"operationType is correct\"] = responseData.operationType==\"op1\";",
 									"tests[\"operationId is present\"] = responseData.operationId !== null;"
 								],
 								"type": "text/javascript"
@@ -456,7 +456,7 @@
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
 									"tests[\"productionLineName is correct\"] = responseData.productionLineName==\"Linha Produção 1\";",
 									"tests[\"productionLineId is present\"] = responseData.productionLineId !== null;",
-									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length = 2;"
+									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length == 1;"
 								],
 								"type": "text/javascript"
 							}
@@ -492,7 +492,7 @@
 									"var responseData = JSON.parse(responseBody);",
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"desc is correct\"] = responseData[0].operationName === \"opTeste\";",
+									"tests[\"desc is correct\"] = responseData[0].operationType === \"op1\";",
 									"tests[\"id is present\"] = responseData.id !== null;"
 								],
 								"type": "text/javascript"
@@ -537,7 +537,7 @@
 									"var responseData = JSON.parse(responseBody);",
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"operationName is correct\"] = responseData.operationName==\"newOperationNameTest\";",
+									"tests[\"operationType is correct\"] = responseData.operationType==\"op4\";",
 									"tests[\"operationId is present\"] = responseData.operationId !== null;"
 								],
 								"type": "text/javascript"
@@ -556,7 +556,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"ToolId\": 1,\n\t\"OperationName\": \"newOperationNameTest\"\n}",
+							"raw": "{\n\t\"ToolId\": 1,\n\t\"OperationType\": \"op4\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -663,7 +663,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"ProductionLineName\": \"newProductionLineNameTest\",\n\t\"MachinesListIds\": [1]\n}",
+							"raw": "{\n\t\"ProductionLineName\": \"newProductionLineNameTest\",\n\t\"MachinesListIds\": [{{envMachineId}}]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -697,7 +697,7 @@
 									"var responseData = JSON.parse(responseBody);",
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"operationName is correct\"] = responseData.desc==\"newDesc\";",
+									"tests[\"operationType is correct\"] = responseData.operationList[0] === pm.environment.get(\"envOperationId2\");",
 									"tests[\"operationId is present\"] = responseData.operationId !== null;"
 								],
 								"type": "text/javascript"
@@ -749,81 +749,6 @@
 			"name": "Delete",
 			"item": [
 				{
-					"name": "Delete Production Line",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "716267a2-6056-4455-83ab-7a0b969e7de2",
-								"exec": [
-									"var responseData = JSON.parse(responseBody);",
-									"tests[\"Status code is 200\"] = responseCode.code === 200;",
-									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"productionLineName is correct\"] = responseData.productionLineName===\"newProductionLineNameTest\";",
-									"tests[\"productionLineId is present\"] = responseData.productionLineId !== null;",
-									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length = 2;"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "https://localhost:5001/factoryapi/productionlines/{{envProductionLineId}}",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "5001",
-							"path": [
-								"factoryapi",
-								"productionlines",
-								"{{envProductionLineId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete machine",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "e559810a-52ff-4347-a38b-6de44900a13b",
-								"exec": [
-									"var responseData = JSON.parse(responseBody);",
-									"tests[\"Status code is 200\"] = responseCode.code === 200;",
-									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"desc is correct\"] = responseData.description === \"NovoTesteMaquina\";",
-									"tests[\"id is present\"] = responseData.id !== null;"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "https://localhost:5001/factoryapi/machines/{{envMachineId}}",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "5001",
-							"path": [
-								"factoryapi",
-								"machines",
-								"{{envMachineId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Delete operation",
 					"event": [
 						{
@@ -834,7 +759,7 @@
 									"var responseData = JSON.parse(responseBody);",
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"operationName is correct\"] = responseData.operationName==\"newOperationNameTest\";",
+									"tests[\"operationType is correct\"] = responseData.operationType==\"op4\";",
 									"tests[\"operationId is present\"] = responseData.operationId !== null;"
 								],
 								"type": "text/javascript"
@@ -883,18 +808,18 @@
 					"response": []
 				},
 				{
-					"name": "Delete Another Operation",
+					"name": "Delete machine",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "bfc8c1b7-fd76-4dfe-83b1-6f61b8a6bed2",
+								"id": "e559810a-52ff-4347-a38b-6de44900a13b",
 								"exec": [
 									"var responseData = JSON.parse(responseBody);",
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"operationName is correct\"] = responseData.operationName==\"opTeste2\";",
-									"tests[\"operationId is present\"] = responseData.operationId !== null;"
+									"tests[\"desc is correct\"] = responseData.description == \"NovoTesteMaquina\";",
+									"tests[\"id is present\"] = responseData.id !== null;"
 								],
 								"type": "text/javascript"
 							}
@@ -902,31 +827,9 @@
 					],
 					"request": {
 						"method": "DELETE",
-						"header": [
-							{
-								"key": "",
-								"type": "text",
-								"value": "1",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
+						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/factoryapi/operations/{{envOperationId2}}",
+							"raw": "https://localhost:5001/factoryapi/machines/{{envMachineId}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -934,8 +837,47 @@
 							"port": "5001",
 							"path": [
 								"factoryapi",
-								"operations",
-								"{{envOperationId2}}"
+								"machines",
+								"{{envMachineId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Production Line",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "716267a2-6056-4455-83ab-7a0b969e7de2",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"productionLineName is correct\"] = responseData.productionLineName === \"newProductionLineNameTest\";",
+									"console.log(responseData);",
+									"tests[\"productionLineId is present\"] = responseData.productionLineId !== null;",
+									"tests[\"machinesListDtos Expected number\"] = responseData.machinesListDtos.length == 1;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/productionlines/{{envProductionLineId}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"productionlines",
+								"{{envProductionLineId}}"
 							]
 						}
 					},

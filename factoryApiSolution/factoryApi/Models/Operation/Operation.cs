@@ -15,16 +15,16 @@ namespace factoryApi.Models.Operation
         [Key]
         public long OperationId { get; set; }
         
-        public string OperationName { get; set; }
+        public OperationType OperationType { get; set; }
 
         public Tool Tool { get; set; }
         
         [ForeignKey("MachineTypeId")]
         public virtual ICollection<OperationMachineType> OperationMachineType { get; set; }
         
-        public Operation(string operationName, Tool tool)
+        public Operation(OperationType operationName, Tool tool)
         {
-            this.OperationName = (operationName == null || operationName.Equals(""))
+            this.OperationType = (operationName == null || operationName.Equals(""))
                 ? throw new ArgumentNullException("Operation name cannot be null or empty!")
                 : operationName;
             this.Tool = (!tool.isValid()) ?
@@ -40,7 +40,7 @@ namespace factoryApi.Models.Operation
         {
             OperationDto operationDto = new OperationDto();
             operationDto.OperationId = this.OperationId;
-            operationDto.OperationName = this.OperationName;
+            operationDto.OperationType = this.OperationType.OperationTypeName;
             operationDto.ToolId = this.Tool.ToolId;
             return operationDto;
         }

@@ -46,10 +46,10 @@ namespace factoryApiTest.Context
 
         private static void SeedOperations(MasterFactoryContext dbContext)
         {
-            dbContext.Operations.Add(new Operation("op1Test", new Tool(1, "hammer")));
-            dbContext.Operations.Add(new Operation("op2Test", new Tool(2, "drill")));
-            dbContext.Operations.Add(new Operation("op3Test", new Tool(3, "screwdriver")));
-            dbContext.Operations.Add(new Operation("op4Test", new Tool(4, "saw")));
+            dbContext.Operations.Add(new Operation(new OperationType("op1Test"), new Tool(1, "hammer")));
+            dbContext.Operations.Add(new Operation(new OperationType("op2Test"), new Tool(2, "drill")));
+            dbContext.Operations.Add(new Operation(new OperationType("op3Test"), new Tool(3, "screwdriver")));
+            dbContext.Operations.Add(new Operation(new OperationType("op4Test"), new Tool(4, "saw")));
             dbContext.SaveChanges();
         }
 

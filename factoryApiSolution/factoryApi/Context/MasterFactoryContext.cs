@@ -33,6 +33,8 @@ namespace factoryApi.Context
 
         public DbSet<Tool> Tools { get; set; }
 
+        public DbSet<OperationType> OperationTypes { get; set; }
+
         public DbSet<OperationMachineType> OperationMachineTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

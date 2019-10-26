@@ -9,11 +9,12 @@ namespace factoryApiTest.Models
         [Fact]
         void EnsureCompleteConstructorOperation()
         {
-            string name = "op1";
+            var opTypeDesc = "op1";
             var tool = new Tool(1, "Drill");
-            var operation = new Operation(name, tool);
+            var operationType = new OperationType(opTypeDesc);
+            var operation = new Operation(operationType, tool);
             Assert.NotNull(operation);
-            Assert.Equal(name, operation.OperationName);
+            Assert.Equal(opTypeDesc, operation.OperationType.OperationTypeName);
             Assert.Equal(tool, operation.Tool);
         }
             

@@ -76,11 +76,11 @@ namespace factoryApiTest.Controllers
         public async Task PostOperation_ShouldReturnCreatedOperation()
         {
             //Arrange
-            var operationName = "operationToTestPost";
+            var operationName = "op1";
 
             var request = new CreateOperationDto
             {
-                OperationName = operationName,
+                OperationType = operationName,
                 ToolId = 1
             };
 
@@ -91,7 +91,7 @@ namespace factoryApiTest.Controllers
 
             //Assert
             Assert.NotNull(theCreatedOperation);
-            Assert.Equal(theCreatedOperation.OperationName, operationName);
+            Assert.Equal(theCreatedOperation.OperationType, operationName);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace factoryApiTest.Controllers
 
             var request = new CreateOperationDto
             {
-                OperationName = operationName,
+                OperationType = operationName,
                 ToolId = unknownToolId
             };
 
@@ -118,12 +118,12 @@ namespace factoryApiTest.Controllers
         public async Task PutOperation_ShouldReturnUpdatedOperation()
         {
             //Arrange
-            var operationName = "operationToTestPost";
+            var operationName = "op2";
             var operationId = 1;
 
             var body = new CreateOperationDto
             {
-                OperationName = operationName,
+                OperationType = operationName,
                 ToolId = 1
             };
 
@@ -134,20 +134,20 @@ namespace factoryApiTest.Controllers
 
             //Assert
             Assert.NotNull(theUpdatedOperation);
-            Assert.Equal(theUpdatedOperation.OperationName, operationName);
+            Assert.Equal(theUpdatedOperation.OperationType, operationName);
         }
 
         [Fact]
         public async Task PutOperation_ShouldReturnNotFoundWhenOperationIdIsUnknown()
         {
             //Arrange
-            var operationName = "anotherOperationToTestPost";
+            var operationName = "op3";
             var operationId = -1;
             const int unknownToolId = 1;
 
             var body = new CreateOperationDto
             {
-                OperationName = operationName,
+                OperationType = operationName,
                 ToolId = unknownToolId
             };
 
@@ -162,13 +162,13 @@ namespace factoryApiTest.Controllers
         public async Task PutOperation_ShouldReturnNotFoundWhenToolIdIsUnknown()
         {
             //Arrange
-            var operationName = "anotherOperationToTestPost";
+            var operationName = "op3";
             var operationId = 1;
             const int unknownToolId = -1;
 
             var body = new CreateOperationDto
             {
-                OperationName = operationName,
+                OperationType = operationName,
                 ToolId = unknownToolId
             };
 

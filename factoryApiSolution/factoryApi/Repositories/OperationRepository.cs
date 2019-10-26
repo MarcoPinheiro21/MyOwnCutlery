@@ -25,6 +25,7 @@ namespace factoryApi.Repositories
             public OperationDto GetById(long id)
             {
                 var operation = _context.Operations.Include(t=>t.Tool)
+                    .Include(opt => opt.OperationType)
                     .ToList().FirstOrDefault(x => x.OperationId == id);
                 if (operation == null)
                 {
@@ -61,9 +62,16 @@ namespace factoryApi.Repositories
                     throw new ObjectNotFoundException(
                         "Tool not found with the id:  " + operationDto.ToolId + "!");
                 }
-
+    
+                OperationType opType = GetOperationTypeByName(operationDto.OperationType);
+                if (opType == null)
+                {
+                    throw new ObjectNotFoundException(
+                        "Operation Type not found with the desc:  " + operationDto.OperationType + "!");
+                }
+                
                 Operation op = OperationFactory
-                        .Create(operationDto.OperationName, tool);
+                        .Create(opType, tool);
                 
                 var result = _context.Add(op).Entity;
                 _context.SaveChanges();
@@ -78,15 +86,21 @@ namespace factoryApi.Repositories
                 {
                     throw new ObjectNotFoundException("Operation not found with the id:  " + id + "!");
                 }
-                op.OperationName = operationDto.OperationName;
-                
+
                 op.Tool = GetToolById(operationDto.ToolId);
                 if (op.Tool == null)
                 {
                     throw new ObjectNotFoundException(
                         "Tool not found with the id:  " + operationDto.ToolId + "!");
-                }
+                } 
                 
+                op.OperationType = GetOperationTypeByName(operationDto.OperationType);
+                if (op.OperationType == null)
+                {
+                    throw new ObjectNotFoundException(
+                        "Operation Type not found with the desc:  " + operationDto.OperationType + "!");
+                }
+
                 _context.Update(op);
                 _context.SaveChanges();
                 return GetById(id);
@@ -109,6 +123,22 @@ namespace factoryApi.Repositories
             {
                 return _context.Operations.ToList().FirstOrDefault(x => x.OperationId == id);
             }
+        
+        #endregion
+        
+        #region OperationTypes
+        
+        public OperationType AddOperationType(OperationType opType)
+        { 
+            OperationType newOpType = _context.OperationTypes.Add(opType).Entity;
+            _context.SaveChanges();
+            return newOpType;
+        }
+            
+        public OperationType GetOperationTypeByName(string type)
+        {
+            return _context.OperationTypes.ToList().FirstOrDefault(opt => opt.OperationTypeName == type);
+        }
         
         #endregion
         

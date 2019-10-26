@@ -7,6 +7,6 @@ namespace factoryApi.DTO
         public long OperationId { get; set; }
         public long ToolId { get; set; }
         
-        public string OperationName { get; set; }
+        public string OperationType { get; set; }
     }
 }
