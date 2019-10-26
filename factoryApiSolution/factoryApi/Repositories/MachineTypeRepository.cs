@@ -156,8 +156,10 @@ namespace factoryApi.Repositories
 
         private MachineType DeleteMachineType(long id)
         {
-            var machineType = _context.MachineTypes.Find(id);
-            return _context.MachineTypes.Remove(machineType).Entity;
+            var machineTypeToDelete = _context.MachineTypes.Find(id);
+            _context.MachineTypes.Remove(machineTypeToDelete);
+            _context.SaveChanges();
+            return machineTypeToDelete;
         }
     }
 }

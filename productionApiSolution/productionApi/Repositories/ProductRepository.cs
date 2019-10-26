@@ -90,7 +90,15 @@ namespace productionApi.Repositories
 
         public ProductDto DeleteElement(long id)
         {
-            throw new NotImplementedException();
+            var productToDelete = GetProductById(id);
+            if (productToDelete == null)
+            {
+                throw new ObjectNotFoundException("Product not found with the id:  " + id + "!");
+            }
+            _context.Remove(productToDelete);
+            _context.SaveChanges();
+                
+            return productToDelete.toDto();
         }
     }
     

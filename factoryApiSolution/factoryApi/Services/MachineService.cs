@@ -84,5 +84,10 @@ namespace factoryApi.Services
         {
             return _machineTypeRepository.UpdateElement(typeId, createOperationDto);
         }
+
+        public MachineTypeDto DeleteMachineType(long typeId)
+        {
+            return _machineTypeRepository.DeleteElement(typeId);
+        }
     }
 }

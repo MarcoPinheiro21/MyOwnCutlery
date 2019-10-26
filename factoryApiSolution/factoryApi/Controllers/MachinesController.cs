@@ -195,5 +195,23 @@ namespace factoryApi.Controllers
                 return BadRequest(e.Message);
             }
         }
+        
+        // DELETE: factoryapi/machines/types/5
+        [HttpDelete("types/{id}")]
+        [ProducesResponseType(200, Type = typeof(MachineTypeDto))]
+        [ProducesResponseType(404)]
+        public ActionResult DeleteMachineType(long id)
+        {
+            try
+            {
+                var machine = _service.DeleteMachineType(id);
+                return Ok(machine);
+            }
+            catch (ObjectNotFoundException e)
+            {
+                Console.WriteLine(e);
+                return NotFound();
+            }
+        }
     }
 }

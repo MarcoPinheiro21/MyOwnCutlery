@@ -88,7 +88,7 @@ namespace factoryApi.Repositories
         private IEnumerable<Machine> GetAllMachines()
         {
             return _context.Machines.Include(t => t.Type)
-                    .Include(pl => pl.ProductionLine);
+                .Include(pl => pl.ProductionLine);
         }
 
         public Machine Add(CreateMachineDto createMachineDto)
@@ -121,7 +121,7 @@ namespace factoryApi.Repositories
         {
             var machineToUpdate = _context.Machines
                 .Include(t => t.Type)
-                .Include(pl=>pl.ProductionLine)
+                .Include(pl => pl.ProductionLine)
                 .SingleOrDefault(i => i.Id == id);
 
             if (Dto.Description != null)
@@ -156,15 +156,18 @@ namespace factoryApi.Repositories
 
         public MachineDto DeleteElement(long id)
         {
-            var machine = _context.Machines.Include(m => m.Type)
+            var machineToDelete = _context.Machines.Include(m => m.Type)
                 .SingleOrDefault(m => m.Id == id);
-            if (machine == null)
+            if (machineToDelete == null)
             {
                 throw new ObjectNotFoundException(
                     "Machine with id " + id + " not found.");
             }
 
-            return _context.Machines.Remove(machine).Entity.toDto();
+            _context.Machines.Remove(machineToDelete);
+            _context.SaveChanges();
+            
+            return machineToDelete.toDto();
         }
     }
 }

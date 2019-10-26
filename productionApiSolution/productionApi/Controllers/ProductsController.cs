@@ -78,5 +78,21 @@ namespace productionApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+        
+        // DELETE productionapi/products/5
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200, Type = typeof(ProductDto))]
+        [ProducesResponseType(404)]
+        public ActionResult Delete(long id)
+        {
+            try
+            {
+                return Ok(_service.Delete(id));
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -73,12 +73,14 @@ namespace factoryApi.Context
             modelBuilder.Entity<OperationMachineType>()
                 .HasOne(omt => omt.MachineType)
                 .WithMany(o => o.OperationMachineType)
-                .HasForeignKey(ok => ok.MachineTypeId);
+                .HasForeignKey(ok => ok.MachineTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<OperationMachineType>()
                 .HasOne(omt => omt.Operation)
                 .WithMany(mt => mt.OperationMachineType)
-                .HasForeignKey(ok => ok.OperationId);
+                .HasForeignKey(ok => ok.OperationId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

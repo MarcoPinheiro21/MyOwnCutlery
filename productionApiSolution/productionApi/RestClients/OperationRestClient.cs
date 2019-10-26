@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using productionApi.DTO;
 using RestSharp;
 
@@ -22,6 +25,10 @@ namespace productionApi.RestClients
         {
             try
             {
+                //Workaround for Mac OS Http Certificates
+                ServicePointManager.ServerCertificateValidationCallback = 
+                    delegate { return true; };
+                
                 var request = new RestRequest("factoryapi/gateway/operations", Method.GET);
 
 
