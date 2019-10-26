@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using factoryApi.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using productionApi.Context;
 using productionApi.Controllers;
 using productionApi.DTO;
+using productionApi.Repositories;
+using productionApi.Services;
 using productionApiTest.Context;
 using Xunit;
 
@@ -14,12 +15,18 @@ namespace productionApiTest.Controllers
     public class TestProductController
     {
         private MasterProductionContext _context = MasterProductionMockContext.GetMasterProductionContextMock();
+        private RestContext _restContext = RestMockContext.GetRestContextMock();
 
         private ProductsController theController;
 
         public TestProductController()
         {
             theController = new ProductsController(_context);
+            theController._service= new ProductService(
+                new ProductRepository(_context), 
+                new OperationRepository(_context),
+                _restContext
+            );
         }
 
         [Fact]
@@ -78,13 +85,12 @@ namespace productionApiTest.Controllers
         public async Task PostProduct_ShouldReturnCreatedProduct()
         {
             //Arrange
-            var productName = "productToTestPost";
             List<CreateOperationDto> operationsList = new List<CreateOperationDto>();
             operationsList.Add(new CreateOperationDto(6));
             operationsList.Add(new CreateOperationDto(7));
-
+            
+            var productName = "productToTestPost";
             CreatePlanDto plan = new CreatePlanDto(operationsList);
-
             var request = new CreateProductDto(productName, plan);
 
             //Act
@@ -97,23 +103,21 @@ namespace productionApiTest.Controllers
             Assert.Equal(theCreatedProduct.ProductName, productName);
         }
 
-        /*[Fact]
-        public async Task PostProduct_ShouldReturnNotFoundWhenMachineIdIsUnknown()
+        [Fact]
+        public async Task PostProduct_ShouldReturnNotFoundWhenOperationIdIsUnknown()
         {
-            //Arrange
-            var productName = "anotherProductToTestPost";
-            const int unknownMachineId = -1;
-            List<long> machinesList = new List<long>();
-            machinesList.Add(unknownMachineId);
-
-            var request = new CreateProductDto(productName, machinesList);
+            List<CreateOperationDto> operationsList = new List<CreateOperationDto>();
+            operationsList.Add(new CreateOperationDto(-1));
+            operationsList.Add(new CreateOperationDto(-2));
+            
+            var productName = "productToTestPost";
+            CreatePlanDto plan = new CreatePlanDto(operationsList);
+            var request = new CreateProductDto(productName, plan);
 
             //Act
-            var response = theController.PostProduct(request).Result;
-
-            //Assert
-            Assert.IsType<NotFoundObjectResult>(response);
-        }*/
+            var response = theController.PostProduct(request);
+            Assert.IsType<NotFoundObjectResult>(response.Result);
+        }
 
         [Fact]
         public async Task GetProductPlan_ShouldReturnPlanOfAGivenProductId()

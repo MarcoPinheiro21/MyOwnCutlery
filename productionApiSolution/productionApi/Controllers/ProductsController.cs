@@ -12,14 +12,15 @@ namespace productionApi.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ProductService _service;
+        public ProductService _service { get; set; }
 
         public ProductsController(MasterProductionContext context)
         {
-            _service = new ProductService(new ProductRepository(context), new OperationRepository(context));
-            //Charges all the tools needed.
-            //BootstrapTools bootstrapTools = new BootstrapTools(context);
-            //bootstrapTools.Execute();
+            _service = new ProductService(
+                new ProductRepository(context), 
+                new OperationRepository(context),
+                new RestContext()
+                );
         }
 
         // GET productionapi/products/5
@@ -58,7 +59,7 @@ namespace productionApi.Controllers
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 

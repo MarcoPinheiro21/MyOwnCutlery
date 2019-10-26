@@ -1,31 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
-using Newtonsoft.Json;
+using productionApi.Context;
 using productionApi.DTO;
+using productionApi.RestClients;
 using RestSharp;
 
 namespace productionApi.Services
 {
     public class OperationService
     {
+
+        private OperationRestClient Client { get; set; }
+
+        public OperationService(RestContext context)
+        {
+            Client = context.client;
+        }
+
         public bool validateOperations(ICollection<CreateOperationDto> operations)
         {
             try
             {
-                var client = new RestClient("https://localhost:5001");
-                var request = new RestRequest("factoryapi/operations", Method.GET);
-
-                IRestResponse<List<FactoryApiOperationDto>> response = client.Execute<List<FactoryApiOperationDto>>(request);
+                List<FactoryApiOperationDto> operationsResponse = Client.GetOperations();
                 List<long> ids = new List<long>();
-                foreach (var factoryApiDto in response.Data)
+                foreach (var factoryApiDto in operationsResponse)
                 {
-                    ids.Add(factoryApiDto.OperationId); 
+                    ids.Add(factoryApiDto.operationId); 
                 }
                 
                 

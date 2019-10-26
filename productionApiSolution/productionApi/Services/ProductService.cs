@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using factoryApi.Exceptions;
+using productionApi.Context;
 using productionApi.DTO;
 using productionApi.Repositories;
 
@@ -11,11 +12,11 @@ namespace productionApi.Services
         private readonly OperationRepository _operationRepository;
         private readonly OperationService _opService;
 
-        public ProductService(ProductRepository repo, OperationRepository opRepo)
+        public ProductService(ProductRepository repo, OperationRepository opRepo, RestContext rest)
         {
             _repo = repo;
-            _opService = new OperationService();
             _operationRepository = opRepo;
+            _opService = new OperationService(rest);
         }
 
         public ProductDto FindById(int id)
