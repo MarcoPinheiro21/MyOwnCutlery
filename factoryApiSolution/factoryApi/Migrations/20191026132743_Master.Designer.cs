@@ -10,7 +10,7 @@ using factoryApi.Context;
 namespace factoryApi.Migrations
 {
     [DbContext(typeof(MasterFactoryContext))]
-    [Migration("20191012161257_Master")]
+    [Migration("20191026132743_Master")]
     partial class Master
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,16 +32,22 @@ namespace factoryApi.Migrations
 
                     b.Property<long?>("MachineType");
 
+                    b.Property<long?>("ProductionLineId");
+
                     b.HasKey("MachineId");
 
                     b.HasIndex("MachineType");
+
+                    b.HasIndex("ProductionLineId");
 
                     b.ToTable("Machines");
                 });
 
             modelBuilder.Entity("factoryApi.Models.Machine.MachineType", b =>
                 {
-                    b.Property<long>("MachineTypeId");
+                    b.Property<long>("MachineTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Desc");
 
@@ -56,15 +62,30 @@ namespace factoryApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("OperationName");
+                    b.Property<long?>("OperationTypeId");
 
                     b.Property<long?>("ToolId");
 
                     b.HasKey("OperationId");
 
+                    b.HasIndex("OperationTypeId");
+
                     b.HasIndex("ToolId");
 
                     b.ToTable("Operations");
+                });
+
+            modelBuilder.Entity("factoryApi.Models.Operation.OperationType", b =>
+                {
+                    b.Property<long>("OperationTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("OperationTypeName");
+
+                    b.HasKey("OperationTypeId");
+
+                    b.ToTable("OperationTypes");
                 });
 
             modelBuilder.Entity("factoryApi.Models.Operation.Tool", b =>
@@ -78,6 +99,20 @@ namespace factoryApi.Migrations
                     b.ToTable("Tools");
                 });
 
+            modelBuilder.Entity("factoryApi.Models.ProductionLine.ProductionLine", b =>
+                {
+                    b.Property<long>("ProductionLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ProductionLineName")
+                        .IsRequired();
+
+                    b.HasKey("ProductionLineId");
+
+                    b.ToTable("ProductionLines");
+                });
+
             modelBuilder.Entity("factoryApi.Models.Relationships.OperationMachineType", b =>
                 {
                     b.Property<long>("OperationId");
@@ -88,7 +123,7 @@ namespace factoryApi.Migrations
 
                     b.HasIndex("MachineTypeId");
 
-                    b.ToTable("OperationMachineType");
+                    b.ToTable("OperationMachineTypes");
                 });
 
             modelBuilder.Entity("factoryApi.Models.Machine.Machine", b =>
@@ -96,10 +131,18 @@ namespace factoryApi.Migrations
                     b.HasOne("factoryApi.Models.Machine.MachineType", "Type")
                         .WithMany()
                         .HasForeignKey("MachineType");
+
+                    b.HasOne("factoryApi.Models.ProductionLine.ProductionLine", "ProductionLine")
+                        .WithMany("MachinesList")
+                        .HasForeignKey("ProductionLineId");
                 });
 
             modelBuilder.Entity("factoryApi.Models.Operation.Operation", b =>
                 {
+                    b.HasOne("factoryApi.Models.Operation.OperationType", "OperationType")
+                        .WithMany()
+                        .HasForeignKey("OperationTypeId");
+
                     b.HasOne("factoryApi.Models.Operation.Tool", "Tool")
                         .WithMany()
                         .HasForeignKey("ToolId");

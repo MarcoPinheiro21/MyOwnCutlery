@@ -11,12 +11,39 @@ namespace factoryApi.Migrations
                 name: "MachineTypes",
                 columns: table => new
                 {
-                    MachineTypeId = table.Column<long>(nullable: false),
+                    MachineTypeId = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Desc = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MachineTypes", x => x.MachineTypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OperationTypes",
+                columns: table => new
+                {
+                    OperationTypeId = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OperationTypeName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OperationTypes", x => x.OperationTypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductionLines",
+                columns: table => new
+                {
+                    ProductionLineId = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ProductionLineName = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductionLines", x => x.ProductionLineId);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,7 +65,8 @@ namespace factoryApi.Migrations
                     MachineId = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
-                    MachineType = table.Column<long>(nullable: true)
+                    MachineType = table.Column<long>(nullable: true),
+                    ProductionLineId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -49,6 +77,12 @@ namespace factoryApi.Migrations
                         principalTable: "MachineTypes",
                         principalColumn: "MachineTypeId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Machines_ProductionLines_ProductionLineId",
+                        column: x => x.ProductionLineId,
+                        principalTable: "ProductionLines",
+                        principalColumn: "ProductionLineId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,12 +91,18 @@ namespace factoryApi.Migrations
                 {
                     OperationId = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    OperationName = table.Column<string>(nullable: true),
+                    OperationTypeId = table.Column<long>(nullable: true),
                     ToolId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Operations", x => x.OperationId);
+                    table.ForeignKey(
+                        name: "FK_Operations_OperationTypes_OperationTypeId",
+                        column: x => x.OperationTypeId,
+                        principalTable: "OperationTypes",
+                        principalColumn: "OperationTypeId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Operations_Tools_ToolId",
                         column: x => x.ToolId,
@@ -72,7 +112,7 @@ namespace factoryApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OperationMachineType",
+                name: "OperationMachineTypes",
                 columns: table => new
                 {
                     MachineTypeId = table.Column<long>(nullable: false),
@@ -80,15 +120,15 @@ namespace factoryApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationMachineType", x => new { x.OperationId, x.MachineTypeId });
+                    table.PrimaryKey("PK_OperationMachineTypes", x => new { x.OperationId, x.MachineTypeId });
                     table.ForeignKey(
-                        name: "FK_OperationMachineType_MachineTypes_MachineTypeId",
+                        name: "FK_OperationMachineTypes_MachineTypes_MachineTypeId",
                         column: x => x.MachineTypeId,
                         principalTable: "MachineTypes",
                         principalColumn: "MachineTypeId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OperationMachineType_Operations_OperationId",
+                        name: "FK_OperationMachineTypes_Operations_OperationId",
                         column: x => x.OperationId,
                         principalTable: "Operations",
                         principalColumn: "OperationId",
@@ -101,9 +141,19 @@ namespace factoryApi.Migrations
                 column: "MachineType");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OperationMachineType_MachineTypeId",
-                table: "OperationMachineType",
+                name: "IX_Machines_ProductionLineId",
+                table: "Machines",
+                column: "ProductionLineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OperationMachineTypes_MachineTypeId",
+                table: "OperationMachineTypes",
                 column: "MachineTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Operations_OperationTypeId",
+                table: "Operations",
+                column: "OperationTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Operations_ToolId",
@@ -117,13 +167,19 @@ namespace factoryApi.Migrations
                 name: "Machines");
 
             migrationBuilder.DropTable(
-                name: "OperationMachineType");
+                name: "OperationMachineTypes");
+
+            migrationBuilder.DropTable(
+                name: "ProductionLines");
 
             migrationBuilder.DropTable(
                 name: "MachineTypes");
 
             migrationBuilder.DropTable(
                 name: "Operations");
+
+            migrationBuilder.DropTable(
+                name: "OperationTypes");
 
             migrationBuilder.DropTable(
                 name: "Tools");

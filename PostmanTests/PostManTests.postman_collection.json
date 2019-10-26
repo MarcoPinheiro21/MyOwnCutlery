@@ -806,8 +806,65 @@
 						}
 					},
 					"response": []
-				},
-				{
+				},{
+					"name": "Delete Another Operation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bfc8c1b7-fd76-4dfe-83b1-6f61b8a6bed2",
+								"exec": [
+									"var responseData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"operationName is correct\"] = responseData.operationName==\"opTeste2\";",
+									"tests[\"operationId is present\"] = responseData.operationId !== null;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "1",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/factoryapi/operations/{{envOperationId2}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"factoryapi",
+								"operations",
+								"{{envOperationId2}}"
+							]
+						}
+					},
+					"response": []
+				},{
 					"name": "Delete machine",
 					"event": [
 						{
@@ -831,7 +888,7 @@
 						"url": {
 							"raw": "https://localhost:5001/factoryapi/machines/{{envMachineId}}",
 							"protocol": "https",
-							"host": [
+							"host": [	
 								"localhost"
 							],
 							"port": "5001",
