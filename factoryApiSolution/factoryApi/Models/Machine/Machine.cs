@@ -5,19 +5,14 @@ using factoryApi.DTO;
 
 namespace factoryApi.Models.Machine
 {
-    public class Machine
+    public class Machine : Entity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
-        public long MachineId { get; set; }
-
         [Required] public string Description { get; set; }
 
         [ForeignKey("MachineType")] public MachineType Type { get; set; }
 
-        [ForeignKey("ProductionLineId")]
-        public ProductionLine.ProductionLine ProductionLine { get; set; } 
-        
+        [ForeignKey("ProductionLineId")] public ProductionLine.ProductionLine ProductionLine { get; set; }
+
         protected Machine()
         {
         }
@@ -40,7 +35,12 @@ namespace factoryApi.Models.Machine
 
         public MachineDto toDto()
         {
-            return new MachineDto(MachineId, Description, Type.MachineTypeId);
+            if (ProductionLine == null)
+            {
+                return new MachineDto(Id, Description, Type.Id);
+            }
+
+            return new MachineDto(Id, Description, Type.Id, ProductionLine.Id);
         }
     }
 }

@@ -72,25 +72,25 @@ namespace factoryApiTest.Context
 
             //Machine type 1 has op1Test and op2Test
             dbContext.OperationMachineTypes.Add(new OperationMachineType(
-                machineType1.MachineTypeId, machineType1,
-                operation1.OperationId, operation1));
+                machineType1.Id, machineType1,
+                operation1.Id, operation1));
 
             dbContext.OperationMachineTypes.Add(new OperationMachineType(
-                machineType1.MachineTypeId, machineType1,
-                operation2.OperationId, operation2));
+                machineType1.Id, machineType1,
+                operation2.Id, operation2));
             
             //Machine type 2 has op2Test, op3Test and op4Test
             dbContext.OperationMachineTypes.Add(new OperationMachineType(
-                machineType2.MachineTypeId, machineType2,
-                operation2.OperationId, operation2));
+                machineType2.Id, machineType2,
+                operation2.Id, operation2));
 
             dbContext.OperationMachineTypes.Add(new OperationMachineType(
-                machineType2.MachineTypeId, machineType2,
-                operation3.OperationId, operation3));
+                machineType2.Id, machineType2,
+                operation3.Id, operation3));
 
             dbContext.OperationMachineTypes.Add(new OperationMachineType(
-                machineType2.MachineTypeId, machineType2,
-                operation4.OperationId, operation4));
+                machineType2.Id, machineType2,
+                operation4.Id, operation4));
 
             dbContext.SaveChanges();
         }

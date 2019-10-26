@@ -27,7 +27,7 @@ namespace factoryApi.Services
         public OperationDto Add(CreateOperationDto operationDto)
         {
             var operation = _repo.Add(operationDto);
-            return _repo.GetById(operation.OperationId);
+            return _repo.GetById(operation.Id);
         }
         
         public OperationDto Update(long id, CreateOperationDto operationDto)

@@ -8,12 +8,8 @@ using factoryApi.Models.Relationships;
 
 namespace factoryApi.Models.Machine
 {
-    public class MachineType
+    public class MachineType : Entity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
-        public long MachineTypeId { get; set; }
-
         public string Desc { get; set; }
         [ForeignKey("OperationId")] 
         public virtual ICollection<OperationMachineType> OperationMachineType { get; set; }
@@ -31,7 +27,7 @@ namespace factoryApi.Models.Machine
         
         public MachineTypeDto toDto()
         {
-            return new MachineTypeDto(MachineTypeId, Desc, GetOperationIdsList());
+            return new MachineTypeDto(Id, Desc, GetOperationIdsList());
         }
 
         private List<long> GetOperationIdsList()

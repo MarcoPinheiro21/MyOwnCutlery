@@ -5,11 +5,8 @@ using factoryApi.DTO;
 
 namespace factoryApi.Models.ProductionLine
 {
-    public class ProductionLine
+    public class ProductionLine : Entity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
-        public long ProductionLineId { get; set; }
 
         [Required] public string ProductionLineName { get; set; }
 
@@ -27,8 +24,8 @@ namespace factoryApi.Models.ProductionLine
 
         public ProductionLineDto toDto()
         {
-            ProductionLineDto productionLineDto = new ProductionLineDto(ProductionLineId,ProductionLineName,new List<MachineDto>());
-            productionLineDto.ProductionLineId = ProductionLineId;
+            ProductionLineDto productionLineDto = new ProductionLineDto(Id,ProductionLineName,new List<MachineDto>());
+            productionLineDto.ProductionLineId = Id;
             productionLineDto.ProductionLineName = ProductionLineName;
             foreach (Machine.Machine machine in MachinesList)
             {

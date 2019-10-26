@@ -1,15 +1,12 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using factoryApi.Bootstrap;
 using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Exceptions;
-using factoryApi.Models;
-using factoryApi.Models.Operation;
 using factoryApi.Repositories;
 using factoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace factoryApi.Controllers
 {
@@ -22,11 +19,11 @@ namespace factoryApi.Controllers
         public OperationsController(MasterFactoryContext context)
         {
             _service = new OperationService(new OperationRepository(context));
-            
+
             //Charges all the tools needed.
             BootstrapTools bootstrapTools = new BootstrapTools(context);
             bootstrapTools.Execute();
-            
+
             //Charges all the operationTypes needed.
             BootstrapOperationTypes bootstrapOperationTypes = new BootstrapOperationTypes(context);
             bootstrapOperationTypes.Execute();
@@ -64,14 +61,18 @@ namespace factoryApi.Controllers
         {
             try
             {
-                return Created("default",_service.Add(operationDto));
+                return Created("default", _service.Add(operationDto));
             }
             catch (ObjectNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
+            catch (DuplicatedObjectException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-        
+
         // PUT factoryapi/operations/5
         [HttpPut("{id}")]
         [ProducesResponseType(200, Type = typeof(OperationDto))]
@@ -86,8 +87,12 @@ namespace factoryApi.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (DuplicatedObjectException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
-            
+
         // DELETE factoryapi/operations/5
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(OperationDto))]
@@ -103,6 +108,5 @@ namespace factoryApi.Controllers
                 return NotFound(ex.Message);
             }
         }
-        
     }
 }

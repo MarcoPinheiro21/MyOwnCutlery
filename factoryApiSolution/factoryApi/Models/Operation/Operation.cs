@@ -9,14 +9,12 @@ using factoryApi.Repositories;
 
 namespace factoryApi.Models.Operation
 {
-    public class Operation
+    public class Operation : Entity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
-        public long OperationId { get; set; }
-        
+        [Column("OperationTypeId")]
         public OperationType OperationType { get; set; }
 
+        [Column("ToolId")]
         public Tool Tool { get; set; }
         
         [ForeignKey("MachineTypeId")]
@@ -39,9 +37,9 @@ namespace factoryApi.Models.Operation
         public OperationDto toDto()
         {
             OperationDto operationDto = new OperationDto();
-            operationDto.OperationId = this.OperationId;
-            operationDto.OperationType = this.OperationType.OperationTypeName;
-            operationDto.ToolId = this.Tool.ToolId;
+            operationDto.OperationId = Id;
+            operationDto.OperationType = OperationType.OperationTypeName;
+            operationDto.ToolId = Tool.ToolId;
             return operationDto;
         }
     }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using factoryApi.DTO;
 using factoryApi.Repositories;
 
@@ -38,7 +37,7 @@ namespace factoryApi.Services
         public MachineDto AddMachine(CreateMachineDto createMachineDto)
         {
             var machine = _machineRepository.Add(createMachineDto);
-            return _machineRepository.GetById(machine.MachineId);
+            return _machineRepository.GetById(machine.Id);
         }
 
         public MachineDto UpdateMachine(long id, CreateMachineDto createMachineDto)

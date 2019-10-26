@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using factoryApi.Context;
@@ -26,7 +27,7 @@ namespace factoryApi.Repositories
             {
                 var operation = _context.Operations.Include(t=>t.Tool)
                     .Include(opt => opt.OperationType)
-                    .ToList().FirstOrDefault(x => x.OperationId == id);
+                    .ToList().FirstOrDefault(x => x.Id == id);
                 if (operation == null)
                 {
                     throw new ObjectNotFoundException("Operation not found with the id:  " + id + "!");
@@ -77,7 +78,17 @@ namespace factoryApi.Repositories
                         .Create(opType, tool);
                 
                 var result = _context.Add(op).Entity;
-                _context.SaveChanges();
+                
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateException e)
+                {
+                    Console.WriteLine(e);
+                    throw new DuplicatedObjectException("Pair operation <-> tool already exists.");
+                }
+                
 
                 return result;
             }
@@ -103,9 +114,18 @@ namespace factoryApi.Repositories
                     throw new ObjectNotFoundException(
                         "Operation Type not found with the desc:  " + operationDto.OperationType + "!");
                 }
-
-                _context.Update(op);
-                _context.SaveChanges();
+                
+                try
+                {
+                    _context.Update(op);
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateException e)
+                {
+                    Console.WriteLine(e);
+                    throw new DuplicatedObjectException("Pair operation <-> tool already exists.");
+                }
+                
                 return GetById(id);
             }
 
@@ -124,7 +144,7 @@ namespace factoryApi.Repositories
 
             private Operation GetOperationById(long id)
             {
-                return _context.Operations.ToList().FirstOrDefault(x => x.OperationId == id);
+                return _context.Operations.ToList().FirstOrDefault(x => x.Id == id);
             }
         
         #endregion

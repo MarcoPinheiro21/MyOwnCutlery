@@ -77,7 +77,7 @@ namespace factoryApi.Controllers
             {
                 Console.WriteLine(e);
                 return BadRequest(e.Message);
-            }
+            } 
         }
 
         // PUT: factoryapi/machines/5

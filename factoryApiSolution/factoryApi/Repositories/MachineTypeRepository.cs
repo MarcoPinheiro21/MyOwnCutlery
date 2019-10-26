@@ -28,7 +28,7 @@ namespace factoryApi.Repositories
         public MachineType GetMachineTypeById(long id)
         {
             var result = _context.MachineTypes.Include(t => t.OperationMachineType)
-                .SingleOrDefault(mt => mt.MachineTypeId == id);
+                .SingleOrDefault(mt => mt.Id == id);
             if (result == null)
             {
                 throw new ObjectNotFoundException(
@@ -44,7 +44,7 @@ namespace factoryApi.Repositories
 
             return _context.MachineTypes
                 .Include(t => t.OperationMachineType)
-                .SingleOrDefault(i => i.MachineTypeId == id);
+                .SingleOrDefault(i => i.Id == id);
         }
 
         public IEnumerable<MachineTypeDto> GetAll()
@@ -83,14 +83,23 @@ namespace factoryApi.Repositories
                     }
 
                     var operationMachineType = _context.OperationMachineTypes.Add(
-                        new OperationMachineType(machineType.MachineTypeId,
+                        new OperationMachineType(machineType.Id,
                             machineType,
-                            operation.OperationId,
+                            operation.Id,
                             operation)).Entity;
                 }
             }
 
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e);
+                throw new DuplicatedObjectException("A Machine Type with the same description already exists");
+            }
+            
             return machineType;
         }
 
@@ -121,7 +130,7 @@ namespace factoryApi.Repositories
                         "Operation with id " + op + " not found.");
                 }
 
-                var operationMachineType = new OperationMachineType(machineType.MachineTypeId,
+                var operationMachineType = new OperationMachineType(machineType.Id,
                     machineType, op, operation);
 
                 if (operationMachineTypeList.Contains(operationMachineType))

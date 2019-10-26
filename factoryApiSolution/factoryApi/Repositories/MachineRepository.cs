@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Exceptions;
-using factoryApi.Models;
 using factoryApi.Models.Machine;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +11,9 @@ namespace factoryApi.Repositories
 {
     public class MachineRepository : IBaseRepository<CreateMachineDto, MachineDto, Machine>
     {
-        private Context.MasterFactoryContext _context;
+        private MasterFactoryContext _context;
 
-        public MachineRepository(Context.MasterFactoryContext context)
+        public MachineRepository(MasterFactoryContext context)
         {
             _context = context;
         }
@@ -37,7 +35,8 @@ namespace factoryApi.Repositories
             try
             {
                 return _context.Machines.Include(t => t.Type)
-                    .SingleOrDefault(machine => machine.MachineId == id);
+                    .Include(pl => pl.ProductionLine)
+                    .SingleOrDefault(machine => machine.Id == id);
             }
             catch (InvalidOperationException e)
             {
@@ -63,7 +62,8 @@ namespace factoryApi.Repositories
             try
             {
                 return _context.Machines.Include(t => t.Type)
-                    .Where(t => t.Type.MachineTypeId == typeId);
+                    .Include(pl => pl.ProductionLine)
+                    .Where(t => t.Type.Id == typeId);
             }
             catch (InvalidOperationException e)
             {
@@ -87,7 +87,8 @@ namespace factoryApi.Repositories
 
         private IEnumerable<Machine> GetAllMachines()
         {
-            return _context.Machines.Include(t => t.Type);
+            return _context.Machines.Include(t => t.Type)
+                    .Include(pl => pl.ProductionLine);
         }
 
         public Machine Add(CreateMachineDto createMachineDto)
@@ -101,14 +102,27 @@ namespace factoryApi.Repositories
 
             var result = _context.Machines
                 .Add(new Machine(createMachineDto.Description, machineType)).Entity;
-            _context.SaveChanges();
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e);
+                throw new DuplicatedObjectException("A Machine with the same description already exists");
+            }
+
+
             return result;
         }
 
         public MachineDto UpdateElement(long id, CreateMachineDto Dto)
         {
-            var machineToUpdate = _context.Machines.Include(t => t.Type)
-                .SingleOrDefault(i => i.MachineId == id);
+            var machineToUpdate = _context.Machines
+                .Include(t => t.Type)
+                .Include(pl=>pl.ProductionLine)
+                .SingleOrDefault(i => i.Id == id);
 
             if (Dto.Description != null)
             {
@@ -127,14 +141,23 @@ namespace factoryApi.Repositories
                 machineToUpdate.Type = machineType;
             }
 
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e);
+                throw new DuplicatedObjectException("A Machine with the same description already exists");
+            }
+
             return machineToUpdate.toDto();
         }
 
         public MachineDto DeleteElement(long id)
         {
-            var machine = _context.Machines.Include(m=>m.Type)
-                .SingleOrDefault(m=>m.MachineId==id);
+            var machine = _context.Machines.Include(m => m.Type)
+                .SingleOrDefault(m => m.Id == id);
             if (machine == null)
             {
                 throw new ObjectNotFoundException(

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using factoryApi.Models.Machine;
 using factoryApi.Models.Operation;
 using factoryApi.Models.ProductionLine;
@@ -24,9 +25,9 @@ namespace factoryApi.Context
         }
 
         public DbSet<ProductionLine> ProductionLines { get; set; }
-        
+
         public DbSet<Machine> Machines { get; set; }
-        
+
         public DbSet<MachineType> MachineTypes { get; set; }
 
         public DbSet<Operation> Operations { get; set; }
@@ -41,17 +42,31 @@ namespace factoryApi.Context
         {
             modelBuilder.Entity<ProductionLine>()
                 .HasMany(ml => ml.MachinesList);
-            
+
+            modelBuilder.Entity<ProductionLine>()
+                .HasIndex(i => i.ProductionLineName)
+                .IsUnique();
+
             modelBuilder.Entity<Machine>()
-                .HasOne<ProductionLine>(pl => pl.ProductionLine)
-                .WithMany(m => m.MachinesList);
-            
+                .HasOne(pl => pl.ProductionLine);
+
             modelBuilder.Entity<Machine>()
                 .HasOne(t => t.Type);
 
+            modelBuilder.Entity<Machine>()
+                .HasIndex(i => i.Description).IsUnique();
+
+            modelBuilder.Entity<MachineType>()
+                .HasIndex(i => i.Desc)
+                .IsUnique();
+
             modelBuilder.Entity<Operation>()
                 .HasMany(o => o.OperationMachineType);
-            
+
+            modelBuilder.Entity<Operation>()
+                .HasIndex("OperationTypeId", "ToolId")
+                .IsUnique();
+
             modelBuilder.Entity<OperationMachineType>()
                 .HasKey(omt => new {omt.OperationId, omt.MachineTypeId});
 

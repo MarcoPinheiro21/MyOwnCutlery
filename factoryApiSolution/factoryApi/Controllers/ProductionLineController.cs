@@ -51,11 +51,15 @@ namespace factoryApi.Controllers
         {
             try
             {
-                return Created("default",_service.Add(productionLineDto));
+                return Created("default", _service.Add(productionLineDto));
             }
             catch (ObjectNotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (DuplicatedObjectException e)
+            {
+                return BadRequest(e.Message);
             }
         }
 
@@ -72,6 +76,10 @@ namespace factoryApi.Controllers
             catch (ObjectNotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (DuplicatedObjectException e)
+            {
+                return BadRequest(e.Message);
             }
         }
 

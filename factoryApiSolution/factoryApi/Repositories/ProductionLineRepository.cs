@@ -37,7 +37,7 @@ namespace factoryApi.Repositories
             {
                 return _context.ProductionLines.Include(ml => ml.MachinesList)
                     .ThenInclude(mt => mt.Type).ThenInclude(o => o.OperationMachineType)
-                    .Single(m => m.ProductionLineId == id);
+                    .Single(m => m.Id == id);
             }
             catch (InvalidOperationException e)
             {
@@ -74,7 +74,7 @@ namespace factoryApi.Repositories
                 {
                     var mac = _context.Machines.Include(t => t.Type)
                         .ThenInclude(o => o.OperationMachineType)
-                        .Single(machine => machine.MachineId == id);
+                        .Single(machine => machine.Id == id);
 
                     if (mac == null)
                     {
@@ -93,7 +93,17 @@ namespace factoryApi.Repositories
                 .Create(productionLineDto.ProductionLineName, machines);
 
             var result = _context.Add(pl).Entity;
-            _context.SaveChanges();
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e);
+                throw new DuplicatedObjectException("A Production Line with the same description already exists");
+            }
+            
 
             return result;
         }
@@ -116,7 +126,7 @@ namespace factoryApi.Repositories
                 {
                     var mac = _context.Machines.Include(t => t.Type)
                         .ThenInclude(o => o.OperationMachineType)
-                        .Single(machine => machine.MachineId == machineId);
+                        .Single(machine => machine.Id == machineId);
                     if (mac == null)
                     {
                         throw new ObjectNotFoundException("Machine not found with the id: " + id + "!");
@@ -132,8 +142,18 @@ namespace factoryApi.Repositories
 
             pl.MachinesList = machines;
 
-            _context.Update(pl);
-            _context.SaveChanges();
+            try
+            {
+                _context.Update(pl);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e);
+                throw new DuplicatedObjectException("A Production Line with the same description already exists");
+            }
+
+
             return GetById(id);
         }
 
