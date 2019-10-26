@@ -50,7 +50,10 @@ namespace factoryApi.Repositories
 
             private IEnumerable<Operation> GetAllOperations()
             {
-                return _context.Operations.ToList();
+                return _context.Operations
+                    .Include(op => op.OperationType)
+                    .Include(t=> t.Tool)
+                    .ToList();
             }
             
             public Operation Add(CreateOperationDto operationDto)
