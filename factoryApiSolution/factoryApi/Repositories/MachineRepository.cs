@@ -133,7 +133,8 @@ namespace factoryApi.Repositories
 
         public MachineDto DeleteElement(long id)
         {
-            var machine = _context.Machines.Find(id);
+            var machine = _context.Machines.Include(m=>m.Type)
+                .SingleOrDefault(m=>m.MachineId==id);
             if (machine == null)
             {
                 throw new ObjectNotFoundException(
