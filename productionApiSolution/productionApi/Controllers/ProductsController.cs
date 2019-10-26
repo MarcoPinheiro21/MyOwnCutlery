@@ -8,7 +8,6 @@ using productionApi.Services;
 
 namespace productionApi.Controllers
 {
-
     [Route("productionapi/products/")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -21,7 +20,6 @@ namespace productionApi.Controllers
             //Charges all the tools needed.
             //BootstrapTools bootstrapTools = new BootstrapTools(context);
             //bootstrapTools.Execute();
-            
         }
 
         // GET productionapi/products/5
@@ -36,7 +34,7 @@ namespace productionApi.Controllers
             }
             catch (ObjectNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -56,7 +54,7 @@ namespace productionApi.Controllers
         {
             try
             {
-                return Created("default",_service.Add(productDto));
+                return Created("default", _service.Add(productDto));
             }
             catch (ObjectNotFoundException ex)
             {
@@ -64,31 +62,20 @@ namespace productionApi.Controllers
             }
         }
 
-        // DELETE productionapi/products/5
-        [HttpDelete("{id}")]
-        [ProducesResponseType(200, Type = typeof(ProductDto))]
-        [ProducesResponseType(404)]
-        public ActionResult Delete(long id)
-        {
-            try
-            {
-                return Ok(_service.Delete(id));
-            }
-            catch (ObjectNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        
         // GET: productionapi/products/5/plan
         [HttpGet("{id}/plan")]
         [ProducesResponseType(200, Type = typeof(PlanDto))]
         [ProducesResponseType(404)]
-        public ActionResult GetMachineTypeOperations(long id)
+        public ActionResult<ICollection<OperationDto>> GetProductPlan(long id)
         {
-            
-            return Ok(_service.FindPlanByProduct(id));
+            try
+            {
+                return Ok(_service.FindPlanByProduct(id));
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
-        
     }
 }

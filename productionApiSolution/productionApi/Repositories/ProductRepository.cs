@@ -21,15 +21,27 @@ namespace productionApi.Repositories
 
         public ProductDto GetById(long id)
         {
-            var product = _context.Products.Include(ml => ml.Plan)
-                .Single(m => m.ProductId == id);
-            //var product = _context.Products.ToList().FirstOrDefault(x => x.ProductId == id);
+            var product = GetProductById(id);
             if (product == null)
             {
                 throw new ObjectNotFoundException("Product not found with the id:  " + id + "!");
             }
                 
             return product?.toDto() ;
+        }
+        
+        private Product GetProductById(long id)
+        {
+            try
+            {
+                return _context.Products.Include(ml => ml.Plan)
+                    .Single(m => m.ProductId == id);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new ObjectNotFoundException(
+                    "Product with id " + id + " not found.");
+            }
         }
             
         public IEnumerable<ProductDto> GetAll()
@@ -78,22 +90,8 @@ namespace productionApi.Repositories
 
         public ProductDto DeleteElement(long id)
         {
-            var productToDelete = GetProductById(id);
-            if (productToDelete == null)
-            {
-                throw new ObjectNotFoundException("Product not found with the id:  " + id + "!");
-            }
-            _context.Remove(productToDelete);
-            _context.SaveChanges();
-                
-            return productToDelete.toDto();
+            throw new NotImplementedException();
         }
-        
-        private Product GetProductById(long id)
-        {
-            return _context.Products.ToList().FirstOrDefault(x => x.ProductId == id);
-        }
-
     }
     
 }

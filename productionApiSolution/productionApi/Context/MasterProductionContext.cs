@@ -15,7 +15,10 @@ namespace productionApi.Context
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_connection);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(_connection);
+            }
         }
 
         public DbSet<Product> Products { get; set; }
