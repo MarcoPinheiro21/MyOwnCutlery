@@ -37,13 +37,17 @@ Destacam-se os agregados identificados a vermelho:
 - Uso de ASP .Net Core
 - Uso de uma base de dados MS-SQL com a adoção de Entity Framework Migrations.
 - Adoção de DDD.
-- Criação de um controller denominado "Gateway controller" na solução FactoryApi para comunicação com a solução ProductionApi, prevendo eventuais exigências relativas a autenticação.
+- Criação de um controller denominado "Gateway controller" na solução FactoryApi que tem como objectivo providenciar a comunicação com a solução ProductionApi, prevendo já eventuais exigências futuras relativas a autenticação. A comunicação entre as duas aplicações é efetuada através do protocolo Http conforme demonstrado no diagrama de vista lógica - nível 2.
 - Uso de uma camada intermédia denominada "Service" entre o controller e o repositório.
-- Bootstrap de Tools e OperationTypes na instanciação dos respetivos controllers.
+- Bootstrap de Tools e OperationTypes na instanciação dos respetivos controllers. 
+- Utilização de uma única instância de SQL Server com duas bases de dados, uma por cada projecto: FactoryDB e ProductionDB
 
+## Precedências na criação de Entidades
+- A criação de 'MachineType' e 'Product' requerem a existência de pelo menos uma instância de 'Operation'.
+- A criação de 'Machine' requer a existência de pelo menos uma instância de 'MachineType'.
+- A criação de 'Production Line' requer a existência de pelo menos uma instância de 'Machine'.
 
-
-# C4 Model
+# C4 Model 
 
 ## **Nível 1**
 
