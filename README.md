@@ -115,7 +115,7 @@ Destacam-se os agregados identificados a vermelho:
 ### Vista de Processo **ProductionAPI**
 
 **Create Product**
-![D12](/Diagrams/ProcessView_D12.jpg)
+![D12](/Diagrams/ProcessView_D12.png)
 
 
 ### Vista de Implementação **ProductionAPI**
