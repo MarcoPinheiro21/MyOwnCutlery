@@ -39,7 +39,7 @@ Destacam-se os agregados identificados a vermelho:
 - Adoção de DDD.
 - Criação de um controller denominado "Gateway controller" na solução FactoryApi que tem como objectivo providenciar a comunicação com a solução ProductionApi, prevendo já eventuais exigências futuras relativas a autenticação. A comunicação entre as duas aplicações é efetuada através do protocolo Http conforme demonstrado no diagrama de vista lógica - nível 2.
 - Uso de uma camada intermédia denominada "Service" entre o controller e o repositório.
-- Bootstrap de Tools e OperationTypes na instanciação dos respetivos controllers. 
+- Bootstrap de Tools e OperationTypes na instanciação dos respetivos controllers.
 - Utilização de uma única instância de SQL Server com duas bases de dados, uma por cada projecto: FactoryDB e ProductionDB
 
 ## Precedências na criação de Entidades
@@ -47,7 +47,7 @@ Destacam-se os agregados identificados a vermelho:
 - A criação de 'Machine' requer a existência de pelo menos uma instância de 'MachineType'.
 - A criação de 'Production Line' requer a existência de pelo menos uma instância de 'Machine'.
 
-# C4 Model 
+# C4 Model
 
 ## **Nível 1**
 
@@ -118,7 +118,7 @@ Destacam-se os agregados identificados a vermelho:
 ![D12](/Diagrams/ProcessView_D12.jpg)
 
 
-### Vista de Implementação **ProductionAPI**s
+### Vista de Implementação **ProductionAPI**
 
 ![D13](/Diagrams/ImplementationView_D13.jpg)
 
