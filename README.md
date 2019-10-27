@@ -16,8 +16,8 @@ O tipo de fábrica onde o sistema será implementado fabrica produtos que seguem
 
 * **Pedro Mendes** - *1161871*
 
-<br/>
-<br/>
+&nbsp;
+&nbsp;
 
 # Implementação
 
@@ -42,8 +42,8 @@ Destacam-se os agregados identificados a vermelho:
 - Uso de uma camada intermédia denominada "Service" entre o controller e o repositório.
 - Bootstrap de Tools e OperationTypes na instanciação dos respetivos controllers. 
 
-<br/>
-<br/>
+&nbsp;
+&nbsp;
 
 # C4 Model 
 
@@ -61,8 +61,8 @@ Destacam-se os agregados identificados a vermelho:
 
 ![D3](/Diagrams/ScenaryView_D3.jpg)
 
-<br/>
-<br/>
+&nbsp;
+&nbsp;
 
 ## **Nível 2**
 
@@ -82,8 +82,8 @@ Destacam-se os agregados identificados a vermelho:
 
 ![D6](/Diagrams/ImplementationView_D6.jpg)
 
-<br/>
-<br/>
+&nbsp;
+&nbsp;
 
 ## **Nível 3**
 
@@ -93,14 +93,15 @@ Destacam-se os agregados identificados a vermelho:
 
 ### Vista de Processo **FactoryAPI**
 
-![D9](/Diagrams/ProcessView_D9.jpg)
+**Create Operation**
+![D9](/Diagrams/ProcessView_D9_CreateOperation.png)
 
 ### Vista de Implementação **FactoryAPI**
 
 ![D10](/Diagrams/ImplementationView_D10.jpg)
 
-<br/>
-<br/>
+&nbsp;
+&nbsp;
 
 ### Vista Lógica **ProductionAPI**
 
@@ -133,3 +134,5 @@ Resultado dos diversos testes desenvolvidos:
 ## Unitários
 
 Os testes unitários aos controllers foram desenvolvidos usando um contexto "mock" em memória que simula a base de dados MS-SQL que temos configurada.
+
+![UnitTestsContext](/Diagrams/UnitTestsContext.png)
