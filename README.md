@@ -39,11 +39,11 @@ Destacam-se os agregados identificados a vermelho:
 - Adoção de DDD.
 - Criação de um controller denominado "Gateway controller" na solução FactoryApi para comunicação com a solução ProductionApi, prevendo eventuais exigências relativas a autenticação.
 - Uso de uma camada intermédia denominada "Service" entre o controller e o repositório.
-- Bootstrap de Tools e OperationTypes na instanciação dos respetivos controllers. 
+- Bootstrap de Tools e OperationTypes na instanciação dos respetivos controllers.
 
 
 
-# C4 Model 
+# C4 Model
 
 ## **Nível 1**
 
@@ -91,6 +91,9 @@ Destacam-se os agregados identificados a vermelho:
 
 **Create Operation**
 ![D9](/Diagrams/ProcessView_D9_CreateOperation.png)
+
+**Get Operation**
+![D9](/Diagrams/Process_View_D9_GetOperation.jpg)
 
 **Create Machine**
 ![D9](/Diagrams/Process_View_Level3_D9_CreateMachine.jpg)
