@@ -1,0 +1,1999 @@
+{
+	"id": "42871c70-7e6b-4e5e-9b2d-b5ccc0f4b060",
+	"name": "PostManTests",
+	"allTests": [],
+	"timestamp": "2019-10-27T15:56:46.552Z",
+	"collection_id": "88175785-c4cd-4884-a413-b7672f7d35f7",
+	"folder_id": 0,
+	"target_type": "collection",
+	"environment_id": "5830b9dd-c67d-40f1-9826-0b578829fa85",
+	"data": [],
+	"delay": 0,
+	"count": 1,
+	"collection": {
+		"id": "88175785-c4cd-4884-a413-b7672f7d35f7",
+		"name": "PostManTests",
+		"order": [],
+		"folders_order": [
+			"f9704fa6-ec99-4235-83c2-813b0dbba4c0",
+			"33df0dcc-d4c6-4164-9c51-7220d567730f",
+			"96833e16-cb6b-4229-b970-a6372b6299d2",
+			"20904f78-4e46-4792-b285-a5e1f0ca83d0"
+		],
+		"isFavorite": false
+	},
+	"folder": null,
+	"environment": null,
+	"globals": [],
+	"results": [
+		{
+			"name": "Create Operation",
+			"id": "20340ce0-b04e-42df-bb26-7554e9d0abde",
+			"url": "https://localhost:5001/factoryapi/operations?=",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Content-Type is present": true,
+				"OperationType is correct": true,
+				"operationId is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"OperationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"1327"
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Content-Type is present": true,
+					"OperationType is correct": true,
+					"operationId is present": true
+				}
+			],
+			"time": "1327",
+			"totalRequestTime": "1327",
+			"iterationResults": {}
+		},
+		{
+			"name": "Create Another Operation",
+			"id": "0037129b-c592-473c-becd-c87c569c9a9e",
+			"url": "https://localhost:5001/factoryapi/operations?=",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Content-Type is present": true,
+				"OperationType is correct": true,
+				"operationId is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"OperationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"217"
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Content-Type is present": true,
+					"OperationType is correct": true,
+					"operationId is present": true
+				}
+			],
+			"time": "217",
+			"totalRequestTime": "217",
+			"iterationResults": {}
+		},
+		{
+			"name": "Create Machine Type",
+			"id": "a3b86c82-f9d2-4310-96a5-df18d08e34b5",
+			"url": "https://localhost:5001/factoryapi/machines/types",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Content-Type is present": true,
+				"desc is correct": true,
+				"id is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"211"
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Content-Type is present": true,
+					"desc is correct": true,
+					"id is present": true
+				}
+			],
+			"time": "211",
+			"totalRequestTime": "211",
+			"iterationResults": {}
+		},
+		{
+			"name": "Create Machine",
+			"id": "36d284e0-d924-4036-b4ca-f5cbb6385a6b",
+			"url": "https://localhost:5001/factoryapi/machines",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Content-Type is present": true,
+				"desc is correct": true,
+				"id is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"198"
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Content-Type is present": true,
+					"desc is correct": true,
+					"id is present": true
+				}
+			],
+			"time": "198",
+			"totalRequestTime": "198",
+			"iterationResults": {}
+		},
+		{
+			"name": "Create Production Line",
+			"id": "8f4469a2-f3e6-42b5-960b-623dd6a0228d",
+			"url": "https://localhost:5001/factoryapi/productionlines",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Content-Type is present": true,
+				"productionLineName is correct": true,
+				"productionLineId is present": true,
+				"machinesListDtos Expected number": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"machinesListDtos Expected number": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"305"
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Content-Type is present": true,
+					"productionLineName is correct": true,
+					"productionLineId is present": true,
+					"machinesListDtos Expected number": true
+				}
+			],
+			"time": "305",
+			"totalRequestTime": "305",
+			"iterationResults": {}
+		},
+		{
+			"name": "Create Product",
+			"id": "f0021e1a-0654-4cb2-a694-52c57bbcb190",
+			"url": "https://localhost:8090/productionapi/products/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Content-Type is present": true,
+				"ProductName is correct": true,
+				"ProductId is present": true,
+				"PlanId is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ProductName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ProductId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"PlanId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"1472"
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Content-Type is present": true,
+					"ProductName is correct": true,
+					"ProductId is present": true,
+					"PlanId is present": true
+				}
+			],
+			"time": "1472",
+			"totalRequestTime": "1472",
+			"iterationResults": {}
+		},
+		{
+			"name": "Read Operation",
+			"id": "4451851c-03dd-4515-af6c-e73a2bc5143c",
+			"url": "https://localhost:5001/factoryapi/operations/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"operationType is correct": true,
+				"operationId is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"35"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"operationType is correct": true,
+					"operationId is present": true
+				}
+			],
+			"time": "35",
+			"totalRequestTime": "35",
+			"iterationResults": {}
+		},
+		{
+			"name": "Read Machine Type",
+			"id": "1951676c-a543-44b4-8914-27c70670e455",
+			"url": "https://localhost:5001/factoryapi/machines/types/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"desc is correct": true,
+				"id is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"63"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"desc is correct": true,
+					"id is present": true
+				}
+			],
+			"time": "63",
+			"totalRequestTime": "63",
+			"iterationResults": {}
+		},
+		{
+			"name": "Read Machine",
+			"id": "5e48d53b-9a1a-4258-a9e1-f48c4c59e47b",
+			"url": "https://localhost:5001/factoryapi/machines/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"description is correct": true,
+				"id is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"description is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"18"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"description is correct": true,
+					"id is present": true
+				}
+			],
+			"time": "18",
+			"totalRequestTime": "18",
+			"iterationResults": {}
+		},
+		{
+			"name": "Read Production Line",
+			"id": "31c652a6-21ad-47b8-a189-d170e7e01480",
+			"url": "https://localhost:5001/factoryapi/productionlines/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"productionLineName is correct": true,
+				"productionLineId is present": true,
+				"machinesListDtos Expected number": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"machinesListDtos Expected number": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"16"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"productionLineName is correct": true,
+					"productionLineId is present": true,
+					"machinesListDtos Expected number": true
+				}
+			],
+			"time": "16",
+			"totalRequestTime": "16",
+			"iterationResults": {}
+		},
+		{
+			"name": "Read Operation of given Machine Type",
+			"id": "8daba5b2-7c44-44db-bca4-7a096438dad0",
+			"url": "https://localhost:5001/factoryapi/machines/types/1/operations",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"desc is correct": true,
+				"id is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"24"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"desc is correct": true,
+					"id is present": true
+				}
+			],
+			"time": "24",
+			"totalRequestTime": "24",
+			"iterationResults": {}
+		},
+		{
+			"name": "Read Product",
+			"id": "d91f7120-2200-4595-add4-78bfd78592d1",
+			"url": "https://localhost:8090/productionapi/products/",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"productlist is not empty": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productlist is not empty": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"72"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"productlist is not empty": true
+				}
+			],
+			"time": "72",
+			"totalRequestTime": "72",
+			"iterationResults": {}
+		},
+		{
+			"name": "Read Plan of Product",
+			"id": "8505e060-0d7a-474e-a786-30efba20b37b",
+			"url": "https://localhost:8090/productionapi/products/1/plan",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"productlist is not empty": true,
+				"operation1 is correct": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productlist is not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operation1 is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"89"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"productlist is not empty": true,
+					"operation1 is correct": true
+				}
+			],
+			"time": "89",
+			"totalRequestTime": "89",
+			"iterationResults": {}
+		},
+		{
+			"name": "Update operation",
+			"id": "2f6f1d38-d650-4e3d-ab3e-dbeabd0ca531",
+			"url": "https://localhost:5001/factoryapi/operations/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"operationType is correct": true,
+				"operationId is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"95"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"operationType is correct": true,
+					"operationId is present": true
+				}
+			],
+			"time": "95",
+			"totalRequestTime": "95",
+			"iterationResults": {}
+		},
+		{
+			"name": "Update machine",
+			"id": "29df20a6-3be1-4f84-af5c-44bc41a70e92",
+			"url": "https://localhost:5001/factoryapi/machines/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"desc is correct": true,
+				"id is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"93"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"desc is correct": true,
+					"id is present": true
+				}
+			],
+			"time": "93",
+			"totalRequestTime": "93",
+			"iterationResults": {}
+		},
+		{
+			"name": "Update Production Line",
+			"id": "aef610ef-b90f-40e7-95fd-0f3483cf2296",
+			"url": "https://localhost:5001/factoryapi/productionlines/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"productionLineName is correct": true,
+				"productionLineId is present": true,
+				"machinesListDtos Expected number": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"machinesListDtos Expected number": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"130"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"productionLineName is correct": true,
+					"productionLineId is present": true,
+					"machinesListDtos Expected number": true
+				}
+			],
+			"time": "130",
+			"totalRequestTime": "130",
+			"iterationResults": {}
+		},
+		{
+			"name": "Update Operations of a given Machine Type",
+			"id": "acd0fc20-3020-4961-845b-1ffc736dfafe",
+			"url": "https://localhost:5001/factoryapi/machines/types/1/operations",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"operationType is correct": true,
+				"operationId is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"79"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"operationType is correct": true,
+					"operationId is present": true
+				}
+			],
+			"time": "79",
+			"totalRequestTime": "79",
+			"iterationResults": {}
+		},
+		{
+			"name": "Delete operation",
+			"id": "54661cce-79a1-48fd-a933-2d5948a11d0a",
+			"url": "https://localhost:5001/factoryapi/operations/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"operationType is correct": true,
+				"operationId is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"128"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"operationType is correct": true,
+					"operationId is present": true
+				}
+			],
+			"time": "128",
+			"totalRequestTime": "128",
+			"iterationResults": {}
+		},
+		{
+			"name": "Delete Another Operation",
+			"id": "060089a4-bfd4-40a8-a9d0-a57baf283915",
+			"url": "https://localhost:5001/factoryapi/operations/2",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"operationType is correct": true,
+				"operationId is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"46"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"operationType is correct": true,
+					"operationId is present": true
+				}
+			],
+			"time": "46",
+			"totalRequestTime": "46",
+			"iterationResults": {}
+		},
+		{
+			"name": "Delete Production Line",
+			"id": "c5dc12e4-9d2e-4e1c-a2ac-9ac8084565e6",
+			"url": "https://localhost:5001/factoryapi/productionlines/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"productionLineName is correct": true,
+				"productionLineId is present": true,
+				"machinesListDtos Expected number": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"machinesListDtos Expected number": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"118"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"productionLineName is correct": true,
+					"productionLineId is present": true,
+					"machinesListDtos Expected number": true
+				}
+			],
+			"time": "118",
+			"totalRequestTime": "118",
+			"iterationResults": {}
+		},
+		{
+			"name": "Delete machine",
+			"id": "37d51999-9981-4336-a7a2-ea4dc6f08c98",
+			"url": "https://localhost:5001/factoryapi/machines/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"desc is correct": true,
+				"id is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"67"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"desc is correct": true,
+					"id is present": true
+				}
+			],
+			"time": "67",
+			"totalRequestTime": "67",
+			"iterationResults": {}
+		},
+		{
+			"name": "Delete Product",
+			"id": "aae5f3b5-b740-48b0-aeef-2e67031b8181",
+			"url": "https://localhost:8090/productionapi/products/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"desc is correct": true,
+				"id is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"76"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"desc is correct": true,
+					"id is present": true
+				}
+			],
+			"time": "76",
+			"totalRequestTime": "76",
+			"iterationResults": {}
+		},
+		{
+			"name": "Delete Machine Type",
+			"id": "cb30e79c-271b-4dd6-aea2-edb1316ef3b3",
+			"url": "https://localhost:5001/factoryapi/machines/types/1",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is present": true,
+				"id is present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				"65"
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is present": true,
+					"id is present": true
+				}
+			],
+			"time": "65",
+			"totalRequestTime": "65",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 95,
+	"totalFail": 0,
+	"totalTime": 4944,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "Create Operation",
+			"id": "20340ce0-b04e-42df-bb26-7554e9d0abde",
+			"url": "https://localhost:5001/factoryapi/operations?=",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"OperationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Create Another Operation",
+			"id": "0037129b-c592-473c-becd-c87c569c9a9e",
+			"url": "https://localhost:5001/factoryapi/operations?=",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"OperationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Create Machine Type",
+			"id": "a3b86c82-f9d2-4310-96a5-df18d08e34b5",
+			"url": "https://localhost:5001/factoryapi/machines/types",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Create Machine",
+			"id": "36d284e0-d924-4036-b4ca-f5cbb6385a6b",
+			"url": "https://localhost:5001/factoryapi/machines",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Create Production Line",
+			"id": "8f4469a2-f3e6-42b5-960b-623dd6a0228d",
+			"url": "https://localhost:5001/factoryapi/productionlines",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"machinesListDtos Expected number": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Create Product",
+			"id": "f0021e1a-0654-4cb2-a694-52c57bbcb190",
+			"url": "https://localhost:8090/productionapi/products/",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 201,
+				"name": "Created",
+				"detail": {
+					"name": "Created",
+					"detail": "The request has been fulfilled and resulted in a new resource being created."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ProductName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ProductId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"PlanId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Read Operation",
+			"id": "4451851c-03dd-4515-af6c-e73a2bc5143c",
+			"url": "https://localhost:5001/factoryapi/operations/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Read Machine Type",
+			"id": "1951676c-a543-44b4-8914-27c70670e455",
+			"url": "https://localhost:5001/factoryapi/machines/types/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Read Machine",
+			"id": "5e48d53b-9a1a-4258-a9e1-f48c4c59e47b",
+			"url": "https://localhost:5001/factoryapi/machines/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"description is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Read Production Line",
+			"id": "31c652a6-21ad-47b8-a189-d170e7e01480",
+			"url": "https://localhost:5001/factoryapi/productionlines/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"machinesListDtos Expected number": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Read Operation of given Machine Type",
+			"id": "8daba5b2-7c44-44db-bca4-7a096438dad0",
+			"url": "https://localhost:5001/factoryapi/machines/types/1/operations",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Read Product",
+			"id": "d91f7120-2200-4595-add4-78bfd78592d1",
+			"url": "https://localhost:8090/productionapi/products/",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productlist is not empty": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Read Plan of Product",
+			"id": "8505e060-0d7a-474e-a786-30efba20b37b",
+			"url": "https://localhost:8090/productionapi/products/1/plan",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productlist is not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operation1 is correct": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Update operation",
+			"id": "2f6f1d38-d650-4e3d-ab3e-dbeabd0ca531",
+			"url": "https://localhost:5001/factoryapi/operations/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Update machine",
+			"id": "29df20a6-3be1-4f84-af5c-44bc41a70e92",
+			"url": "https://localhost:5001/factoryapi/machines/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Update Production Line",
+			"id": "aef610ef-b90f-40e7-95fd-0f3483cf2296",
+			"url": "https://localhost:5001/factoryapi/productionlines/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"machinesListDtos Expected number": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Update Operations of a given Machine Type",
+			"id": "acd0fc20-3020-4961-845b-1ffc736dfafe",
+			"url": "https://localhost:5001/factoryapi/machines/types/1/operations",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Delete operation",
+			"id": "54661cce-79a1-48fd-a933-2d5948a11d0a",
+			"url": "https://localhost:5001/factoryapi/operations/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Delete Another Operation",
+			"id": "060089a4-bfd4-40a8-a9d0-a57baf283915",
+			"url": "https://localhost:5001/factoryapi/operations/2",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationType is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"operationId is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Delete Production Line",
+			"id": "c5dc12e4-9d2e-4e1c-a2ac-9ac8084565e6",
+			"url": "https://localhost:5001/factoryapi/productionlines/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineName is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"productionLineId is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"machinesListDtos Expected number": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Delete machine",
+			"id": "37d51999-9981-4336-a7a2-ea4dc6f08c98",
+			"url": "https://localhost:5001/factoryapi/machines/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Delete Product",
+			"id": "aae5f3b5-b740-48b0-aeef-2e67031b8181",
+			"url": "https://localhost:8090/productionapi/products/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"desc is correct": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		},
+		{
+			"name": "Delete Machine Type",
+			"id": "cb30e79c-271b-4dd6-aea2-edb1316ef3b3",
+			"url": "https://localhost:5001/factoryapi/machines/types/1",
+			"time": "2019-10-27T15:56:46.552Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is present": {
+					"pass": 1,
+					"fail": 0
+				},
+				"id is present": {
+					"pass": 1,
+					"fail": 0
+				}
+			}
+		}
+	],
+	"synced": false
+}
