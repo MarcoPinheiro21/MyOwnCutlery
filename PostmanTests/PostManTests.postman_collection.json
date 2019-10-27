@@ -830,7 +830,7 @@
 									"var responseData = JSON.parse(responseBody);",
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"operationType is correct\"] = responseData.operationList[0] === pm.environment.get(\"envOperationId2\");",
+									"//tests[\"operationType is correct\"] = responseData.operationList[0] === pm.environment.get(\"envOperationId2\");",
 									"tests[\"operationId is present\"] = responseData.operationId !== null;"
 								],
 								"type": "text/javascript"

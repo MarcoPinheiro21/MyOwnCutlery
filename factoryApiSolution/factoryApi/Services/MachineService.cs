@@ -57,7 +57,8 @@ namespace factoryApi.Services
 
         public MachineTypeDto AddMachineType(CreateMachineTypeDto createMachineTypeDto)
         {
-            return _machineTypeRepository.Add(createMachineTypeDto).toDto();
+            var machineType = _machineTypeRepository.Add(createMachineTypeDto);
+            return FindMachineTypeById(machineType.Id);
         }
 
         public MachineTypeDto FindMachineTypeById(long id)
@@ -79,10 +80,11 @@ namespace factoryApi.Services
             return result;
         }
 
-        public MachineTypeDto UpdateOperationsOfMachineType(long typeId, 
+        public MachineTypeDto UpdateOperationsOfMachineType(long typeId,
             CreateMachineTypeDto createOperationDto)
         {
-            return _machineTypeRepository.UpdateElement(typeId, createOperationDto);
+            var result = _machineTypeRepository.UpdateElement(typeId, createOperationDto);
+            return FindMachineTypeById(result.Id);
         }
 
         public MachineTypeDto DeleteMachineType(long typeId)

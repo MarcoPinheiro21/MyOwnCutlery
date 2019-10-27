@@ -20,19 +20,25 @@ namespace factoryApi.Models.Machine
             {
                 throw new ArgumentNullException("Invalid machine type description.");
             }
-            
+
             Desc = desc;
             OperationMachineType = new List<OperationMachineType>();
         }
-        
+
         public MachineTypeDto toDto()
         {
             return new MachineTypeDto(Id, Desc, GetOperationIdsList());
         }
 
-        private List<long> GetOperationIdsList()
+        private List<OperationDto> GetOperationIdsList()
         {
-            return OperationMachineType.Select(var => var.OperationId).ToList();
+            var operationDtoList = new List<OperationDto>();
+            foreach (var op in OperationMachineType)
+            {
+                operationDtoList.Add(op.Operation.toDto());
+            }
+
+            return operationDtoList;
         }
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using factoryApi.Context;
 using factoryApi.DTO;
@@ -27,7 +26,13 @@ namespace factoryApi.Repositories
 
         public MachineType GetMachineTypeById(long id)
         {
-            var result = _context.MachineTypes.Include(t => t.OperationMachineType)
+            var result = _context.MachineTypes
+                .Include(t => t.OperationMachineType)
+                .ThenInclude(o => o.Operation)
+                .ThenInclude(o => o.OperationType)
+                .Include(t => t.OperationMachineType)
+                .ThenInclude(o => o.Operation)
+                .ThenInclude(t => t.Tool)
                 .SingleOrDefault(mt => mt.Id == id);
             if (result == null)
             {
@@ -68,7 +73,10 @@ namespace factoryApi.Repositories
 
         public MachineType Add(CreateMachineTypeDto writeDto)
         {
-            var machineType = _context.MachineTypes.Add(new MachineType(writeDto.Desc)).Entity;
+            var machineType = _context.MachineTypes
+                .Add(new MachineType(writeDto.Desc)).Entity;
+
+            var opMachineType = new List<OperationMachineType>();
 
             if (writeDto.OperationList.Count != 0)
             {
@@ -99,7 +107,7 @@ namespace factoryApi.Repositories
                 Console.WriteLine(e);
                 throw new DuplicatedObjectException("A Machine Type with the same description already exists");
             }
-            
+
             return machineType;
         }
 
@@ -122,7 +130,12 @@ namespace factoryApi.Repositories
 
             foreach (var op in Dto.OperationList)
             {
-                var operation = _context.Operations.Find(op);
+                var operation = _context.Operations
+                    .Include(o => o.OperationType)
+                    .Include(t => t.OperationMachineType)
+                    .ThenInclude(o => o.Operation)
+                    .ThenInclude(t => t.Tool)
+                    .SingleOrDefault(o => o.Id == op);
 
                 if (operation == null)
                 {
@@ -143,10 +156,10 @@ namespace factoryApi.Repositories
 
 
             machineType.OperationMachineType = operationMachineTypeList;
-            var result = machineType.toDto();
+            //var result = machineType.toDto();
 
             _context.SaveChanges();
-            return result;
+            return GetMachineTypeById(id).toDto();
         }
 
         public MachineTypeDto DeleteElement(long id)
