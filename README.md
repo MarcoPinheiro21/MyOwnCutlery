@@ -99,8 +99,12 @@ Destacam-se os agregados identificados a vermelho:
 **Get Operation**
 ![D9](/Diagrams/Process_View_D9_GetOperation.jpg)
 
+**Delete Operation**
+![D9](/Diagrams/Process_View_Level3_D9_DeleteOperation.png)
+
 **Create Machine**
 ![D9](/Diagrams/Process_View_Level3_D9_CreateMachine.jpg)
+
 
 ### Vista de Implementação **FactoryAPI**
 
