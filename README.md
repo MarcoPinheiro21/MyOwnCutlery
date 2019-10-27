@@ -92,6 +92,9 @@ Destacam-se os agregados identificados a vermelho:
 **Create Operation**
 ![D9](/Diagrams/ProcessView_D9_CreateOperation.png)
 
+**Create Machine**
+![D9](/Diagrams/Process_View_Level3_D9_CreateMachine.jpg)
+
 ### Vista de Implementação **FactoryAPI**
 
 ![D10](/Diagrams/ImplementationView_D10.jpg)
