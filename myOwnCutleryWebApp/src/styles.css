@@ -1,0 +1,31 @@
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+.mat-toolbar{
+
+}
+
+.mat-icon {
+  font-size: 50px;
+  display: flex;
+  align-items: center;
+  width: auto !important;
+}
+
+.mainTitle {
+  font-family: 'Bowlby One SC';
+  font-size: 75px;
+  margin: 5% auto 0 auto;
+  width: 55%;
+  padding: 10px;
+}
+
+.labelIcons{
+  font-family: 'Bowlby One SC';
+  font-size: 20px;
+  width: 100%;
+  padding: 10px;
+}
+
+.applications {
+  margin-top: 2%;
+}

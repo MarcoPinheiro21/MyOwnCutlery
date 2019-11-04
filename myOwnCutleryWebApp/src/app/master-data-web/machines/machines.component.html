@@ -1,0 +1,24 @@
+<div>
+    <div class="panel-body">
+        <table class="table table-sm table-active">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Description</th>
+              <th scope="col">Machine Type Id</th>
+              <th scope="col">Production Line Id</th>
+              <th><button type="button" class="btn btn-primary">Novo</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let machine of machines">
+              <td>{{machine.id}}</td>
+              <td>{{machine.description}}</td>
+              <td>{{machine.machineTypeId}}</td>
+              <td>{{machine.productionLineId}}</td>
+              <td><button type="button" class="btn btn-primary" (click)="share()">Editar</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+</div>

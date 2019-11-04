@@ -1,0 +1,49 @@
+<header>
+  <h2 class="mainTitle">My Own Cutlery App</h2>
+  <!-- <mat-icon class="mainTitle" fontSet="fas" fontIcon="fa-cash-register"></mat-icon> -->
+</header>
+
+<section class="container">
+  <div class="col-sm-3" style="text-align: center;">
+    <div class="labelIcons">
+      Machines
+    </div>
+    <mat-icon (click)="toggle('Machines')" fontSet="fas" fontIcon="fa-cash-register" >
+    <!-- matBadge="3" matBadgeColor="accent" matBadgeSize="large" matBadgePosition="above" > -->
+    </mat-icon>
+  </div>
+  <div class="col-sm-3" style="text-align: center;">
+    <div class="labelIcons">
+      Machine Types
+    </div>
+    <mat-icon (click)="toggle('MachineTypes')" fontSet="fas" fontIcon="fa-memory">
+      <!-- matBadge="2" matBadgeColor="accent" matBadgePosition="above" matBadgeSize="large" > -->
+    </mat-icon>
+  </div>
+  <div class="col-sm-3" style="text-align: center;">
+    <div class="labelIcons">
+      Operations
+    </div>
+    <mat-icon (click)="toggle('Operations')" fontSet="fas" fontIcon="fa-tasks">
+      <!-- matBadge="3" matBadgeColor="accent" matBadgeSize="large" matBadgePosition="above"  -->
+    </mat-icon>
+  </div>
+  <div class="col-sm-3" style="text-align: center;">
+    <div class="labelIcons">
+      Products
+    </div>
+    <mat-icon (click)="toggle('Products')" fontSet="fas" fontIcon="fa-utensils" >
+    <!-- matBadge="2" matBadgeColor="accent" matBadgeSize="large" matBadgePosition="above"  -->
+     </mat-icon>
+  </div>
+</section>
+
+<section class="container applications">
+  <div *ngIf="viewFlags.viewMachines">
+    <app-machines></app-machines>
+  </div>
+
+  <div *ngIf="viewFlags.viewMachineTypes">
+    <app-machine-types></app-machine-types>
+  </div>
+</section>
