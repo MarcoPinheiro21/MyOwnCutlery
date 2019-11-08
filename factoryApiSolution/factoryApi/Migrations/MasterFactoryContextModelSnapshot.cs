@@ -21,7 +21,7 @@ namespace factoryApi.Migrations
 
             modelBuilder.Entity("factoryApi.Models.Machine.Machine", b =>
                 {
-                    b.Property<long>("MachineId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -32,7 +32,10 @@ namespace factoryApi.Migrations
 
                     b.Property<long?>("ProductionLineId");
 
-                    b.HasKey("MachineId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Description")
+                        .IsUnique();
 
                     b.HasIndex("MachineType");
 
@@ -43,20 +46,24 @@ namespace factoryApi.Migrations
 
             modelBuilder.Entity("factoryApi.Models.Machine.MachineType", b =>
                 {
-                    b.Property<long>("MachineTypeId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Desc");
 
-                    b.HasKey("MachineTypeId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Desc")
+                        .IsUnique()
+                        .HasFilter("[Desc] IS NOT NULL");
 
                     b.ToTable("MachineTypes");
                 });
 
             modelBuilder.Entity("factoryApi.Models.Operation.Operation", b =>
                 {
-                    b.Property<long>("OperationId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -64,24 +71,26 @@ namespace factoryApi.Migrations
 
                     b.Property<long?>("ToolId");
 
-                    b.HasKey("OperationId");
-
-                    b.HasIndex("OperationTypeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ToolId");
+
+                    b.HasIndex("OperationTypeId", "ToolId")
+                        .IsUnique()
+                        .HasFilter("[OperationTypeId] IS NOT NULL AND [ToolId] IS NOT NULL");
 
                     b.ToTable("Operations");
                 });
 
             modelBuilder.Entity("factoryApi.Models.Operation.OperationType", b =>
                 {
-                    b.Property<long>("OperationTypeId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("OperationTypeName");
 
-                    b.HasKey("OperationTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("OperationTypes");
                 });
@@ -99,14 +108,17 @@ namespace factoryApi.Migrations
 
             modelBuilder.Entity("factoryApi.Models.ProductionLine.ProductionLine", b =>
                 {
-                    b.Property<long>("ProductionLineId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ProductionLineName")
                         .IsRequired();
 
-                    b.HasKey("ProductionLineId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductionLineName")
+                        .IsUnique();
 
                     b.ToTable("ProductionLines");
                 });

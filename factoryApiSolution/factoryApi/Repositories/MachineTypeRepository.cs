@@ -68,7 +68,11 @@ namespace factoryApi.Repositories
         private IEnumerable<MachineType> GetAllMachineTypes()
         {
             return _context.MachineTypes
-                .Include(o => o.OperationMachineType).ToList();
+                .Include(o => o.OperationMachineType)
+                    .ThenInclude(o => o.Operation).ThenInclude(p=>p.Tool)
+                .Include(o => o.OperationMachineType)
+                    .ThenInclude(o => o.Operation).ThenInclude(p=>p.OperationType)
+                .ToList();
         }
 
         public MachineType Add(CreateMachineTypeDto writeDto)
