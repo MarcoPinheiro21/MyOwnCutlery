@@ -8,15 +8,17 @@ import { MasterDataWebComponent } from './master-data-web/master-data-web.compon
 import { MachinesComponent } from './master-data-web/machines/machines.component';
 import { MachineTypesComponent } from './master-data-web/machine-types/machine-types.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatExpansionModule } from '@angular/material';
 import { MatIconModule } from '@angular/material';
 import { MatBadgeModule } from '@angular/material';
 import { MatToolbarModule } from '@angular/material';
 import { MachinesService } from './master-data-web/machines/machines.service';
 import { MatDialogModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material';
+import { MatSelectModule } from '@angular/material';
 
 import { MachineDialogComponent } from './master-data-web/machines/machine-dialog/machine-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const AngularMaterialComponents = [
   MatButtonModule,
@@ -24,7 +26,12 @@ const AngularMaterialComponents = [
   MatBadgeModule,
   MatToolbarModule,
   MatDialogModule,
-  MatFormFieldModule
+  MatFormFieldModule,
+  MatSelectModule,
+  FormsModule,
+  ReactiveFormsModule,
+  MatInputModule,
+  MatExpansionModule
 ];
 
 @NgModule({

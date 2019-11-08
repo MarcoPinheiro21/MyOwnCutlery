@@ -1,9 +1,5 @@
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-.mat-toolbar{
-
-}
-
 .mat-icon {
   font-size: 50px;
   display: flex;
@@ -27,5 +23,71 @@
 }
 
 .applications {
-  margin-top: 2%;
+  margin-top: 5%;
+}
+
+.mat-accordion .mat-header-row {
+  padding-left: 1.5rem;
+  padding-right: 2rem;
+  border-bottom: none;
+}
+
+.mat-expansion-panel-header.mat-row {
+  border-bottom: none;
+}
+
+.mat-table {
+  display: block;
+}
+
+.mat-header-row {
+  min-height: 56px;
+}
+
+.mat-row {
+  min-height: 48px;
+}
+
+.mat-row {
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  align-items: center;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.mat-header-row {
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  align-items: center;
+  padding: 0 24px;
+  box-sizing: border-box;
+  font-family: 'Bowlby One SC';
+  font-size: 10px;
+  background-color: #d7d7d8;
+}
+
+.buttonTables{
+  font-family: 'Bowlby One SC';
+  font-size: 10px;
+}
+
+.subRow {
+  background-color: #d7d7d8;
+}
+
+.mat-row::after,
+.mat-header-row::after {
+  display: inline-block;
+  min-height: inherit;
+  content: '';
+}
+
+.mat-cell,
+.mat-header-cell {
+  flex: 1;
+  overflow: hidden;
+  word-wrap: break-word;
 }

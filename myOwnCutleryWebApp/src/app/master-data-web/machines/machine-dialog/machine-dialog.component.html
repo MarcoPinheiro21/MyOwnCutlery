@@ -1,16 +1,51 @@
-<h2 mat-dialog-title>{{machine.description}}</h2>
+<div *ngIf="isEdition; else newMachine">
+  <h1 mat-dialog-title class="labelIcons">Edit Machine</h1>
 
- <mat-dialog-content [formGroup]="fb">
+  <mat-dialog-content [formGroup]="myForm">
 
     <mat-form-field>
-        <input matInput
-                placeholder="Course Description"
-               formControlName="description">
+      <input matInput value="{{machine.description}}" placeholder="Description" formControlName="minLength" formControlName="{{machine.description}}">
     </mat-form-field>
 
-</mat-dialog-content>
+    <mat-form-field>
+        <mat-select placeholder="Select MachineType" value="machine.machineTypeId">
 
-<mat-dialog-actions>
-    <button class="mat-raised-button"(click)="close()">Close</button>
-    <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
-</mat-dialog-actions>
+          <mat-option value="9">Option9</mat-option>
+          <mat-option value="5">Option5555</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button (click)="save()">Save</button>
+  </mat-dialog-actions>
+
+</div>
+
+
+<ng-template #newMachine>
+  <h1 mat-dialog-title class="labelIcons">New Machine</h1>
+
+  <mat-dialog-content [formGroup]="myForm">
+
+    <mat-form-field>
+      <input matInput placeholder="Description">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Select MachineType">
+        <mat-option value="1">Option1</mat-option>
+        <mat-option value="9">Option9</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button (click)="save()">Save</button>
+  </mat-dialog-actions>
+
+</ng-template>

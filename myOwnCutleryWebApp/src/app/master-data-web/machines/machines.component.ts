@@ -3,6 +3,7 @@ import { Machine } from 'src/app/models/machine.model';
 import { MachinesService } from './machines.service';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { MachineDialogComponent } from './machine-dialog/machine-dialog.component';
+import { MachineType } from 'src/app/models/machineType.model';
 
 @Component({
   selector: 'app-machines',
@@ -12,36 +13,48 @@ import { MachineDialogComponent } from './machine-dialog/machine-dialog.componen
 export class MachinesComponent implements OnInit {
 
   machines: Machine[] = [];
-  factoryService: MachinesService;
+  machinesService: MachinesService;
   dialog: MatDialog;
 
-  constructor(_factoryService: MachinesService, private _dialog: MatDialog) {
-    this.factoryService = _factoryService;
-    this.dialog = _dialog;
+  constructor(machinesService: MachinesService, private myDialog: MatDialog) {
+    this.machinesService = machinesService;
+    this.dialog = myDialog;
   }
 
   ngOnInit() {
-    this.getMachines();
+    this.getMachines().then(success => {
+      this.populateMachinesId();
+    });
   }
 
-  // share() {
-  //   window.alert('The product has been shared!');
-  // }
-
-  share() {
+  openDialog(editionMode, selectedMachine?) {
 
     const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = this.machines[0];
+    dialogConfig.data = {
+      machine: selectedMachine,
+      isEdition: editionMode
+    };
+    dialogConfig.width = '15%';
+    dialogConfig.height = '30%';
+
 
     this.dialog.open(MachineDialogComponent, dialogConfig);
-}
+  }
 
-  public getMachines(): void {
-    this.factoryService.getMachines().subscribe((data: any) => {
-      this.machines = data;
+  getMachines(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.machinesService.getMachines().subscribe((data: any) => {
+        resolve(this.machines = data);
+      });
+    });
+  }
+
+  populateMachinesId() {
+    this.machines.map(mac => {
+      this.machinesService.getMachineTypeById(mac.machineTypeId).subscribe((macType: any) => {
+        mac.machineType = macType;
+      });
     });
   }
 

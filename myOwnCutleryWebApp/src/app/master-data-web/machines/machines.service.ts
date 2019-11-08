@@ -11,6 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class MachinesService {
 
   private url = 'https://localhost:5001/factoryapi/';
+  private machinesTypesByIdUrl = 'https://localhost:5001/factoryapi/machines/types/{id}';
 
   constructor(private http: HttpClient) { }
 
@@ -28,5 +29,17 @@ export class MachinesService {
           return response;
         })
       );
+    }
+
+    getMachineTypeById(id): Observable<MachineType[]> {
+      return this.http.get<MachineType[]>(this.replace(this.machinesTypesByIdUrl, id)).pipe(
+        map((response: [MachineType]) => {
+          return response;
+        })
+      );
+    }
+
+    replace(url: string, id) {
+      return url.replace('{id}', id);
     }
 }
