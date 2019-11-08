@@ -1,0 +1,22 @@
+<div>
+    <div class="panel-body">
+        <table class="table table-sm table-active">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Id Tool</th>
+              <th scope="col">Operation Type Id</th>
+              <th><button type="button" class="btn btn-primary">Novo</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let operation of operations">
+              <td>{{operation.operationId}}</td>
+              <td>{{operation.toolId}}</td>
+              <td>{{operation.operationType}}</td>
+              <td><button type="button" class="btn btn-primary" (click)="share()">Editar</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+</div>
