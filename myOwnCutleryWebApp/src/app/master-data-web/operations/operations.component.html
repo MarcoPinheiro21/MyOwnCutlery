@@ -1,22 +1,19 @@
-<div>
-    <div class="panel-body">
-        <table class="table table-sm table-active">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Id</th>
-              <th scope="col">Id Tool</th>
-              <th scope="col">Operation Type Id</th>
-              <th><button type="button" class="btn btn-primary">Novo</button></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let operation of operations">
-              <td>{{operation.operationId}}</td>
-              <td>{{operation.toolId}}</td>
-              <td>{{operation.operationType}}</td>
-              <td><button type="button" class="btn btn-primary" (click)="share()">Editar</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-</div>
+<mat-accordion displayMode="flat" multi class="mat-table">
+  <section matSort class="mat-elevation-z2 mat-header-row">
+    <span class="mat-header-cell" mat-sort-header="vesselName">Id</span>
+    <span class="mat-header-cell" mat-sort-header="vesselStatus">Tool Id</span>
+    <span class="mat-header-cell" mat-sort-header="vesselStatus">Operation Type Id</span>
+    <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openDialog(false)">New</button>
+  </section>
+
+  <mat-expansion-panel [disabled]="true" *ngFor="let operation of operations">
+    <mat-expansion-panel-header class="mat-row">
+      <span class="mat-cell">{{operation.operationId}}</span>
+      <span class="mat-cell">{{operation.toolId}}</span>
+      <span class="mat-cell">{{operation.operationType}}</span>
+      <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+      (click)="openDialog(true, operation)">Edit</button>
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
+
+</mat-accordion>
