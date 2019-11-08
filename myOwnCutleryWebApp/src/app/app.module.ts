@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material';
 
 import { MachineDialogComponent } from './master-data-web/machines/machine-dialog/machine-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MachineTypeService } from './master-data-web/machine-types/machine-type.service';
 
 const AngularMaterialComponents = [
   MatButtonModule,
@@ -49,7 +50,10 @@ const AngularMaterialComponents = [
     HttpClientModule,
     AngularMaterialComponents
   ],
-  providers: [MachinesService],
+  providers: [
+    MachinesService,
+    MachineTypeService
+  ],
   bootstrap: [AppComponent],
   entryComponents: [MachineDialogComponent]
 })

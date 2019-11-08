@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MachineType } from 'src/app/models/machineType.model';
+import { MachineTypeService } from './machine-type.service';
 
 @Component({
   selector: 'app-machine-types',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MachineTypesComponent implements OnInit {
 
-  constructor() { }
+  machineTypes: MachineType[] = [];
+  machineTypeService: MachineTypeService;
+
+  constructor(_machineTypeService: MachineTypeService) {
+    this.machineTypeService=_machineTypeService;
+   }
 
   ngOnInit() {
+    this.getMachineTypes();
   }
 
+  private getMachineTypes(): void{
+    this.machineTypeService.getMachineTypes().subscribe((data: any)=>{
+      this.machineTypes=data;
+    });
+  }
 }
