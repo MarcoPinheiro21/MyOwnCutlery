@@ -16,7 +16,7 @@ const MACHINES_TOTAL = CONFIG.machines.total;
  * **************************************************************************************************
  * MAIN CONTROlS AND CALLS
  * **************************************************************************************************
- *  */
+ **/
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
@@ -116,7 +116,14 @@ function buildWidgets() {
 
 function replaceMachinePlaceholder(machine, i) {
     removePlaceholder(`M${i}`);
-    buildMachine(MACHINE_POSITIONS[i-1]);
+    switch(machine.type){
+        case "Custom Robotic Arm":
+            buildRobotArm(PLACEHOLDERS_POSITIONS[i-1]);
+            break;
+        case "Robotic Arm":
+            buildMachine(MACHINE_POSITIONS[i-1]);
+            break;
+    }
 }
 
 function removePlaceholder(name) {
