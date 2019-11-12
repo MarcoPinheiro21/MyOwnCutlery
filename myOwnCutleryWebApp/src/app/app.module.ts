@@ -1,12 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, routingComponets } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { MasterDataWebComponent } from './master-data-web/master-data-web.component';
-import { MachinesComponent } from './master-data-web/machines/machines.component';
-import { MachineTypesComponent } from './master-data-web/machine-types/machine-types.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatInputModule, MatExpansionModule } from '@angular/material';
 import { MatIconModule } from '@angular/material';
@@ -20,10 +18,10 @@ import { MatSelectModule } from '@angular/material';
 import { MachineDialogComponent } from './master-data-web/machines/machine-dialog/machine-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MachineTypeService } from './master-data-web/machine-types/machine-type.service';
-import { OperationsComponent } from './master-data-web/operations/operations.component';
 import { OperationsService } from './master-data-web/operations/operations.service';
 import { ProductsService } from './master-data-web/product/product.service';
 import { ProductsComponent } from './master-data-web/product/product.component';
+import { MachineTypeDialogComponent } from './master-data-web/machine-types/machine-type-dialog/machine-type-dialog.component';
 
 const AngularMaterialComponents = [
   MatButtonModule,
@@ -43,11 +41,11 @@ const AngularMaterialComponents = [
   declarations: [
     AppComponent,
     MasterDataWebComponent,
-    MachinesComponent,
-    MachineTypesComponent,
     MachineDialogComponent,
     OperationsComponent,
     ProductsComponent
+    MachineTypeDialogComponent,
+    routingComponets
   ],
   imports: [
     BrowserModule,
@@ -58,6 +56,6 @@ const AngularMaterialComponents = [
   ],
   providers: [MachinesService,ProductsService],
   bootstrap: [AppComponent],
-  entryComponents: [MachineDialogComponent]
+  entryComponents: [MachineDialogComponent, MachineTypeDialogComponent]
 })
 export class AppModule { }

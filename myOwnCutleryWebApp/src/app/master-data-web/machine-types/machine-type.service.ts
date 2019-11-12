@@ -15,9 +15,17 @@ export class MachineTypeService {
 
   getMachineTypes(): Observable<MachineType[]> {
     return this.http.get<MachineType[]>(this.url + 'machines/types')
-    .pipe(map((response: [MachineType]) => {
+      .pipe(map((response: [MachineType]) => {
         return response;
       })
-    );
+      );
+  }
+
+  getMachineTypeById(id : number): Observable<MachineType[]> {
+    return this.http.get<MachineType[]>(this.url + 'machines/types/' + id)
+      .pipe(map((response: [MachineType]) => {
+        return response;
+      })
+      );
   }
 }

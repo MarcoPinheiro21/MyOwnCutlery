@@ -1,1 +1,14 @@
-<app-master-data-web></app-master-data-web>
+<div style="text-align:center">
+    <h1 class="mainTitle">My Own Cutlery App</h1>
+</div>
+<nav>
+    <ul style="text-align:center">
+        <li><a class="labelIcons" routerLink="/machines" routerLinkActive="active">Machines</a></li>
+        <li><a class="labelIcons" routerLink="/machineTypes" routerLinkActive="active">Machine Types</a></li>
+        <li><a class="labelIcons" routerLink="/operations" routerLinkActive="active">Operations</a></li>
+        <li><a class="labelIcons" routerLink="/products" routerLinkActive="active">Products</a></li>
+    </ul>
+</nav>
+<section class="container">
+    <router-outlet></router-outlet>
+</section>

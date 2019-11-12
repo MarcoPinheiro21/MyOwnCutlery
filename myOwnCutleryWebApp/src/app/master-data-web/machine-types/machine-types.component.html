@@ -1,16 +1,12 @@
 <mat-accordion displayMode="flat" multi class="mat-table">
     <section matSort class="mat-elevation-z2 mat-header-row">
-      <span class="mat-header-cell" mat-sort-header="vesselName">Id</span>
-      <span class="mat-header-cell" mat-sort-header="vesselStatus">Description</span>
+      <span class="mat-header-cell" mat-sort-header="vesselStatus">Machine Type > Description</span>
       <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openDialog(false)">New</button>
     </section>
 
     <mat-expansion-panel *ngFor="let machinetype of machineTypes">
       <mat-expansion-panel-header class="mat-row">
-        <span class="mat-cell">{{machinetype.id}}</span>
         <span class="mat-cell">{{machinetype.desc}}</span>
-        <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-        (click)="openDialog(true, machine)">Edit</button>
       </mat-expansion-panel-header>
 
         <div class="subRow">
@@ -18,15 +14,17 @@
             <thead class="thead-dark">
               <tr>
                 <th>Operation Id</th>
-                <th>Tool Id</th>
+                <th>Tool</th>
                 <th>Operation Type</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let operation of machinetype.operationList">
                 <td>{{operation.operationId}}</td>
-                <td>{{operation.toolId}}</td>
+                <td>{{operation.tool}}</td>
                 <td>{{operation.operationType}}</td>
+                <button type="button" style="margin-right: -29px;" class="btn btn-primary buttonTables"
+                (click)="openDialog(true, operation)">Edit</button>
               </tr>
             </tbody>
           </table>
