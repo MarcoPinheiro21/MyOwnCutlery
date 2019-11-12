@@ -4,6 +4,7 @@ export interface  ViewFlags {
   viewMachines: boolean;
   viewMachineTypes: boolean;
   viewOperations: boolean;
+  viewProducts: boolean;
 }
 
 @Component({
@@ -16,7 +17,8 @@ export class MasterDataWebComponent implements OnInit {
   viewFlags: ViewFlags = {
     viewMachines: true,
     viewMachineTypes: false,
-    viewOperations: false
+    viewOperations: false,
+    viewProducts: false
   };
 
   constructor() { }
@@ -33,6 +35,7 @@ export class MasterDataWebComponent implements OnInit {
     this.viewFlags.viewMachines = false;
     this.viewFlags.viewMachineTypes = false;
     this.viewFlags.viewOperations = false;
+    this.viewFlags.viewProducts = false;
   }
 
 }

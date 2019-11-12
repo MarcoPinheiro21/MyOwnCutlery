@@ -10,7 +10,7 @@ using factoryApi.Context;
 namespace factoryApi.Migrations
 {
     [DbContext(typeof(MasterFactoryContext))]
-    [Migration("20191105224840_Master")]
+    [Migration("20191108230929_Master")]
     partial class Master
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

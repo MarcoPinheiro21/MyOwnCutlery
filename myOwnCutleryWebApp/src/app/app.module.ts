@@ -22,6 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MachineTypeService } from './master-data-web/machine-types/machine-type.service';
 import { OperationsComponent } from './master-data-web/operations/operations.component';
 import { OperationsService } from './master-data-web/operations/operations.service';
+import { ProductsService } from './master-data-web/product/product.service';
+import { ProductsComponent } from './master-data-web/product/product.component';
 
 const AngularMaterialComponents = [
   MatButtonModule,
@@ -44,16 +46,17 @@ const AngularMaterialComponents = [
     MachinesComponent,
     MachineTypesComponent,
     MachineDialogComponent,
-    OperationsComponent
+    OperationsComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AngularMaterialComponents
+    AngularMaterialComponents,
   ],
-  providers: [MachinesService],
+  providers: [MachinesService,ProductsService],
   bootstrap: [AppComponent],
   entryComponents: [MachineDialogComponent]
 })
