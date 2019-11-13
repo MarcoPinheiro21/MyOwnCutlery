@@ -3,6 +3,8 @@ import { MachineType } from 'src/app/models/machineType.model';
 import { MachineTypeService } from './machine-type.service';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { MachineTypeDialogComponent } from './machine-type-dialog/machine-type-dialog.component';
+import { OperationsService } from '../operations/operations.service';
+import { Operation } from 'src/app/models/operation.model';
 
 @Component({
   selector: 'app-machine-types',
@@ -12,16 +14,21 @@ import { MachineTypeDialogComponent } from './machine-type-dialog/machine-type-d
 export class MachineTypesComponent implements OnInit {
 
   machineTypes: MachineType[] = [];
+  operations: Operation[]=[];
   machineTypeService: MachineTypeService;
+  operationsService: OperationsService;
   dialog: MatDialog;
 
-  constructor(_machineTypeService: MachineTypeService, myDialog: MatDialog) {
+  constructor(_machineTypeService: MachineTypeService,
+    _operationsService: OperationsService, myDialog: MatDialog) {
     this.machineTypeService=_machineTypeService;
+    this.operationsService = _operationsService;
     this.dialog=myDialog;
    }
 
   ngOnInit() {
     this.getMachineTypes();
+    this.getOperations();
   }
 
   private getMachineTypes(): void{
@@ -30,16 +37,23 @@ export class MachineTypesComponent implements OnInit {
     });
   }
 
-  openDialog(editionMode, selectedOperation?) {
+  private getOperations(): void{
+    this.operationsService.getOperations().subscribe((data: any)=>{
+      this.operations=data;
+    });
+  }
+
+  openDialog(editionMode, selectedmachinetype?) {
 
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
-      operation: selectedOperation,
+      machinetype: selectedmachinetype,
+      listOperations: this.operations,
       isEdition: editionMode
     };
-    dialogConfig.width = '15%';
-    dialogConfig.height = '30%';
+    dialogConfig.width = '45%';
+    dialogConfig.height = '69%';
 
     this.dialog.open(MachineTypeDialogComponent, dialogConfig);
   }

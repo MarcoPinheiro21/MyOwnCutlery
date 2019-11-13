@@ -1,24 +1,29 @@
-<div *ngIf="isEdition; else newMachine">
-  <h1 mat-dialog-title class="labelIcons">Edit Operation</h1>
+<div class="example-container mat-elevation-z8">
+  <table mat-table [dataSource]="elements">
 
-  <mat-dialog-content [formGroup]="myForm">
-    <mat-form-field>
-      <input matInput value="{{operation.operationType}}" placeholder="Description" formControlName="minLength"
-        formControlName="{{operation.description}}">
-    </mat-form-field>
+    <ng-container matColumnDef="checked">
+      <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
+      </mat-cell>
+    </ng-container>
 
-    <mat-form-field>
-      <mat-select placeholder="Select MachineType" value="operation.operationId">
+    <ng-container matColumnDef="operationId">
+      <mat-header-cell *matHeaderCellDef> Operation Id </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.operationId}} </mat-cell>
+    </ng-container>
 
-        <mat-option value="9">Option9</mat-option>
-        <mat-option value="5">Option5555</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </mat-dialog-content>
+    <ng-container matColumnDef="operationType">
+      <mat-header-cell *matHeaderCellDef> Operation Type </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.operationType}} </mat-cell>
+    </ng-container>
 
-  <mat-dialog-actions>
-    <button mat-button (click)="close()">Cancel</button>
-    <button mat-button (click)="save()">Save</button>
-  </mat-dialog-actions>
+    <ng-container matColumnDef="tool">
+      <mat-header-cell *matHeaderCellDef> Tool </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.tool}} </mat-cell>
+    </ng-container>
 
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 </div>
