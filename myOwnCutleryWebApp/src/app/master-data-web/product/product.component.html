@@ -1,37 +1,27 @@
 <mat-accordion displayMode="flat" multi class="mat-table">
   <section matSort class="mat-elevation-z2 mat-header-row">
     <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Id">Id</span>
-    <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Description">Description</span>
-    <span class="mat-header-cell" mat-sort-header="MachineTypeId">Machine Type Id</span>
-    <span class="mat-header-cell" mat-sort-header="ProductionLineId">Production Line Id</span>
+    <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Name">Name</span>
     <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openDialog(false)">New</button>
   </section>
 
-  <mat-expansion-panel *ngFor="let machine of machines">
+  <mat-expansion-panel *ngFor="let product of products">
     <mat-expansion-panel-header class="mat-row">
-      <span class="mat-cell">{{machine.id}}</span>
-      <span class="mat-cell">{{machine.description}}</span>
-      <span class="mat-cell">{{machine.machineTypeId}}</span>
-      <span class="mat-cell">{{machine.productionLineId}}</span>
+      <span class="mat-cell">{{product.productId}}</span>
+      <span class="mat-cell">{{product.productName}}</span>
       <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-        (click)="openDialog(true, machine)">Edit</button>
+        (click)="openDialog(true, product)">Edit</button>
     </mat-expansion-panel-header>
 
-    <div *ngIf="!!machine.machineType" class="subRow">
+    <div *ngIf="!!product.planId" class="subRow">
       <table class="table table-sm table-active">
         <thead class="thead-dark">
           <tr>
-            <th>Operation Id</th>
-            <th>Tool Id</th>
-            <th>Operation Type</th>
+            <th>Plan Id</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let operation of machine.machineType.operationList">
-            <td>{{operation.operationId}}</td>
-            <td>{{operation.toolId}}</td>
-            <td>{{operation.operationType}}</td>
-          </tr>
+            <td>{{product.planId}}</td>
         </tbody>
       </table>
     </div>

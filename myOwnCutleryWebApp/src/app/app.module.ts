@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule, routingComponets } from './app-routing.module';
+import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -20,7 +20,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MachineTypeService } from './master-data-web/machine-types/machine-type.service';
 import { OperationsService } from './master-data-web/operations/operations.service';
 import { ProductsService } from './master-data-web/product/product.service';
-import { ProductsComponent } from './master-data-web/product/product.component';
 import { MachineTypeDialogComponent } from './master-data-web/machine-types/machine-type-dialog/machine-type-dialog.component';
 
 const AngularMaterialComponents = [
@@ -42,10 +41,8 @@ const AngularMaterialComponents = [
     AppComponent,
     MasterDataWebComponent,
     MachineDialogComponent,
-    OperationsComponent,
-    ProductsComponent
     MachineTypeDialogComponent,
-    routingComponets
+    routingComponents
   ],
   imports: [
     BrowserModule,

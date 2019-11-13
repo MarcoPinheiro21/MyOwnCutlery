@@ -9,7 +9,7 @@ import { ProductsService } from './product.service';
 })
 export class ProductsComponent implements OnInit {
 
-  Products: Product[] = [];
+  products: Product[] = [];
   factoryService: ProductsService;
 
   constructor(_factoryService: ProductsService) {
@@ -30,7 +30,7 @@ export class ProductsComponent implements OnInit {
 
   public getProducts(): void {
     this.factoryService.getProducts().subscribe((data: any) => {
-      this.Products = data;
+      this.products = data;
     });
   }
 

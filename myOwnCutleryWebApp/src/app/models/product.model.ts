@@ -1,7 +1,7 @@
 export class Product {
     constructor(
-      public ProductId: number,
-      public ProductName: string,
-      public PlanId: number,
+      public productId: number,
+      public productName: string,
+      public planId: number,
     ) {}
   }

@@ -9,7 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ProductsService {
 
-  private url = 'https://localhost:8090/productionApi/';
+  private url = 'https://localhost:8090/productionapi/';
 
   constructor(private http: HttpClient) { }
 
