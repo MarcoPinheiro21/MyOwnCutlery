@@ -24,17 +24,20 @@ namespace productionApi.Migrations
                 columns: table => new
                 {
                     OperationId = table.Column<long>(nullable: false),
-                    PlanId = table.Column<long>(nullable: true)
+                    PlanId = table.Column<long>(nullable: false),
+                    Tool = table.Column<string>(nullable: true),
+                    OperationType = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Operations", x => x.OperationId);
+                    table.PrimaryKey("PK_Operations", x => new { x.PlanId, x.OperationId });
+                    table.UniqueConstraint("AK_Operations_OperationId_PlanId", x => new { x.OperationId, x.PlanId });
                     table.ForeignKey(
                         name: "FK_Operations_Plans_PlanId",
                         column: x => x.PlanId,
                         principalTable: "Plans",
                         principalColumn: "PlanId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,11 +59,6 @@ namespace productionApi.Migrations
                         principalColumn: "PlanId",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Operations_PlanId",
-                table: "Operations",
-                column: "PlanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_PlanId",

@@ -17,24 +17,29 @@ namespace productionApi.Services
             Client = context.client;
         }
 
-        public bool validateOperations(ICollection<CreateOperationDto> operations)
+        public ICollection<CreateOperationDto> matchOperations(ICollection<CreateOperationDto> operations)
         {
+            ICollection<CreateOperationDto> newList = new List<CreateOperationDto>();
             try
             {
+                
                 List<FactoryApiOperationDto> operationsResponse = Client.GetOperations();
-                List<long> ids = new List<long>();
-                foreach (var factoryApiDto in operationsResponse)
-                {
-                    ids.Add(factoryApiDto.operationId); 
-                }
-                
-                
+                long ids;
                 foreach (var createOperationDto in operations)
                 {
-                    if (!ids.Contains(createOperationDto.OperationId))
+
+                    foreach (var factoryApiDto in operationsResponse)
                     {
-                        return false;
-                    }   
+                        if (factoryApiDto.operationId.Equals(createOperationDto.OperationId))
+                        {
+                            CreateOperationDto dto = new CreateOperationDto(factoryApiDto.operationId);
+                            dto.Tool = factoryApiDto.tool;
+                            dto.Type = factoryApiDto.operationType;
+                            newList.Add(dto);
+
+                        }
+                    }
+                    
                 }
 
                 /*var asyncHandle = client.ExecuteAsync<Person>(request, response => {
@@ -47,9 +52,9 @@ namespace productionApi.Services
             {
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
-                return false;
+                
             }
-            return true;
+            return newList;
         }
     }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
+import { ProductionOperation } from 'src/app/models/productionOperation.model';
 import { ProductsService } from './product.service';
 
 @Component({
@@ -31,7 +32,11 @@ export class ProductsComponent implements OnInit {
   public getProducts(): void {
     this.factoryService.getProducts().subscribe((data: any) => {
       this.products = data;
+      this.products.forEach(element => {
+        this.factoryService.getPlan(element.productId).subscribe((data:any)=>{
+            element.operations=data;
+        });
+      });
     });
   }
-
 }

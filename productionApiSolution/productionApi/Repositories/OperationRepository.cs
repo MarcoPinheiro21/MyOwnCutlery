@@ -44,7 +44,7 @@ namespace productionApi.Repositories
         public ICollection<OperationDto> GetByPlanId(long id)
         {
             ICollection<OperationDto> result =  new List<OperationDto>();
-            ICollection<Operation> operations = _context.Operations.Where(x => x.Plan.PlanId == id).ToList();
+            ICollection<Operation> operations = _context.Operations.Where(x => x.PlanId == id).ToList();
                
             //var product = _context.Products.ToList().FirstOrDefault(x => x.ProductId == id);
             foreach (var op in operations)

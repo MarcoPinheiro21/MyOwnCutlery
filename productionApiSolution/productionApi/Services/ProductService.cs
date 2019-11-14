@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using factoryApi.Exceptions;
 using productionApi.Context;
 using productionApi.DTO;
@@ -31,8 +32,10 @@ namespace productionApi.Services
 
         public ProductDto Add(CreateProductDto productDto)
         {
-            if (_opService.validateOperations(productDto.Plan.OperationList))
+            ICollection<CreateOperationDto> newList = _opService.matchOperations(productDto.Plan.OperationList);
+            if (newList.ToList().Count!=0)
             {
+                productDto.Plan.OperationList = newList;
                 var product = _repo.Add(productDto);
                 return _repo.GetById(product.ProductId);
             }

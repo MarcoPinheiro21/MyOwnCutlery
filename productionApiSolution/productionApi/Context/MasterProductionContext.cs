@@ -32,10 +32,8 @@ namespace productionApi.Context
 
             modelBuilder.Entity<Plan>()
                 .HasMany(pl => pl.OperationList);
-            
-            modelBuilder.Entity<Operation>()
-                .HasOne<Plan>(pl => pl.Plan)
-                .WithMany(m => m.OperationList);
+
+            modelBuilder.Entity<Operation>().HasKey(p => new {p.PlanId, p.OperationId});
 
         }
     }

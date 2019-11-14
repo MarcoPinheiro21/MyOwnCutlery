@@ -21,13 +21,17 @@ namespace productionApi.Migrations
 
             modelBuilder.Entity("productionApi.Models.Plan.Operation", b =>
                 {
+                    b.Property<long>("PlanId");
+
                     b.Property<long>("OperationId");
 
-                    b.Property<long?>("PlanId");
+                    b.Property<string>("OperationType");
 
-                    b.HasKey("OperationId");
+                    b.Property<string>("Tool");
 
-                    b.HasIndex("PlanId");
+                    b.HasKey("PlanId", "OperationId");
+
+                    b.HasAlternateKey("OperationId", "PlanId");
 
                     b.ToTable("Operations");
                 });
@@ -62,9 +66,10 @@ namespace productionApi.Migrations
 
             modelBuilder.Entity("productionApi.Models.Plan.Operation", b =>
                 {
-                    b.HasOne("productionApi.Models.Plan.Plan", "Plan")
+                    b.HasOne("productionApi.Models.Plan.Plan")
                         .WithMany("OperationList")
-                        .HasForeignKey("PlanId");
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("productionApi.Models.Product.Product", b =>

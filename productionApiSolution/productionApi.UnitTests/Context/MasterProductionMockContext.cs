@@ -17,30 +17,21 @@ namespace productionApiTest.Context
                 .Options;
 
             MasterProductionContext dbContext = new MasterProductionContext(options);
-            SeedOperations(dbContext);
             SeedPlans(dbContext);
             SeedProducts(dbContext);
 
             return dbContext;
         }
-
-        private static void SeedOperations(MasterProductionContext dbContext)
-        {
-            dbContext.Operations.Add(new Operation(1));
-            dbContext.Operations.Add(new Operation(2));
-            dbContext.Operations.Add(new Operation(3));
-            dbContext.Operations.Add(new Operation(4));
-            dbContext.SaveChanges();
-        }
+        
 
         private static void SeedPlans(MasterProductionContext dbContext)
         {
             List<Operation> l1 = new List<Operation>();
             List<Operation> l2 = new List<Operation>();
-            l1.Add(dbContext.Operations.Find(1L));
-            l1.Add(dbContext.Operations.Find(2L));
-            l2.Add(dbContext.Operations.Find(3L));
-            l2.Add(dbContext.Operations.Find(4L));
+            l1.Add(new Operation(1,"t1","type1"));
+            l1.Add(new Operation(2,"t2","type2"));
+            l2.Add(new Operation(3,"t3","type3"));
+            l2.Add(new Operation(4,"t4","type4"));
 
             dbContext.Plans.Add(new Plan(l1));
             dbContext.Plans.Add(new Plan(l2));
