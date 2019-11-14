@@ -19,33 +19,36 @@ const MACHINES_TOTAL = CONFIG.machines.total;
  **/
 
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer();
-var controls = new THREE.OrbitControls( camera, renderer.domElement );
+var controls = new THREE.OrbitControls(camera, renderer.domElement);
 var gui = new dat.GUI();
 
 // Ambient ligth
-var light = new THREE.AmbientLight( 0xC1C1C1 ); // soft white light
+var light = new THREE.AmbientLight(0xC1C1C1); // soft white light
 
 // Directional ligth
-var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
+var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 
 // Axis Helper
-var axesHelper = new THREE.AxesHelper( 10 );
+var axesHelper = new THREE.AxesHelper(10);
 
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
+var roboticArms = [];
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
 // Add element to the scene
-scene.add( axesHelper );
+scene.add(axesHelper);
 
-scene.add( light );
-scene.add( directionalLight );
+scene.add(light);
+scene.add(directionalLight);
 
 buildScene();
 
 //controls.update() must be called after any manual changes to the camera's transform
-camera.position.z = 30;
+camera.position.z = 50;
+camera.position.y = 20;
 controls.update();
 
 animate();
@@ -63,7 +66,7 @@ function buildScene() {
 }
 
 function buildFloor() {
-    scene.add( floor() );
+    scene.add(floor());
 }
 
 function buildTables() {
@@ -77,26 +80,25 @@ function moveTable(e) {
     t.translateY(e.y);
     t.translateZ(e.z);
 
-    scene.add(t);    
+    scene.add(t);
 }
 
 function buildMachine(position) {
     var loader = new THREE.ColladaLoader();
 
-    loader.load( 'http://localhost:5000/models/model.dae', collada => 
-        {
-            collada.scene.scale.set( 0.05, 0.05, 0.05 );
-            collada.scene.translateX(position.x);
-            collada.scene.translateY(position.y);
-            collada.scene.rotateZ(-Math.PI/2.0);
+    loader.load('http://localhost:5000/models/model.dae', collada => {
+        collada.scene.scale.set(0.05, 0.05, 0.05);
+        collada.scene.translateX(position.x);
+        collada.scene.translateY(position.y);
+        collada.scene.rotateZ(-Math.PI / 2.0);
 
-            scene.add( collada.scene);
-        });
+        scene.add(collada.scene);
+    });
 }
 
 function buildPlaceholder() {
-    for(i = 0; i < PLACEHOLDERS_POSITIONS.length; i++) {
-        placeholder(`M${i+1}`, PLACEHOLDERS_POSITIONS[i]);
+    for (i = 0; i < PLACEHOLDERS_POSITIONS.length; i++) {
+        placeholder(`M${i + 1}`, PLACEHOLDERS_POSITIONS[i]);
     }
 }
 
@@ -104,24 +106,26 @@ function buildWidgets() {
     let selectedMachine = {
         type: null
     };
-    
+
     let controllerMachines = gui.addFolder(`Machines Specs`)
-    for(i = 0; i < MACHINE_POSITIONS.length; i++) {
-        let idx = i+1;
-        controllerMachines.addFolder(`Machine ${i+1}`)
+    for (i = 0; i < MACHINE_POSITIONS.length; i++) {
+        let idx = i + 1;
+        controllerMachines.addFolder(`Machine ${i + 1}`)
             .add(selectedMachine, 'type', MACHINE_TYPES)
-            .onChange((selectedValue) => replaceMachinePlaceholder(selectedMachine, idx));    
+            .onChange((selectedValue) => replaceMachinePlaceholder(selectedMachine, idx));
     }
 }
 
 function replaceMachinePlaceholder(machine, i) {
     removePlaceholder(`M${i}`);
-    switch(machine.type){
+    switch (machine.type) {
         case "Custom Robotic Arm":
-            buildRobotArm(PLACEHOLDERS_POSITIONS[i-1]);
+            let roboticArm = new RoboticArm();
+            roboticArms.push(roboticArm);
+            scene.add( roboticArm.buildRobotArm(PLACEHOLDERS_POSITIONS[i - 1]) );
             break;
         case "Robotic Arm":
-            buildMachine(MACHINE_POSITIONS[i-1]);
+            buildMachine(MACHINE_POSITIONS[i - 1]);
             break;
     }
 }
@@ -132,7 +136,11 @@ function removePlaceholder(name) {
 }
 
 function animate() {
-	requestAnimationFrame( animate );
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
 
-    renderer.render( scene, camera );
+    roboticArms.forEach(e => {
+        e.rotateBase();
+        e.rotateArm();
+    });
 }
