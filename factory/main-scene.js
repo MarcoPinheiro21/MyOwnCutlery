@@ -11,7 +11,8 @@ const PLACEHOLDERS_POSITIONS = CONFIG.placeholders.positions;
 const MACHINE_POSITIONS = CONFIG.machines.positions;
 const MACHINE_TYPES = CONFIG.machines.types;
 const MACHINES_TOTAL = CONFIG.machines.total;
-const API_URL = configurationsApi.visualizationApi.url;  
+const API_URL = configurationsApi.visualizationApi.url;
+const PRESS_MACHINE_POSITIONS = CONFIG.machines.pressPositions;
 
 const LINE = CONFIG.lines;
 
@@ -48,6 +49,7 @@ var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 var axesHelper = new THREE.AxesHelper(10);
 
 var roboticArms = [];
+var pressMachines = [];
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -83,7 +85,7 @@ function buildScene() {
     buildTables();
     buildPlaceholder();
 
-    buildFork(linesX, lineAY, linesZ); 
+    buildFork(linesX, lineAY, linesZ);
     buildSpoon(linesX, lineBY, linesZ);
 }
 
@@ -108,7 +110,7 @@ function moveTable(e) {
 function buildMachine(position) {
     var loader = new THREE.ColladaLoader();
 
-    loader.load( API_URL + 'models/model.dae', collada => {
+    loader.load(API_URL + 'models/model.dae', collada => {
         collada.scene.scale.set(0.05, 0.05, 0.05);
         collada.scene.translateX(position.x);
         collada.scene.translateY(position.y);
@@ -120,31 +122,29 @@ function buildMachine(position) {
 
 function buildFork(x, y, z) {
     var loader = new THREE.ColladaLoader();
-    loader.load( API_URL + 'models/fork.dae', collada => 
-        {
-            collada.scene.scale.set(0.50, 0.8, 1 );
-            collada.scene.translateX(x);
-            collada.scene.translateY(y);
-            collada.scene.translateZ(z);
-            collada.scene.rotateZ(Math.PI);
+    loader.load(API_URL + 'models/fork.dae', collada => {
+        collada.scene.scale.set(0.50, 0.8, 1);
+        collada.scene.translateX(x);
+        collada.scene.translateY(y);
+        collada.scene.translateZ(z);
+        collada.scene.rotateZ(Math.PI);
 
-            groupFork.add(collada.scene)
-        });
+        groupFork.add(collada.scene)
+    });
     scene.add(groupFork);
 }
 
 function buildSpoon(x, y, z) {
     var loader = new THREE.ColladaLoader();
-    loader.load( API_URL + 'models/spoon.dae', collada => 
-        {
-            collada.scene.scale.set(0.50, 0.8, 1 );
-            collada.scene.translateX(x);
-            collada.scene.translateY(y);
-            collada.scene.translateZ(z);
-            collada.scene.rotateZ(Math.PI);
+    loader.load(API_URL + 'models/spoon.dae', collada => {
+        collada.scene.scale.set(0.50, 0.8, 1);
+        collada.scene.translateX(x);
+        collada.scene.translateY(y);
+        collada.scene.translateZ(z);
+        collada.scene.rotateZ(Math.PI);
 
-            groupSpoon.add(collada.scene)
-        });
+        groupSpoon.add(collada.scene)
+    });
     scene.add(groupSpoon);
 }
 
@@ -174,11 +174,17 @@ function replaceMachinePlaceholder(machine, i) {
         case "Custom Robotic Arm":
             let roboticArm = new RoboticArm();
             roboticArms.push(roboticArm);
-            scene.add( roboticArm.buildRobotArm(PLACEHOLDERS_POSITIONS[i - 1]) );
+            scene.add(roboticArm.buildRobotArm(PLACEHOLDERS_POSITIONS[i - 1]));
             break;
         case "Robotic Arm":
             buildMachine(MACHINE_POSITIONS[i - 1]);
             break;
+        case "Hydraulic Press":
+            let pressMachine = new PressMachine();
+            pressMachines.push(pressMachine);
+            scene.add(pressMachine.buildHydraulicPress(PRESS_MACHINE_POSITIONS[i - 1]));
+            break;
+
     }
 }
 
@@ -190,7 +196,9 @@ function removePlaceholder(name) {
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-
+    pressMachines.forEach(e => {
+        e.timeoutPressArm();
+    });
     roboticArms.forEach(e => {
         e.rotateBase();
         e.rotateArm();
@@ -201,7 +209,7 @@ function timeoutLineA() {
     setTimeout(function () {
         groupFork.position.x--;
 
-        if(groupFork.position.x == LINE.finalX ){
+        if (groupFork.position.x == LINE.finalX) {
             groupFork.position.x = 0;
         }
 
@@ -213,7 +221,7 @@ function timeoutLineB() {
     setTimeout(function () {
         groupSpoon.position.x--;
 
-        if(groupSpoon.position.x == LINE.finalX ){
+        if (groupSpoon.position.x == LINE.finalX) {
             groupSpoon.position.x = 0;
         }
 
