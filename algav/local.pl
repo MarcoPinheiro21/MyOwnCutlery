@@ -228,7 +228,9 @@ cria_ops_prod_cliente([Opt|LOpt],Client,Prod,Qt,TConc,N,Nf):-
 
 
 % ------------------------------------------------------------
-
+testAstarSetups([H|T]):-
+	aStarSetups([H|T],_,_),
+	testAstarSetups(T).
 
 
 aStarSetups(L,Cam, Custo):-
@@ -244,7 +246,7 @@ aStarSetups2([(_,Ca,L,LR)|Outros], Cam, Custo):-
 		member(X,LR),
 		CaX is CustoX + Ca,
 		subtract(LR,[X],R),
-		estimativa(R,EstX),
+		estimativa(X,R,EstX),
 		CEX is CaX +EstX
 		),
 		Novos),
@@ -260,58 +262,73 @@ aStarSetups3([(Ce,Ca,L,LR)|Outros], Cam, Custo):-
 		 op_prod_client(X,_,_,_,_,_,_,CustoX,_),
 		 member(X,LR),
 		 subtract(LR,[X],R),
-		 ((\+mesmo_tipo(Ant,X), CaX is CustoX + Ca,estimativa(R,EstX),CEX is CaX +EstX);
+		 ((\+mesmo_tipo(Ant,X), CaX is CustoX + Ca,estimativa(X,R,EstX),CEX is CaX +EstX);
 		 (mesmo_tipo(Ant,X), CaX is Ca, CEX is Ce))),
 		Novos),
 	append(Outros,Novos,Todos),
 	sort(Todos,TodosOrd),
 	aStarSetups3(TodosOrd,Cam,Custo).
 
-estimativa(LR,Estimativa):-
+estimativa(X,LR,Estimativa):-
 	findall(p(F,TS),(op_prod_client(Op,_,F,_,_,_,_,TS,_),member(Op,LR)),List),
+	op_prod_client(X,_,FX,_,_,_,_,_,_),
 	sort(List,L),
-	soma_setups(L,Estimativa).
-soma_setups([],0).
-soma_setups([p(_,Tsetup)|L],Ttotal):-
-    soma_setups(L,T1),
+	soma_setups(FX,L,Estimativa).
+soma_setups(_,[],0).
+soma_setups(FX,[p(FX,_)|L],Ttotal):-
+    soma_setups(FX,L,Ttotal),!.
+soma_setups(FX,[p(_,Tsetup)|L],Ttotal):-
+    soma_setups(FX,L,T1),
     Ttotal is Tsetup+T1.
+
 % ------------------------------------------------------------------------
 
 aStarAtrasos(L,Cam, Custo):-
 	get_time(Ti),
-	length(L,LN),
-	aStarAtrasos2(L,LN,0,[(_,[])], Cam, Custo),!,
+	aStarAtrasos2([(_,0,0,[],L)], Cam, Custo),!,
         get_time(Tf),Tcomp is Tf-Ti,
 	write('GERADO EM '),write(Tcomp),
 	write(' SEGUNDOS'),nl.
 
-
-aStarAtrasos2(_,LN,LN,[(_,[H|T])|_],Cam,Custo):-
-        reverse([H|T],Cam),
-	predXSetup(Cam,Custo).
-aStarAtrasos2([H|T],LI,_, [(_,L)|Outros], Cam, Custo):-
-	findall((CEX,[X|L]),
-		(op_prod_client(X,_,_,_,_,_,_,_,_),
-		 \+member(X,L),
-		 member(X,[H|T]),
-		 reverse([X|L],Reversed),
-                 %predXSetup(Reversed,CaX),
-		 %CaX is CustoX + Ca,
-		 subtract([H|T],[X|L],EList),
-		 estimativaAtrasos(Reversed,EList,CEX)
-		 %CEX is CaX +EstX
+aStarAtrasos2([(_,Ca,TA,L,LR)|Outros], Cam, Custo):-
+	findall((CEX,CAX,NTA,[X|L],NLR),
+		(op_prod_client(X,_,_,_,_,_,TConc,TSetup,TExec),
+		 member(X,LR),
+		 atraso(TConc,TSetup,TExec,CustoX,TA),
+		 CAX is CustoX + Ca,
+		 NTA is TSetup+TExec,
+		 subtract(LR,[X],NLR),
+		 reverse([X|L],Temp),
+		 append(Temp,NLR,TL),
+		 estimativaAtrasos(TL,CEX)
 		),
 		Novos),
 	append(Outros,Novos,Todos),
 	sort(Todos,TodosOrd),
+	aStarAtrasos3(TodosOrd,Cam,Custo).
+aStarAtrasos3([(_,Custo,_,LR,[])|_],Cam,Custo):-
+        reverse(LR,Cam).
+aStarAtrasos3([(_,Ca,TA,[LH|LT],LR)|Outros], Cam, Custo):-
+	findall((CEX,CAX,NTA,[X|[LH|LT]],NLR),
+		(op_prod_client(X,_,_,_,_,_,TConc,TSetup,TExec),
+		 member(X,LR),
+		 ((\+mesmo_tipo(LH,X), RealTSetup is TSetup);
+		 (mesmo_tipo(LH,X), RealTSetup is 0)),
+		 atraso(TConc,RealTSetup,TExec,CustoX,TA),
+		 CAX is CustoX + Ca,
+		 NTA is TA+RealTSetup+TExec,
+		 subtract(LR,[X],NLR),
+		 reverse([X|[LH|LT]],Temp),
+		 append(Temp,NLR,TL),
+		 estimativaAtrasos(TL,CEX)
+		 ),
+		Novos),
+	append(Outros,Novos,Todos),
+	sort(Todos,TodosOrd),
+	aStarAtrasos3(TodosOrd,Cam,Custo).
 
-	[(_,X)|_]=TodosOrd,
-	length(X,LN),
-	aStarAtrasos2([H|T],LI,LN, TodosOrd,Cam,Custo).
-
-estimativaAtrasos(Current,Rest,Estimativa):-
-    append(Current,Rest,R),
-    predXSetup(R,Estimativa),!.
+estimativaAtrasos(L,Estimativa):-
+	h_atraso_setup(L,_,Estimativa),!.
 
 % ----------------------------------------------------------------------------
 
@@ -353,8 +370,65 @@ predX([H|T],Ant,Acum, R):-
     predX(T,H,Acum1,AtrasoTotal),!,
     R is ThisAtraso+AtrasoTotal.
 atraso(TConc,TSetup,TExec,Atraso,Acum):-
-    TConc - (TExec + TSetup + Acum) < 0,
+    TConc - (TExec + TSetup + Acum) < 0,!,
     Atraso is(TExec + TSetup+Acum)-TConc.
 atraso(_,_,_,0,_).
+
+%-----------------------------------------
+
+h_atraso_setup(L,R,T):-
+	get_time(Ti),
+	findall(p(Tmp,O),(op_prod_client(O,_,_,_,_,_,Tmp,_,_),member(O,L)),LO),
+	sort(LO,LS),
+	h_atraso(LS,R,T),!,
+	get_time(Tf),Tcomp is Tf-Ti,
+	write('GERADO EM '),write(Tcomp),
+	write(' SEGUNDOS'),nl.
+
+h_atraso([p(_,H)|[p(_,T)|Tail]],Res,TMP):-
+	op_prod_client(H,_,_,_,_,_,TConc,TSetup,TExec),!,
+	op_prod_client(T,_,_,_,_,_,TConc2,TSetup2,TExec2),!,
+
+	((\+mesmo_tipo(T,H), RealTSetup is TSetup,RealTSetup2 is TSetup2);
+	(mesmo_tipo(T,H), RealTSetup is 0,RealTSetup2 is 0)),
+
+	atraso(TConc,TSetup,TExec,ThisAtraso,0),
+	Acc1 is TSetup + TExec,
+	atraso(TConc2,RealTSetup2,TExec2,ThisAtraso2,Acc1),
+
+	atraso(TConc2,TSetup2,TExec2,ThisAtraso3,0),
+	Acc2 is TSetup2 + TExec2,
+	atraso(TConc,RealTSetup,TExec,ThisAtraso4,Acc2),
+
+	AccAtraso1 is ThisAtraso + ThisAtraso2,
+	AccAtraso2 is ThisAtraso3+ThisAtraso4,
+	((AccAtraso1=<AccAtraso2, NTA is Acc1, h_atraso([p(_,T)|Tail],H,NTA,ThisAtraso,RT,TMP), append([H],RT,Res));
+	(AccAtraso1>AccAtraso2, NTA is Acc2, h_atraso([p(_,H)|Tail],T,NTA,ThisAtraso3,RT,TMP), append([T],RT,Res))).
+h_atraso([p(_,H)|[]],_,_,TMP,[H],TMP).
+h_atraso([p(_,H)|[p(_,T)|Tail]],Prev,TA,AA,Res,TMP):-
+	op_prod_client(H,_,_,_,_,_,TConc,TSetup,TExec),!,
+	op_prod_client(T,_,_,_,_,_,TConc2,TSetup2,TExec2),!,
+
+	((\+mesmo_tipo(T,H), RealTSetup is TSetup,RealTSetup2 is TSetup2);
+	(mesmo_tipo(T,H), RealTSetup is 0,RealTSetup2 is 0)),
+	((\+mesmo_tipo(Prev,H), StartTSetup is TSetup);
+	(mesmo_tipo(Prev,H), StartTSetup is 0)),
+	((\+mesmo_tipo(T,Prev), StartTSetup2 is TSetup2);
+	(mesmo_tipo(T,Prev), StartTSetup2 is 0)),
+
+
+	atraso(TConc,StartTSetup,TExec,ThisAtraso,TA),
+	Acc1 is StartTSetup + TExec+TA,
+	atraso(TConc2,RealTSetup2,TExec2,ThisAtraso2,Acc1),
+
+	atraso(TConc2,StartTSetup2,TExec2,ThisAtraso3,TA),
+	Acc2 is StartTSetup2 + TExec2+TA,
+	atraso(TConc,RealTSetup,TExec,ThisAtraso4,Acc2),
+
+	AccAtraso1 is ThisAtraso + ThisAtraso2,
+	AccAtraso2 is ThisAtraso3+ThisAtraso4,
+	((AccAtraso1=<AccAtraso2, NTA is Acc1,NAA is AA+ThisAtraso, h_atraso([p(_,T)|Tail],H,NTA,NAA,RT,TMP), append([H],RT,Res));
+	(AccAtraso1>AccAtraso2, NTA is Acc2,NAA is AA+ThisAtraso3,h_atraso([p(_,H)|Tail],T,NTA,NAA,RT,TMP), append([T],RT,Res))).
+
 
 
