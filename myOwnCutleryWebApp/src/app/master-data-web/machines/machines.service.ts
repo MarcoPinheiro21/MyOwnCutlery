@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import { Machine } from 'src/app/models/machine.model';
 import { MachineType } from 'src/app/models/machineType.model';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map , catchError} from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { api } from 'src/environments/environment';
+import { CreateMachine } from './machines.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MachinesService {
 
-  private url = 'https://localhost:5001/factoryapi/';
-  private machinesTypesByIdUrl = 'https://localhost:5001/factoryapi/machines/types/{id}';
+  private url = api.url + '/factoryapi/';
+  private machinesTypesByIdUrl = api.url + '/factoryapi/machines/types/{id}';
 
   constructor(private http: HttpClient) { }
 
@@ -39,7 +41,21 @@ export class MachinesService {
       );
     }
 
+    updateMachine(machine: Machine): Observable<Machine[]> {
+      return this.http.put<Machine[]>(
+        this.url + 'machines/' + machine.id, machine)
+      .pipe(catchError(null));
+    }
+
+    createMachine(machine: CreateMachine): Observable<CreateMachine[]> {
+      return this.http.post<CreateMachine[]>(
+        this.url + 'machines', machine)
+      .pipe(catchError(null));
+
+    }
+
     replace(url: string, id) {
       return url.replace('{id}', id);
     }
+
 }

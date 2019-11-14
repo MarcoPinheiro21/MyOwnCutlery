@@ -16,12 +16,11 @@ import { MatFormFieldModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-import { MachineDialogComponent } from './master-data-web/machines/machine-dialog/machine-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MachineTypeService } from './master-data-web/machine-types/machine-type.service';
-import { OperationsService } from './master-data-web/operations/operations.service';
 import { ProductsService } from './master-data-web/product/product.service';
 import { MachineTypeDialogComponent } from './master-data-web/machine-types/machine-type-dialog/machine-type-dialog.component';
+import { MachineCreationDialogComponent } from './master-data-web/machines/machine-creation-dialog/machine-creation-dialog.component';
+import { MachineEditionDialogComponent } from './master-data-web/machines/machine-edition-dialog/machine-edition-dialog.component';
 
 const AngularMaterialComponents = [
   MatButtonModule,
@@ -43,9 +42,10 @@ const AngularMaterialComponents = [
   declarations: [
     AppComponent,
     MasterDataWebComponent,
-    MachineDialogComponent,
     MachineTypeDialogComponent,
-    routingComponents
+    routingComponents,
+    MachineCreationDialogComponent,
+    MachineEditionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -54,8 +54,8 @@ const AngularMaterialComponents = [
     HttpClientModule,
     AngularMaterialComponents,
   ],
-  providers: [MachinesService,ProductsService],
+  providers: [MachinesService, ProductsService],
   bootstrap: [AppComponent],
-  entryComponents: [MachineDialogComponent, MachineTypeDialogComponent]
+  entryComponents: [MachineEditionDialogComponent, MachineCreationDialogComponent, MachineTypeDialogComponent]
 })
 export class AppModule { }

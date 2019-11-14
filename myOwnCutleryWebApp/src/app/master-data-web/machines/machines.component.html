@@ -4,7 +4,7 @@
     <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Description">Description</span>
     <span class="mat-header-cell" mat-sort-header="MachineTypeId">Machine Type Id</span>
     <span class="mat-header-cell" mat-sort-header="ProductionLineId">Production Line Id</span>
-    <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openDialog(false)">New</button>
+    <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openCreationDialog()">New</button>
   </section>
 
   <mat-expansion-panel *ngFor="let machine of machines">
@@ -14,7 +14,7 @@
       <span class="mat-cell">{{machine.machineTypeId}}</span>
       <span class="mat-cell">{{machine.productionLineId}}</span>
       <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-        (click)="openDialog(true, machine)">Edit</button>
+        (click)="openEditionDialog(machine)">Edit</button>
     </mat-expansion-panel-header>
 
     <div *ngIf="!!machine.machineType" class="subRow">

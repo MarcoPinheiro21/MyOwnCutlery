@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Machine } from 'src/app/models/machine.model';
 import { MachinesService } from './machines.service';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { MachineDialogComponent } from './machine-dialog/machine-dialog.component';
 import { MachineType } from 'src/app/models/machineType.model';
+import { MachineEditionDialogComponent } from './machine-edition-dialog/machine-edition-dialog.component';
+import { MachineCreationDialogComponent } from './machine-creation-dialog/machine-creation-dialog.component';
 
 @Component({
   selector: 'app-machines',
@@ -13,6 +14,7 @@ import { MachineType } from 'src/app/models/machineType.model';
 export class MachinesComponent implements OnInit {
 
   machines: Machine[] = [];
+  machineTypes: MachineType[] = [];
   machinesService: MachinesService;
   dialog: MatDialog;
 
@@ -25,21 +27,47 @@ export class MachinesComponent implements OnInit {
     this.getMachines().then(success => {
       this.populateMachinesId();
     });
+    this.getMachineTypes();
+
   }
 
-  openDialog(editionMode, selectedMachine?) {
+  openEditionDialog(selectedMachine?) {
 
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
       machine: selectedMachine,
-      isEdition: editionMode
+      machineTypes: this.machineTypes
     };
-    dialogConfig.width = '15%';
-    dialogConfig.height = '30%';
+    dialogConfig.width = '425px';
+    dialogConfig.height = '225px';
 
+    this.dialog.open(MachineEditionDialogComponent, dialogConfig).afterClosed().subscribe(result => {
+      if (!!result) {
+        return this.updateMachine(result.data);
+      }
+    });
+  }
 
-    this.dialog.open(MachineDialogComponent, dialogConfig);
+  openCreationDialog() {
+    const dialogConfig = new MatDialogConfig();
+    const machine = {
+      description: '',
+      machineTypeId: 0
+    };
+
+    dialogConfig.data = {
+      machine,
+      machineTypes: this.machineTypes
+    };
+    dialogConfig.width = '425px';
+    dialogConfig.height = '225px';
+
+    this.dialog.open(MachineCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
+      if (!!result) {
+        return this.createMachine(result.data);
+      }
+    });
   }
 
   getMachines(): Promise<any> {
@@ -58,4 +86,31 @@ export class MachinesComponent implements OnInit {
     });
   }
 
+  getMachineTypes(): void {
+    this.machinesService.getMachineTypes().subscribe((data: any) => {
+      this.machineTypes = data;
+    });
+  }
+
+  createMachine(machine) {
+    this.machinesService.createMachine(machine).subscribe(() => {
+      this.getMachines().then(success => {
+        this.populateMachinesId();
+      });
+    });
+  }
+
+  updateMachine(machine) {
+    this.machinesService.updateMachine(machine).subscribe(() => {
+      this.getMachines().then(success => {
+        this.populateMachinesId();
+      });
+    });
+  }
+
+}
+
+export interface CreateMachine {
+  description: string;
+  machineTypeId: number;
 }

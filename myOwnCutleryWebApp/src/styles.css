@@ -6,6 +6,12 @@
   align-items: center;
   width: auto !important;
 }
+.mat-dialog-container {
+  width: 115px;
+  padding: 10px;
+  border: 2px solid #000;
+  background-color: #f2f2f2;
+}
 
 .mainTitle {
   font-family: 'Bowlby One SC';
@@ -20,6 +26,10 @@
   font-size: 20px;
   width: 100%;
   padding: 10px;
+}
+
+.active {
+  color: white !important;
 }
 
 .applications {

@@ -1,0 +1,26 @@
+<h1 mat-dialog-title class="labelIcons" style="text-align: center;">Edit Machine</h1>
+<mat-dialog-content>
+  <div class="row">
+    <div class="col-sm-6">
+      <mat-form-field>
+        <input matInput placeholder="Description" value="{{machine.description}}"
+          [(ngModel)]="machine.description">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6">
+      <mat-label>Select an option</mat-label>
+      <mat-select placeholder="Select MachineType" [(ngModel)]="machine.machineTypeId" name="machineType">
+        <mat-option *ngFor="let machineType of machineTypes" [value]="machineType.id">
+          {{machineType.desc}}
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<div class="col-sm-12">
+  <mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button (click)="save()">Save</button>
+  </mat-dialog-actions>
+</div>

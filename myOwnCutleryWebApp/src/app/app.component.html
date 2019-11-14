@@ -1,14 +1,30 @@
 <div style="text-align:center">
-    <h1 class="mainTitle">My Own Cutlery App</h1>
+  <h1 class="mainTitle">My Own Cutlery App</h1>
 </div>
-<nav>
-    <ul style="text-align:center">
-        <li><a class="labelIcons" routerLink="/machines" routerLinkActive="active">Machines</a></li>
-        <li><a class="labelIcons" routerLink="/machineTypes" routerLinkActive="active">Machine Types</a></li>
-        <li><a class="labelIcons" routerLink="/operations" routerLinkActive="active">Operations</a></li>
-        <li><a class="labelIcons" routerLink="/products" routerLinkActive="active">Products</a></li>
-    </ul>
+<nav style="background-color: grey;">
+  <ul style="text-align:center; margin-bottom: 3%;">
+    <li>
+      <a class="labelIcons" routerLink="/machines" routerLinkActive="active">Machines
+        <mat-icon fontSet="fas" fontIcon="fa-cash-register"></mat-icon>
+      </a>
+    </li>
+    <li>
+      <a class="labelIcons" routerLink="/machineTypes" routerLinkActive="active">Machine Types
+        <mat-icon fontSet="fas" fontIcon="fa-memory"></mat-icon>
+      </a>
+    </li>
+    <li>
+      <a class="labelIcons" routerLink="/operations" routerLinkActive="active">Operations
+        <mat-icon fontSet="fas" fontIcon="fa-tasks" ></mat-icon>
+      </a>
+    </li>
+    <li>
+      <a class="labelIcons" routerLink="/products" routerLinkActive="active">Products
+        <mat-icon fontSet="fas" fontIcon="fa-utensils" ></mat-icon>
+      </a>
+    </li>
+  </ul>
 </nav>
 <section class="container">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </section>
