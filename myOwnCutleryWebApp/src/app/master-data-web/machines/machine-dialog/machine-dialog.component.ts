@@ -28,11 +28,8 @@ export class MachineDialogComponent implements OnInit {
     });
   }
 
-
   close() {
     this.dialogRef.close();
   }
-
-  save() {  }
 
 }

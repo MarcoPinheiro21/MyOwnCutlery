@@ -14,32 +14,32 @@ import { Operation } from 'src/app/models/operation.model';
 export class MachineTypesComponent implements OnInit {
 
   machineTypes: MachineType[] = [];
-  operations: Operation[]=[];
+  operations: Operation[] = [];
   machineTypeService: MachineTypeService;
   operationsService: OperationsService;
   dialog: MatDialog;
 
   constructor(_machineTypeService: MachineTypeService,
     _operationsService: OperationsService, myDialog: MatDialog) {
-    this.machineTypeService=_machineTypeService;
+    this.machineTypeService = _machineTypeService;
     this.operationsService = _operationsService;
-    this.dialog=myDialog;
-   }
+    this.dialog = myDialog;
+  }
 
   ngOnInit() {
     this.getMachineTypes();
     this.getOperations();
   }
 
-  private getMachineTypes(): void{
-    this.machineTypeService.getMachineTypes().subscribe((data: any)=>{
-      this.machineTypes=data;
+  private getMachineTypes(): void {
+    this.machineTypeService.getMachineTypes().subscribe((data: any) => {
+      this.machineTypes = data;
     });
   }
 
-  private getOperations(): void{
-    this.operationsService.getOperations().subscribe((data: any)=>{
-      this.operations=data;
+  private getOperations(): void {
+    this.operationsService.getOperations().subscribe((data: any) => {
+      this.operations = data;
     });
   }
 
@@ -52,9 +52,14 @@ export class MachineTypesComponent implements OnInit {
       listOperations: this.operations,
       isEdition: editionMode
     };
-    dialogConfig.width = '45%';
-    dialogConfig.height = '69%';
+    dialogConfig.width = '35%';
+    dialogConfig.height = '55%';
 
-    this.dialog.open(MachineTypeDialogComponent, dialogConfig);
+    let dialogRef = this.dialog.open(MachineTypeDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        this.machineTypeService.saveOperation(result.data).subscribe();
+      }
+    });
   }
 }

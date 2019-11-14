@@ -1,34 +1,33 @@
 <mat-accordion displayMode="flat" multi class="mat-table">
-    <section matSort class="mat-elevation-z2 mat-header-row">
-      <span class="mat-header-cell" mat-sort-header="vesselStatus">Machine Type > Description</span>
-      <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openDialog(false)">New</button>
-    </section>
+  <section matSort class="mat-elevation-z2 mat-header-row">
+    <span class="mat-header-cell" mat-sort-header="vesselStatus">Machine Type > Description</span>
+    <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openDialog(false)">New</button>
+  </section>
 
-    <mat-expansion-panel *ngFor="let machinetype of machineTypes">
-      <mat-expansion-panel-header class="mat-row">
-        <span class="mat-cell">{{machinetype.desc}}</span>
-      </mat-expansion-panel-header>
+  <mat-expansion-panel *ngFor="let machinetype of machineTypes">
+    <mat-expansion-panel-header class="mat-row">
+      <span class="mat-cell">{{machinetype.desc}}</span>
+    </mat-expansion-panel-header>
 
-        <div class="subRow">
-          <table class="table table-sm table-active">
-            <thead class="thead-dark">
-              <tr>
-                <th>Operation Id</th>
-                <th>Tool</th>
-                <th>Operation Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let operation of machinetype.operationList">
-                <td>{{operation.operationId}}</td>
-                <td>{{operation.tool}}</td>
-                <td>{{operation.operationType}}</td>
-                <button type="button" style="margin-right: -29px;" class="btn btn-primary buttonTables"
-                (click)="openDialog(true, machinetype)">Edit</button>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-    </mat-expansion-panel>
-  
-  </mat-accordion>
+    <table class="table table-sm table-active">
+      <tr>
+        <th>Operation Id</th>
+        <th>Tool</th>
+        <th>Operation Type</th>
+        <td align="center">
+          <button type="button" style="margin-right: -29px;" class="btn btn-primary buttonTables"
+            (click)="openDialog(true, machinetype)">Edit</button>
+        </td>
+      </tr>
+      <tbody>
+        <tr *ngFor="let operation of machinetype.operationList">
+          <td>{{operation.operationId}}</td>
+          <td>{{operation.tool}}</td>
+          <td>{{operation.operationType}}</td>
+          <td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-expansion-panel>
+
+</mat-accordion>

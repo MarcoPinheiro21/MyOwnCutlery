@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ErrorHandler } from '@angular/core';
 import { Operation } from 'src/app/models/operation.model';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MachineType } from 'src/app/models/machineType.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,12 @@ export class OperationsService {
 
   constructor(private http: HttpClient) { }
 
-    getOperations(): Observable<Operation[]> {
-      return this.http.get<Operation[]>(this.url + 'operations').pipe(
-        map((response: [Operation]) => {
-          return response;
-        })
-      );
-    }
+  getOperations(): Observable<Operation[]> {
+    return this.http.get<Operation[]>(this.url + 'operations').pipe(
+      map((response: [Operation]) => {
+        return response;
+      })
+    );
+  }
 
 }

@@ -39,9 +39,12 @@ export class MachineTypeDialogComponent implements OnInit {
     this.operations.forEach(op => {
       let e = <Element>{};
       e["checked"] = this.selectedMachineIncludesOp(op);
+      e["machineType"] = this.selectedMachineType.desc;
       e["operationId"] = op.operationId;
+      e["toolId"] = op.toolId;
       e["tool"] = op.tool;
       e["operationType"] = op.operationType;
+      e["operationTypeId"] = op.operationTypeId;
       e["highlighted"] = false;
       e["hovered"] = false;
       this.elements.push(e);
@@ -58,6 +61,35 @@ export class MachineTypeDialogComponent implements OnInit {
     return bol;
   }
 
+  private addOperationToMachineType(element: Element) {
+    let op = <Operation>{};
+    op.operationId = element.operationId;
+    op.operationType = element.operationType;
+    op.operationTypeId = element.operationTypeId;
+    op.tool = element.tool;
+    op.toolId = element.toolId;
+    this.selectedMachineType.operationList.push(op);
+  }
+
+  private removeOperationFromMachineType(element: Element) {
+    this.selectedMachineType.operationList =
+      this.selectedMachineType.operationList.filter(op =>
+        op.operationId != element.operationId);
+
+  }
+
+  onCheckClick(element: Element) {
+    if (!element.checked) {
+      this.addOperationToMachineType(element);
+    } else {
+      this.removeOperationFromMachineType(element);
+    }
+  }
+
+  save(){
+    this.dialogRef.close({ data: this.selectedMachineType });
+  }
+
   close() {
     this.dialogRef.close();
   }
@@ -65,8 +97,11 @@ export class MachineTypeDialogComponent implements OnInit {
 
 export interface Element {
   checked: boolean;
+  machineType:string;
   operationId: number;
+  toolId: number;
   tool: string;
+  operationTypeId: number;
   operationType: string;
   highlighted?: boolean;
   hovered?: boolean;
