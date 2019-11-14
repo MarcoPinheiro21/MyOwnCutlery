@@ -157,6 +157,11 @@ namespace factoryApi.Repositories
             _context.SaveChanges();
             return newOpType;
         }
+        
+        public IEnumerable<OperationType> GetAllOperationTypes()
+        {
+            return _context.OperationTypes.ToList();
+        }
             
         public OperationType GetOperationTypeByName(string type)
         {
@@ -173,7 +178,11 @@ namespace factoryApi.Repositories
                 _context.SaveChanges();
                 return newTool;
             }
-            
+            public IEnumerable<Tool> GetAllTools()
+            {
+                return _context.Tools.ToList();
+            }
+
             public Tool GetToolById(long id)
             {
                 return _context.Tools.ToList().FirstOrDefault(t => t.ToolId == id);

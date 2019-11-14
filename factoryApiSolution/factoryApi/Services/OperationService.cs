@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using factoryApi.DTO;
+using factoryApi.Models.Operation;
 using factoryApi.Repositories;
 
 namespace factoryApi.Services
@@ -40,5 +41,14 @@ namespace factoryApi.Services
             return _repo.DeleteElement(id);
         }
         
+        public IEnumerable<Tool> FindAllTools()
+        {
+            return _repo.GetAllTools();
+        }
+        
+        public IEnumerable<OperationType> FindAllOperationTypes()
+        {
+            return _repo.GetAllOperationTypes();
+        }
     }
 }

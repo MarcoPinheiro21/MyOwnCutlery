@@ -1,5 +1,4 @@
 import { MachineType } from './machineType.model';
-import { CreateMachine } from './createMachine.model';
 
 export class Machine {
   constructor(

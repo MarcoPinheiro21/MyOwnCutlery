@@ -3,6 +3,7 @@ using factoryApi.Bootstrap;
 using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Exceptions;
+using factoryApi.Models.Operation;
 using factoryApi.Repositories;
 using factoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -107,6 +108,22 @@ namespace factoryApi.Controllers
             {
                 return NotFound(ex.Message);
             }
+        }
+        
+        // GET: factoryapi/operations/tools
+        [HttpGet("tools")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Tool>))]
+        public ActionResult GetTools()
+        {
+            return Ok(_service.FindAllTools());
+        }
+        
+        // GET: factoryapi/operations/operationTypes
+        [HttpGet("operationTypes")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<OperationType>))]
+        public ActionResult GetOperationTypes()
+        {
+            return Ok(_service.FindAllOperationTypes());
         }
     }
 }

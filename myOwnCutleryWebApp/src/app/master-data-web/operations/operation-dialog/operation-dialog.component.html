@@ -1,0 +1,28 @@
+<h1 mat-dialog-title class="labelIcons" style="text-align: center;">New Operation</h1>
+<mat-dialog-content>
+  <div class="row">
+    <div class="col-sm-6">
+      <mat-label>Select an option</mat-label>
+      <mat-select [(ngModel)]="operation.OperationType" name="OperationType">
+        <mat-option *ngFor="let operationType of operationTypes" [value]="operationType.operationTypeName">
+          {{operationType.operationTypeName}}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="col-sm-6">
+      <mat-label>Select an option</mat-label>
+      <mat-select [(ngModel)]="operation.ToolId" name="ToolId">
+        <mat-option *ngFor="let tool of tools" [value]="tool.toolId">
+          {{tool.desc}}
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<div class="col-sm-12">
+  <mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button (click)="save()">Save</button>
+  </mat-dialog-actions>
+</div>

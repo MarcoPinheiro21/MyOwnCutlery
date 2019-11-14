@@ -21,6 +21,7 @@ import { ProductsService } from './master-data-web/product/product.service';
 import { MachineTypeDialogComponent } from './master-data-web/machine-types/machine-type-dialog/machine-type-dialog.component';
 import { MachineCreationDialogComponent } from './master-data-web/machines/machine-creation-dialog/machine-creation-dialog.component';
 import { MachineEditionDialogComponent } from './master-data-web/machines/machine-edition-dialog/machine-edition-dialog.component';
+import { OperationDialogComponent } from './master-data-web/operations/operation-dialog/operation-dialog.component';
 
 const AngularMaterialComponents = [
   MatButtonModule,
@@ -45,7 +46,8 @@ const AngularMaterialComponents = [
     MachineTypeDialogComponent,
     routingComponents,
     MachineCreationDialogComponent,
-    MachineEditionDialogComponent
+    MachineEditionDialogComponent,
+    OperationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +58,6 @@ const AngularMaterialComponents = [
   ],
   providers: [MachinesService, ProductsService],
   bootstrap: [AppComponent],
-  entryComponents: [MachineEditionDialogComponent, MachineCreationDialogComponent, MachineTypeDialogComponent]
+  entryComponents: [MachineEditionDialogComponent, MachineCreationDialogComponent, MachineTypeDialogComponent, OperationDialogComponent]
 })
 export class AppModule { }
