@@ -61,7 +61,10 @@ namespace factoryApi.Repositories
 
         private IEnumerable<ProductionLine> getAllProductionLines()
         {
-            return _context.ProductionLines.ToList();
+            return _context.ProductionLines
+                .Include(ml => ml.MachinesList)
+                .ThenInclude(mt=>mt.Type)
+                .ToList();
         }
 
         public ProductionLine Add(CreateProductionLineDto productionLineDto)
