@@ -22,11 +22,11 @@ function placeholder(name, position) {
 
     var loader = new THREE.FontLoader();
 
-    loader.load( 'http://localhost:5000/fonts/helvetiker_regular.typeface.json', function ( font ) {
+    loader.load( configurationsApi.visualizationApi.url + '/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
         let textGeometry = new THREE.TextGeometry( name, {
             font: font,
-            size: 4 ,
+            size: 1,
             height: 0.3,
             curveSegments: 12,
             bevelEnabled: false,

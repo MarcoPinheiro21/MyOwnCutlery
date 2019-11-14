@@ -41,5 +41,12 @@ defaultConfig = {
             { x: 0, y: 0, z: -5 },
             { x: 20, y: 0, z: -5 }
         ]
+    }, 
+    lines:{
+        initialX: 38,
+        finalX: -75,
+        lineAY: 15,
+        lineBY: -14.5,
+        lineZ: 6
     }
 };
