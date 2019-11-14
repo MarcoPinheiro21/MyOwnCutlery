@@ -1,11 +1,11 @@
-<div class="header">Edit Operation for Machine Type
+<div class="header" *ngIf="isEdition; else newMachineType">Edit Operation for Machine Type
   {{elements[0].machineType}}</div>
-  <br>
+<br>
 
 <mat-table mat-table [dataSource]="elements">
   <ng-container matColumnDef="checked">
     <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
-    <mat-cell *matCellDef="let element">
+    <mat-cell *matCellDef="let element" class="table-row">
       <mat-checkbox [(ngModel)]="element.checked" (click)="onCheckClick(element)"></mat-checkbox>
     </mat-cell>
   </ng-container>
@@ -29,6 +29,26 @@
     (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></mat-row>
 </mat-table>
 <mat-dialog-actions>
-  <button mat-button (click)="close()">Cancel</button>
-  <button mat-button (click)="save()">Save</button>
+  <button mat-button (click)="close()">Close</button>
+  <button mat-button (click)="save(isEdition)" (click)="checkEmptyOperationsList()">Save</button>
+  <mat-error  *ngIf="isSelectedOperationsEmpty">
+      Please choose at least one operation from the list.
+    </mat-error>
 </mat-dialog-actions>
+
+
+<ng-template #newMachineType>
+  <div class="header">
+    <form class="form">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Machine Type Description" [formControl]="inputFormControl">
+        <mat-error *ngIf="inputFormControl.hasError('required')">
+          Description is <strong>required.</strong>
+        </mat-error>
+        <mat-error *ngIf="inputFormControl.hasError('minlength')">
+          Minimum length is 2
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+</ng-template>

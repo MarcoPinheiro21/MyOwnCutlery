@@ -18,12 +18,15 @@ export class MachineTypesComponent implements OnInit {
   machineTypeService: MachineTypeService;
   operationsService: OperationsService;
   dialog: MatDialog;
+  alertMessage: AlertMessage = <AlertMessage>{};
 
   constructor(_machineTypeService: MachineTypeService,
     _operationsService: OperationsService, myDialog: MatDialog) {
     this.machineTypeService = _machineTypeService;
     this.operationsService = _operationsService;
     this.dialog = myDialog;
+    this.alertMessage.showAlertMsg = false;
+    this.alertMessage.message="wdsfewfwe";
   }
 
   ngOnInit() {
@@ -43,6 +46,20 @@ export class MachineTypesComponent implements OnInit {
     });
   }
 
+  private generateSuccessMsg(arg: string) {
+    this.alertMessage.message = 'The machine type ' + arg + ' was successfuly saved.';
+  }
+
+  timerHideAlert() {
+    this.alertMessage.showAlertMsg = true;
+    setTimeout(() => this.hideAlert(), 10000);
+  }
+
+  hideAlert() {
+    this.alertMessage.showAlertMsg = false;
+  }
+
+
   openDialog(editionMode, selectedmachinetype?) {
 
     const dialogConfig = new MatDialogConfig();
@@ -53,13 +70,34 @@ export class MachineTypesComponent implements OnInit {
       isEdition: editionMode
     };
     dialogConfig.width = '35%';
-    dialogConfig.height = '55%';
+    dialogConfig.height = '45%';
 
     let dialogRef = this.dialog.open(MachineTypeDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        this.machineTypeService.saveOperation(result.data).subscribe();
+        this.machineTypeService
+          .saveOperation(result.data, dialogConfig.data.isEdition)
+          .subscribe(
+            () => {
+              var mt = <MachineType>result.data;
+              this.generateSuccessMsg(mt.desc);
+              this.alertMessage.success = true;
+              this.getMachineTypes();
+              this.timerHideAlert();
+            },
+            (error: Error) => {
+              this.alertMessage.message = error.message;
+              this.alertMessage.success = false;
+              this.timerHideAlert();
+            }
+          );
       }
     });
   }
+}
+
+export interface AlertMessage {
+  message: string;
+  showAlertMsg: boolean;
+  success: boolean;
 }

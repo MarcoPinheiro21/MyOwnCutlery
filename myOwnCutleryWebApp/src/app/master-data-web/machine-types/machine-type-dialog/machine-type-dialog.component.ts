@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject, OnChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, } from '@angular/material';
 import { Operation } from 'src/app/models/operation.model';
-import { OperationsService } from '../../operations/operations.service';
 import { MachineType } from 'src/app/models/machineType.model';
 
 @Component({
@@ -13,33 +12,47 @@ import { MachineType } from 'src/app/models/machineType.model';
 
 export class MachineTypeDialogComponent implements OnInit {
 
-  ;
-  // elements: Element[]=[{checked: true, operationId:1, tool:'toll', operationType:1}];
+
   operations: Operation[];
   selectedMachineType: MachineType;
+  isSelectedOperationsEmpty: boolean;
   elements: Element[] = [];
+  isEdition: boolean;
+  
   displayedColumns: string[] = [
     'checked',
     'operationId',
     'tool',
     'operationType'];
 
+  inputFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(2),
+  ]);
+
   constructor(
     private dialogRef: MatDialogRef<MachineTypeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data) {
     this.operations = data.listOperations;
     this.selectedMachineType = data.machinetype;
+    this.isEdition = data.isEdition;
   }
 
   ngOnInit() {
     this.fillElements();
+    if (this.selectedMachineType == null) {
+      this.selectedMachineType = <MachineType>{
+        operationList: []
+      };
+    }
+
   }
 
   private fillElements() {
     this.operations.forEach(op => {
       let e = <Element>{};
       e["checked"] = this.selectedMachineIncludesOp(op);
-      e["machineType"] = this.selectedMachineType.desc;
+      e["machineType"] = this.selectedMachineType != null ? this.selectedMachineType.desc : null;
       e["operationId"] = op.operationId;
       e["toolId"] = op.toolId;
       e["tool"] = op.tool;
@@ -53,11 +66,13 @@ export class MachineTypeDialogComponent implements OnInit {
 
   private selectedMachineIncludesOp(operation: Operation): boolean {
     var bol = false;
-    this.selectedMachineType.operationList.forEach(op => {
-      if (op.operationId == operation.operationId) {
-        bol = true;
-      }
-    });
+    if (this.selectedMachineType != null) {
+      this.selectedMachineType.operationList.forEach(op => {
+        if (op.operationId == operation.operationId) {
+          bol = true;
+        }
+      });
+    }
     return bol;
   }
 
@@ -86,8 +101,24 @@ export class MachineTypeDialogComponent implements OnInit {
     }
   }
 
-  save(){
+  checkEmptyOperationsList() {
+    this.isSelectedOperationsEmpty =
+      this.selectedMachineType.operationList.length == 0;
+  }
+
+  save(isEdition: boolean) {
+    if (!isEdition) {
+      this.checkEmptyOperationsList();
+      if (this.inputFormControl.hasError('required') ||
+        this.inputFormControl.hasError('minlength') ||
+        this.isSelectedOperationsEmpty) {
+        return;
+      }
+
+      this.selectedMachineType.desc = this.inputFormControl.value;
+    }
     this.dialogRef.close({ data: this.selectedMachineType });
+    return;
   }
 
   close() {
@@ -97,7 +128,7 @@ export class MachineTypeDialogComponent implements OnInit {
 
 export interface Element {
   checked: boolean;
-  machineType:string;
+  machineType: string;
   operationId: number;
   toolId: number;
   tool: string;

@@ -1,42 +1,51 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { MachineType } from 'src/app/models/machineType.model';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, windowWhen } from 'rxjs/operators';
+import { api } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MachineTypeService {
 
-  private url = 'https://localhost:5001/factoryapi/';
+
+  private url = api.url + '/factoryapi/';
+  private resource = 'machines/types/';
 
   constructor(private http: HttpClient) { }
 
   getMachineTypes(): Observable<MachineType[]> {
-    return this.http.get<MachineType[]>(this.url + 'machines/types')
+    return this.http.get<MachineType[]>(this.url + this.resource)
       .pipe(map((response: [MachineType]) => {
         return response;
       })
       );
   }
 
-  getMachineTypeById(id : number): Observable<MachineType[]> {
-    return this.http.get<MachineType[]>(this.url + 'machines/types/' + id)
+  getMachineTypeById(id: number): Observable<MachineType[]> {
+    return this.http.get<MachineType[]>(this.url + this.resource + id)
       .pipe(map((response: [MachineType]) => {
         return response;
       })
       );
   }
 
-  saveOperation(machineType: MachineType) : Observable<MachineType[]>{
+  saveOperation(machineType: MachineType, isEdition: boolean): Observable<MachineType[]> {
     let body = <RequestBody>{};
-    body.Desc = null;
+    isEdition ? body.Desc = null : body.Desc = machineType.desc;
     body.OperationList = this.extractOperationIdList(machineType);
 
-    return this.http.put<MachineType[]>(
-      this.url + 'machines/types/' + machineType.id + '/operations', body)
-    .pipe(catchError(null));
+    return isEdition ?
+      this.http.put<MachineType[]>(this.url + this.resource + machineType.id + '/operations', body)
+        .pipe(catchError((err: HttpErrorResponse) => {
+          return throwError(new Error(err.error));
+        })) :
+      this.http.post<MachineType[]>(this.url + this.resource, body)
+        .pipe(catchError((err: HttpErrorResponse) => {
+          return throwError(new Error(err.error));
+        }));
   }
 
   private extractOperationIdList(machineType: MachineType): number[] {
