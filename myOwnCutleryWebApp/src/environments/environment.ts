@@ -7,7 +7,11 @@ export const environment = {
 };
 
 export const api = {
-  url: "https://localhost:5001"
+  url: 'https://localhost:5001'
+};
+
+export const visual = {
+  url: 'http://localhost:6001/factory/factory.html'
 };
 
 /*

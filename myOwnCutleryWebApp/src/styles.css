@@ -17,8 +17,8 @@
   font-family: 'Bowlby One SC';
   font-size: 75px;
   margin: 5% auto 0 auto;
-  width: 55%;
   padding: 10px;
+  display: inline;
 }
 
 .labelIcons{
