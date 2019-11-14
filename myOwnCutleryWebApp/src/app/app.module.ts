@@ -22,6 +22,7 @@ import { MachineTypeDialogComponent } from './master-data-web/machine-types/mach
 import { MachineCreationDialogComponent } from './master-data-web/machines/machine-creation-dialog/machine-creation-dialog.component';
 import { MachineEditionDialogComponent } from './master-data-web/machines/machine-edition-dialog/machine-edition-dialog.component';
 import { OperationDialogComponent } from './master-data-web/operations/operation-dialog/operation-dialog.component';
+import { ProductDialogComponent } from './master-data-web/product/product-dialog/product-dialog.component';
 
 const AngularMaterialComponents = [
   MatButtonModule,
@@ -47,7 +48,8 @@ const AngularMaterialComponents = [
     routingComponents,
     MachineCreationDialogComponent,
     MachineEditionDialogComponent,
-    OperationDialogComponent
+    OperationDialogComponent,
+    ProductDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +60,6 @@ const AngularMaterialComponents = [
   ],
   providers: [MachinesService, ProductsService],
   bootstrap: [AppComponent],
-  entryComponents: [MachineEditionDialogComponent, MachineCreationDialogComponent, MachineTypeDialogComponent, OperationDialogComponent]
+  entryComponents: [MachineEditionDialogComponent, MachineCreationDialogComponent, MachineTypeDialogComponent, OperationDialogComponent,ProductDialogComponent]
 })
 export class AppModule { }

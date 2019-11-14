@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ProductionOperation } from 'src/app/models/productionOperation.model';
+import { CreateProduct } from './product.component';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,12 @@ export class ProductsService {
           return response;
         })
       );
+    }
+
+    createProduct(product: CreateProduct): Observable<CreateProduct[]> {
+      return this.http.post<CreateProduct[]>(
+        this.url + 'products', product)
+      .pipe(catchError(null));
+
     }
 }
