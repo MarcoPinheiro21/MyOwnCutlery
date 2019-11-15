@@ -36,7 +36,7 @@ export class ProductDialogComponent implements OnInit {
       e["checked"] = this.productIncludesOp(op);
       e["operationId"] = op.operationId;
       e["tool"] = op.tool;
-      e["operationType"] = op.operationType;
+      e["operationType"] = op.operationType.desc;
       e["highlighted"] = false;
       e["hovered"] = false;
       this.elements.push(e);

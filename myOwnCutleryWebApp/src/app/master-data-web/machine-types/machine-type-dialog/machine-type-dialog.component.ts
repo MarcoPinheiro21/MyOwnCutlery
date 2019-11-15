@@ -56,8 +56,8 @@ export class MachineTypeDialogComponent implements OnInit {
       e["operationId"] = op.operationId;
       e["toolId"] = op.toolId;
       e["tool"] = op.tool;
-      e["operationType"] = op.operationType;
-      e["operationTypeId"] = op.operationTypeId;
+      e["operationType"] = op.operationType.desc;
+      e["operationTypeId"] = op.operationType.operationTypeId;
       e["highlighted"] = false;
       e["hovered"] = false;
       this.elements.push(e);
@@ -79,8 +79,8 @@ export class MachineTypeDialogComponent implements OnInit {
   private addOperationToMachineType(element: Element) {
     let op = <Operation>{};
     op.operationId = element.operationId;
-    op.operationType = element.operationType;
-    op.operationTypeId = element.operationTypeId;
+    op.operationType.desc = element.operationType;
+    op.operationType.operationTypeId = element.operationTypeId;
     op.tool = element.tool;
     op.toolId = element.toolId;
     this.selectedMachineType.operationList.push(op);
