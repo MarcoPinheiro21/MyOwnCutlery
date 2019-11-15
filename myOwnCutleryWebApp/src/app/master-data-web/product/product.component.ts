@@ -6,6 +6,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material';
 import { OperationsService } from 'src/app/master-data-web/operations/operations.service';
 import { Operation } from 'src/app/models/operation.model';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
+import { AlertMessage } from '../machine-types/machine-types.component';
 
 @Component({
   selector: 'app-product',
@@ -19,6 +20,7 @@ export class ProductsComponent implements OnInit {
   productionService: ProductsService;
   factoryService: OperationsService;
   dialog: MatDialog;
+  alertMessage: AlertMessage = <AlertMessage>{};
 
   constructor(_factoryService: OperationsService, _productionService: ProductsService, private myDialog: MatDialog) {
     this.productionService = _productionService;
@@ -71,18 +73,41 @@ export class ProductsComponent implements OnInit {
       dialogConfig.height = '400px';
 
       this.dialog.open(ProductDialogComponent, dialogConfig).afterClosed().subscribe(result => {
-        if (!!result) {
-          return this.createProduct(result.data);
+        if (result != undefined) {
+          this.productionService
+            .createProduct(result.data)
+            .subscribe(
+              () => {
+                var mt = result.data.productName;
+                this.generateSuccessMsg(mt);
+                this.alertMessage.success = true;
+                this.getProducts();
+                this.timerHideAlert();
+              },
+              (error: Error) => {
+                this.alertMessage.message = error.message;
+                this.alertMessage.success = false;
+                this.timerHideAlert();
+              }
+            );
         }
       });
     });
   }
 
-  createProduct(p) {
-    this.productionService.createProduct(p).subscribe(() => {
-      this.getProducts(); //smth
-    });
+  timerHideAlert() {
+    this.alertMessage.showAlertMsg = true;
+    setTimeout(() => this.hideAlert(), 10000);
   }
+
+  hideAlert() {
+    this.alertMessage.showAlertMsg = false;
+  }
+
+  private generateSuccessMsg(arg: string) {
+    this.alertMessage.message = 'The product ' + arg + ' was successfuly saved.';
+  }
+
 }
 
 export interface CreateProduct {

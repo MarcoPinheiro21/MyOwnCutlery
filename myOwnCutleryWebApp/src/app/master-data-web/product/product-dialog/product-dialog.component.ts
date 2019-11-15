@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CreateProduct, CreateOperation } from '../product.component';
 import { Operation } from 'src/app/models/operation.model';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-product-dialog',
@@ -10,6 +11,7 @@ import { Operation } from 'src/app/models/operation.model';
 })
 export class ProductDialogComponent implements OnInit {
 
+  isSelectedOperationsEmpty: boolean;
   product: CreateProduct;
   operations: Operation[];
   elements: Element[] = [];
@@ -18,6 +20,11 @@ export class ProductDialogComponent implements OnInit {
     'operationId',
     'tool',
     'operationType'];
+
+  inputFormControl = new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]);
 
   constructor(
     private dialogRef: MatDialogRef<ProductDialogComponent>,
@@ -57,8 +64,21 @@ export class ProductDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  save() {
+  save(isEdition: boolean) {
+   
+      this.checkEmptyOperationsList();
+      if (this.inputFormControl.hasError('required') ||
+        this.inputFormControl.hasError('minlength') ||
+        this.isSelectedOperationsEmpty) {
+        return;
+      }
     this.dialogRef.close({ data: this.product });
+    return;
+  }
+
+  checkEmptyOperationsList() {
+    this.isSelectedOperationsEmpty =
+      this.product.plan.operations.length == 0;
   }
 
   private addOperationToMachineType(element: Element) {

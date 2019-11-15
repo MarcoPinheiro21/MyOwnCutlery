@@ -1,3 +1,14 @@
+<div *ngIf="(alertMessage.showAlertMsg && alertMessage.success); else alertError">
+  <div class="alert alert-success" role="alert">
+    {{alertMessage.message}}
+    <button (click)="hideAlert()" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="false"><strong>&times;</strong></span>
+    </button>
+  </div>
+</div>
+
+
+
 <mat-accordion displayMode="flat" multi class="mat-table">
   <section matSort class="mat-elevation-z2 mat-header-row">
     <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Name">Product Name</span>

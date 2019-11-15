@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { ProductionOperation } from 'src/app/models/productionOperation.model';
 import { CreateProduct } from './product.component';
 
@@ -33,7 +33,9 @@ export class ProductsService {
     createProduct(product: CreateProduct): Observable<CreateProduct[]> {
       return this.http.post<CreateProduct[]>(
         this.url + 'products', product)
-      .pipe(catchError(null));
+        .pipe(catchError((err: HttpErrorResponse) => {
+          return throwError(new Error(err.error));
+        }));
 
     }
 }

@@ -1,9 +1,17 @@
-<div class="header">Create Product</div>
-  <br>
-  <mat-form-field>
-    <input matInput placeholder="Product Name" value="{{product.productName}}" [(ngModel)]="product.productName">
-  </mat-form-field>
-
+<div class="header">
+  <form class="form">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Product Name" value="{{product.productName}}" [(ngModel)]="product.productName" [formControl]="inputFormControl">
+      <mat-error *ngIf="inputFormControl.hasError('required')">
+        Description is <strong>required.</strong>
+      </mat-error>
+      <mat-error *ngIf="inputFormControl.hasError('minlength')">
+        Minimum length is 3
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<br>
 <mat-table mat-table [dataSource]="elements">
   <ng-container matColumnDef="checked">
     <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
@@ -32,5 +40,12 @@
 </mat-table>
 <mat-dialog-actions>
   <button mat-button (click)="close()">Cancel</button>
-  <button mat-button (click)="save()">Save</button>
+  <button mat-button (click)="save()" (click)="checkEmptyOperationsList()">Save</button>
+  <mat-error  *ngIf="isSelectedOperationsEmpty">
+      Please choose at least one operation from the list.
+    </mat-error>
 </mat-dialog-actions>
+
+
+
+  
