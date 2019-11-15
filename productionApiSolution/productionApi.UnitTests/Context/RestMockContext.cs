@@ -14,8 +14,10 @@ namespace productionApiTest.Context
         {
             var factoryOperationsList = new List<FactoryApiOperationDto>
             {
-                new FactoryApiOperationDto(6, "tool1", "name1"), 
-                new FactoryApiOperationDto(7, "tool2", "name2")
+                new FactoryApiOperationDto(6, "tool1",1,
+                    new OperationTypeDto(1,"name1",10,2)), 
+                new FactoryApiOperationDto(7, "tool2", 2,
+                    new OperationTypeDto(1,"name2",5,1))
             };
             
             var restClient = new Mock<OperationRestClient>();

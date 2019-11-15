@@ -34,7 +34,7 @@ namespace productionApi.Services
                         {
                             CreateOperationDto dto = new CreateOperationDto(factoryApiDto.operationId);
                             dto.Tool = factoryApiDto.tool;
-                            dto.Type = factoryApiDto.operationType;
+                            dto.Type = factoryApiDto.operationType.desc;
                             newList.Add(dto);
 
                         }

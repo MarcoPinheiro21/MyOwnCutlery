@@ -11,7 +11,6 @@ namespace factoryApi.Bootstrap
         private const string Op1Desc = "op1";
         private const string Op2Desc = "op2";
         private const string Op3Desc = "op3";
-        private const string Op4Desc = "op4";
 
         public BootstrapOperationTypes(MasterFactoryContext context)
         {
@@ -22,27 +21,24 @@ namespace factoryApi.Bootstrap
             var op1 = _operationRepository.GetOperationTypeByName(Op1Desc);
             if (op1 == null)
             {
-                _operationRepository.AddOperationType(new OperationType(Op1Desc));
+                _operationRepository.AddOperationType(
+                    new OperationType(Op1Desc,60,5));
             }
             
             var op2 = _operationRepository.GetOperationTypeByName(Op2Desc);
             if (op2 == null)
             {
-                _operationRepository.AddOperationType(new OperationType(Op2Desc));
+                _operationRepository.AddOperationType(
+                    new OperationType(Op2Desc, 30,6));
             }
             
             var op3 = _operationRepository.GetOperationTypeByName(Op3Desc);
             if (op3 == null)
             {
-                _operationRepository.AddOperationType(new OperationType(Op3Desc));
+                _operationRepository.AddOperationType(new OperationType(
+                    Op3Desc, 40, 8));
             }
-            
-            var op4 = _operationRepository.GetOperationTypeByName(Op4Desc);
-            if (op4 == null)
-            {
-                _operationRepository.AddOperationType(new OperationType(Op4Desc));
-            }
-            
+
         }
         
         

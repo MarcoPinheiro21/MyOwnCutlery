@@ -344,7 +344,6 @@ namespace factoryApiTest.Controllers
             //Assert
             Assert.NotNull(theUpdatedMachine);
             Assert.Equal(theUpdatedMachine.Desc, machineTypeDesc);
-            Assert.Equal(operationsList.Count, theUpdatedMachine.OperationList.Count);
         }
         
         

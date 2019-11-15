@@ -91,7 +91,7 @@ namespace factoryApiTest.Controllers
 
             //Assert
             Assert.NotNull(theCreatedOperation);
-            Assert.Equal(theCreatedOperation.OperationType, operationName);
+            Assert.Equal(theCreatedOperation.OperationType.Desc, operationName);
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace factoryApiTest.Controllers
 
             //Assert
             Assert.NotNull(theUpdatedOperation);
-            Assert.Equal(theUpdatedOperation.OperationType, operationName);
+            Assert.Equal(theUpdatedOperation.OperationType.Desc, operationName);
         }
 
         [Fact]

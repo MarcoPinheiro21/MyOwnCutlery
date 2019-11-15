@@ -11,7 +11,7 @@ namespace factoryApiTest.Models
         {
             var opTypeDesc = "op1";
             var tool = new Tool(1, "Drill");
-            var operationType = new OperationType(opTypeDesc);
+            var operationType = new OperationType(opTypeDesc, 30,6);
             var operation = new Operation(operationType, tool);
             Assert.NotNull(operation);
             Assert.Equal(opTypeDesc, operation.OperationType.OperationTypeName);
