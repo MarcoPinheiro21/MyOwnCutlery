@@ -13,6 +13,9 @@
 </div>
 <br>
 <mat-table mat-table [dataSource]="elements">
+  <ng-container matColumnDef="PlanHeader">
+      <mat-header-cell *matHeaderCellDef style="text-align:center">Please select Operations to form a Production Plan</mat-header-cell> 
+  </ng-container> 
   <ng-container matColumnDef="checked">
     <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
     <mat-cell *matCellDef="let element">
@@ -34,9 +37,12 @@
     <mat-cell *matCellDef="let element"> {{element.tool}} </mat-cell>
   </ng-container>
 
+
+  <tr mat-header-row *matHeaderRowDef="['PlanHeader']"></tr>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{hovered: row.hovered}"
     (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></mat-row>
+    
 </mat-table>
 <mat-dialog-actions>
   <button mat-button (click)="close()">Cancel</button>
