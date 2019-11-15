@@ -10,7 +10,7 @@ export const api = {
 };
 
 export const visual = {
-  url: 'http://localhost:6001/factory/factory.html'
+  url: 'http://localhost:6001/factory'
 };
 
 /*
