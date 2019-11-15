@@ -5,9 +5,63 @@ export class AppPage {
     return browser.get(browser.baseUrl) as Promise<any>;
   }
 
-  getTitleText() {
-    return element(by.css('app-root h1')).getText() as Promise<string>;
+  navigateToMachineTypes() {
+    return browser.get(browser.baseUrl + '/machineTypes') as Promise<any>;
   }
+
+  navigateToProducts() {
+    return browser.get(browser.baseUrl + '/products') as Promise<any>;
+  }
+
+  getNavigationBarMenuText() {
+    return element(by.css('app-root nav ul')).getText();
+  }
+
+  getMachineTypeTableRowText() {
+    return element(by.css('app-machine-types mat-accordion section span')).getText()
+  }
+
+  getProductsTableRowText() {
+    return element(by.css('app-product mat-accordion section span')).getText()
+  }
+
+  getMachineTypeTableTopRightButton() {
+    return element(by.css('app-machine-types mat-accordion section button'));
+  }
+
+  getProductsTableTopRightButtonText() {
+    return element(by.css('app-product mat-accordion section button')).getText();
+  }
+
+  getMachineTypesDialogHeaderText(){
+    return element(by.css('app-machine-type-dialog mat-form-field input'));
+  }
+  
+  getMachineTypesDialogCloseButton(){
+    return element(by.xpath('//mat-dialog-actions/button[1]/span'));
+  }
+
+  getMachineTypesDialogSaveButton(){
+    return element(by.xpath('//mat-dialog-actions/button[2]/span'));
+  }
+
+
+  navigateToMachinesClickingNavigationLink() {
+    return element(by.xpath('//nav/ul/li[1]/a')).click();
+  }
+
+  navigateToMachineTypesClickingNavigationLink() {
+    return element(by.xpath('//nav/ul/li[2]/a')).click();
+  }
+
+  navigateToOperationsClickingNavigationLink() {
+    return element(by.xpath('//nav/ul/li[3]/a')).click();
+  }
+
+  navigateToProductsClickingNavigationLink() {
+    return element(by.xpath('//nav/ul/li[4]/a')).click();
+  }
+
 }
 
 // ***************
