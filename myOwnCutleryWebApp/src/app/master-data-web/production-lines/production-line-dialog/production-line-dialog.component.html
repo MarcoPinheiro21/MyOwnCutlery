@@ -1,0 +1,34 @@
+<div class="header">
+  <form class="form">
+    <mat-form-field>
+      <input matInput placeholder="Production Line Name" [(ngModel)]="productionline.ProductionLineName"  [ngModelOptions]="{standalone: true}"/>
+     
+    </mat-form-field>
+  </form>
+</div>
+<br>
+<mat-table mat-table [dataSource]="elements">
+  <ng-container matColumnDef="checked">
+    <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-checkbox [(ngModel)]="element.checked" (click)="onCheckClick(element)"></mat-checkbox>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef> Machine Description </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+  </ng-container>
+
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{hovered: row.hovered}"
+    (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></mat-row>
+</mat-table>
+
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="save()">Save</button>
+</mat-dialog-actions>
+
+
+

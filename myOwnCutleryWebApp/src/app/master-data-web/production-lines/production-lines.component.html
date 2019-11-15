@@ -1,0 +1,37 @@
+<mat-accordion displayMode="flat" multi classe="mat-table">
+    <section matSort class="mat-elevation-z2 mat-header-row">
+        <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Id">Id</span>
+        <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Name">Name</span>
+        <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openCreationDialog()">New</button>
+    </section>
+
+    <mat-expansion-panel *ngFor="let productionline of productionLines">
+    <mat-expansion-panel-header class="mat-row">
+        <span class="mat-cell">{{productionline.productionLineId}}</span>
+        <span class="mat-cell">{{productionline.productionLineName}}</span>
+    </mat-expansion-panel-header>
+
+    <div class="subRow">
+        <table class="table table-sm table-active">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Machine Id</th>
+                    <th>Machine Description</th>
+                    <th>Machine Type Id</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let machine of productionline.machinesListDtos">
+                    <td>{{machine.id}}</td>
+                    <td>{{machine.description}}</td>
+                    <td>{{machine.machineTypeId}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    </mat-expansion-panel>
+</mat-accordion>
+
+
+
