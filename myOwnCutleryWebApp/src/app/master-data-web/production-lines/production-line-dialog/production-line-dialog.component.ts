@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { CreateProductionLine} from 'src/app/master-data-web/production-lines/production-lines.component'
-import { Machine} from 'src/app/models/machine.model'
+import { CreateProductionLine} from 'src/app/master-data-web/production-lines/production-lines.component';
+import { Machine} from 'src/app/models/machine.model';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -53,7 +53,18 @@ export class ProductionLineDialogComponent implements OnInit {
   }
 
   save() {
+    this.checkEmptyMachinesList();
+    if(this.inputFormControl.hasError('required')|| this.inputFormControl.hasError('minlength') || this.isSelectedMachinesEmpty) {
+      return;
+    }
     this.dialogRef.close({ data: this.productionline });
+    return;
+  }
+
+  checkEmptyMachinesList(){
+    this.isSelectedMachinesEmpty = this.productionline.MachinesListIds.length ==0;
+
+
   }
 
   private addMachineToProductionLine(element: Element) {

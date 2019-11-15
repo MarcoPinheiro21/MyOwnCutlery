@@ -1,8 +1,13 @@
 <div class="header">
   <form class="form">
     <mat-form-field>
-      <input matInput placeholder="Production Line Name" [(ngModel)]="productionline.ProductionLineName"  [ngModelOptions]="{standalone: true}"/>
-     
+      <input matInput placeholder="Production Line Name" [(ngModel)]="productionline.ProductionLineName" [formControl]="inputFormControl">
+      <mat-error *ngIf="inputFormControl.hasError('required')">
+        Name is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="inputFormControl.hasError('minlength')">
+        Minimum Length is 3
+      </mat-error>
     </mat-form-field>
   </form>
 </div>
@@ -27,7 +32,10 @@
 
 <mat-dialog-actions>
   <button mat-button (click)="close()">Cancel</button>
-  <button mat-button (click)="save()">Save</button>
+  <button mat-button (click)="save()" (click)="checkEmptyMachinesList()">Save</button>
+  <mat-error *ngIf=isSelectedMachinesEmpty>
+    Pelase choose at least one machine from the list
+  </mat-error>
 </mat-dialog-actions>
 
 

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductionLineService } from './production-lines.service';
 import { ProductionLine } from 'src/app/models/productionLine.model';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Machine } from 'src/app/models/machine.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { ProductionLineDialogComponent} from './production-line-dialog/production-line-dialog.component'
+import { ProductionLineDialogComponent} from './production-line-dialog/production-line-dialog.component';
+
 
 @Component({
   selector: 'app-production-lines',
@@ -66,7 +66,7 @@ export class ProductionLinesComponent implements OnInit {
       machines : data
     };
     dialogConfig.width = '425px';
-    dialogConfig.height = '265px';
+    dialogConfig.height = '320px';
 
     this.dialog.open(ProductionLineDialogComponent, dialogConfig).afterClosed().subscribe(result => {
       if(!!result){
