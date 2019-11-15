@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, } from '@angular/material';
 import { Operation } from 'src/app/models/operation.model';
 import { MachineType } from 'src/app/models/machineType.model';
+import { OperationType } from 'src/app/models/operationType.model';
 
 @Component({
   selector: 'app-machine-type-dialog',
@@ -77,7 +78,9 @@ export class MachineTypeDialogComponent implements OnInit {
   }
 
   private addOperationToMachineType(element: Element) {
-    let op = <Operation>{};
+    let op = <Operation>{
+      operationType:<OperationType>{}
+    };
     op.operationId = element.operationId;
     op.operationType.desc = element.operationType;
     op.operationType.operationTypeId = element.operationTypeId;

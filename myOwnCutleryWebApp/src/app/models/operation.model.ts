@@ -5,7 +5,7 @@ export class Operation {
       public operationId: number,
       public toolId: number,
       public tool : string,
-      public operationType: OperationType
+      public operationType : OperationType
     ) {}
 
     public equals(obj: any) : boolean { 
