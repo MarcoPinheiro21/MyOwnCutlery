@@ -1,4 +1,4 @@
-<div class="header" *ngIf="isEdition; else newMachineType">Edit Operation for Machine Type
+<div class="header" *ngIf="isEdition; else newMachineType">Edit Operations for Machine Type
   {{elements[0].machineType}}</div>
 <br>
 
@@ -41,7 +41,7 @@
   <div class="header">
     <form class="form">
       <mat-form-field class="full-width">
-        <input matInput placeholder="Machine Type Description" [formControl]="inputFormControl">
+        <input matInput placeholder="New Machine Type Description" [formControl]="inputFormControl">
         <mat-error *ngIf="inputFormControl.hasError('required')">
           Description is <strong>required.</strong>
         </mat-error>
@@ -49,6 +49,7 @@
           Minimum length is 2
         </mat-error>
       </mat-form-field>
+      <div class="header">Select Operations for the New Machine Type</div>
     </form>
   </div>
 </ng-template>

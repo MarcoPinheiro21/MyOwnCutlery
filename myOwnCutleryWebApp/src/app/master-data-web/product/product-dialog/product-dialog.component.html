@@ -1,7 +1,8 @@
 <div class="header">
   <form class="form">
     <mat-form-field class="full-width">
-      <input matInput placeholder="Product Name" value="{{product.productName}}" [(ngModel)]="product.productName" [formControl]="inputFormControl">
+      <input matInput placeholder="Product Name" value="{{product.productName}}" [(ngModel)]="product.productName"
+        [formControl]="inputFormControl">
       <mat-error *ngIf="inputFormControl.hasError('required')">
         Description is <strong>required.</strong>
       </mat-error>
@@ -9,13 +10,12 @@
         Minimum length is 3
       </mat-error>
     </mat-form-field>
+    <div class="header">Select Operations to form a Production Plan</div>
   </form>
 </div>
 <br>
 <mat-table mat-table [dataSource]="elements">
-  <ng-container matColumnDef="PlanHeader">
-      <mat-header-cell *matHeaderCellDef style="text-align:center">Please select Operations to form a Production Plan</mat-header-cell> 
-  </ng-container> 
+
   <ng-container matColumnDef="checked">
     <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
     <mat-cell *matCellDef="let element">
@@ -38,20 +38,16 @@
   </ng-container>
 
 
-  <tr mat-header-row *matHeaderRowDef="['PlanHeader']"></tr>
+
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{hovered: row.hovered}"
     (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></mat-row>
-    
+
 </mat-table>
 <mat-dialog-actions>
   <button mat-button (click)="close()">Cancel</button>
   <button mat-button (click)="save()" (click)="checkEmptyOperationsList()">Save</button>
-  <mat-error  *ngIf="isSelectedOperationsEmpty">
-      Please choose at least one operation from the list.
-    </mat-error>
+  <mat-error *ngIf="isSelectedOperationsEmpty">
+    Please choose at least one operation from the list.
+  </mat-error>
 </mat-dialog-actions>
-
-
-
-  
