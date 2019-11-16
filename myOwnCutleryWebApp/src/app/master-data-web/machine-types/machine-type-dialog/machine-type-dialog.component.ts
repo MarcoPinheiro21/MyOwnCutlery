@@ -13,7 +13,6 @@ import { OperationType } from 'src/app/models/operationType.model';
 
 export class MachineTypeDialogComponent implements OnInit {
 
-
   operations: Operation[];
   selectedMachineType: MachineType = null;
   isSelectedOperationsEmpty: boolean;
@@ -77,7 +76,7 @@ export class MachineTypeDialogComponent implements OnInit {
 
   private addOperationToMachineType(element: Element) {
     let op = <Operation>{
-      operationType:<OperationType>{}
+      operationType: <OperationType>{}
     };
     op.operationId = element.operationId;
     op.operationType.desc = element.operationType;
@@ -109,7 +108,9 @@ export class MachineTypeDialogComponent implements OnInit {
 
   save(isEdition: boolean) {
     if (!isEdition) {
+
       this.checkEmptyOperationsList();
+
       if (this.inputFormControl.hasError('required') ||
         this.inputFormControl.hasError('minlength') ||
         this.isSelectedOperationsEmpty) {
@@ -118,6 +119,7 @@ export class MachineTypeDialogComponent implements OnInit {
 
       this.selectedMachineType.desc = this.inputFormControl.value;
     }
+
     this.dialogRef.close({ data: this.selectedMachineType });
     return;
   }

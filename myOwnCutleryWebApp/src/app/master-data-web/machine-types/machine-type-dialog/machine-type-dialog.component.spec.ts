@@ -6,13 +6,15 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatDialogConfig } from '@angu
 import { Operation } from 'src/app/models/operation.model';
 import { MatDialogMock } from 'src/app/app.component.spec';
 import { OperationType } from 'src/app/models/operationType.model';
-import { Machine } from 'src/app/models/machine.model';
 import { MachineType } from 'src/app/models/machineType.model';
 
 describe('MachineTypeDialogComponent', () => {
 
   let component: MachineTypeDialogComponent;
   let fixture: ComponentFixture<MachineTypeDialogComponent>;
+  let mat = <MatDialogRef<MachineTypeDialogComponent>>{
+    close(r: any): void { }
+  };
 
   let operationType = <OperationType>{
     desc: 'opTypeTest',
@@ -47,20 +49,19 @@ describe('MachineTypeDialogComponent', () => {
   dialogConfig.height = '225px';
   dialogConfig.data = data;
 
-
-
-  beforeEach(async() => {
+  beforeEach(async(() => {
+    
     TestBed.configureTestingModule({
 
       imports: [AngularMaterialComponents],
       declarations: [MachineTypeDialogComponent],
       providers: [
         { provide: MatDialog, useClass: MatDialogMock },
-        { provide: MatDialogRef, useValue: {} },
+        { provide: MatDialogRef, useValue: mat },
         { provide: MAT_DIALOG_DATA, useValue: data }]
     })
-      .compileComponents(); 
-  });
+      .compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MachineTypeDialogComponent);
@@ -70,5 +71,18 @@ describe('MachineTypeDialogComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('elements should be filled', () => {
+    expect(component.elements.length).toBe(1);
+  });
+
+  it('isEdition should be false', () => {
+    expect(component.isEdition).toBe(true);
+  });
+
+  it('operations list should not be empty after list checking', () => {
+    component.checkEmptyOperationsList();
+    expect(component.isSelectedOperationsEmpty).toBe(false);
   });
 });
