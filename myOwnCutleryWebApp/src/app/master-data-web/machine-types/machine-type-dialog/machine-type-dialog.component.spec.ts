@@ -10,45 +10,35 @@ import { Machine } from 'src/app/models/machine.model';
 import { MachineType } from 'src/app/models/machineType.model';
 
 describe('MachineTypeDialogComponent', () => {
-  const mockDialogRef = {
-    close: jasmine.createSpy('close')
-  };
+
   let component: MachineTypeDialogComponent;
   let fixture: ComponentFixture<MachineTypeDialogComponent>;
 
   let operationType = <OperationType>{
-    desc:'opTypeTest',
-    executionTime:4,
-    setupTime:5,
-    operationTypeId:1
+    desc: 'opTypeTest',
+    executionTime: 4,
+    setupTime: 5,
+    operationTypeId: 1
   }
 
-  let operationsList : Operation[]=[
+  let operationsList: Operation[] = [
     <Operation>{
-      operationId:1,
-      operationType:operationType,
-      tool:'tool',
-      toolId:1
+      operationId: 1,
+      operationType: operationType,
+      tool: 'tool',
+      toolId: 1
     }
   ]
 
   let machineType = <MachineType>{
-    desc:'machineTypeDesc',
-    id:1,
+    desc: 'machineTypeDesc',
+    id: 1,
     operationList: operationsList
   }
 
-  let machine = <Machine>{
-    description:'machineDesc',
-    id:1,
-    machineType:null,
-    machineTypeId:1,
-    productionLineId:1
-  }
-
   let data = <any>{
-    operations: operationsList,
-    selectedMachineType: machine,
+    listOperations: operationsList,
+    machinetype: machineType,
     isEdition: true
   }
 
@@ -59,18 +49,18 @@ describe('MachineTypeDialogComponent', () => {
 
 
 
-  beforeEach(async(() => {
+  beforeEach(async() => {
     TestBed.configureTestingModule({
-      
-      imports:[AngularMaterialComponents],
-      declarations: [ MachineTypeDialogComponent ],
+
+      imports: [AngularMaterialComponents],
+      declarations: [MachineTypeDialogComponent],
       providers: [
         { provide: MatDialog, useClass: MatDialogMock },
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: data }]
     })
-    .compileComponents();
-  }));
+      .compileComponents(); 
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MachineTypeDialogComponent);

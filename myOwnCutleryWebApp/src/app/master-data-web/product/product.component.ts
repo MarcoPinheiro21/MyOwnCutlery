@@ -32,10 +32,6 @@ export class ProductsComponent implements OnInit {
     this.getProducts();
   }
 
-  // share() {
-  //   window.alert('The product has been shared!');
-  // }
-
   share() {
 
   }
