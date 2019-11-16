@@ -23,43 +23,49 @@ function getMachines()
 const jsonResponse = `[
     {
         "id": 1,
-        "description": "MaquinaEditada",
+        "description": "Machine1",
         "machineTypeId": 2,
         "productionLineId": 0
     },
     {
         "id": 2,
-        "description": "NomeEstranho",
+        "description": "Machine2",
         "machineTypeId": 2,
         "productionLineId": 0
     },
     {
         "id": 3,
-        "description": "Maquina3",
+        "description": "Machine3",
         "machineTypeId": 1,
         "productionLineId": 0
     },
     {
         "id": 4,
-        "description": "Nova Maquina",
+        "description": "Machine4",
         "machineTypeId": 2,
         "productionLineId": 0
     },
     {
         "id": 5,
-        "description": "criei mais uma",
+        "description": "Machine5",
         "machineTypeId": 2,
         "productionLineId": 0
     },
     {
         "id": 6,
-        "description": "Maquina Nova Cenas",
+        "description": "Machine6",
         "machineTypeId": 2,
         "productionLineId": 0
     },
     {
         "id": 7,
-        "description": "Novinha Editada",
+        "description": "Machine7",
+        "machineTypeId": 1,
+        "productionLineId": 0
+    },
+    {
+        "id": 8,
+        "description": "Machine8",
         "machineTypeId": 1,
         "productionLineId": 0
     }

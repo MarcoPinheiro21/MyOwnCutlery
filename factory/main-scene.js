@@ -81,30 +81,29 @@ timeoutLineB();
 
 function buildScene() {
     buildWidgets();
+
     buildFloor();
     buildTables();
-    buildPlaceholder();
+    buildPlaceholders();
 
     buildFork(linesX, lineAY, linesZ);
     buildSpoon(linesX, lineBY, linesZ);
 }
 
 function buildFloor() {
-    scene.add(floor());
+    let floor = new Floor();
+    scene.add( floor.buildFloor() );
 }
 
 function buildTables() {
     TABLES_POSITIONS.forEach(e => moveTable(e));
 }
 
-function moveTable(e) {
-    let t = table();
-    t.scale.set(TABLE_SCALE, TABLE_SCALE, TABLE_SCALE);
-    t.translateX(e.x);
-    t.translateY(e.y);
-    t.translateZ(e.z);
+function moveTable(position) {
+    let table = new Table();
+    table = table.buildTable(TABLE_SCALE, position);
 
-    scene.add(t);
+    scene.add(table);
 }
 
 function buildMachine(position) {
@@ -148,9 +147,10 @@ function buildSpoon(x, y, z) {
     scene.add(groupSpoon);
 }
 
-function buildPlaceholder() {
+function buildPlaceholders() {
     for (i = 0; i < this.machines.length; i++) {
-        placeholder(this.machines[i].description, PLACEHOLDERS_POSITIONS[i]);
+        let obj = buildPlaceholder(this.machines[i].description, PLACEHOLDERS_POSITIONS[i]);
+        scene.add( obj );
     }
 }
 
@@ -169,40 +169,26 @@ function buildWidgets() {
 }
 
 function replaceMachinePlaceholder(machine, i) {
-    removePlaceholder(this.machines[i - 1].description);
+    Util.removeFromScene(scene, this.machines[i - 1].description);
+    let newSceneObject;
     switch (machine.type) {
-        case "Custom Robotic Arm":
-            let roboticArm = new RoboticArm();
-            roboticArms.push(roboticArm);
-            scene.add(roboticArm.buildRobotArm(PLACEHOLDERS_POSITIONS[i - 1]));
+        case "none":
+            newSceneObject = buildPlaceholder(this.machines[i - 1].description, PLACEHOLDERS_POSITIONS[i-1]);
             break;
-        case "Robotic Arm":
-            buildMachine(MACHINE_POSITIONS[i - 1]);
+        case "Custom Robotic Arm":
+            let roboticArm = new RoboticArm(this.machines[i - 1].description);
+            roboticArms.push(roboticArm);
+
+            newSceneObject = roboticArm.buildRobotArm(PLACEHOLDERS_POSITIONS[i - 1]);
             break;
         case "Hydraulic Press":
-            let pressMachine = new PressMachine();
+            let pressMachine = new PressMachine(this.machines[i - 1].description);
             pressMachines.push(pressMachine);
-            scene.add(pressMachine.buildHydraulicPress(PRESS_MACHINE_POSITIONS[i - 1]));
+
+            newSceneObject = pressMachine.buildHydraulicPress(PRESS_MACHINE_POSITIONS[i - 1]);
             break;
-
     }
-}
-
-function removePlaceholder(name) {
-    let placeholder = scene.getObjectByName(name);
-    scene.remove(placeholder);
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-    pressMachines.forEach(e => {
-        e.timeoutPressArm();
-    });
-    roboticArms.forEach(e => {
-        e.rotateBase();
-        e.rotateArm();
-    });
+    scene.add(newSceneObject);
 }
 
 function timeoutLineA() {
@@ -227,4 +213,16 @@ function timeoutLineB() {
 
         timeoutLineB();
     }, 300);
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+    pressMachines.forEach(e => {
+        e.timeoutPressArm();
+    });
+    roboticArms.forEach(e => {
+        e.rotateBase();
+        e.rotateArm();
+    });
 }

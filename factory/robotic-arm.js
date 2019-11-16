@@ -37,9 +37,10 @@ var CLAW_LENGTH = 0.5;
 var CLAW_DISTANCE = 0.4;
 
 class RoboticArm {
-    constructor() {
+    constructor(name) {
         this.group = new THREE.Group();
-
+        this.group.name = name;
+        
         //Joint Sphere Material
         this.jointSphereMaterial  = new THREE.MeshStandardMaterial({
             color: 0x777777,

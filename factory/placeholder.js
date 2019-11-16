@@ -1,8 +1,8 @@
-const PLACEHOLDER_WIDTH = 12;
-const PLACEHOLDER_HEIGHT = 0.5;
-const PLACEHOLDER_DEPTH = 5;
+var PLACEHOLDER_WIDTH = 12;
+var PLACEHOLDER_HEIGHT = 0.5;
+var PLACEHOLDER_DEPTH = 5;
 
-function placeholder(name, position) {
+function buildPlaceholder(name, position) {
     let group = new THREE.Group();
     group.name = name;
 
@@ -52,5 +52,5 @@ function placeholder(name, position) {
         group.translateZ(position.z);
     } );
 
-    scene.add( group );
+    return group;
 }

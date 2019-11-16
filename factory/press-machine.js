@@ -1,7 +1,19 @@
 "use strict";
+
+var BASE_TEXTURE = './textures/yellowStripes.png';
+
 class PressMachine {
-    constructor() {
+    constructor(name) {
+        this.armMaterial  = new THREE.MeshStandardMaterial({
+            color: 0xfeff08,
+            flatShading: true,
+            metalness: 0.5,
+            roughness: 0.8,
+            refractionRatio: 0.25
+        });
+
         this.pressGroup = new THREE.Group();
+        this.pressGroup.name = name;
         this.leftPressArm = new THREE.Group();
         this.rightPressArm = new THREE.Group();
         this.isRightExtending = true;
@@ -11,8 +23,15 @@ class PressMachine {
         var geometry = new THREE.BoxGeometry(4, 10, 4);
         var geometryTop = new THREE.BoxGeometry(4, 4, 16);
         var geometryPress = new THREE.BoxGeometry(2, 2, 1);
-        var materialPress = new THREE.MeshBasicMaterial({ color: 0xa9a9a9 });
-        var materialMachine = new THREE.MeshBasicMaterial({ color: 0xa9a9a9 });
+        let texture = new THREE.TextureLoader().load(BASE_TEXTURE);
+        var materialPress = new THREE.MeshBasicMaterial({ map: texture });
+        var materialMachine = new THREE.MeshStandardMaterial({
+            color: 0xfeff08,
+            flatShading: true,
+            metalness: 0.5,
+            roughness: 0.8,
+            refractionRatio: 0.25
+        });
         /* Machine structure*/
         var cubeLeft = new THREE.Mesh(geometry, materialMachine);
         var cubeRigt = new THREE.Mesh(geometry, materialMachine);
@@ -25,7 +44,14 @@ class PressMachine {
         this.pressGroup.add(cubeTop);
         /*----------*/
         var geometryCylinder = new THREE.CylinderGeometry(0.5, 0.5, 3.8, 32);
-        var materialCylinder = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        var materialCylinder = new THREE.MeshStandardMaterial({
+            color: 0x777777,
+            flatShading: true,
+            metalness: 0.5,
+            roughness: 0.8,
+            refractionRatio: 0.25
+        });
+
         /* Left Arm*/
         var cylinderLeft = new THREE.Mesh(geometryCylinder, materialCylinder);
         cylinderLeft.rotation.x = Math.PI / 2;

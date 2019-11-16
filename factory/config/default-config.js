@@ -15,7 +15,7 @@ defaultConfig = {
     },
     machines: {
         total: 8,
-        types: ["Robotic Arm",
+        types: ["none",
         "Custom Robotic Arm", "Hydraulic Press"],
         positions: [
             { x: -40, y: -20, z: 10 },
