@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
-import { ProductionLine} from 'src/app/models/productionLine.model';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { ProductionLine } from 'src/app/models/productionLine.model';
+import { Observable, forkJoin } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Machine } from 'src/app/models/machine.model';
 import { CreateProductionLine } from './production-lines.component';
+import { api } from 'src/environments/environment';
+import { MachineType } from 'src/app/models/machineType.model';
 
 
 @Injectable({
@@ -13,34 +15,36 @@ import { CreateProductionLine } from './production-lines.component';
 
 export class ProductionLineService {
 
-  private url = 'https://localhost:5001/factoryapi/';
-  
-  
+  private url = api.url + '/factoryapi/';
+  private machinesTypesByIdUrl = api.url + '/factoryapi/machines/types';
+  private productionLinesByIdUrl = api.url + '/factoryapi/productionlines';
 
-  constructor(private http : HttpClient ) {}
+  constructor(private http: HttpClient) { }
 
-    getProductionLines() : Observable<ProductionLine[]> {
-        return this.http.get<ProductionLine[]>(this.url + 'productionlines')
-        .pipe(map((response: [ProductionLine])=>{
-            return response;
-          })
-        );
-    }
-
-    getMachines(): Observable<Machine[]> {
-      return this.http.get<Machine[]>(this.url + 'machines').pipe(
-        map((response: [Machine]) => {
-          return response;
-        })
-      );
-    }
-
-    createProductionLine(productionline: CreateProductionLine): Observable<CreateProductionLine[]> {
-      return this.http.post<CreateProductionLine[]>(
-        this.url + 'productionlines', productionline)
-      .pipe(catchError(null));
-
-    }
+  private getMachines(): Observable<Machine[]> {
+    return this.http.get<Machine[]>(this.url + 'machines');
   }
-   
-   
+
+  private getMachineTypes(): Observable<MachineType[]> {
+    return this.http.get<MachineType[]>(this.machinesTypesByIdUrl);
+  }
+
+  private getProductionLines(): Observable<ProductionLine[]> {
+    return this.http.get<ProductionLine[]>(this.productionLinesByIdUrl);
+  }
+
+  getAll(): Observable<any[]> {
+    const response1 = this.getMachines();
+    const response2 = this.getMachineTypes();
+    const response3 = this.getProductionLines();
+    return forkJoin([response1, response2, response3]);
+  }
+
+  createProductionLine(productionline: CreateProductionLine): Observable<CreateProductionLine[]> {
+    return this.http.post<CreateProductionLine[]>(
+      this.url + 'productionlines', productionline)
+      .pipe(catchError(null));
+  }
+
+}
+

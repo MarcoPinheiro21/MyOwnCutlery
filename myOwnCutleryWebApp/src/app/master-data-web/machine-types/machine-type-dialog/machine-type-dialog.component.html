@@ -9,10 +9,6 @@
       <mat-checkbox [(ngModel)]="element.checked" (click)="onCheckClick(element)"></mat-checkbox>
     </mat-cell>
   </ng-container>
-  <ng-container matColumnDef="operationId">
-    <mat-header-cell *matHeaderCellDef> Operation Id </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.operationId}} </mat-cell>
-  </ng-container>
 
   <ng-container matColumnDef="operationType">
     <mat-header-cell *matHeaderCellDef> Operation Type </mat-header-cell>

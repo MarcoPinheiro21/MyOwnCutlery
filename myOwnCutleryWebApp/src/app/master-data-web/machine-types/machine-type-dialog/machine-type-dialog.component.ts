@@ -19,10 +19,9 @@ export class MachineTypeDialogComponent implements OnInit {
   isSelectedOperationsEmpty: boolean;
   elements: Element[] = [];
   isEdition: boolean;
-  
+
   displayedColumns: string[] = [
     'checked',
-    'operationId',
     'tool',
     'operationType'];
 

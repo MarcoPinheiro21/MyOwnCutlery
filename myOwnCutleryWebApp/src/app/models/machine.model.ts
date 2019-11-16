@@ -1,4 +1,5 @@
 import { MachineType } from './machineType.model';
+import { ProductionLine } from './productionLine.model';
 
 export class Machine {
   constructor(
@@ -6,6 +7,7 @@ export class Machine {
     public description: string,
     public machineType: MachineType,
     public machineTypeId: number,
-    public productionLineId: number
+    public productionLineId: number,
+    public productionLine: ProductionLine
   ) { }
 }

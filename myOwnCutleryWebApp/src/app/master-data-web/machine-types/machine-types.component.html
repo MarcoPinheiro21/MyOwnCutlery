@@ -29,7 +29,6 @@
 
     <table class="table table-sm table-active">
       <tr>
-        <th>Operation Id</th>
         <th>Tool</th>
         <th>Operation Type</th>
         <td align="center">
@@ -39,7 +38,6 @@
       </tr>
       <tbody>
         <tr *ngFor="let operation of machinetype.operationList">
-          <td>{{operation.operationId}}</td>
           <td>{{operation.tool}}</td>
           <td>{{operation.operationType.desc}}</td>
           <td>

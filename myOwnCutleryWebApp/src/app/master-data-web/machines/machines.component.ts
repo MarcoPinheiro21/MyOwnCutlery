@@ -5,6 +5,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material';
 import { MachineType } from 'src/app/models/machineType.model';
 import { MachineEditionDialogComponent } from './machine-edition-dialog/machine-edition-dialog.component';
 import { MachineCreationDialogComponent } from './machine-creation-dialog/machine-creation-dialog.component';
+import { ProductionLine } from 'src/app/models/productionLine.model';
 
 @Component({
   selector: 'app-machines',
@@ -15,6 +16,7 @@ export class MachinesComponent implements OnInit {
 
   machines: Machine[] = [];
   machineTypes: MachineType[] = [];
+  productionLines: ProductionLine[] = [];
   machinesService: MachinesService;
   dialog: MatDialog;
 
@@ -24,11 +26,7 @@ export class MachinesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMachines().then(success => {
-      this.populateMachinesId();
-    });
-    this.getMachineTypes();
-
+    this.getAllInfo();
   }
 
   openEditionDialog(selectedMachine?) {
@@ -70,41 +68,29 @@ export class MachinesComponent implements OnInit {
     });
   }
 
-  getMachines(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.machinesService.getMachines().subscribe((data: any) => {
-        resolve(this.machines = data);
+  getAllInfo() {
+    this.machinesService.getAll().subscribe(responseList => {
+      this.machines = responseList[0];
+      this.machineTypes = responseList[1];
+      this.productionLines = responseList[2];
+      this.machines.map(mac => {
+        mac.machineType = this.machineTypes.filter(mType => mType.id = mac.machineTypeId)[0];
+        if (mac.productionLineId !== 0) {
+          mac.productionLine = this.productionLines.filter(pl => pl.productionLineId = mac.productionLineId)[0];
+        }
       });
-    });
-  }
-
-  populateMachinesId() {
-    this.machines.map(mac => {
-      this.machinesService.getMachineTypeById(mac.machineTypeId).subscribe((macType: any) => {
-        mac.machineType = macType;
-      });
-    });
-  }
-
-  getMachineTypes(): void {
-    this.machinesService.getMachineTypes().subscribe((data: any) => {
-      this.machineTypes = data;
     });
   }
 
   createMachine(machine) {
     this.machinesService.createMachine(machine).subscribe(() => {
-      this.getMachines().then(success => {
-        this.populateMachinesId();
-      });
+      this.getAllInfo();
     });
   }
 
   updateMachine(machine) {
     this.machinesService.updateMachine(machine).subscribe(() => {
-      this.getMachines().then(success => {
-        this.populateMachinesId();
-      });
+      this.getAllInfo();
     });
   }
 
