@@ -5,6 +5,11 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 import { MachineTypeDialogComponent } from './machine-type-dialog/machine-type-dialog.component';
 import { OperationsService } from '../operations/operations.service';
 import { Operation } from 'src/app/models/operation.model';
+import { MachinesService } from '../machines/machines.service';
+import { Machine } from 'src/app/models/machine.model';
+import { MachinesByTypeDialogComponent } from './machines-by-type-dialog/machines-by-type-dialog.component';
+import { Observable } from 'rxjs';
+import { Promise } from 'q';
 
 @Component({
   selector: 'app-machine-types',
@@ -15,18 +20,23 @@ export class MachineTypesComponent implements OnInit {
 
   machineTypes: MachineType[] = [];
   operations: Operation[] = [];
+  machines: Machine[] = null;
+  machinesService: MachinesService;
   machineTypeService: MachineTypeService;
   operationsService: OperationsService;
   dialog: MatDialog;
   alertMessage: AlertMessage = <AlertMessage>{};
 
   constructor(_machineTypeService: MachineTypeService,
-    _operationsService: OperationsService, myDialog: MatDialog) {
+    _operationsService: OperationsService,
+    _machinesService: MachinesService,
+    myDialog: MatDialog) {
     this.machineTypeService = _machineTypeService;
     this.operationsService = _operationsService;
+    this.machinesService = _machinesService;
     this.dialog = myDialog;
     this.alertMessage.showAlertMsg = false;
-    this.alertMessage.message="wdsfewfwe";
+    this.alertMessage.message = '';
   }
 
   ngOnInit() {
@@ -46,6 +56,8 @@ export class MachineTypesComponent implements OnInit {
     });
   }
 
+
+
   private generateSuccessMsg(arg: string) {
     this.alertMessage.message = 'The machine type ' + arg + ' was successfuly saved.';
   }
@@ -59,20 +71,26 @@ export class MachineTypesComponent implements OnInit {
     this.alertMessage.showAlertMsg = false;
   }
 
-
-  openDialog(editionMode, selectedmachinetype?) {
-
+  private generateDialogConfig(editionMode: boolean, selectedmachinetype?: any): MatDialogConfig {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
       machinetype: selectedmachinetype,
       listOperations: this.operations,
+      machinesList: this.machines,
       isEdition: editionMode
     };
     dialogConfig.width = '35%';
     dialogConfig.height = '45%';
+    return dialogConfig;
+  }
 
+
+  openDialog(editionMode, selectedmachinetype?) {
+
+    let dialogConfig = this.generateDialogConfig(editionMode, selectedmachinetype);
     let dialogRef = this.dialog.open(MachineTypeDialogComponent, dialogConfig);
+
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
         this.machineTypeService
@@ -94,6 +112,21 @@ export class MachineTypesComponent implements OnInit {
       }
     });
   }
+
+  getMachinesByType(id: number){
+    const promise = this.machinesService.getByType(id).toPromise();
+    promise.then((data: Machine[]) => {
+      this.machines = data;
+      this.openMachinesByTypeDialog();
+    })
+  }
+
+  private openMachinesByTypeDialog() {
+    let dialogConfig = this.generateDialogConfig(false, null);
+    let dialogRef = this.dialog.open(MachinesByTypeDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => { });
+  }
+
 }
 
 export interface AlertMessage {

@@ -28,13 +28,18 @@
     </mat-expansion-panel-header>
 
     <table class="table table-sm table-active">
+      <th></th>
+
       <tr>
         <th>Tool</th>
         <th>Operation Type</th>
-        <td align="center">
-          <button type="button" style="margin-right: -29px;" class="btn btn-primary buttonTables"
+        <th style="text-align: right;">
+          <button type="button" style="margin: 0px 4px 0px 0px;" class="btn btn-primary buttonTables"
             (click)="openDialog(true, machinetype)">Edit</button>
-        </td>
+          <button type="button" style="margin-right: 12px; background-color:rgb(197, 0, 0)"
+            class="btn btn-primary buttonTables" (click)="getMachinesByType(machinetype.id)">View
+            Machines</button>
+        </th>
       </tr>
       <tbody>
         <tr *ngFor="let operation of machinetype.operationList">

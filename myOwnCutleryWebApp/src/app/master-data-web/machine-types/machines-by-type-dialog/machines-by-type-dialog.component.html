@@ -1,0 +1,23 @@
+<p>
+  <mat-accordion displayMode="flat" multi class="mat-table">
+    <section matSort class="mat-elevation-z2 mat-header-row">
+      <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Description">Description</span>
+    </section>
+  
+    <mat-expansion-panel [disabled]="true" *ngFor="let machine of machines">
+      <mat-expansion-panel-header class="mat-row">
+        <span class="mat-cell">{{machine.description}}</span>
+      </mat-expansion-panel-header>
+    </mat-expansion-panel>
+  
+  </mat-accordion>
+
+  <mat-dialog-actions>
+      <button mat-button (click)="close()">Close</button>
+    </mat-dialog-actions>
+  
+  
+  <ng-template #blank>
+    <span class="mat-cell"> - </span>
+  </ng-template>  
+</p>
