@@ -20,11 +20,23 @@ O tipo de fábrica onde o sistema será implementado fabrica produtos que seguem
 
 # Implementação
 
-O projeto irá ser desenvolvido ao longo de todo o semestre num modo de Project Based Learning (PBL), divindo-se em 3 Sprints.
+O projeto irá ser desenvolvido ao longo de todo o semestre num modo de Project Based Learning (PBL), divindo-se em 4 Sprints.
 
-* Sprint 1
+* Sprint A
     * Master Data Fabrica
     * Master Data Produção
+
+* Sprint B
+    * Master Data Web
+    * Visualization
+    * Production Planning
+
+
+## Walking Skeleton
+
+A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi a da imagem seguinte:
+
+![WalkingSkeleton](/Diagrams/WalkingSkeleton.jpg)
 
 
 ## Modelo de domínio
@@ -192,3 +204,4 @@ Os testes unitários aos controllers foram desenvolvidos usando um contexto "moc
 
 #### Create Product
 ![OurProcessViewLevel3_CreateProduct](/Diagrams/OurProcessViewLevel3_CreateProduct.jpg)
+
