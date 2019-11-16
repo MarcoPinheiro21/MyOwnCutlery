@@ -146,3 +146,18 @@ Resultado dos diversos testes desenvolvidos:
 Os testes unitários aos controllers foram desenvolvidos usando um contexto "mock" em memória que simula a base de dados MS-SQL que temos configurada.
 
 ![UnitTestsContext](/Diagrams/UnitTestsContext.png)
+
+
+# Sprint 2
+
+## **Nível 2**
+
+### Vista Lógica **Master-data-web**
+
+![1ª Alternativa](/Diagrams/1ExempleLogicalViewLevel2.jpg)
+
+![2ª Alternativa](/Diagrams/2ExempleLogicalViewLevel2.jpg)
+
+![3ª Alternativa](/Diagrams/3ExempleLogicalViewLevel2.jpg)
+
+![Nossa Alternativa](/Diagrams/OurLogicalViewLevel2.jpg)
