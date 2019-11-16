@@ -154,16 +154,16 @@ Os testes unitários aos controllers foram desenvolvidos usando um contexto "moc
 
 ### Vista Lógica **Master-data-web**
 
-**Alternativa 1**
+#### **Alternativa 1**
 ![1ª Alternativa](/Diagrams/1ExempleLogicalViewLevel2.jpg)
 
-**Alternativa 2**
+#### **Alternativa 2**
 ![2ª Alternativa](/Diagrams/2ExempleLogicalViewLevel2.jpg)
 
-**Alternativa 3**
+#### **Alternativa 3**
 ![3ª Alternativa](/Diagrams/3ExempleLogicalViewLevel2.jpg)
 
-**Alternativa Utilizada**
+#### **Alternativa Utilizada**
 ![Alternativa Utilizada](/Diagrams/OurLogicalViewLevel2.jpg)
 
 ## **Nível 3**
