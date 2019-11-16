@@ -26,7 +26,7 @@ import { ProductDialogComponent } from './master-data-web/product/product-dialog
 import { ProductionLineService } from './master-data-web/production-lines/production-lines.service';
 import { ProductionLineDialogComponent } from './master-data-web/production-lines/production-line-dialog/production-line-dialog.component';
 
-const AngularMaterialComponents = [
+export const AngularMaterialComponents = [
   MatButtonModule,
   MatIconModule,
   MatBadgeModule,

@@ -14,7 +14,7 @@ import { OperationType } from 'src/app/models/operationType.model';
 export class MachineTypeDialogComponent implements OnInit {
 
 
-  operations: Operation[];
+  operations: Operation[]=[];
   selectedMachineType: MachineType;
   isSelectedOperationsEmpty: boolean;
   elements: Element[] = [];

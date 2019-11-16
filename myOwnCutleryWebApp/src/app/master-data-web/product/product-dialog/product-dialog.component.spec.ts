@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductDialogComponent } from './product-dialog.component';
+import { AngularMaterialComponents } from 'src/app/app.module';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 describe('ProductDialogComponent', () => {
   let component: ProductDialogComponent;
@@ -8,9 +10,17 @@ describe('ProductDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProductDialogComponent ]
+      imports: [AngularMaterialComponents],
+      declarations: [ProductDialogComponent],
+      providers: [{
+        provide: MatDialogRef,
+        useValue: {}
+      }, {
+        provide: MAT_DIALOG_DATA,
+        useValue: {}
+      }]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

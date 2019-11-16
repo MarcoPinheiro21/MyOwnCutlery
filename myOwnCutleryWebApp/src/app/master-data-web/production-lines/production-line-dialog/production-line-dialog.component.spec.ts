@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductionLineDialogComponent } from './production-line-dialog.component';
+import { AngularMaterialComponents } from 'src/app/app.module';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 describe('ProductionLineDialogComponent', () => {
   let component: ProductionLineDialogComponent;
@@ -8,7 +10,15 @@ describe('ProductionLineDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProductionLineDialogComponent ]
+      imports: [AngularMaterialComponents],
+      declarations: [ ProductionLineDialogComponent ],
+      providers: [{
+        provide: MatDialogRef,
+        useValue: {}
+      }, {
+        provide: MAT_DIALOG_DATA,
+        useValue: {}
+      }]
     })
     .compileComponents();
   }));
