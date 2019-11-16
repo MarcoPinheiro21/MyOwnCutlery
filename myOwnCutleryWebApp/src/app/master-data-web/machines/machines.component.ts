@@ -76,7 +76,7 @@ export class MachinesComponent implements OnInit {
       this.machines.map(mac => {
         mac.machineType = this.machineTypes.filter(mType => mType.id = mac.machineTypeId)[0];
         if (mac.productionLineId !== 0) {
-          mac.productionLine = this.productionLines.filter(pl => pl.productionLineId = mac.productionLineId)[0];
+          mac.productionLine = this.productionLines.filter(pl => pl.productionLineId === mac.productionLineId)[0];
         }
       });
     });

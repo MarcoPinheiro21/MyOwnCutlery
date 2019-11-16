@@ -14,13 +14,13 @@
             <thead class="thead-dark">
                 <tr>
                     <th>Machine Description</th>
-                    <th>Machine Type Id</th>
+                    <th>Machine Type</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let machine of productionline.machinesListDtos">
                     <td>{{machine.description}}</td>
-                    <td>{{machine.machineTypeId}}</td>
+                    <td>{{machine.machineType.desc}}</td>
                 </tr>
             </tbody>
         </table>

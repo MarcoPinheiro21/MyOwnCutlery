@@ -17,7 +17,6 @@ export class ProductDialogComponent implements OnInit {
   elements: Element[] = [];
   displayedColumns: string[] = [
     'checked',
-    'operationId',
     'tool',
     'operationType'];
 
@@ -65,7 +64,7 @@ export class ProductDialogComponent implements OnInit {
   }
 
   save(isEdition: boolean) {
-   
+
       this.checkEmptyOperationsList();
       if (this.inputFormControl.hasError('required') ||
         this.inputFormControl.hasError('minlength') ||
