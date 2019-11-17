@@ -36,7 +36,6 @@ export class ProductionLinesComponent implements OnInit {
       this.productionLines = responseList[2];
       this.machines.map(mac => {
         mac.machineType = this.machineTypes.filter(mType => mType.id = mac.machineTypeId)[0];
-        console.log(mac);
       });
       this.productionLines.map(pl => {
         pl.machinesListDtos = this.machines.filter(mac => mac.productionLineId === pl.productionLineId);
