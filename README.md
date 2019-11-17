@@ -36,7 +36,7 @@ O projeto irá ser desenvolvido ao longo de todo o semestre num modo de Project 
 
 A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi a da imagem seguinte:
 
-![WalkingSkeleton](/Diagrams/WalkingSkeleton.jpg)
+![WalkingSkeleton](/Diagrams/WalkingSkeleton.png)
 
 
 ## Modelo de domínio
