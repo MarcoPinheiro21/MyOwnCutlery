@@ -5,7 +5,7 @@ configurationsApi = {
     factoryApi: {
         url: 'https://localhost:5001/',
         machines: 'factoryapi/machines',
-        isEnable: false
+        isEnable: true
     }
 };
 

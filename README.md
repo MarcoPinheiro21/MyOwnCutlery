@@ -38,6 +38,28 @@ A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi
 
 ![WalkingSkeleton](/Diagrams/WalkingSkeleton.png)
 
+### Localização dos componentes
+
+* FactoryAPI: lei19-20_s5_3na_64/factoryApiSolution
+* Visualization: lei19-20_s5_3na_64/visualization
+* ProductionAPI: lei19-20_s5_3na_64/productionApiSolution
+* Master-data-web: lei19-20_s5_3na_64/myOwnCutleryWebApp
+
+### Requisitos
+
+* Node v12.12.0
+* DotNet 2.2.401
+* Docker 19.03.2
+* Instância Microsoft SQL Server 2017 a correr na porta 1433
+    * Para efeitos deste projeto foi utilizada a imagem docker **mcr.microsoft.com/mssql/server:2017-CU8-ubuntu**
+
+### Instalação
+Executar os comandos:
+
+'dotnet run' dentro do diretório factoryApiSolution/factoryApi e productionApiSolution/productionApi
+'ng serve' dentro do dirétorio myOwnCutleryWebApp
+'npx serve -l 6001' dentro do diretório  visualization
+
 
 ## Modelo de domínio
 
