@@ -56,10 +56,9 @@ A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi
 ### Instalação
 Executar os comandos:
 
-'dotnet run' dentro do diretório factoryApiSolution/factoryApi e productionApiSolution/productionApi
-'ng serve' dentro do dirétorio myOwnCutleryWebApp
-'npx serve -l 6001' dentro do diretório  visualization
-
+* 'dotnet run' dentro do diretório factoryApiSolution/factoryApi e productionApiSolution/productionApi
+* 'ng serve' dentro do dirétorio myOwnCutleryWebApp
+* 'npx serve -l 6001' dentro do diretório  visualization
 
 ## Modelo de domínio
 
