@@ -4,69 +4,75 @@ configurationsApi = {
     },
     factoryApi: {
         url: 'https://localhost:5001/',
-        machines: 'factoryapi/machines',
-        isEnable: true
+        productionLines: 'factoryapi/productionlines',
+        isEnable: false
     }
 };
 
-function getMachines()
+function getProductionLines()
 {
     if(!configurationsApi.factoryApi.isEnable) {
         return JSON.parse(jsonResponse);
     } 
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines, false );
+    xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.productionLines, false );
     xmlHttp.send( null );
     return JSON.parse(xmlHttp.responseText);
 }
 
 const jsonResponse = `[
     {
-        "id": 1,
-        "description": "Machine1",
-        "machineTypeId": 2,
-        "productionLineId": 0
+        "productionLineId": 1,
+        "productionLineName": "Linha Produção 1",
+        "machinesListDtos": [
+            {
+                "id": 1,
+                "description": "Maquina1",
+                "machineTypeId": 1,
+                "productionLineId": 1
+            },{
+                "id": 2,
+                "description": "Maquina2",
+                "machineTypeId": 2,
+                "productionLineId": 1
+            },{
+                "id": 3,
+                "description": "Maquina3",
+                "machineTypeId": 1,
+                "productionLineId": 1
+            },{
+                "id": 4,
+                "description": "Maquina4",
+                "machineTypeId": 2,
+                "productionLineId": 1
+            }
+        ]
     },
     {
-        "id": 2,
-        "description": "Machine2",
-        "machineTypeId": 2,
-        "productionLineId": 0
-    },
-    {
-        "id": 3,
-        "description": "Machine3",
-        "machineTypeId": 1,
-        "productionLineId": 0
-    },
-    {
-        "id": 4,
-        "description": "Machine4",
-        "machineTypeId": 2,
-        "productionLineId": 0
-    },
-    {
-        "id": 5,
-        "description": "Machine5",
-        "machineTypeId": 2,
-        "productionLineId": 0
-    },
-    {
-        "id": 6,
-        "description": "Machine6",
-        "machineTypeId": 2,
-        "productionLineId": 0
-    },
-    {
-        "id": 7,
-        "description": "Machine7",
-        "machineTypeId": 1,
-        "productionLineId": 0
-    },
-    {
-        "id": 8,
-        "description": "Machine8",
-        "machineTypeId": 1,
-        "productionLineId": 0
+        "productionLineId": 2,
+        "productionLineName": "Linha Produção 2",
+        "machinesListDtos": [
+            {
+                "id": 5,
+                "description": "Maquina5",
+                "machineTypeId": 1,
+                "productionLineId": 2
+            },{
+                "id": 6,
+                "description": "Maquina6",
+                "machineTypeId": 2,
+                "productionLineId": 2
+            },{
+                "id": 7,
+                "description": "Maquina7",
+                "machineTypeId": 1,
+                "productionLineId": 2
+            },{
+                "id": 8,
+                "description": "Maquina8",
+                "machineTypeId": 2,
+                "productionLineId": 2
+            }
+        ]
     }
 ]`; 

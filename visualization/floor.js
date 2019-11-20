@@ -1,7 +1,7 @@
 'use strict';
 
-var WIDTH = 120;
-var HEIGHT = 100;
+var WIDTH = 200;
+var HEIGHT = 200;
 var FLOOR_TEXTURE = 'https://files.gamebanana.com/img/ss/textures/5290c58f7ffcf.webp';
 
 class Floor {

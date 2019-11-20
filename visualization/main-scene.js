@@ -5,9 +5,6 @@
  *  */
 
 const CONFIG = defaultConfig;
-const TABLE_SCALE = CONFIG.tables.scale;
-const TABLES_POSITIONS = CONFIG.tables.positions;
-const PLACEHOLDERS_POSITIONS = CONFIG.placeholders.positions;
 const MACHINE_POSITIONS = CONFIG.machines.positions;
 const MACHINE_TYPES = CONFIG.machines.types;
 const MACHINES_TOTAL = CONFIG.machines.total;
@@ -36,8 +33,8 @@ var lineAY = LINE.lineAY;
 var lineBY = LINE.lineBY;
 var linesZ = LINE.lineZ;
 
-// GET method
-var machines = getMachines();
+var nProductionLines;
+
 
 // Ambient ligth
 var light = new THREE.AmbientLight(0xC1C1C1); // soft white light
@@ -80,11 +77,12 @@ timeoutLineB();
  *  */
 
 function buildScene() {
-    buildWidgets();
+    var productionLines = getProductionLines();
+    //buildWidgets();
 
     buildFloor();
-    buildTables();
-    buildPlaceholders();
+    buildTables(productionLines);
+    buildMachines(productionLines);
 
     buildFork(linesX, lineAY, linesZ);
     buildSpoon(linesX, lineBY, linesZ);
@@ -95,28 +93,27 @@ function buildFloor() {
     scene.add( floor.buildFloor() );
 }
 
-function buildTables() {
-    TABLES_POSITIONS.forEach(e => moveTable(e));
-}
-
-function moveTable(position) {
-    let table = new Table();
-    table = table.buildTable(TABLE_SCALE, position);
-
-    scene.add(table);
-}
-
-function buildMachine(position) {
-    var loader = new THREE.ColladaLoader();
-
-    loader.load(API_URL + 'models/model.dae', collada => {
-        collada.scene.scale.set(0.05, 0.05, 0.05);
-        collada.scene.translateX(position.x);
-        collada.scene.translateY(position.y);
-        collada.scene.rotateZ(-Math.PI / 2.0);
-
-        scene.add(collada.scene);
+function buildTables(productionLines) {
+    nProductionLines=0;
+    var tables = [];
+    var table;
+    var i;
+    productionLines.forEach(function (e) {
+        tables[nProductionLines]=new Table(e.productionLineName);
+        nProductionLines++;
     });
+    for(i=1;i<=nProductionLines;i++){
+        if(i%2==0){
+            table = tables[i-1].buildProductionLine(0.5, { x: 30, y: 0, z: 15*(i/2) });
+            scene.add(table);
+        }else{
+            table = tables[i-1].buildProductionLine(0.5, { x: 30, y: 0, z: -15*i });
+            scene.add(table);
+        }
+        
+    }
+
+        
 }
 
 function buildFork(x, y, z) {
@@ -147,48 +144,44 @@ function buildSpoon(x, y, z) {
     scene.add(groupSpoon);
 }
 
-function buildPlaceholders() {
-    for (i = 0; i < this.machines.length; i++) {
-        let obj = buildPlaceholder(this.machines[i].description, PLACEHOLDERS_POSITIONS[i]);
-        scene.add( obj );
-    }
-}
+function buildMachine(machine,count,productionLineNumber) {
+    var productionLinePlacement= -30;
+    productionLinePlacement = productionLinePlacement + (20*(count-1));
 
-function buildWidgets() {
-    let selectedMachine = {
-        type: null
-    };
-
-    let controllerMachines = gui.addFolder(`Machines Specs`)
-    for (i = 0; i < this.machines.length; i++) {
-        let idx = i + 1;
-        controllerMachines.addFolder(this.machines[i].description)
-            .add(selectedMachine, 'type', MACHINE_TYPES)
-            .onChange((selectedValue) => replaceMachinePlaceholder(selectedMachine, idx));
-    }
-}
-
-function replaceMachinePlaceholder(machine, i) {
-    Util.removeFromScene(scene, this.machines[i - 1].description);
     let newSceneObject;
-    switch (machine.type) {
-        case "none":
-            newSceneObject = buildPlaceholder(this.machines[i - 1].description, PLACEHOLDERS_POSITIONS[i-1]);
-            break;
+    switch (MACHINE_TYPES[machine.machineTypeId]) {
         case "Custom Robotic Arm":
-            let roboticArm = new RoboticArm(this.machines[i - 1].description);
+            let roboticArm = new RoboticArm(machine.description);
             roboticArms.push(roboticArm);
-
-            newSceneObject = roboticArm.buildRobotArm(PLACEHOLDERS_POSITIONS[i - 1]);
+            if(productionLineNumber%2==0){
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement-5, y: 0, z: (15*(productionLineNumber/2))+10});
+            }else{
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement-5, y: 0, z: (-15*productionLineNumber)+10});
+            }
             break;
         case "Hydraulic Press":
-            let pressMachine = new PressMachine(this.machines[i - 1].description);
+            let pressMachine = new PressMachine(machine.description);
             pressMachines.push(pressMachine);
-
-            newSceneObject = pressMachine.buildHydraulicPress(PRESS_MACHINE_POSITIONS[i - 1]);
+            if(productionLineNumber%2==0){
+                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement, y: 5, z: (15*(productionLineNumber/2))-6});
+            }else{
+                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement, y: 5, z: (-15*productionLineNumber)-6});
+            }
             break;
     }
     scene.add(newSceneObject);
+}
+
+function buildMachines(productionLines) {
+    var plCount=0;
+    productionLines.forEach(function (pl) {
+        plCount++;
+        var count = 1;
+        pl.machinesListDtos.forEach(function (machine) {
+            buildMachine(machine,count,plCount);
+            count++;
+        });
+    });
 }
 
 function timeoutLineA() {
@@ -222,7 +215,7 @@ function animate() {
         e.timeoutPressArm();
     });
     roboticArms.forEach(e => {
-        e.rotateBase();
+        //e.rotateBase();
         e.rotateArm();
     });
 }

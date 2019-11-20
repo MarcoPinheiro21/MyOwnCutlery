@@ -22,9 +22,18 @@ class Table {
         this.group = new THREE.Group();
         this.group.name = name;
     }
+    buildProductionLine(scale, position){
+        this.group.add(this.buildTable(scale,{ x: 30, y: position.y, z: position.z }));
+        this.group.add(this.buildTable(scale,{ x: 10, y: position.y, z: position.z }));
+        this.group.add(this.buildTable(scale,{ x: -10, y: position.y, z: position.z }));
+        this.group.add(this.buildTable(scale,{ x: -30, y: position.y, z: position.z }));
+        return this.group;
+    }
 
     buildTable(scale, position) {
+        var localGroup = new THREE.Group();
         let legs = [];
+        var i;
         // Get 4 legs
         for (i = 0; i < N_LEGS; i++) {
             let mesh = this._tableLeg();
@@ -82,14 +91,14 @@ class Table {
         });
         let treadmill = new THREE.Mesh(treadmillGeometry, treadmillMaterial);
 
-        this.group.add(tableStructure);
-        this.group.add(treadmill);
+        localGroup.add(tableStructure);
+        localGroup.add(treadmill);
 
-        this.group.scale.set(scale, scale, scale);
-        this.group.translateX(position.x);
-        this.group.translateY(position.y);
-        this.group.translateZ(position.z);
-        return this.group;
+        localGroup.scale.set(scale, scale, scale);
+        localGroup.translateX(position.x);
+        localGroup.translateY(position.y);
+        localGroup.translateZ(position.z);
+        return localGroup;
     }
 
     // Legs
