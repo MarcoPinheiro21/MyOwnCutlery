@@ -2,36 +2,9 @@
   <span><h1 class="mainTitle">My Own Cutlery App</h1></span>
   <span><a href="{{visualUrl}}" target="_blank" style="font-size: 40px;" class="far fa-eye"></a></span>
 </div>
-<nav>
-  <ul style="text-align:center;margin-bottom: 3%;background-color: grey;align-content: center;padding-right: 40px;padding-left: 40px;">
-    <li>
-      <a class="labelIcons" routerLink="/machines" routerLinkActive="active">Machines
-        <mat-icon fontSet="fas" fontIcon="fa-cash-register"></mat-icon>
-      </a>
-    </li>
-    <li>
-      <a class="labelIcons" routerLink="/machineTypes" routerLinkActive="active">Machine Types
-        <mat-icon fontSet="fas" fontIcon="fa-memory"></mat-icon>
-      </a>
-    </li>
-    <li>
-      <a class="labelIcons" routerLink="/operations" routerLinkActive="active">Operations
-        <mat-icon fontSet="fas" fontIcon="fa-tasks" ></mat-icon>
-      </a>
-    </li>
-    <li>
-      <a class="labelIcons" routerLink="/products" routerLinkActive="active">Products
-        <mat-icon fontSet="fas" fontIcon="fa-utensils" ></mat-icon>
-      </a>
-    </li>
-    <li>
-      <a class="labelIcons" routerLink="/productionlines" routerLinkActive="active">ProductionLines
-        <mat-icon fontSet="fas" fontIcon="fa-bezier-curve" ></mat-icon>
-      </a>
-    </li>
 
-  </ul>
-</nav>
-<section class="container">
-  <router-outlet></router-outlet>
-</section>
+<span><a href="/" style="font-size: 40px;" class="fas fa-home"></a></span>
+<a class="labelIcons" routerLink='master-data-web' routerLinkActive="active">Master Data Configuration</a>
+<a class="labelIcons" routerLink='order-management' routerLinkActive="active">Order Management</a>
+
+<router-outlet></router-outlet>

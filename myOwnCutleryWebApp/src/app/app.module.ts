@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule, routingComponents } from './app-routing.module';
+import { routing, appRoutingProviders } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -26,6 +26,14 @@ import { ProductDialogComponent } from './master-data-web/product/product-dialog
 import { ProductionLineService } from './master-data-web/production-lines/production-lines.service';
 import { ProductionLineDialogComponent } from './master-data-web/production-lines/production-line-dialog/production-line-dialog.component';
 import { MachinesByTypeDialogComponent } from './master-data-web/machine-types/machines-by-type-dialog/machines-by-type-dialog.component';
+import { MachinesComponent } from './master-data-web/machines/machines.component';
+import { MachineTypesComponent } from './master-data-web/machine-types/machine-types.component';
+import { OperationsComponent } from './master-data-web/operations/operations.component';
+import { ProductsComponent } from './master-data-web/product/product.component';
+import { ProductionLinesComponent } from './master-data-web/production-lines/production-lines.component';
+import { OrderManagementComponent } from './order-management/order-management.component';
+import { ClientsComponent } from './order-management/clients/clients.component';
+import { OrdersComponent } from './order-management/orders/orders.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -48,29 +56,43 @@ export const AngularMaterialComponents = [
     AppComponent,
     MasterDataWebComponent,
     MachineTypeDialogComponent,
-    routingComponents,
     MachineCreationDialogComponent,
     MachineEditionDialogComponent,
     OperationDialogComponent,
     ProductDialogComponent,
     ProductionLineDialogComponent,
-    MachinesByTypeDialogComponent
+    MachinesByTypeDialogComponent,
+    MachinesComponent,
+    MachineTypesComponent,
+    OperationsComponent,
+    ProductsComponent,
+    ProductionLinesComponent,
+    OrderManagementComponent,
+    ClientsComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialComponents,
+    routing
   ],
-  providers: [MachinesService, ProductsService, ProductionLineService],
+  providers: [
+    MachinesService,
+    ProductsService,
+    ProductionLineService,
+    appRoutingProviders
+  ],
   bootstrap: [AppComponent],
-  entryComponents: [MachineEditionDialogComponent, 
-    MachineCreationDialogComponent, 
-    MachineTypeDialogComponent, 
+  entryComponents: [
+    MachineEditionDialogComponent,
+    MachineCreationDialogComponent,
+    MachineTypeDialogComponent,
     OperationDialogComponent,
     ProductDialogComponent,
     ProductionLineDialogComponent,
-    MachinesByTypeDialogComponent]
+    MachinesByTypeDialogComponent
+  ]
 })
 export class AppModule { }
