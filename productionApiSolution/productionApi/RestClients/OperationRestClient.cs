@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using productionApi.DTO;
@@ -11,9 +12,11 @@ namespace productionApi.RestClients
     public class OperationRestClient
     {
         private RestClient _client;
-        public OperationRestClient()
+        private readonly HttpClient _httpClient;
+        public OperationRestClient(HttpClient httpClient)
         {
-            _client = new RestClient("https://localhost:5001");
+            
+            _client = new RestClient(httpClient.BaseAddress);
         }
         
         public OperationRestClient(RestClient client)

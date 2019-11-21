@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using productionApi.Models.Plan;
 using productionApi.Models.Product;
 
@@ -7,10 +7,11 @@ namespace productionApi.Context
 {
     public class MasterProductionContext : DbContext
     {
-        private static string _connection = "Server=localhost,1433;Database=ProductionDB;Integrated Security=False;User Id=SA;Password=yourStrong(!)Password;MultipleActiveResultSets=True";
+        private string _connection;
                 
-        public MasterProductionContext(DbContextOptions<MasterProductionContext> options) : base(options)
+        public MasterProductionContext(IConfiguration configuration, DbContextOptions<MasterProductionContext> options) : base(options)
         {
+            _connection = configuration["ConnectionString:productionDB"];
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

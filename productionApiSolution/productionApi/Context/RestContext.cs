@@ -1,4 +1,5 @@
-﻿using productionApi.RestClients;
+﻿using System.Net.Http;
+using productionApi.RestClients;
 using RestSharp;
 
 namespace productionApi.Context
@@ -7,9 +8,9 @@ namespace productionApi.Context
     {
         public OperationRestClient client { get; }
 
-        public RestContext()
+        public RestContext(HttpClient httpClient)
         {
-            client=new OperationRestClient();
+            client=new OperationRestClient(httpClient);
         }
         
         public RestContext(OperationRestClient restClient)

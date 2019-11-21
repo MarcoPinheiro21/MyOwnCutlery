@@ -4,16 +4,18 @@ using factoryApi.Models.Operation;
 using factoryApi.Models.ProductionLine;
 using factoryApi.Models.Relationships;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace factoryApi.Context
 {
     public class MasterFactoryContext : DbContext
     {
-        private static string _connection =
-            "Server=localhost,1433;Database=FactoryDB;Integrated Security=False;User Id=SA;Password=yourStrong(!)Password;MultipleActiveResultSets=True";
-
-        public MasterFactoryContext(DbContextOptions<MasterFactoryContext> options) : base(options)
+        private string _connection;
+        
+        public MasterFactoryContext(IConfiguration configuration, DbContextOptions<MasterFactoryContext> options) : base(options)
         {
+            _connection = configuration["ConnectionString:factoryDB"];
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

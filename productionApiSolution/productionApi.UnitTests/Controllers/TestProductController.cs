@@ -21,7 +21,7 @@ namespace productionApiTest.Controllers
 
         public TestProductController()
         {
-            theController = new ProductsController(_context);
+            theController = new ProductsController(_context, null);
             theController._service= new ProductService(
                 new ProductRepository(_context), 
                 new OperationRepository(_context),

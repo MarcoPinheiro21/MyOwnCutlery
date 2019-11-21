@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using factoryApi.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using productionApi.Context;
@@ -14,12 +15,12 @@ namespace productionApi.Controllers
     {
         public ProductService _service { get; set; }
 
-        public ProductsController(MasterProductionContext context)
+        public ProductsController(MasterProductionContext context,HttpClient httpClient)
         {
             _service = new ProductService(
                 new ProductRepository(context), 
                 new OperationRepository(context),
-                new RestContext()
+                new RestContext(httpClient)
                 );
         }
 

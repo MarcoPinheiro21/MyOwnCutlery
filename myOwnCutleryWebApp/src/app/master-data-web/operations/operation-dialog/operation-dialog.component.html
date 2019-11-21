@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-sm-6">
       <mat-label>Select an option</mat-label>
-      <mat-select [(ngModel)]="operation.OperationType" name="OperationType">
+      <mat-select [(ngModel)]="operation.operationType" name="OperationType">
         <mat-option *ngFor="let operationType of operationTypes" [value]="operationType.operationTypeName">
           {{operationType.operationTypeName}}
         </mat-option>
@@ -11,7 +11,7 @@
     </div>
     <div class="col-sm-6">
       <mat-label>Select an option</mat-label>
-      <mat-select [(ngModel)]="operation.ToolId" name="ToolId">
+      <mat-select [(ngModel)]="operation.toolId" name="ToolId">
         <mat-option *ngFor="let tool of tools" [value]="tool.toolId">
           {{tool.desc}}
         </mat-option>

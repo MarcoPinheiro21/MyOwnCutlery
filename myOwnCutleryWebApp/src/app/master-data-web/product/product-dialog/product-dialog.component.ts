@@ -63,7 +63,7 @@ export class ProductDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  save(isEdition: boolean) {
+  save() {
 
       this.checkEmptyOperationsList();
       if (this.inputFormControl.hasError('required') ||

@@ -17,7 +17,7 @@ namespace factoryApiTest.Context
                 .UseInMemoryDatabase("TestDB", new InMemoryDatabaseRoot())
                 .Options;
 
-            MasterFactoryContext dbContext = new MasterFactoryContext(options);
+            MasterFactoryContext dbContext = new MasterFactoryContext(null,options);
             SeedOperations(dbContext);
             SeedMachineTypes(dbContext);
             SeedOperationMachineTypes(dbContext);

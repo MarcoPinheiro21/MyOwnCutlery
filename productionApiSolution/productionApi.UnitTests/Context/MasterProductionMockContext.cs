@@ -16,7 +16,7 @@ namespace productionApiTest.Context
                 .UseInMemoryDatabase("TestDB", new InMemoryDatabaseRoot())
                 .Options;
 
-            MasterProductionContext dbContext = new MasterProductionContext(options);
+            MasterProductionContext dbContext = new MasterProductionContext(null, options);
             SeedPlans(dbContext);
             SeedProducts(dbContext);
 

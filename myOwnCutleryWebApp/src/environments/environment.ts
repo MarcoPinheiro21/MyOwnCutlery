@@ -13,6 +13,10 @@ export const visual = {
   url: 'http://localhost:6001/factory'
 };
 
+export const productionApi = {
+  url: 'https://localhost:8090'
+};
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
