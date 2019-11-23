@@ -9,6 +9,7 @@ import { ProductionLinesComponent } from './master-data-web/production-lines/pro
 import { OrderManagementComponent } from './order-management/order-management.component';
 import { ClientsComponent } from './order-management/clients/clients.component';
 import { OrdersComponent } from './order-management/orders/orders.component';
+import { VisualizationWebComponent } from './visualization-web/visualization-web.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
       { path: 'clients', component: ClientsComponent },
       { path: 'orders', component: OrdersComponent }
     ]
+  },
+  {
+    path: 'visualization-web',
+    component: VisualizationWebComponent
   }
 ];
 

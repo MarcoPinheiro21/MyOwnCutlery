@@ -13,6 +13,9 @@ nav ul li a {
   line-height: 20px;
 }
 nav ul li a:hover {
-  background: #000000;
-  color: rgb(255, 255, 255);
+  background: #dddddd;
+}
+
+.active {
+  background-color: #dddddd !important;
 }

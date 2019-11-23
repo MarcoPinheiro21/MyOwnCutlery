@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { visual } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +7,4 @@ import { visual } from 'src/environments/environment';
 })
 export class AppComponent {
   title = 'myOwnCutleryWebApp';
-  visualUrl = visual.url;
 }

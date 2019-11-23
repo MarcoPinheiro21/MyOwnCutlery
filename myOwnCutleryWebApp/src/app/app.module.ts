@@ -34,6 +34,7 @@ import { ProductionLinesComponent } from './master-data-web/production-lines/pro
 import { OrderManagementComponent } from './order-management/order-management.component';
 import { ClientsComponent } from './order-management/clients/clients.component';
 import { OrdersComponent } from './order-management/orders/orders.component';
+import { VisualizationWebComponent, SafePipe } from './visualization-web/visualization-web.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -69,7 +70,9 @@ export const AngularMaterialComponents = [
     ProductionLinesComponent,
     OrderManagementComponent,
     ClientsComponent,
-    OrdersComponent
+    OrdersComponent,
+    VisualizationWebComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,
