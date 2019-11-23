@@ -10,8 +10,8 @@ using factoryApi.Context;
 namespace factoryApi.Migrations
 {
     [DbContext(typeof(MasterFactoryContext))]
-    [Migration("20191114212339_ChangeOperationType")]
-    partial class ChangeOperationType
+    [Migration("20191123121140_Master")]
+    partial class Master
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,8 @@ namespace factoryApi.Migrations
 
                     b.Property<long?>("ProductionLineId");
 
+                    b.Property<long>("ProductionLinePosition");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Description")
@@ -53,6 +55,8 @@ namespace factoryApi.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Desc");
+
+                    b.Property<string>("VisualizationModel");
 
                     b.HasKey("Id");
 

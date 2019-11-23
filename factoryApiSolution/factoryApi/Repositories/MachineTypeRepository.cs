@@ -165,6 +165,58 @@ namespace factoryApi.Repositories
             _context.SaveChanges();
             return GetMachineTypeById(id).toDto();
         }
+        
+        public MachineTypeDto UpdateElement(long id, MachineTypeDto Dto)
+        {
+            var machineType = GetMachineTypeById(id);
+
+            if (machineType == null)
+            {
+                throw new ObjectNotFoundException(
+                    "Machine type with id " + id + " not found.");
+            }
+
+            if (null != Dto.Desc && Dto.Desc.Trim().Length > 0)
+            {
+                machineType.Desc = Dto.Desc;
+            }
+
+            var operationMachineTypeList = new List<OperationMachineType>();
+
+            foreach (var op in Dto.OperationList)
+            {
+                var operation = _context.Operations
+                    .Include(o => o.OperationType)
+                    .Include(t => t.OperationMachineType)
+                    .ThenInclude(o => o.Operation)
+                    .ThenInclude(t => t.Tool)
+                    .SingleOrDefault(o => o.Id == op.OperationId);
+
+                if (operation == null)
+                {
+                    throw new ObjectNotFoundException(
+                        "Operation with id " + op + " not found.");
+                }
+
+                var operationMachineType = new OperationMachineType(machineType.Id,
+                    machineType, op.OperationId, operation);
+
+                if (operationMachineTypeList.Contains(operationMachineType))
+                {
+                    throw new ArgumentException("Duplicated operations not allowed.");
+                }
+
+                operationMachineTypeList.Add(operationMachineType);
+            }
+
+
+            machineType.OperationMachineType = operationMachineTypeList;
+            machineType.VisualizationModel = Dto.VisualizationModel;
+            //var result = machineType.toDto();
+
+            _context.SaveChanges();
+            return GetMachineTypeById(id).toDto();
+        }
 
         public MachineTypeDto DeleteElement(long id)
         {

@@ -13,12 +13,15 @@ namespace factoryApi.Models.Machine
 
         [ForeignKey("ProductionLineId")] public ProductionLine.ProductionLine ProductionLine { get; set; }
 
+        public long ProductionLinePosition { get; set; }
+
         protected Machine()
         {
         }
 
         public Machine(string description, MachineType type)
         {
+            ProductionLinePosition = 0;
             if (null == description || description.Trim().Length == 0)
             {
                 throw new ArgumentNullException("Invalid machine description.");
@@ -40,7 +43,7 @@ namespace factoryApi.Models.Machine
                 return new MachineDto(Id, Description, Type.Id);
             }
 
-            return new MachineDto(Id, Description, Type.Id, ProductionLine.Id);
+            return new MachineDto(Id, Description, Type.Id, ProductionLine.Id, ProductionLinePosition);
         }
     }
 }

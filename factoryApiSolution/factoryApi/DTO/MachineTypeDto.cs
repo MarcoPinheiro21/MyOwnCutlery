@@ -9,11 +9,14 @@ namespace factoryApi.DTO
 
         public List<OperationDto> OperationList { get; set; }
 
-        public MachineTypeDto(long id, string desc, List<OperationDto> operationList)
+        public string VisualizationModel { get; set; }
+
+        public MachineTypeDto(long id, string desc, List<OperationDto> operationList, string visualizationModel)
         {
             Id = id;
             Desc = desc;
             OperationList = operationList;
+            VisualizationModel = visualizationModel;
         }
     }
 }

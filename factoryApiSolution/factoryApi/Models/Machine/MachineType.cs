@@ -14,8 +14,11 @@ namespace factoryApi.Models.Machine
         [ForeignKey("OperationId")] 
         public virtual ICollection<OperationMachineType> OperationMachineType { get; set; }
 
+        public string VisualizationModel { get; set; }
+
         public MachineType(string desc)
         {
+            VisualizationModel = "Robotic Arm";
             if (null == desc || desc.Trim().Length == 0)
             {
                 throw new ArgumentNullException("Invalid machine type description.");
@@ -27,7 +30,7 @@ namespace factoryApi.Models.Machine
 
         public MachineTypeDto toDto()
         {
-            return new MachineTypeDto(Id, Desc, GetOperationIdsList());
+            return new MachineTypeDto(Id, Desc, GetOperationIdsList(),VisualizationModel);
         }
 
         private List<OperationDto> GetOperationIdsList()

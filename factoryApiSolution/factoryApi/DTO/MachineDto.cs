@@ -8,16 +8,19 @@ namespace factoryApi.DTO
 
         public long ProductionLineId { get; set; }
 
+        public long ProductionLinePosition { get; set; }
+
         public MachineDto()
         {
         }
 
-        public MachineDto(long id, string description, long machineType, long productionLineId)
+        public MachineDto(long id, string description, long machineType, long productionLineId, long productionLinePosition)
         {
             Id = id;
             Description = description;
             MachineTypeId = machineType;
             ProductionLineId = productionLineId;
+            ProductionLinePosition = productionLinePosition;
         }
         
         public MachineDto(long id, string description, long machineType)
@@ -25,6 +28,7 @@ namespace factoryApi.DTO
             Id = id;
             Description = description;
             MachineTypeId = machineType;
+
         }
     }
 }

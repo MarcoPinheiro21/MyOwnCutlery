@@ -5,6 +5,7 @@ using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Exceptions;
 using factoryApi.Models.Machine;
+using factoryApi.Models.ProductionLine;
 using Microsoft.EntityFrameworkCore;
 
 namespace factoryApi.Repositories
@@ -152,6 +153,64 @@ namespace factoryApi.Repositories
             }
 
             return machineToUpdate.toDto();
+        }
+        
+        public MachineDto UpdateElement(long id, MachineDto Dto)
+        {
+            var machineToUpdate = _context.Machines
+                .Include(t => t.Type)
+                .Include(pl => pl.ProductionLine)
+                .SingleOrDefault(i => i.Id == id);
+
+            if (Dto.Description != null)
+            {
+                machineToUpdate.Description = Dto.Description;
+            }
+
+            if (Dto.MachineTypeId != 0)
+            {
+                var machineType = _context.MachineTypes.Find(Dto.MachineTypeId);
+                if (machineType == null)
+                {
+                    throw new ObjectNotFoundException(
+                        "MachineType with id " + Dto.MachineTypeId + " not found.");
+                }
+
+                machineToUpdate.Type = machineType;
+            }
+
+            var machineWithSamePosition =
+                GetMachineByPosition(Dto.ProductionLinePosition, machineToUpdate.ProductionLine).ToList();
+
+            if (machineWithSamePosition.Count == 0)
+            {
+                machineToUpdate.ProductionLinePosition = Dto.ProductionLinePosition;
+            }
+            else
+            {
+                machineWithSamePosition[0].ProductionLinePosition = machineToUpdate.ProductionLinePosition;
+                machineToUpdate.ProductionLinePosition = Dto.ProductionLinePosition;
+            }
+            
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e);
+                throw new DuplicatedObjectException("A Machine with the same description already exists");
+            }
+
+            return machineToUpdate.toDto();
+        }
+        private IEnumerable<Machine> GetMachineByPosition(long position, ProductionLine pl)
+        {
+            return _context.Machines.Include(t => t.Type)
+                    .Include(p => p.ProductionLine)
+                    .Where(pos => pos.ProductionLinePosition == position)
+                    .Where(pos => pos.ProductionLine == pl);
         }
 
         public MachineDto DeleteElement(long id)

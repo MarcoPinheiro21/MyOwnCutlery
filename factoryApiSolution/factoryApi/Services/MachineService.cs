@@ -86,6 +86,20 @@ namespace factoryApi.Services
             var result = _machineTypeRepository.UpdateElement(typeId, createOperationDto);
             return FindMachineTypeById(result.Id);
         }
+        
+        public MachineTypeDto UpdateVisualizationModelOfMachineType(long typeId,
+            MachineTypeDto machineTypeDto)
+        {
+            var result = _machineTypeRepository.UpdateElement(typeId, machineTypeDto);
+            return FindMachineTypeById(result.Id);
+        }
+        
+        public MachineDto UpdatePositionOfMachine(long typeId,
+            MachineDto machineDto)
+        {
+            var result = _machineRepository.UpdateElement(typeId, machineDto);
+            return FindMachineById(result.Id);
+        }
 
         public MachineTypeDto DeleteMachineType(long typeId)
         {

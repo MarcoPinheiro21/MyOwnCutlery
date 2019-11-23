@@ -1,7 +1,7 @@
 defaultConfig = {
     machines: {
         types: ["none",
-        "Custom Robotic Arm", "Hydraulic Press"]
+        "Robotic Arm", "Hydraulic Press"]
     },
     lines:{
         initialX: 38,

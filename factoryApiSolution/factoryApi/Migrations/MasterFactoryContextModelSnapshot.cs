@@ -32,6 +32,8 @@ namespace factoryApi.Migrations
 
                     b.Property<long?>("ProductionLineId");
 
+                    b.Property<long>("ProductionLinePosition");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Description")
@@ -51,6 +53,8 @@ namespace factoryApi.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Desc");
+
+                    b.Property<string>("VisualizationModel");
 
                     b.HasKey("Id");
 

@@ -5,11 +5,8 @@
  *  */
 
 const CONFIG = defaultConfig;
-const MACHINE_POSITIONS = CONFIG.machines.positions;
-const MACHINE_TYPES = CONFIG.machines.types;
-const MACHINES_TOTAL = CONFIG.machines.total;
+const MODELS = CONFIG.machines.types;
 const API_URL = configurationsApi.visualizationApi.url;
-const PRESS_MACHINE_POSITIONS = CONFIG.machines.pressPositions;
 
 const LINE = CONFIG.lines;
 
@@ -47,6 +44,8 @@ var axesHelper = new THREE.AxesHelper(10);
 
 var roboticArms = [];
 var pressMachines = [];
+var productionLines;
+var machineTypes;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -54,9 +53,10 @@ document.body.appendChild(renderer.domElement);
 // Add element to the scene
 scene.add(axesHelper);
 
-scene.add(light);
-scene.add(directionalLight);
 
+this.productionLines = getProductionLines();
+this.machineTypes = getMachineTypes();
+buildWidgets();
 buildScene();
 
 //controls.update() must be called after any manual changes to the camera's transform
@@ -77,12 +77,12 @@ timeoutLineB();
  *  */
 
 function buildScene() {
-    var productionLines = getProductionLines();
-    //buildWidgets();
-
     buildFloor();
-    buildTables(productionLines);
-    buildMachines(productionLines);
+    buildTables();
+    buildMachines();
+
+    scene.add(light);
+    scene.add(directionalLight);
 
     buildFork(linesX, lineAY, linesZ);
     buildSpoon(linesX, lineBY, linesZ);
@@ -93,12 +93,12 @@ function buildFloor() {
     scene.add( floor.buildFloor() );
 }
 
-function buildTables(productionLines) {
+function buildTables() {
     nProductionLines=0;
     var tables = [];
     var table;
     var i;
-    productionLines.forEach(function (e) {
+    this.productionLines.forEach(function (e) {
         tables[nProductionLines]=new Table(e.productionLineName);
         nProductionLines++;
     });
@@ -144,13 +144,13 @@ function buildSpoon(x, y, z) {
     scene.add(groupSpoon);
 }
 
-function buildMachine(machine,count,productionLineNumber) {
+function buildMachine(machine,count,productionLineNumber,model) {
     var productionLinePlacement= -30;
     productionLinePlacement = productionLinePlacement + (20*(count-1));
 
     let newSceneObject;
-    switch (MACHINE_TYPES[machine.machineTypeId]) {
-        case "Custom Robotic Arm":
+    switch (model) {
+        case "Robotic Arm":
             let roboticArm = new RoboticArm(machine.description);
             roboticArms.push(roboticArm);
             if(productionLineNumber%2==0){
@@ -172,16 +172,27 @@ function buildMachine(machine,count,productionLineNumber) {
     scene.add(newSceneObject);
 }
 
-function buildMachines(productionLines) {
+function buildMachines() {
     var plCount=0;
-    productionLines.forEach(function (pl) {
+    this.productionLines.forEach(function (pl) {
         plCount++;
         var count = 1;
         pl.machinesListDtos.forEach(function (machine) {
-            buildMachine(machine,count,plCount);
+            var model = getModelOfMachineType(machine.machineTypeId);
+            buildMachine(machine,count,plCount,model);
             count++;
         });
     });
+}
+
+function getModelOfMachineType(machineTypeId) {
+    var result;
+    this.machineTypes.forEach(function (type) {
+        if(type.id === machineTypeId){
+            result = type.visualizationModel;
+        }
+    });
+    return result;
 }
 
 function timeoutLineA() {
@@ -219,3 +230,42 @@ function animate() {
         e.rotateArm();
     });
 }
+function buildWidgets() {
+    let selectedMachine = {
+        type: null
+    };
+
+    let controllerMachines = gui.addFolder(`Change Model of Machine Type`)
+    for (i = 0; i < this.machineTypes.length; i++) {
+        let idx = i;
+        
+        controllerMachines.addFolder(this.machineTypes[i].desc)
+            .add(selectedMachine, 'type', MODELS)
+            .onChange((selectedValue) => 
+                updateModel(idx,selectedValue)
+                );
+        
+        
+    }
+}
+
+function updateModel(idx,selectedValue) {
+    this.machineTypes[idx].visualizationModel=selectedValue;
+    if(configurationsApi.factoryApi.isEnable){
+        updateVisualizationModel(this.machineTypes[idx]);  
+    }else{
+        updateVisualizationModelListener();
+    }
+}
+
+function updateVisualizationModelListener(){
+    scene=new THREE.Scene();
+    gui = new dat.GUI();
+    buildScene();
+}
+
+
+
+
+
+

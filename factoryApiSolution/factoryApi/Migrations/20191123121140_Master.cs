@@ -13,7 +13,8 @@ namespace factoryApi.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Desc = table.Column<string>(nullable: true)
+                    Desc = table.Column<string>(nullable: true),
+                    VisualizationModel = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,7 +27,9 @@ namespace factoryApi.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    OperationTypeName = table.Column<string>(nullable: true)
+                    OperationTypeName = table.Column<string>(nullable: true),
+                    ExecutionTime = table.Column<long>(nullable: false),
+                    SetupTime = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,7 +69,8 @@ namespace factoryApi.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
                     MachineType = table.Column<long>(nullable: true),
-                    ProductionLineId = table.Column<long>(nullable: true)
+                    ProductionLineId = table.Column<long>(nullable: true),
+                    ProductionLinePosition = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
