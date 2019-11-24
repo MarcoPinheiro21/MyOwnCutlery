@@ -36,6 +36,7 @@ import { ClientsComponent } from './order-management/clients/clients.component';
 import { OrdersComponent } from './order-management/orders/orders.component';
 import { VisualizationWebComponent, SafePipe } from './visualization-web/visualization-web.component';
 import { ClientService } from './order-management/clients/client.service';
+import { ClientEditionDialogComponent } from './order-management/clients/client-edition-dialog/client-edition-dialog.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 export const AngularMaterialComponents = [
@@ -78,6 +79,7 @@ export const AngularMaterialComponents = [
     OrdersComponent,
     VisualizationWebComponent,
     SafePipe,
+    ClientEditionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -103,6 +105,7 @@ export const AngularMaterialComponents = [
     ProductDialogComponent,
     ProductionLineDialogComponent,
     MachinesByTypeDialogComponent,
+    ClientEditionDialogComponent
   ]
 })
 export class AppModule { }
