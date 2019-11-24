@@ -35,6 +35,8 @@ import { OrderManagementComponent } from './order-management/order-management.co
 import { ClientsComponent } from './order-management/clients/clients.component';
 import { OrdersComponent } from './order-management/orders/orders.component';
 import { VisualizationWebComponent, SafePipe } from './visualization-web/visualization-web.component';
+import { ClientService } from './order-management/clients/client.service';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -51,6 +53,9 @@ export const AngularMaterialComponents = [
   MatCheckboxModule,
   MatTableModule,
 ];
+
+
+
 
 @NgModule({
   declarations: [
@@ -72,20 +77,22 @@ export const AngularMaterialComponents = [
     ClientsComponent,
     OrdersComponent,
     VisualizationWebComponent,
-    SafePipe
+    SafePipe,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialComponents,
-    routing
+    routing,
+    NgxMaskModule
   ],
   providers: [
     MachinesService,
     ProductsService,
     ProductionLineService,
-    appRoutingProviders
+    appRoutingProviders,
+    ClientService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -95,7 +102,7 @@ export const AngularMaterialComponents = [
     OperationDialogComponent,
     ProductDialogComponent,
     ProductionLineDialogComponent,
-    MachinesByTypeDialogComponent
+    MachinesByTypeDialogComponent,
   ]
 })
 export class AppModule { }
