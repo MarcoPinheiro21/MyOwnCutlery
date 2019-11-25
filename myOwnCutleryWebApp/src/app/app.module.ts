@@ -38,6 +38,7 @@ import { VisualizationWebComponent, SafePipe } from './visualization-web/visuali
 import { ClientService } from './order-management/clients/client.service';
 import { ClientEditionDialogComponent } from './order-management/clients/client-edition-dialog/client-edition-dialog.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { ClientCreationDialogComponent } from './order-management/clients/client-creation-dialog/client-creation-dialog.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -79,7 +80,8 @@ export const AngularMaterialComponents = [
     OrdersComponent,
     VisualizationWebComponent,
     SafePipe,
-    ClientEditionDialogComponent
+    ClientEditionDialogComponent,
+    ClientCreationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -105,7 +107,8 @@ export const AngularMaterialComponents = [
     ProductDialogComponent,
     ProductionLineDialogComponent,
     MachinesByTypeDialogComponent,
-    ClientEditionDialogComponent
+    ClientEditionDialogComponent,
+    ClientCreationDialogComponent
   ]
 })
 export class AppModule { }
