@@ -6,6 +6,7 @@ configurationsApi = {
         url: 'https://localhost:5001/',
         productionLines: 'visualization/productionlines',
         machineTypes: 'visualization/machines/types',
+        machines: 'visualization/machines',
         isEnable: true
     }
 };
@@ -38,6 +39,17 @@ function updateVisualizationModel(machinetype)
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.addEventListener("load", updateVisualizationModelListener);
     xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machineTypes + '/' + machinetype.id, false );
+    xmlHttp.setRequestHeader('Content-Type', "application/json;charset=UTF-8");  
+    xmlHttp.send( body );
+    return JSON.parse(xmlHttp.responseText);
+}
+
+function updateMachinePosition(machine)
+{
+    var body=JSON.stringify(machine);
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.addEventListener("load", updateVisualizationModelListener);
+    xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines + '/' + machine.id, false );
     xmlHttp.setRequestHeader('Content-Type', "application/json;charset=UTF-8");  
     xmlHttp.send( body );
     return JSON.parse(xmlHttp.responseText);

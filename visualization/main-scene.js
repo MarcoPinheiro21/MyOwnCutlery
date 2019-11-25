@@ -144,9 +144,9 @@ function buildSpoon(x, y, z) {
     scene.add(groupSpoon);
 }
 
-function buildMachine(machine,count,productionLineNumber,model) {
+function buildMachine(machine,productionLineNumber,model) {
     var productionLinePlacement= -30;
-    productionLinePlacement = productionLinePlacement + (20*(count-1));
+    productionLinePlacement = productionLinePlacement + (10*(machine.productionLinePosition-1));
 
     let newSceneObject;
     switch (model) {
@@ -154,9 +154,9 @@ function buildMachine(machine,count,productionLineNumber,model) {
             let roboticArm = new RoboticArm(machine.description);
             roboticArms.push(roboticArm);
             if(productionLineNumber%2==0){
-                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement-5, y: 0, z: (15*(productionLineNumber/2))+10});
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement-8, y: 0, z: (15*(productionLineNumber/2))+10});
             }else{
-                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement-5, y: 0, z: (-15*productionLineNumber)+10});
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement-8, y: 0, z: (-15*productionLineNumber)+10});
             }
             break;
         case "Hydraulic Press":
@@ -178,8 +178,16 @@ function buildMachines() {
         plCount++;
         var count = 1;
         pl.machinesListDtos.forEach(function (machine) {
+
+            if(machine.productionLinePosition ==0){
+                machine.productionLinePosition=count;
+                if(configurationsApi.factoryApi.isEnable){
+                    updateMachinePosition(machine);
+                }
+            }
+
             var model = getModelOfMachineType(machine.machineTypeId);
-            buildMachine(machine,count,plCount,model);
+            buildMachine(machine,plCount,model);
             count++;
         });
     });
@@ -234,12 +242,15 @@ function buildWidgets() {
     let selectedMachine = {
         type: null
     };
+    let selectedPosition = {
+        Position: ""
+    };
 
-    let controllerMachines = gui.addFolder(`Change Model of Machine Type`)
+    let controllerMachineTypes = gui.addFolder(`Change Model of Machine Type`)
     for (i = 0; i < this.machineTypes.length; i++) {
         let idx = i;
         
-        controllerMachines.addFolder(this.machineTypes[i].desc)
+        controllerMachineTypes.addFolder(this.machineTypes[i].desc)
             .add(selectedMachine, 'type', MODELS)
             .onChange((selectedValue) => 
                 updateModel(idx,selectedValue)
@@ -247,6 +258,39 @@ function buildWidgets() {
         
         
     }
+    let controllerMachines = gui.addFolder(`Change Machine Position`)
+    for (k = 0; k < this.productionLines.length; k++) {
+        let idk = k;
+        for (j = 0; j < this.productionLines[k].machinesListDtos.length; j++) {
+            let idj = j;
+            var button = { 
+                add:function(){
+                    swapMachine(productionLines[idk].machinesListDtos[idj],parseInt(selectedPosition.Position))
+                    productionLines[idk].machinesListDtos[idj].productionLinePosition=parseInt(selectedPosition.Position)
+                    if(configurationsApi.factoryApi.isEnable){
+                        updateMachinePosition(productionLines[idk].machinesListDtos[idj])
+                    }else{
+                        updateVisualizationModelListener()
+                    }
+                }
+            };
+            var line=controllerMachines.addFolder(this.productionLines[k].machinesListDtos[j].description);
+                line.add(selectedPosition, 'Position');
+                line.add(button,'add').name('Save Change');
+        }   
+    }
+}
+
+function swapMachine(machine,position) {
+    this.productionLines.forEach(function (pl) {
+        if(pl.productionLineId == machine.productionLineId){
+            pl.machinesListDtos.forEach(function (m) {
+                if(m.productionLinePosition==position){
+                    m.productionLinePosition=machine.productionLinePosition;
+                }
+            });
+        }
+    });
 }
 
 function updateModel(idx,selectedValue) {
