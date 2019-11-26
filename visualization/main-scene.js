@@ -239,12 +239,17 @@ function animate() {
     });
 }
 function buildWidgets() {
+    var plNames = [];
+    productionLines.forEach(e => {
+        plNames.push(e.productionLineName);
+    });
     let selectedMachine = {
         type: null
     };
     let selectedPosition = {
         Position: ""
     };
+    
 
     let controllerMachineTypes = gui.addFolder(`Change Model of Machine Type`)
     for (i = 0; i < this.machineTypes.length; i++) {
@@ -258,35 +263,46 @@ function buildWidgets() {
         
         
     }
-    let controllerMachines = gui.addFolder(`Change Machine Position`)
+    let controllerMachines = gui.addFolder(`Change Machine Position`);
+    let changePL = gui.addFolder(`Switch Machine to a different Production Line`);
     for (k = 0; k < this.productionLines.length; k++) {
-        let idk = k;
         for (j = 0; j < this.productionLines[k].machinesListDtos.length; j++) {
-            let idj = j;
+            let macdesc= this.productionLines[k].machinesListDtos[j].description;
             var button = { 
                 add:function(){
-                    swapMachine(productionLines[idk].machinesListDtos[idj],parseInt(selectedPosition.Position))
-                    productionLines[idk].machinesListDtos[idj].productionLinePosition=parseInt(selectedPosition.Position)
+                    var mtc=getMachineByDesc(macdesc);
+                    swapMachine(mtc,parseInt(selectedPosition.Position))
+                    mtc.productionLinePosition=parseInt(selectedPosition.Position)
                     if(configurationsApi.factoryApi.isEnable){
-                        updateMachinePosition(productionLines[idk].machinesListDtos[idj])
+                        updateMachinePosition(mtc)
                     }else{
                         updateVisualizationModelListener()
                     }
                 }
             };
-            var line=controllerMachines.addFolder(this.productionLines[k].machinesListDtos[j].description);
+            var line=controllerMachines.addFolder(macdesc);
                 line.add(selectedPosition, 'Position');
                 line.add(button,'add').name('Save Change');
+
+            changePL.addFolder(macdesc)
+                .add(selectedMachine, 'type', plNames).name('Production Line:')
+                .onChange((selectedValue) => 
+                    updateProductionLines(macdesc,selectedValue)
+                    );
         }   
     }
 }
 
 function swapMachine(machine,position) {
+    var oldpos=machine.productionLinePosition;
     this.productionLines.forEach(function (pl) {
         if(pl.productionLineId == machine.productionLineId){
             pl.machinesListDtos.forEach(function (m) {
                 if(m.productionLinePosition==position){
-                    m.productionLinePosition=machine.productionLinePosition;
+                    m.productionLinePosition=oldpos;
+                }
+                if(m==machine){
+                    m.productionLinePosition=position;
                 }
             });
         }
@@ -303,9 +319,66 @@ function updateModel(idx,selectedValue) {
 }
 
 function updateVisualizationModelListener(){
+    
     scene=new THREE.Scene();
-    gui = new dat.GUI();
     buildScene();
+}
+
+function updateProductionLines(macdesc, pl){
+    var machine = getMachineByDesc(macdesc);
+    var oldPlIndex;
+    var newPlIndex;
+    var newPlId;
+    for(i=0; i<productionLines.length;i++){
+        if(productionLines[i].productionLineId==machine.productionLineId){
+            oldPlIndex=i;
+        }
+        if(productionLines[i].productionLineName==pl){
+            newPlIndex=i;
+            newPlId=productionLines[i].productionLineId;
+        }
+    }
+    
+    
+    newPlList=productionLines[oldPlIndex].machinesListDtos.filter(mac => mac !== machine);
+    productionLines[oldPlIndex].machinesListDtos=newPlList;
+    machine.productionLineId=newPlId;
+    machine.productionLinePosition=findFirstFree(newPlIndex);
+    productionLines[newPlIndex].machinesListDtos.push(machine);
+
+    if(configurationsApi.factoryApi.isEnable){
+        updateMovedMachine(machine);
+    }else{
+        updateVisualizationModelListener(); 
+    }
+}
+
+function findFirstFree(index){
+    
+    for(c=1; c<200; c++){
+        let b=true
+        productionLines[index].machinesListDtos.forEach(function (machine) {
+            if(machine.productionLinePosition==c){
+                b=false;
+            }
+        });
+        if(b){
+            return c;
+        }
+    }
+}
+
+
+function getMachineByDesc(macdesc){
+    var machine;
+    productionLines.forEach(e => {
+        e.machinesListDtos.forEach(m => {
+            if(m.description==macdesc){
+                machine=m;
+            }
+        });
+    });
+    return machine;
 }
 
 

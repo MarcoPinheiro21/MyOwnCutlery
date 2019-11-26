@@ -55,6 +55,18 @@ function updateMachinePosition(machine)
     return JSON.parse(xmlHttp.responseText);
 }
 
+function updateMovedMachine(machine)
+{
+    var body=JSON.stringify(machine);
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.addEventListener("load", updateVisualizationModelListener());
+    xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines + '/' + machine.id, false );
+    xmlHttp.setRequestHeader('Content-Type', "application/json;charset=UTF-8");  
+    xmlHttp.send( body );
+    return JSON.parse(xmlHttp.responseText);
+}
+
+
 const productionLinesMockResponse = `[
     {
         "productionLineId": 1,

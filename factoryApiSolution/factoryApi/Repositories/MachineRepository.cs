@@ -178,7 +178,7 @@ namespace factoryApi.Repositories
 
                 machineToUpdate.Type = machineType;
             }
-
+            machineToUpdate.ProductionLine= _context.ProductionLines.Where(pos => pos.Id == Dto.ProductionLineId).ToList()[0];
             var machineWithSamePosition =
                 GetMachineByPosition(Dto.ProductionLinePosition, machineToUpdate.ProductionLine).ToList();
 
