@@ -19,11 +19,8 @@ export class OrdersController {
     @Post()
     @UseFilters(new AllExceptionsFilter())
     async createOrder(@Body() order: OrderDto) {
-        try {
-            await validateOrReject(order);
-            return this.ordersService.createOrder(order);
-        } catch (errors) {
-            throw new BadRequestException(errors);
-        }
+        await validateOrReject(order);
+        return this.ordersService.createOrder(order);
+
     }
 }

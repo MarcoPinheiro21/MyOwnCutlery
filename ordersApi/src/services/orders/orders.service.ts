@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, HttpException } from '@nestjs/common';
 import { OrderDto } from '../../dto/order.dto';
 import { Order } from 'src/models/order.entity';
 import { CustomersService } from '../customers/customers.service';
@@ -21,14 +21,13 @@ export class OrdersService {
     }
 
     public async createOrder(orderDto: OrderDto): Promise<OrderDto> {
-        console.log(orderDto);
-        let customer = await this.customerService.findById(orderDto.customerId);
-        console.log(customer);
-        console.log(orderDto._id);
-        if (customer == null) {
-            let errors='User with id does not exist.';
-            throw new BadRequestException(errors);
+        let customer;
+        try{
+            customer = await this.customerService.findById(orderDto.customerId);
+        } catch(errors){
+            throw new HttpException('User with id does not exist.',400);
         }
+        
         let order: Order = await this.dtoToModel(orderDto);
         let orderResult = await getRepository(Order).save(order);
         return orderResult.toDto();
