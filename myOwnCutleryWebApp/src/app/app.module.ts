@@ -34,11 +34,15 @@ import { ProductionLinesComponent } from './master-data-web/production-lines/pro
 import { OrderManagementComponent } from './order-management/order-management.component';
 import { ClientsComponent } from './order-management/clients/clients.component';
 import { OrdersComponent } from './order-management/orders/orders.component';
+import { LoginComponent } from './login/login.component';
 import { VisualizationWebComponent, SafePipe } from './visualization-web/visualization-web.component';
 import { ClientService } from './order-management/clients/client.service';
 import { ClientEditionDialogComponent } from './order-management/clients/client-edition-dialog/client-edition-dialog.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { ClientCreationDialogComponent } from './order-management/clients/client-creation-dialog/client-creation-dialog.component';
+import { HomeComponent } from './home/home.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { PrivacyPolicyDialogComponent } from './sign-up/privacy-policy-dialog/privacy-policy-dialog.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -78,10 +82,14 @@ export const AngularMaterialComponents = [
     OrderManagementComponent,
     ClientsComponent,
     OrdersComponent,
+    LoginComponent,
     VisualizationWebComponent,
     SafePipe,
     ClientEditionDialogComponent,
-    ClientCreationDialogComponent
+    ClientCreationDialogComponent,
+    HomeComponent,
+    SignUpComponent,
+    PrivacyPolicyDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -108,7 +116,8 @@ export const AngularMaterialComponents = [
     ProductionLineDialogComponent,
     MachinesByTypeDialogComponent,
     ClientEditionDialogComponent,
-    ClientCreationDialogComponent
+    ClientCreationDialogComponent,
+    PrivacyPolicyDialogComponent
   ]
 })
 export class AppModule { }

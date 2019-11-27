@@ -1,7 +1,7 @@
 export class Address {
   constructor(
     public street: string,
-    public postalCode: number,
+    public postalCode: string,
     public town: string
   ) {}
 }

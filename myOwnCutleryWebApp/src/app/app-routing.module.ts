@@ -10,39 +10,51 @@ import { OrderManagementComponent } from './order-management/order-management.co
 import { ClientsComponent } from './order-management/clients/clients.component';
 import { OrdersComponent } from './order-management/orders/orders.component';
 import { VisualizationWebComponent } from './visualization-web/visualization-web.component';
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
   {
-    path: 'master-data-web',
-    component: MasterDataWebComponent,
+    path: 'home',
+    component: HomeComponent,
     children: [
-      { path: 'machines', component: MachinesComponent },
-      { path: 'machineTypes', component: MachineTypesComponent },
-      { path: 'operations', component: OperationsComponent },
-      { path: 'products', component: ProductsComponent },
-      { path: 'productionlines', component: ProductionLinesComponent }
+      {
+        path: 'master-data-web',
+        component: MasterDataWebComponent,
+        children: [
+          { path: 'machines', component: MachinesComponent },
+          { path: 'machineTypes', component: MachineTypesComponent },
+          { path: 'operations', component: OperationsComponent },
+          { path: 'products', component: ProductsComponent },
+          { path: 'productionlines', component: ProductionLinesComponent }
+        ]
+      },
+      {
+        path: 'order-management',
+        component: OrderManagementComponent,
+        children: [
+          { path: 'clients', component: ClientsComponent },
+          { path: 'orders', component: OrdersComponent }
+        ]
+      },
+      {
+        path: 'visualization-web',
+        component: VisualizationWebComponent
+      }
     ]
   },
   {
-    path: 'order-management',
-    component: OrderManagementComponent,
-    children: [
-      { path: 'clients', component: ClientsComponent },
-      { path: 'orders', component: OrdersComponent }
-    ]
-  },
-  {
-    path: 'visualization-web',
-    component: VisualizationWebComponent
+    path: 'login',
+    component: LoginComponent
   }
 ];
 
 export const appRoutingProviders: any[] = [
 ];
 
-export const routing = RouterModule.forRoot(routes, { useHash: true });
+export const routing = RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload', useHash: true });

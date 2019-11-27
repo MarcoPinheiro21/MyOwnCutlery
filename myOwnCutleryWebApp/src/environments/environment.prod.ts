@@ -13,3 +13,11 @@ export const productionApi = {
 export const visual = {
   url: 'http://localhost:6001/factory'
 };
+
+export const authApi = {
+  url: 'https://localhost:3000'
+};
+
+export const ordersApi = {
+  url: 'http://localhost:4000'
+};

@@ -1,0 +1,25 @@
+<div *ngIf="!isLogin; else loginTemplate">
+  <div class="login-page">
+    <div class="form">
+      <form class="login-form">
+        <input matInput placeholder="Name" [(ngModel)]="client.name" name="name" required>
+        <input matInput placeholder="VAT Number" pattern="[0-9]{9}" maxlength="9" [(ngModel)]="client.vatNumber" name="vat" required>
+        <input matInput placeholder="Street" [(ngModel)]="client.address.street" name="street" required>
+        <input matInput placeholder="Postal Code" [(ngModel)]="client.address.postalCode" name="postalCode" required>
+        <input matInput placeholder="Town" [(ngModel)]="client.address.town" name="town" required>
+        <input matInput placeholder="Phone Number" maxlength="9" [(ngModel)]="client.phoneNumber" name="phoneNumber" required>
+        <input matInput type="email" placeholder="email" [(ngModel)]="user.email" [(ngModel)]="client.email" name="email" />
+        <input matInput type="text" placeholder="username" [(ngModel)]="user.name" name="username" />
+        <input matInput type="password" placeholder="password" [(ngModel)]="user.password" name="password" />
+        <button (click)="privacyPolicyCheck()">Sign up</button>
+        <p class="message">Already registered? <span (click)="changeTemplate()">Login</span></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="success">registado</div>
+
+<ng-template #loginTemplate>
+  <app-login></app-login>
+</ng-template>

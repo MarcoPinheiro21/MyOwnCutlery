@@ -1,0 +1,16 @@
+<div *ngIf="isLogin; else signUpTemplate">
+  <div class="login-page">
+    <div class="form">
+      <form class="login-form">
+        <input type="text" placeholder="username" [(ngModel)]="user.name" name="username"/>
+        <input type="password" placeholder="password" [(ngModel)]="user.password" name="password"/>
+        <button (click)="tryLogin()">Login</button>
+        <p class="message">Not registered? <span (click)="changeTemplate()">Sign up</span></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #signUpTemplate>
+<app-sign-up></app-sign-up>
+</ng-template>

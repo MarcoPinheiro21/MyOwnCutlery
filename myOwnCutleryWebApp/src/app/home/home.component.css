@@ -1,0 +1,21 @@
+nav ul li {
+  display: inline-block;
+  width: 20%;
+}
+
+nav ul li a {
+  text-decoration: none;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  height: 25%;
+  line-height: 20px;
+}
+
+
+.loggedUser{
+  font-family: 'Bowlby One SC';
+  font-size: 13px;
+  width: 100%;
+  padding: 10px;
+}

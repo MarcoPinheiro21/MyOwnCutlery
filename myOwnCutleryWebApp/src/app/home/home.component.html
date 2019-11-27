@@ -1,0 +1,35 @@
+<div style="text-align:center; margin:2%;">
+  <span>
+    <h1 class="mainTitle">My Own Cutlery App</h1>
+  </span>
+</div>
+
+<div class="row">
+  <div class="col-sm-1"></div>
+  <div class="col-sm-1">
+      <span><a routerLink='/home' routerLinkActive="active" style="font-size: 40px;" class="fas fa-home"></a></span>
+
+  </div>
+  <div class="col-sm-3">
+      <a class="labelIcons" routerLink='master-data-web' routerLinkActive="active">Master Data Configuration</a>
+
+  </div>
+  <div class="col-sm-2">
+      <a class="labelIcons" routerLink='order-management' routerLinkActive="active">Order Management</a>
+
+  </div>
+  <div class="col-sm-2">
+      <a class="labelIcons" routerLink='visualization-web' routerLinkActive="active">Visualization</a>
+  </div>
+  <div class="col-sm-2">
+      <span class="loggedUser">Olá, {{username}}</span>
+      <a class="loggedUser" routerLink="/login">Logout</a>
+  </div>
+  <div class="col-sm-1"></div>
+
+</div>
+
+
+
+
+<router-outlet></router-outlet>
