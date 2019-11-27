@@ -13,19 +13,17 @@ export class OrdersController {
 
     @Get()
     findAll() {
-        return this.ordersService.getAll();
+        return this.ordersService.findAll();
     }
 
     @Post()
     @UseFilters(new AllExceptionsFilter())
-    async save(@Body() order: OrderDto) {
-
+    async createOrder(@Body() order: OrderDto) {
         try {
             await validateOrReject(order);
-            return this.ordersService.saveOrder(order);
+            return this.ordersService.createOrder(order);
         } catch (errors) {
             throw new BadRequestException(errors);
         }
-
     }
 }

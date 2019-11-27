@@ -8,7 +8,7 @@ import { ProductDto } from "src/dto/product.dto";
 export class Order {
 
     @ObjectIdColumn()
-    private id: string;
+    private _id: string;
     @Column()
     private customerId: string;
     @Column(type => Product)
@@ -17,7 +17,7 @@ export class Order {
     private deliveryDate: number;
 
     constructor(id: string, customerId: string, products: Product[], deliveryDate: number) {
-        this.id = id;
+        this._id = id;
         this.customerId = customerId;
         this.products = products;
         this.deliveryDate = deliveryDate;
@@ -25,7 +25,7 @@ export class Order {
 
     public async toDto(): Promise<OrderDto> {
         return <OrderDto>{
-            id: this.id,
+            _id: this._id,
             customerId: this.customerId,
             products: await this.productsToDto(),
             deliveryDate: this.deliveryDate

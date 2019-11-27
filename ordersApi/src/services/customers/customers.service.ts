@@ -10,20 +10,30 @@ export class CustomersService {
 
     constructor() { }
 
-    public async findCustomer(customerId : string) : Promise<CustomerDto>{
+    public async findAll(): Promise<any> {
+        return await getRepository(Customer).find();
+    }
+
+    public async findById(customerId: string): Promise<CustomerDto> {
         let customerResult = await getRepository(Customer).findOne(customerId);
         return customerResult.toDto();
     }
 
-    public async createCustomer(customerDto : CustomerDto) : Promise<CustomerDto> {
-        let customer : Customer = await this.dtoToModel(customerDto);
+    public async createCustomer(customerDto: CustomerDto): Promise<CustomerDto> {
+        let customer: Customer = await this.dtoToModel(customerDto);
         let resultCustomer = await getRepository(Customer).save(customer);
+        return resultCustomer.toDto();
+    }
+
+    public async forgetCustomerData(customerId: string): Promise<CustomerDto> {
+        let customerResult = await getRepository(Customer).findOne(customerId);
+        let resultCustomer = await getRepository(Customer).save(customerResult.forgetData());
         return resultCustomer.toDto();
     }
 
     public async dtoToModel(customerDto: CustomerDto): Promise<Customer> {
         let customer = new Customer(
-            customerDto.id,
+            customerDto._id,
             customerDto.name,
             customerDto.vatNumber,
             this.toAddressModel(customerDto.address),
@@ -34,7 +44,7 @@ export class CustomersService {
         return customer;
     }
 
-    private toAddressModel(addressDto: AddressDto) : Address{
+    private toAddressModel(addressDto: AddressDto): Address {
         if (addressDto == null) return null;
         return new Address(
             addressDto.street,

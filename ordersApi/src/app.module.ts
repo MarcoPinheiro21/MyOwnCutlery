@@ -10,6 +10,7 @@ import { OrdersService } from './services/orders/orders.service';
 import { CustomersService } from './services/customers/customers.service';
 import { ProductsService } from './services/products/products.service';
 import { Repository } from 'typeorm';
+import { CustomersController } from './controllers/customers/customers.controller';
 
 
 @Module({
@@ -19,7 +20,7 @@ import { Repository } from 'typeorm';
     "entities": [Order, Product, Customer],
     "synchronize": true
   })],
-  controllers: [AppController, OrdersController],
+  controllers: [OrdersController, CustomersController],
   providers: [OrdersService, CustomersService, ProductsService, AppService, Repository],
 })
 export class AppModule { }
