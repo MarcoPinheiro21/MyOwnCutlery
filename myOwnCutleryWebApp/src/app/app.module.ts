@@ -38,11 +38,12 @@ import { LoginComponent } from './login/login.component';
 import { VisualizationWebComponent, SafePipe } from './visualization-web/visualization-web.component';
 import { ClientService } from './order-management/clients/client.service';
 import { ClientEditionDialogComponent } from './order-management/clients/client-edition-dialog/client-edition-dialog.component';
-import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { ClientCreationDialogComponent } from './order-management/clients/client-creation-dialog/client-creation-dialog.component';
 import { HomeComponent } from './home/home.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { PrivacyPolicyDialogComponent } from './sign-up/privacy-policy-dialog/privacy-policy-dialog.component';
+import { OrderEditionDialogComponent } from './order-management/orders/order-edition-dialog/order-edition-dialog.component';
+import { OrderCreateDialogComponent } from './order-management/orders/order-create-dialog/order-create-dialog.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -89,7 +90,9 @@ export const AngularMaterialComponents = [
     ClientCreationDialogComponent,
     HomeComponent,
     SignUpComponent,
-    PrivacyPolicyDialogComponent
+    PrivacyPolicyDialogComponent,
+    OrderEditionDialogComponent,
+    OrderCreateDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +100,7 @@ export const AngularMaterialComponents = [
     HttpClientModule,
     AngularMaterialComponents,
     routing,
-    NgxMaskModule
+   
   ],
   providers: [
     MachinesService,
@@ -117,7 +120,9 @@ export const AngularMaterialComponents = [
     MachinesByTypeDialogComponent,
     ClientEditionDialogComponent,
     ClientCreationDialogComponent,
-    PrivacyPolicyDialogComponent
+    PrivacyPolicyDialogComponent,
+    OrderEditionDialogComponent,
+    OrderCreateDialogComponent
   ]
 })
 export class AppModule { }

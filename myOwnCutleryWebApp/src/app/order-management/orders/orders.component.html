@@ -1,3 +1,38 @@
-<p>
-  orders works!
-</p>
+<mat-accordion displayMode="flat" multi class="mat-table">
+  <section matSort class="mat-elevation-z2 mat-header-row">
+    <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="_id">Order Id</span>
+    <span class="mat-header-cell" mat-sort-header="deliveryDate">Delivery Date</span>
+    <button type="button" style="margin-right: 25px;" class="btn btn-primary"
+      (click)="openCreationDialog()">New</button>
+  </section>
+
+  <mat-expansion-panel *ngFor="let order of orders">
+    <mat-expansion-panel-header class="mat-row">
+      <span class="mat-cell">{{order._id}}</span>
+      <span class="mat-cell">{{order.deliveryDate}}</span>
+      <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+        (click)="openEditionDialog(client)">Edit</button>
+    </mat-expansion-panel-header>
+
+    <div *ngIf="!!orders" class="subRow">
+      <table class="table table-sm table-active">
+        <thead class="thead-dark">
+          <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let orderline of orderlines">   
+              <td>{{orderline.productName}}</td>   
+              <td>{{orderline.quantity}}</td>            
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<ng-template #blank>
+  <span class="mat-cell"> - </span>
+</ng-template>
