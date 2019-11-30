@@ -3,8 +3,7 @@ import { ClientService } from "./client.service";
 import { Client } from "src/app/models/client.model";
 import { MatDialogConfig, MatDialog } from "@angular/material";
 import { ClientEditionDialogComponent } from "./client-edition-dialog/client-edition-dialog.component";
-import { ClientCreationDialogComponent } from "./client-creation-dialog/client-creation-dialog.component";
-import { Address } from "src/app/models/address.model";
+import { ClientRightForgottenDialogComponent } from "./client-right-forgotten-dialog/client-right-forgotten-dialog.component";
 
 @Component({
   selector: "app-clients",
@@ -25,10 +24,18 @@ export class ClientsComponent implements OnInit {
 
   ngOnInit() {
     this.getClients();
+    //this.getClientsById(this.clients);
   }
 
   private getClients(): void {
     this.clientsService.getClients().subscribe((data: any) => {
+      let userId = localStorage.getItem("user_id");
+      this.clients = data.filter(client => client.userId === userId);
+    });
+  }
+
+  private getClientsByUserId(client): void {
+    this.clientsService.getClientsByUserId(client).subscribe((data: any) => {
       this.clients = data;
     });
   }
@@ -38,6 +45,7 @@ export class ClientsComponent implements OnInit {
 
     dialogConfig.data = {
       client: selectedClient
+      
     };
     dialogConfig.width = "425px";
     dialogConfig.height = "550px";
@@ -52,41 +60,27 @@ export class ClientsComponent implements OnInit {
       });
   }
 
-  updateClient(client) {
-    this.clientsService.updateClient(client).subscribe(() => {
-      this.getClients();
-    });
-  }
-
-  openCreationDialog() {
+  openRightForgottenDialog(selectedClient?) {
     const dialogConfig = new MatDialogConfig();
-    const client = {
-      name: "",
-      vatNumber: "",
-      address: "",
-      phoneNumber: "",
-      email: "",
-      priority: ""
-    };
 
     dialogConfig.data = {
-      client
+      client: selectedClient
     };
-    dialogConfig.width = "425px";
-    dialogConfig.height = "550px";
+    dialogConfig.width = "555px";
+    dialogConfig.height = "255px";
 
     this.dialog
-      .open(ClientCreationDialogComponent, dialogConfig)
+      .open(ClientRightForgottenDialogComponent, dialogConfig)
       .afterClosed()
       .subscribe(result => {
         if (!!result) {
-          return this.createClient(result.data);
+          return this.updateClient(result.data);
         }
       });
   }
 
-  createClient(client) {
-    this.clientsService.createClient(client).subscribe(() => {
+  updateClient(client) {
+    this.clientsService.updateClient(client).subscribe(() => {
       this.getClients();
     });
   }
@@ -104,13 +98,4 @@ export interface AlertMessage {
   message: string;
   showAlertMsg: boolean;
   success: boolean;
-}
-
-export interface CreateClient {
-  name: string;
-  vatNumber: number;
-  address: Address;
-  phoneNumber: number;
-  email: string;
-  priority: number;
 }

@@ -44,6 +44,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { PrivacyPolicyDialogComponent } from './sign-up/privacy-policy-dialog/privacy-policy-dialog.component';
 import { OrderEditionDialogComponent } from './order-management/orders/order-edition-dialog/order-edition-dialog.component';
 import { OrderCreateDialogComponent } from './order-management/orders/order-create-dialog/order-create-dialog.component';
+import { ClientRightForgottenDialogComponent } from './order-management/clients/client-right-forgotten-dialog/client-right-forgotten-dialog.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -60,9 +61,6 @@ export const AngularMaterialComponents = [
   MatCheckboxModule,
   MatTableModule,
 ];
-
-
-
 
 @NgModule({
   declarations: [
@@ -87,12 +85,12 @@ export const AngularMaterialComponents = [
     VisualizationWebComponent,
     SafePipe,
     ClientEditionDialogComponent,
-    ClientCreationDialogComponent,
     HomeComponent,
     SignUpComponent,
     PrivacyPolicyDialogComponent,
     OrderEditionDialogComponent,
     OrderCreateDialogComponent
+    ClientRightForgottenDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -123,6 +121,7 @@ export const AngularMaterialComponents = [
     PrivacyPolicyDialogComponent,
     OrderEditionDialogComponent,
     OrderCreateDialogComponent
+    ClientRightForgottenDialogComponent
   ]
 })
 export class AppModule { }
