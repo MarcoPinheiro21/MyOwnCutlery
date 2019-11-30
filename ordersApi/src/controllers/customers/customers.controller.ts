@@ -1,13 +1,13 @@
-import { Controller, Get, Param, Post, Body, UseFilters, BadRequestException } from '@nestjs/common';
-import { CustomersService } from 'src/services/customers/customers.service';
+import { Controller, Get, Param, Post, Body, UseFilters, BadRequestException, Inject } from '@nestjs/common';
 import { CustomerDto } from 'src/dto/customer.dto';
 import { validateOrReject } from 'class-validator';
 import { AllExceptionsFilter } from 'src/exceptions/http-exception.filter';
+import { ICustomersService } from 'src/services/customers/iCustomers.service';
 
 @Controller('customers')
 export class CustomersController {
 
-    constructor(private readonly customersService: CustomersService) { }
+    constructor(@Inject('ICustomersService') private readonly customersService: ICustomersService) { }
 
     @Get(':id')
     async findById(@Param('id') id) {
@@ -22,20 +22,12 @@ export class CustomersController {
     @Post()
     @UseFilters(new AllExceptionsFilter())
     async createCustomer(@Body() customer: CustomerDto) {
-        try{
-            await validateOrReject(customer);
-            return this.customersService.createCustomer(customer);
-        } catch(errors) {
-            throw new BadRequestException(errors);
-        }
+        await validateOrReject(customer);
+        return this.customersService.createCustomer(customer);
     }
 
-    @Post(':id')
+    @Post('forget/:id')
     async forgetCustomer(@Param('id') id) {
-        try{
-            return this.customersService.forgetCustomerData(id);
-        } catch(errors) {
-            throw new BadRequestException(errors);
-        }
+        return this.customersService.forgetCustomerData(id);
     }
 }

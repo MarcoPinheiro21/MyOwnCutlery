@@ -21,6 +21,12 @@ import { CustomersController } from './controllers/customers/customers.controlle
     "synchronize": true
   })],
   controllers: [OrdersController, CustomersController],
-  providers: [OrdersService, CustomersService, ProductsService, AppService, Repository],
+  providers: [
+    OrdersService,
+    { provide: 'IOrdersService', useClass: OrdersService } ,
+    { provide: 'ICustomersService', useClass: CustomersService } ,
+    { provide: 'IProductsService', useClass: ProductsService } ,
+    AppService, 
+    Repository]
 })
 export class AppModule { }
