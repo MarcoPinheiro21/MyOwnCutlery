@@ -24,6 +24,7 @@ import { CustomersController } from './controllers/customers/customers.controlle
     OrdersService,
     { provide: 'IOrdersService', useClass: OrdersService } ,
     { provide: 'ICustomersService', useClass: CustomersService } ,
+    CustomersService,
     AppService, 
     Repository]
 })

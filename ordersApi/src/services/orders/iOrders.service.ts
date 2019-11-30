@@ -1,18 +1,17 @@
 import { OrderDto } from "src/dto/order.dto";
 import { Order } from "src/models/order.entity";
+import { ReadOrderDto } from "src/dto/order.read.dto";
 
 export interface IOrdersService {
 
-    findAll(query : string): Promise<OrderDto[]>;
+    findAll(query : string): Promise<ReadOrderDto[]>;
 
-    findById(orderId : string) : Promise<OrderDto>;
+    findById(orderId : string) : Promise<ReadOrderDto>;
 
-    createOrder(orderDto: OrderDto): Promise<OrderDto>;
+    createOrder(orderDto: OrderDto): Promise<ReadOrderDto>;
 
-    findOrdersOfCustomerId(custId: string): Promise<OrderDto[]>;
+    findOrdersOfCustomerId(custId: string): Promise<ReadOrderDto[]>;
 
-    cancelOrderById(orderId : string) : Promise<OrderDto>;
-
-    dtoToModel(orderDto: OrderDto): Promise<Order>;
+    cancelOrderById(orderId : string) : Promise<ReadOrderDto>;
 
 }

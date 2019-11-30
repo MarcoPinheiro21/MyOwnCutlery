@@ -2,6 +2,7 @@ import { Address } from "./address";
 import { Entity, Column, ObjectIdColumn, ObjectID } from "typeorm";
 import { CustomerDto } from "src/dto/customer.dto";
 import { OrdersApiDomainException } from "src/exceptions/domain.exception";
+import { CustomerDetails } from "./customer.details";
 
 @Entity()
 export class Customer {
@@ -95,7 +96,6 @@ export class Customer {
         }
     }
 
-
     public async toDto(): Promise<CustomerDto> {
         return <CustomerDto>{
             _id: this._id.toString(),
@@ -107,5 +107,14 @@ export class Customer {
             priority: this.priority,
             userId: this.userId
         };
+    }
+
+    public async getDetails(): Promise<CustomerDetails> {
+        return new CustomerDetails(
+            this._id.toString(),
+            this.name,
+            this.vatNumber,
+            this.address
+        )
     }
 }

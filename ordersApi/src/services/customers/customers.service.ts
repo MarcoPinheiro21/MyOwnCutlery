@@ -22,11 +22,17 @@ export class CustomersService implements ICustomersService {
         return await customerResult.toDto();
     }
 
-    private async findById_(customerId: string): Promise<Customer> {
-        let customerResult = await getRepository(Customer).findOne(customerId)
-        if (customerResult == undefined) {
-            throw new OrdersApiDomainException('User with id does not exist.');
+    async findById_(customerId: string): Promise<Customer> {
+        let customerResult;
+        try {
+            customerResult = await getRepository(Customer).findOne(customerId)
+            if (customerResult == null) {
+                throw new OrdersApiDomainException('User with id does not exist.');
+            }
+        } catch (error) {
+            throw new OrdersApiDomainException('User with id does not exist.')
         }
+
         return customerResult;
 
     }

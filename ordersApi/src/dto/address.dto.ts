@@ -1,13 +1,18 @@
-import { IsString } from "class-validator";
+import { IsString, IsNotEmpty } from "class-validator";
 
 export class AddressDto{
 
+    @IsNotEmpty()
     @IsString()
-    street: string;
+    public street: string;
+    @IsNotEmpty()
     @IsString()
-    postalCode: string;
+    public postalCode: string;
+    @IsNotEmpty()
     @IsString()
-    town: string;
+    public town: string;
+    @IsNotEmpty()
     @IsString()
-    country: string;
+    public country: string;
+    
 }

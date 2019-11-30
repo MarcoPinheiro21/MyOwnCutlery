@@ -1,6 +1,5 @@
 import { ProductDto } from "./product.dto";
 import { IsString, MinLength, IsEmpty, IsDateString } from "class-validator";
-import { IsNull } from "typeorm";
 
 export class OrderDto {
 
@@ -16,5 +15,5 @@ export class OrderDto {
     public deliveryDate: string;
 
     @IsEmpty()
-    public status : string;
+    public status: string;
 }

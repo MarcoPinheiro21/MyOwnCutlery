@@ -3,21 +3,24 @@ import { OrderDto } from '../../dto/order.dto';
 import { Order } from 'src/models/order.entity';
 import { Product } from 'src/models/product.entity';
 import { ProductDto } from '../../dto/product.dto';
-import { getRepository, getMongoManager, getMongoRepository, ObjectID } from 'typeorm';
-import { ICustomersService } from '../customers/iCustomers.service';
+import { getRepository, getMongoRepository, ObjectID } from 'typeorm';
 import { IOrdersService } from './iOrders.service';
 import { OrderStates } from 'src/enums/orderStates.enum';
+import { ReadOrderDto } from 'src/dto/order.read.dto';
+import { CustomerDetails } from 'src/models/customer.details';
+import { CustomersService } from '../customers/customers.service';
+import { OrdersApiDomainException } from 'src/exceptions/domain.exception';
 
 
 @Injectable()
 export class OrdersService implements IOrdersService {
 
-    constructor(@Inject('ICustomersService') private readonly customerService: ICustomersService) {
+    constructor(private readonly customerService: CustomersService) {
     }
 
-    public async findAll(includeCancelled: string): Promise<OrderDto[]> {
+    public async findAll(includeCancelled: string): Promise<ReadOrderDto[]> {
 
-        let ordersDto: OrderDto[] = [];
+        let ordersDto: ReadOrderDto[] = [];
         let orders = await this.findAll_();
         let ordersFiltered: Order[];
 
@@ -32,13 +35,13 @@ export class OrdersService implements IOrdersService {
         return ordersDto;
     }
 
-    private async findAll_(): Promise<Order[]> {
+    async findAll_(): Promise<Order[]> {
         return await getRepository(Order).find();
     }
 
-    public async findById(orderId: string): Promise<OrderDto> {
+    public async findById(orderId: string): Promise<ReadOrderDto> {
         let order = await this.findById_(orderId);
-        return order.toDto();
+        return await order.toDto();
     }
 
     private async findById_(orderId: string): Promise<Order> {
@@ -46,11 +49,11 @@ export class OrdersService implements IOrdersService {
             let order = await getRepository(Order).findOne(orderId);
             return order;
         } catch (errors) {
-            throw new HttpException('Order with given id does not exist.', 400);
+            throw new OrdersApiDomainException('Order with given id does not exist.');
         }
     }
 
-    public async createOrder(orderDto: OrderDto): Promise<OrderDto> {
+    public async createOrder(orderDto: OrderDto): Promise<ReadOrderDto> {
         try {
             let customer = await this.customerService.findById(orderDto.customerId);
         } catch (errors) {
@@ -62,11 +65,11 @@ export class OrdersService implements IOrdersService {
         return orderResult.toDto();
     }
 
-    public async findOrdersOfCustomerId(custId: string): Promise<OrderDto[]> {
+    public async findOrdersOfCustomerId(custId: string): Promise<ReadOrderDto[]> {
 
         let repoResult = await this._findOrdersOfCustomerId(custId);
 
-        let result: OrderDto[] = [];
+        let result: ReadOrderDto[] = [];
         repoResult.forEach(async element => {
             result.push(await element.toDto())
         });
@@ -87,7 +90,7 @@ export class OrdersService implements IOrdersService {
         return repoResult;
     }
 
-    public async cancelOrderById(orderId: string): Promise<OrderDto> {
+    public async cancelOrderById(orderId: string): Promise<ReadOrderDto> {
         let order = await this.findById_(orderId);
         let resultOrder = await getRepository(Order).save(order.cancel());
         return resultOrder.toDto();
@@ -95,11 +98,16 @@ export class OrdersService implements IOrdersService {
 
     public async dtoToModel(orderDto: OrderDto): Promise<Order> {
         return new Order(
-            orderDto.customerId,
+            await this.fillCustomerDetails(orderDto),
             await this.productsToModel(orderDto.products),
             orderDto.deliveryDate,
             await this.getOrderEnumStatus(orderDto.status)
         )
+    }
+
+    private async fillCustomerDetails(orderDto: OrderDto) : Promise<CustomerDetails>{
+        let customer = await this.customerService.findById_(orderDto.customerId);
+        return await customer.getDetails();
     }
 
     private async getOrderEnumStatus(desc: string): Promise<OrderStates> {

@@ -1,19 +1,19 @@
 import { Entity, ObjectIdColumn, Column, ObjectID } from "typeorm";
-import { Customer } from "./customer.entity";
 import { Product } from "./product.entity";
-import { OrderDto } from "src/dto/order.dto";
 import { ProductDto } from "src/dto/product.dto";
 import { OrderStates } from "src/enums/orderStates.enum";
 import { OrdersApiDomainException } from "src/exceptions/domain.exception";
-import { HttpException } from "@nestjs/common";
+import { CustomerDetails } from "./customer.details";
+import { ReadOrderDto } from "src/dto/order.read.dto";
+import { CustomerDetailsDto } from "src/dto/customer.details.dto";
 
 @Entity()
 export class Order {
 
     @ObjectIdColumn()
     private _id: ObjectID;
-    @Column()
-    private customerId: string;
+    @Column(type=>CustomerDetails)
+    private customerDetails: CustomerDetails;
     @Column(type => Product)
     private products: Product[];
     @Column()
@@ -21,17 +21,17 @@ export class Order {
     @Column()
     private status: OrderStates;
 
-    constructor(customerId: string, products: Product[], deliveryDate?: string, status?: OrderStates) {
-        this.customerId = customerId;
+    constructor(customerDetails: CustomerDetails, products: Product[], deliveryDate?: string, status?: OrderStates) {
+        this.customerDetails = customerDetails;
         this.products = products;
         this.deliveryDate = deliveryDate;
         this.status = status != null ? status : OrderStates.INPROGRESS;
     }
 
-    public async toDto(): Promise<OrderDto> {
-        return <OrderDto>{
+    public async toDto(): Promise<ReadOrderDto> {
+        return <ReadOrderDto>{
             _id: this._id.toString(),
-            customerId: this.customerId,
+            customerDetails: await this.customerDetails.toDto(),
             products: await this.productsToDto(),
             deliveryDate: this.deliveryDate,
             status: this.status != null ? this.status.toString() : null
