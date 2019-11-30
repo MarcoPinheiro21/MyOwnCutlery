@@ -46,7 +46,8 @@ export class SignUpComponent implements OnInit {
       address: {
         postalCode: '',
         street: '',
-        town: ''
+        town: '',
+        country: ''
       },
       email: '',
       _id: '',
