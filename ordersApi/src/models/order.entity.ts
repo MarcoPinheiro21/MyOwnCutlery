@@ -38,15 +38,8 @@ export class Order {
         };
     }
 
-    public async setState(status: OrderStates): Promise<Order> {
-        if (this.status == OrderStates.COMPLETED) {
-            throw new OrdersApiDomainException('The order has already been completed.', 400);
-        }
-        if (this.status == OrderStates.CANCELLED) {
-            throw new OrdersApiDomainException('The order has already been cancelled.', 400);
-        }
-        this.status = status;
-        return this;
+    public cancel() {
+        this.status = OrderStates.CANCELLED;
     }
 
     public async getState(): Promise<OrderStates> {

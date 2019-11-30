@@ -13,8 +13,6 @@ export interface IOrdersService {
 
     cancelOrderById(orderId : string) : Promise<OrderDto>;
 
-    cancelOrderByCustomerId(customerId: string): Promise<OrderDto[]>;
-
     dtoToModel(orderDto: OrderDto): Promise<Order>;
 
 }

@@ -17,6 +17,12 @@ export class OrdersController {
         return this.ordersService.findAll();
     }
 
+    @Get(':id')
+    @UseFilters(new AllExceptionsFilter())
+    async findById(@Param('id') id){
+        return await this.ordersService.findById(id);
+    }
+
     @Post()
     @UseFilters(new AllExceptionsFilter())
     async createOrder(@Body() order: OrderDto) {
@@ -25,10 +31,10 @@ export class OrdersController {
 
     }
 
-    @Put('customer/:id/cancel')
+    @Put(':id/cancel')
     @UseFilters(new AllExceptionsFilter())
-    async cancelOrderByCustomerId(@Param('id') id) {
-        return this.ordersService.cancelOrderByCustomerId(id);
+    async cancelOrder(@Param('id') id) {
+        return await this.ordersService.cancelOrderById(id);
 
     }
 }

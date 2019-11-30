@@ -68,35 +68,11 @@ export class OrdersService implements IOrdersService {
     }
 
     public async cancelOrderById(orderId: string): Promise<OrderDto> {
-        let order = await this.findById_(orderId);
-        order.setState(OrderStates.CANCELLED);
-        return order.toDto();
-    }
-
-    public async cancelOrderByCustomerId(customerId: string): Promise<OrderDto[]> {
-        
-        let result: OrderDto[] = [];
-        let orders = await this._findOrdersOfCustomerId(customerId);
-
-        for (let i = 0; i<orders.length; i++){
-            if (await orders[i].getState() == OrderStates.INPROGRESS) {
-                await orders[i].setState(OrderStates.CANCELLED);
-                console.log(await getRepository(Order).save(orders[i]));  
-            }
-        }   
-
-        // orders.map(async e => {
-        //     if (await e.getState() == OrderStates.INPROGRESS) {
-        //         e.setState(OrderStates.CANCELLED);
-        //     }
-        // })
-
-        // let ordersResult = await getRepository(Order).save(orders);
-        orders.forEach(async element => {
-            result.push(await element.toDto())
+        let order = await getRepository(Order).findOne(orderId).then(async order=>{
+            order.cancel();
+            return getRepository(Order).save(order);
         });
-
-        return result;
+        return order.toDto();
     }
 
     private async _findOrdersOfCustomerId(custId: string): Promise<Order[]> {
