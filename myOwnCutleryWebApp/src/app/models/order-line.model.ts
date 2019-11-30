@@ -1,8 +1,7 @@
 export class OrderLine {
-   
+    productName: string = "";
     constructor(
-      public orderId: string,
-      public productName: string,
+      public id: string, //productId
       public quantity: number,
     ) {}
   }
