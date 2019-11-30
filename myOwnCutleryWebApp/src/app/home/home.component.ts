@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HomeService } from './home.service';
 
 @Component({
   selector: 'app-home',
@@ -8,11 +9,18 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   username: string;
+  role: string;
+  homeService: HomeService;
 
-  constructor() { }
+  constructor(homeService: HomeService) {
+    this.homeService = homeService;
+  }
 
   ngOnInit() {
     this.username = localStorage.getItem('user_name');
+    this.homeService.getRoleByToken(localStorage.getItem('token')).subscribe(item => {
+      this.role = item.role;
+    });
   }
 
 }

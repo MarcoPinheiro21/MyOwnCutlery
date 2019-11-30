@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginResultModel } from '../models/loginResult.model';
 import User from '../models/user.model';
-import { catchError } from 'rxjs/operators';
 import { authApi } from 'src/environments/environment';
 
 @Injectable({
