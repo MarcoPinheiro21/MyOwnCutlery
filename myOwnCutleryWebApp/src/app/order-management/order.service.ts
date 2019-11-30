@@ -15,7 +15,7 @@ import { OrderLine } from '../models/order-line.model';
 export class OrderService {
   private url = ordersApi.url + "/ordersapi/";
   private url2 = "http://www.mocky.io/v2/5de1a3683200007c448094bb";
-  private urlProduction = productionApi.url + "productionapi/products/";
+  private urlProduction = productionApi.url + "/productionapi/products/";
 
   constructor(private http: HttpClient) { }
 
@@ -28,7 +28,7 @@ export class OrderService {
     return new Observable((observer) => {
       this.getOrders().subscribe((data: Order[]) => {
         orders = data;
-        let orderLines: OrderLine[];
+        let orderLines: OrderLine[] =[];
         orders.map(order => {
           order.products.map(productOrder => {
             this.getProductById(productOrder['productId']).subscribe((product: any) => {

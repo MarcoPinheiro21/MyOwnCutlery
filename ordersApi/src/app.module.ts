@@ -8,7 +8,6 @@ import { Product } from './models/product.entity';
 import { Customer } from './models/customer.entity';
 import { OrdersService } from './services/orders/orders.service';
 import { CustomersService } from './services/customers/customers.service';
-import { ProductsService } from './services/products/products.service';
 import { Repository } from 'typeorm';
 import { CustomersController } from './controllers/customers/customers.controller';
 
@@ -25,7 +24,6 @@ import { CustomersController } from './controllers/customers/customers.controlle
     OrdersService,
     { provide: 'IOrdersService', useClass: OrdersService } ,
     { provide: 'ICustomersService', useClass: CustomersService } ,
-    { provide: 'IProductsService', useClass: ProductsService } ,
     AppService, 
     Repository]
 })

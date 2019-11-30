@@ -64,4 +64,9 @@ export class OrderService {
       this.urlProduction + productId
     )
   }
+  getProductById2(productId): Observable<Product[]> {
+    return this.http.get<Product[]>(
+      this.urlProduction + productId
+    )
+  }
 }
