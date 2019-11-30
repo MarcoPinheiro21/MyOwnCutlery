@@ -18,7 +18,7 @@ export class ClientService {
   public getClients(): Observable<Client[]> {
     return this.http.get<Client[]>(this.url + 'customers');
   }
-  
+
   public getClientsByUserId(Client): Observable<Client[]> {
     return this.http.get<Client[]>(this.url + 'customers'+ Client.userId)
   }

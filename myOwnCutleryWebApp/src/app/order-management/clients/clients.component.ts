@@ -45,7 +45,6 @@ export class ClientsComponent implements OnInit {
 
     dialogConfig.data = {
       client: selectedClient
-      
     };
     dialogConfig.width = "425px";
     dialogConfig.height = "550px";

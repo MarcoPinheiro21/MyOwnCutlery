@@ -15,7 +15,7 @@ import { OrderLine } from '../models/order-line.model';
 export class OrderService {
   private url = ordersApi.url + "/ordersapi/";
   private url2 = "http://www.mocky.io/v2/5de1a3683200007c448094bb";
-  private urlProduction = productionApi.url + "/products/";
+  private urlProduction = productionApi.url + "productionapi/products/";
 
   constructor(private http: HttpClient) { }
 
@@ -45,16 +45,16 @@ export class OrderService {
     });
   }
 
-
-
   private getOrdersById(Order): Observable<Order[]> {
     return this.http.get<Order[]>(this.url + "orders/" + Order._id);
   }
+
   updateOrder(order: Order): Observable<Order[]> {
     return this.http
       .put<Order[]>(this.url + "orders/" + order._id, Order)
       .pipe(catchError(null));
   }
+
   createOrder(client: CreateOrder): Observable<CreateOrder[]> {
     return this.http
       .post<CreateOrder[]>(this.url + "orders/", client)
@@ -65,9 +65,6 @@ export class OrderService {
     return this.http.get<Product[]>(
       this.urlProduction + productId
     )
-
-
-
   }
 
 }

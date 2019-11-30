@@ -38,13 +38,12 @@ import { LoginComponent } from './login/login.component';
 import { VisualizationWebComponent, SafePipe } from './visualization-web/visualization-web.component';
 import { ClientService } from './order-management/clients/client.service';
 import { ClientEditionDialogComponent } from './order-management/clients/client-edition-dialog/client-edition-dialog.component';
-import { ClientCreationDialogComponent } from './order-management/clients/client-creation-dialog/client-creation-dialog.component';
 import { HomeComponent } from './home/home.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { PrivacyPolicyDialogComponent } from './sign-up/privacy-policy-dialog/privacy-policy-dialog.component';
-import { OrderEditionDialogComponent } from './order-management/orders/order-edition-dialog/order-edition-dialog.component';
-import { OrderCreateDialogComponent } from './order-management/orders/order-create-dialog/order-create-dialog.component';
+import { OrderCreationDialogComponent } from './order-management/orders/order-creation-dialog/order-creation-dialog.component';
 import { ClientRightForgottenDialogComponent } from './order-management/clients/client-right-forgotten-dialog/client-right-forgotten-dialog.component';
+import { OrderEditionDialogComponent } from './order-management/orders/order-edition-dialog/order-edition-dialog.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -88,8 +87,8 @@ export const AngularMaterialComponents = [
     HomeComponent,
     SignUpComponent,
     PrivacyPolicyDialogComponent,
+    OrderCreationDialogComponent,
     OrderEditionDialogComponent,
-    OrderCreateDialogComponent
     ClientRightForgottenDialogComponent
   ],
   imports: [
@@ -97,8 +96,7 @@ export const AngularMaterialComponents = [
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialComponents,
-    routing,
-   
+    routing
   ],
   providers: [
     MachinesService,
@@ -117,11 +115,10 @@ export const AngularMaterialComponents = [
     ProductionLineDialogComponent,
     MachinesByTypeDialogComponent,
     ClientEditionDialogComponent,
-    ClientCreationDialogComponent,
     PrivacyPolicyDialogComponent,
+    ClientRightForgottenDialogComponent,
     OrderEditionDialogComponent,
-    OrderCreateDialogComponent
-    ClientRightForgottenDialogComponent
+    OrderCreationDialogComponent
   ]
 })
 export class AppModule { }
