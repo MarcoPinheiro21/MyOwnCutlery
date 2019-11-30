@@ -4,6 +4,7 @@ import { Client } from "src/app/models/client.model";
 import { MatDialogConfig, MatDialog } from "@angular/material";
 import { ClientEditionDialogComponent } from "./client-edition-dialog/client-edition-dialog.component";
 import { ClientRightForgottenDialogComponent } from "./client-right-forgotten-dialog/client-right-forgotten-dialog.component";
+import { OrderService } from "../orders/order.service";
 
 @Component({
   selector: "app-clients",
@@ -13,6 +14,8 @@ import { ClientRightForgottenDialogComponent } from "./client-right-forgotten-di
 export class ClientsComponent implements OnInit {
   clients: Client[] = [];
   clientsService: ClientService;
+  orderService: OrderService;
+  hasOrder = new Boolean(false);
   dialog: MatDialog;
   alertMessage: AlertMessage = <AlertMessage>{};
 
@@ -24,7 +27,7 @@ export class ClientsComponent implements OnInit {
 
   ngOnInit() {
     this.getClients();
-    //this.getClientsById(this.clients);
+    this.validatorOrder();
   }
 
   private getClients(): void {
@@ -40,6 +43,14 @@ export class ClientsComponent implements OnInit {
     });
   }
 
+  private validatorOrder(): void {
+    this.orderService.getOrders().subscribe((data: any) => {
+      if (data.size > 0) {
+        this.hasOrder = false;
+      }
+    });
+  }
+
   openEditionDialog(selectedClient?) {
     const dialogConfig = new MatDialogConfig();
 
@@ -47,7 +58,7 @@ export class ClientsComponent implements OnInit {
       client: selectedClient
     };
     dialogConfig.width = "425px";
-    dialogConfig.height = "550px";
+    dialogConfig.height = "625px";
 
     this.dialog
       .open(ClientEditionDialogComponent, dialogConfig)

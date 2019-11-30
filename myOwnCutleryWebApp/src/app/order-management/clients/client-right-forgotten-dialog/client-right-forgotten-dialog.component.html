@@ -1,16 +1,25 @@
-<p>
-  <tr>
-      <h1 mat-dialog-title class="labelIcons" style="text-align: center;">Confirmation</h1>
-
-    <h4>Are you sure you want to delete client data?</h4>
-    <h4>All orders will be canceled.</h4>
-  </tr>
-
-<div class="col-sm-6">
-  <mat-dialog-actions>
-    <button mat-button (click)="close()">No</button>
-    <button mat-button (click)="save()">Yes</button>
-  </mat-dialog-actions>
+<mat-dialog-content>
+  <h1 mat-dialog-title class="labelIcons" align="center">Confirmation</h1>
+  <div class="col-sm-12">
+    <h4>Your client data is going to be deleted.</h4>
+    <div *ngIf="hasOrder; else template">
+      <h4>Your name, VAT number and address will be kept for tax reasons.</h4>
+    </div>
+  </div>
+</mat-dialog-content>
+<div class="row">
+  <div class="col-sm-6">
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="cancel()">No</button>
+    </mat-dialog-actions>
+  </div>
+  <div class="col-sm-6">
+    <mat-dialog-actions>
+      <button mat-button (click)="save()">Yes</button>
+    </mat-dialog-actions>
+  </div>
 </div>
 
-</p>
+<ng-template #template>
+  <div style="height: 45px;"></div>
+</ng-template>
