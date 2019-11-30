@@ -13,17 +13,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
-    
+
     const fieldValidation =
-        exception instanceof BadRequestException
-        ? exception.getResponse():null;
+      exception instanceof BadRequestException
+        ? exception.getResponse() : null;
 
     response.status(status).json({
-    //   statusCode: status,
+      //   statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
-      errors: fieldValidation,
-      message:exception.message
+      errors: fieldValidation == null ? exception.message : fieldValidation,
     });
   }
 }

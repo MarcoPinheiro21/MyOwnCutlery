@@ -5,9 +5,11 @@ import { AddressDto } from 'src/dto/address.dto';
 import { Address } from 'src/models/address';
 import { getRepository } from 'typeorm';
 import { ICustomersService } from './iCustomers.service';
+import { OrdersApiDomainException } from 'src/exceptions/domain.exception';
+import { EditCustomerDto } from 'src/dto/customer.edit.dto';
 
 @Injectable()
-export class CustomersService implements ICustomersService{
+export class CustomersService implements ICustomersService {
 
     constructor() { }
 
@@ -21,17 +23,43 @@ export class CustomersService implements ICustomersService{
     }
 
     private async findById_(customerId: string): Promise<Customer> {
-        try {
-            let customerResult = await getRepository(Customer).findOne(customerId)
-            return customerResult;
-        } catch (errors) {
-            throw new HttpException('User with id does not exist.', 400);
+        let customerResult = await getRepository(Customer).findOne(customerId)
+        if (customerResult == undefined) {
+            throw new OrdersApiDomainException('User with id does not exist.');
         }
+        return customerResult;
 
     }
 
     public async createCustomer(customerDto: CustomerDto): Promise<CustomerDto> {
         let customer: Customer = await this.dtoToModel(customerDto);
+        let resultCustomer = await getRepository(Customer).save(customer);
+        return resultCustomer.toDto();
+    }
+
+    public async editCustomerData(id: string, customerDto: EditCustomerDto): Promise<CustomerDto> {
+        let customer: Customer = await this.findById_(id);
+        if (this.validateField(customerDto.name)) {
+            customer.setName(customerDto.name);
+        }
+        if (this.validateField(customerDto.vatNumber)) {
+            customer.setVatNumber(customerDto.vatNumber);
+        }
+        if (this.validateField(customerDto.phoneNumber)) {
+            customer.setPhoneNumber(customerDto.phoneNumber);
+        }
+        if (this.validateField(customerDto.email)) {
+            customer.setEmail(customerDto.email);
+        }
+        if (this.validateField(customerDto.priority)) {
+            customer.setPriority(customerDto.priority);
+        }
+
+        await customer.setAddress(customerDto.address.street,
+            customerDto.address.postalCode,
+            customerDto.address.town,
+            customerDto.address.country);
+
         let resultCustomer = await getRepository(Customer).save(customer);
         return resultCustomer.toDto();
     }
@@ -44,7 +72,6 @@ export class CustomersService implements ICustomersService{
 
     public async dtoToModel(customerDto: CustomerDto): Promise<Customer> {
         let customer = new Customer(
-            customerDto._id,
             customerDto.name,
             customerDto.vatNumber,
             this.toAddressModel(customerDto.address),
@@ -61,7 +88,12 @@ export class CustomersService implements ICustomersService{
         return new Address(
             addressDto.street,
             addressDto.postalCode,
-            addressDto.town
+            addressDto.town,
+            addressDto.country
         )
+    }
+
+    private validateField(field: any): boolean {
+        return field != null && field.toString().trim().length != 0
     }
 }

@@ -1,14 +1,7 @@
+import { HttpException } from "@nestjs/common";
 
-export declare class OrdersApiDomainException extends Error{
-
-    private readonly response;
-    private readonly status;
-    readonly message: any;
-
-    constructor(response: string | object, status: number);
-    getResponse(): string | object;
-    getStatus(): number;
-    toString(): string;
-    private getErrorString;
-    static createBody(message: object | string, error?: string, statusCode?: number): object;
+export class OrdersApiDomainException extends HttpException {
+    constructor(response: string | object) {
+        super(response, 400);
+    }
 }
