@@ -53,6 +53,17 @@
   </div>
 </mat-dialog-content>
 
+
+<mat-dialog-content>
+  <div class="row">
+    <div class="col-sm-8">
+      <mat-form-field style="width:80%;">
+        <input matInput placeholder="Country" value="{{client.address.country}}" [(ngModel)]="client.address.country" required>
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+
 <mat-dialog-content>
   <div class="row">
     <div class="col-sm-12">
