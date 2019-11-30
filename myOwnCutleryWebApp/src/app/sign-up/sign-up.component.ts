@@ -5,6 +5,7 @@ import User from '../models/user.model';
 import { Client } from '../models/client.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { PrivacyPolicyDialogComponent } from './privacy-policy-dialog/privacy-policy-dialog.component';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up',
@@ -19,7 +20,14 @@ export class SignUpComponent implements OnInit {
   client: Client;
   dialog: MatDialog;
   success = false;
+  missingRequiredFields = false;
   privacyPolicyAuthorization = false;
+  errorMessage = '';
+
+  inputFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(2),
+  ]);
 
   constructor(signUpService: SignUpService, private router: Router, private myDialog: MatDialog) {
     this.signUpService = signUpService;
@@ -32,7 +40,7 @@ export class SignUpComponent implements OnInit {
       name: '',
       email: '',
       password: '',
-      role: 'user'
+      role: 'client'
     };
     this.client = {
       address: {
@@ -54,12 +62,13 @@ export class SignUpComponent implements OnInit {
     this.isLogin = !this.isLogin;
   }
 
-  showSuccess() {
-    this.success = true;
-    setTimeout(() => this.success = false, 10000);
-  }
-
   privacyPolicyCheck() {
+    this.missingRequiredFields = false;
+    if (this.inputFormControl.hasError('required') ||
+        this.inputFormControl.hasError('minlength')) {
+          this.missingRequiredFields = true;
+        return;
+      }
     this.openCreationDialog();
   }
 
@@ -71,18 +80,17 @@ export class SignUpComponent implements OnInit {
         this.client.userId = item.user['_id'];
         delete this.client['_id'];
         this.signUpService.saveClient(this.client).subscribe(client => {
-          this.showSuccess();
           localStorage.setItem('token', item.token);
           localStorage.setItem('user_id', item.user['_id']);
           localStorage.setItem('user_name', item.user.name);
           this.router.navigateByUrl('/home');
         }, r => {
-          alert(r.error);
+          this.errorMessage = 'There was an error saving your data!';
         });
       }
     },
       r => {
-        alert(r.error);
+        this.errorMessage = r.error;
       });
   }
 

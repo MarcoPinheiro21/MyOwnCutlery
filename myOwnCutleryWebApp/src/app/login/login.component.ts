@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   user: User;
   loginService: LoginService;
   token: string;
+  errorMessage: string;
 
   constructor(loginService: LoginService, private router: Router) {
     this.loginService = loginService;
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
         }
       },
       r => {
-        alert(r.error);
+        this.errorMessage = r.error.message;
       });
   }
 
