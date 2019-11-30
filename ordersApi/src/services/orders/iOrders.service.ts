@@ -3,7 +3,7 @@ import { Order } from "src/models/order.entity";
 
 export interface IOrdersService {
 
-    findAll(): Promise<OrderDto[]>;
+    findAll(query : string): Promise<OrderDto[]>;
 
     findById(orderId : string) : Promise<OrderDto>;
 

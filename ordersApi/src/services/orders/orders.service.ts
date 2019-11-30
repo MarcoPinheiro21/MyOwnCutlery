@@ -3,7 +3,7 @@ import { OrderDto } from '../../dto/order.dto';
 import { Order } from 'src/models/order.entity';
 import { Product } from 'src/models/product.entity';
 import { ProductDto } from '../../dto/product.dto';
-import { getRepository, getMongoManager, getMongoRepository } from 'typeorm';
+import { getRepository, getMongoManager, getMongoRepository, ObjectID } from 'typeorm';
 import { ICustomersService } from '../customers/iCustomers.service';
 import { IOrdersService } from './iOrders.service';
 import { OrderStates } from 'src/enums/orderStates.enum';
@@ -15,12 +15,20 @@ export class OrdersService implements IOrdersService {
     constructor(@Inject('ICustomersService') private readonly customerService: ICustomersService) {
     }
 
-    public async findAll(): Promise<OrderDto[]> {
+    public async findAll(includeCancelled: string): Promise<OrderDto[]> {
+
         let ordersDto: OrderDto[] = [];
         let orders = await this.findAll_();
-        orders.forEach(async element => {
-            ordersDto.push(await element.toDto());
-        });
+        let ordersFiltered: Order[];
+
+        ordersFiltered = (includeCancelled == 'true') ?
+            orders :
+            orders.filter(e =>
+                (e.getState()) !== OrderStates.CANCELLED)
+
+        ordersFiltered.forEach(async element =>
+            ordersDto.push(await element.toDto())
+        );
         return ordersDto;
     }
 
@@ -43,9 +51,8 @@ export class OrdersService implements IOrdersService {
     }
 
     public async createOrder(orderDto: OrderDto): Promise<OrderDto> {
-        let customer: any;
         try {
-            customer = await this.customerService.findById(orderDto.customerId);
+            let customer = await this.customerService.findById(orderDto.customerId);
         } catch (errors) {
             throw new HttpException('User with id does not exist.', 400);
         }
@@ -67,14 +74,6 @@ export class OrdersService implements IOrdersService {
         return result;
     }
 
-    public async cancelOrderById(orderId: string): Promise<OrderDto> {
-        let order = await getRepository(Order).findOne(orderId).then(async order=>{
-            order.cancel();
-            return getRepository(Order).save(order);
-        });
-        return order.toDto();
-    }
-
     private async _findOrdersOfCustomerId(custId: string): Promise<Order[]> {
         let orderRepository = getMongoRepository(Order);
         let repoResult = await orderRepository.find({
@@ -88,9 +87,14 @@ export class OrdersService implements IOrdersService {
         return repoResult;
     }
 
+    public async cancelOrderById(orderId: string): Promise<OrderDto> {
+        let order = await this.findById_(orderId);
+        let resultOrder = await getRepository(Order).save(order.cancel());
+        return resultOrder.toDto();
+    }
+
     public async dtoToModel(orderDto: OrderDto): Promise<Order> {
         return new Order(
-            orderDto._id,
             orderDto.customerId,
             await this.productsToModel(orderDto.products),
             orderDto.deliveryDate,
@@ -111,7 +115,6 @@ export class OrdersService implements IOrdersService {
     protected async productDtoToModel(productDto: ProductDto): Promise<Product> {
         return new Product(
             productDto.id,
-            productDto.productId,
             productDto.quantity
         )
     }

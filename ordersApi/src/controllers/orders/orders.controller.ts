@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Injectable, Inject, UseFilters, HttpException, BadRequestException, Param, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Injectable, Inject, UseFilters, HttpException, BadRequestException, Param, Put, Query } from '@nestjs/common';
 import { OrdersService } from 'src/services/orders/orders.service';
 import { OrderDto } from '../../dto/order.dto';
 import { AllExceptionsFilter } from 'src/exceptions/http-exception.filter';
@@ -13,8 +13,8 @@ export class OrdersController {
     }
 
     @Get()
-    findAll() {
-        return this.ordersService.findAll();
+    findAll(@Query('includeCancelled') query : string) {
+        return this.ordersService.findAll(query);
     }
 
     @Get(':id')
