@@ -8,19 +8,31 @@ var VerifyToken = require("../auth/VerifyToken");
 var router = express.Router();
 
 //role validation
-router.get("/", VerifyToken, function(req, res) {
-  hasRole(req.user, req.role, function(decision) {
-    if (!decision)
-      return res.status(403).send({
-        auth: false,
-        token: null,
-        message: "You have no authorization."
-      });
-    else
-      UserModel.find(function(err, users) {
-        if (err) res.send(err);
-        res.json(users);
-      });
+router.get("/", function(req, res) {
+  var token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(401).send({ auth: false, message: "No token provided." });
+  }
+  jwt.verify(token, "l@pr5com5", function(err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
+    }
+    UserModel.findOne({ name: decoded.user }, function(err, user) {
+      if (err) {
+        throw err;
+      }
+      if (!user) {
+        return res
+          .status(400)
+          .send({ auth: false, token: null, message: "Username not found with that token!" });
+      } else if (user) {
+        res.json({
+          role: user.role
+        });
+      }
+    });
   });
 });
 
@@ -79,16 +91,5 @@ router.post("/login", function(req, res) {
     }
   });
 });
-
-function hasRole(username, role, func) {
-  UserModel.findOne({ username: username }, function(err, user) {
-    if (err) throw err;
-    if (!user) {
-      res.json({ success: false, message: "Authentication failed." });
-    } else if (user) {
-      func(role === user.role);
-    }
-  });
-}
 
 module.exports = router;
