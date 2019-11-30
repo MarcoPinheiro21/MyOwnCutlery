@@ -24,7 +24,7 @@ router.get("/", VerifyToken, function(req, res) {
   });
 });
 
-//User creation
+//User registration
 router.post("/register", function(req, res) {
   var user = new UserModel();
   user.name = req.body.name;
@@ -34,18 +34,18 @@ router.post("/register", function(req, res) {
 
   user.save(function(err) {
     if (err) {
-      return res.status(500).send("There is a problem registering the user.");
+      return res.status(400).send(err.message);
     }
-
     const payload = { user: user.name };
     var theToken = jwt.sign(payload, "l@pr5com5", {
       expiresIn: 86400
     });
-    res.json({ 
+    res.json({
       user: user,
       success: true,
       token: theToken,
-      message: "User registered!" });
+      message: "User registered!"
+    });
   });
 });
 
@@ -56,12 +56,14 @@ router.post("/login", function(req, res) {
       throw err;
     }
     if (!user) {
-      res.json({ success: false, message: "Authentication failed." });
+      return res
+        .status(400)
+        .send({ auth: false, token: null, message: "Username not found!" });
     } else if (user) {
       if (!bcrypt.compareSync(req.body.password, user.password))
         return res
           .status(401)
-          .send({ auth: false, token: null, message: "Auth failed." });
+          .send({ auth: false, token: null, message: "Wrong password!" });
       else {
         const payload = { user: user.name };
         var theToken = jwt.sign(payload, "l@pr5com5", {
