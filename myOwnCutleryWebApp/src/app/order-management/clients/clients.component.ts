@@ -52,12 +52,12 @@ export class ClientsComponent implements OnInit {
     });
   }
 
-  openEditionDialog(selectedClient?) {
+  openEditionDialog() {
     this.validatorOrder();
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
-      client: selectedClient
+      client: this.clients[0]
     };
     dialogConfig.width = "425px";
     dialogConfig.height = "625px";
@@ -76,7 +76,7 @@ export class ClientsComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
-      client: selectedClient
+      client: this.clients[0]
     };
     dialogConfig.width = "555px";
     dialogConfig.height = "255px";
@@ -85,7 +85,7 @@ export class ClientsComponent implements OnInit {
       .open(ClientRightForgottenDialogComponent, dialogConfig)
       .afterClosed()
       .subscribe(result => {
-          return this.forgetClient(this.clients);
+          return this.forgetClient();
       });
   }
 
@@ -95,8 +95,8 @@ export class ClientsComponent implements OnInit {
     });
   }
 
-  forgetClient(client: Client []){
-    this.clientsService.forgetClient(client[0]._id).subscribe(() => {
+  forgetClient(){
+    this.clientsService.forgetClient(this.clients[0]._id).subscribe(() => {
       this.getClients();
     });
   }

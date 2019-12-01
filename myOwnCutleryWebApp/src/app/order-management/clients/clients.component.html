@@ -3,8 +3,6 @@
     <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="name">Name</span>
     <span class="mat-header-cell" mat-sort-header="vatNumber">VAT Number</span>
     <span class="mat-header-cell" mat-sort-header="priority">Priority Client</span>
-    <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-      (click)="openEditionDialog(client)">Edit</button>
     <button type="button" style="margin-right: 25px;" class="btn btn-primary"
       (click)="openRightForgottenDialog(client)">Right to be forgotten</button>
   </section>
@@ -14,8 +12,10 @@
      
     <mat-expansion-panel-header class="mat-row" *ngIf="!!clients || client.name ==='XXXXXXXX'"> 
       <span class="mat-cell">{{client.name}}</span>
-      <span class="mat-cell">{{client.vatNumber}}</span>
-      <span class="mat-cell">{{client.priority}}</span>
+      <span class="mat-cell" style="margin-right: 55px;">{{client.vatNumber}}</span>
+      <span class="mat-cell" style="margin-right: 55px;">{{client.priority}}</span>
+      <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+      (click)="openEditionDialog()">Edit</button>
     </mat-expansion-panel-header>
 
     <div *ngIf="!!clients || !client.name ==='XXXXXXXX'" class="subRow">

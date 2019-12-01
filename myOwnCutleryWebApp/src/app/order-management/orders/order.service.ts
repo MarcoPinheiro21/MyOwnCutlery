@@ -26,9 +26,15 @@ export class OrderService {
     return this.http.get<Order>(this.url + "orders/" + Order._id);
   }
 
-  updateOrder(order: Order): Observable<Order[]> {
+  updateOrder(order: Order): Observable<Order> {
+    var body= {
+      _id:order._id,
+      deliveryDate:order.deliveryDate,
+      deliveryAddress:order.customerDetails.deliveryAddress,
+      products:order.products
+    }
     return this.http
-      .put<Order[]>(this.url + "orders/" + order._id, Order)
+      .put<Order>(this.url + "orders/" + order._id, body)
       .pipe(catchError(null));
   }
 

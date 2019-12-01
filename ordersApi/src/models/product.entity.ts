@@ -19,7 +19,7 @@ export class Product {
     }
 
     public async equals(anotherProductId: string): Promise<boolean> {
-        return this.id == anotherProductId;
+        return this.id === anotherProductId;
     }
 
     async updateQuantity(quantity: number) {

@@ -9,7 +9,6 @@ import { ProductsService } from "src/app/master-data-web/product/product.service
 import { Client } from "src/app/models/client.model";
 import { OrderLine } from 'src/app/models/order-line.model';
 import { OrderCreationDialogComponent } from './order-creation-dialog/order-creation-dialog.component';
-import { stringify } from 'querystring';
 
 @Component({
   selector: "app-orders",
@@ -57,7 +56,6 @@ export class OrdersComponent implements OnInit {
 
   openCreationDialog() {
     this.ordersService.getProducts().subscribe((data: any) => {
-      this.products = data;
 
       const dialogConfig = new MatDialogConfig();
 
@@ -69,10 +67,10 @@ export class OrdersComponent implements OnInit {
       };
 
       dialogConfig.data = {
-        products: this.products,
+        products: data,
         client: this.thisClient[0]._id
       };
-      dialogConfig.width = '600px';
+      dialogConfig.width = '800px';
       dialogConfig.height = '400px';
 
       this.dialog.open(OrderCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
@@ -111,29 +109,31 @@ export class OrdersComponent implements OnInit {
     this.alertMessage.message = 'The order ' + arg + ' was successfuly saved.';
   }
 
-  openEditionDialog(selectedProduct?, selectedOrder?) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      order: selectedOrder,
-      product: selectedProduct
-    };
-    dialogConfig.width = "800px";
-    dialogConfig.height = "1000px";
-    this.dialog
-      .open(OrderEditionDialogComponent, dialogConfig)
-      .afterClosed()
-      .subscribe(result => {
-        if (!!result) {
-          return this.updateOrder(result.data);
-        }
-      });
-  }
-
-  updateOrder(order) {
-    this.ordersService.updateOrder(order).subscribe(() => {
-      this.getOrders();
+  openEditionDialog(selectedOrder?) {
+    this.ordersService.getProducts().subscribe((data: any) => {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {
+        order: selectedOrder,
+        products: data
+      };
+      dialogConfig.width = "800px";
+      dialogConfig.height = "400px";
+      this.dialog
+        .open(OrderEditionDialogComponent, dialogConfig)
+        .afterClosed()
+        .subscribe(result => {
+          if (!!result) {
+            this.ordersService.updateOrder(result.data).subscribe(() => {
+              this.getOrders();
+            });
+          }
+        });
     });
   }
+
+  openCancelationDialog(selectedOrder?) {
+  }
+
 }
 
 export interface CreateOrder {

@@ -62,21 +62,24 @@ export class Order {
     }
 
     async updateProduct(id: string, quantity: number): Promise<Order> {
-        this.products.forEach(element => {
-            if (element.equals(id)) {
+        for (var i = 0; i < this.products.length; i++) {
+            var element = this.products[i]
+            if (await element.equals(id)) {
                 element.updateQuantity(quantity);
             }
-        });
+
+        }
         return this;
     }
 
     async deleteProduct(id: string): Promise<Order> {
-        this.products.forEach(element => {
-            if (element.equals(id)) {
+        for (var i = 0; i < this.products.length; i++) {
+            var element = this.products[i]
+            if (await element.equals(id)) {
                 let i = this.products.indexOf(element);
                 this.products.splice(i);
             }
-        });
+        }
         return this;
     }
 

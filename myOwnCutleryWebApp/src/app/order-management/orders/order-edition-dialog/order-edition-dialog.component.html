@@ -1,3 +1,67 @@
-<p>
-  order-edition-dialog works!
-</p>
+<div class="header">
+  <div class="row">
+    <div class="col-sm-6">
+      <mat-form-field>
+        <input matInput placeholder="Street" value="{{order.customerDetails.deliveryAddress.street}}"
+          [(ngModel)]="order.customerDetails.deliveryAddress.street">
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6">
+      <mat-form-field>
+        <input matInput placeholder="Postal Code" value="{{order.customerDetails.deliveryAddress.postalCode}}"
+          [(ngModel)]="order.customerDetails.deliveryAddress.postalCode">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-sm-6">
+        <mat-form-field>
+          <input matInput placeholder="Town" value="{{order.customerDetails.deliveryAddress.town}}"
+            [(ngModel)]="order.customerDetails.deliveryAddress.town">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6">
+        <mat-form-field>
+          <input matInput placeholder="Country" value="{{order.customerDetails.deliveryAddress.country}}"
+            [(ngModel)]="order.customerDetails.deliveryAddress.country">
+        </mat-form-field>
+      </div>
+    </div>
+  <form class="form">
+    <form>
+      Delivery Date:
+      <input type="date" name="deliveryDate" [(ngModel)]="deliveryDate">
+    </form>
+  </form>
+</div>
+<br>
+<div class="header">Select Products to Order</div>
+<mat-table mat-table [dataSource]="elements">
+  <ng-container matColumnDef="checked">
+    <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-checkbox (click)="updateQuantity(element)" [(ngModel)]="element.checked"></mat-checkbox>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="productName">
+    <mat-header-cell *matHeaderCellDef> Product </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.productName}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="quantity">
+    <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <input matInput placeholder="Desired Quantity:" value="" [(ngModel)]="element.quantity">
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{hovered: row.hovered}"
+    (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></mat-row>
+
+</mat-table>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="save()" (click)="checkEmptyProductsList()">Save</button>
+  <mat-error *ngIf="isSelectedProductsEmpty">
+    Please choose at least one operation from the list.
+  </mat-error>
+</mat-dialog-actions>

@@ -79,7 +79,6 @@ export class OrdersService implements IOrdersService {
     }
 
     public async updateOrder(id: string, orderDto: EditOrderDto): Promise<ReadOrderDto> {
-
         let order = await this.findById_(id);
 
         if (await order.getState() != OrderStates.INPROGRESS) {
@@ -101,9 +100,7 @@ export class OrdersService implements IOrdersService {
         if (orderDto.products.length > 0) {
             this.validateProducts(orderDto.products)
             for (let element of orderDto.products) {
-
                 let hasProduct: boolean = await order.hasProduct(element.id);
-
                 if (element.toDelete=='true') {
                     order = await order.deleteProduct(element.id);
                 } else if (hasProduct) {

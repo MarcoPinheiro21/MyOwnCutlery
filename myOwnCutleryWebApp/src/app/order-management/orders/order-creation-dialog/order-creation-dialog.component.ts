@@ -25,8 +25,8 @@ export class OrderCreationDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<OrderCreationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data) {
     this.products = data.products;
-    this.client= data.client;
-    this.order={customerId:"",deliveryDate:null,products:[]};
+    this.client = data.client;
+    this.order = { customerId: "", deliveryDate: null, products: [] };
   }
 
   ngOnInit() {
@@ -56,24 +56,24 @@ export class OrderCreationDialogComponent implements OnInit {
     if (this.isSelectedProductsEmpty) {
       return;
     }
-    this.order.customerId=this.client;
+    this.order.customerId = this.client;
     this.elements.forEach(op => {
-      if(op.checked){
+      if (op.checked && op.quantity > 0) {
         let e = <OrderLine>{};
         e["id"] = op.productId.toString();
         e["quantity"] = op.quantity;
         this.order.products.push(e);
       }
     });
-    this.order.deliveryDate=this.deliveryDate.toString()+"T00:00:00";
+    this.order.deliveryDate = this.deliveryDate.toString() + "T00:00:00";
     this.dialogRef.close({ data: this.order });
     return;
   }
 
   checkEmptyProductsList() {
-    var count=0;
+    var count = 0;
     this.elements.forEach(op => {
-      if(op["checked"]){
+      if (op["checked"] && op["quantity"] > 0) {
         count++;
       }
     });
@@ -99,6 +99,15 @@ export class OrderCreationDialogComponent implements OnInit {
       this.addProductToOrder(element);
     } else {
       this.removeProductFromOrder(element);
+    }
+  }
+
+  updateQuantity(element: Element) {
+    if (element.quantity == 0 && !element.checked) {
+      element.quantity = 1;
+    }
+    else if (element.quantity != 0 && element.checked) {
+      element.quantity = 0;
     }
   }
 
