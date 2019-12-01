@@ -1,5 +1,5 @@
 import { Address } from "./address";
-import { Entity, Column, ObjectIdColumn, ObjectID } from "typeorm";
+import { Entity, Column, ObjectIdColumn, ObjectID, Index } from "typeorm";
 import { CustomerDto } from "src/dto/customer.dto";
 import { OrdersApiDomainException } from "src/exceptions/domain.exception";
 import { CustomerDetails } from "./customer.details";
@@ -12,16 +12,19 @@ export class Customer {
     @Column()
     private name: string;
     @Column()
+    @Index({unique: true})
     private vatNumber: string;
     @Column(type => Address)
     private address: Address;
     @Column()
     private phoneNumber: string;
     @Column()
+    @Index({unique: true})
     private email: string;
     @Column()
     private priority: number;
     @Column()
+    @Index({unique: true})
     private userId: string;
 
     constructor(name: string, vatNumber: string,

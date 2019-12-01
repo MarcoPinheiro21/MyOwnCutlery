@@ -14,6 +14,7 @@ import { EditOrderDto } from 'src/dto/order.edit.dto';
 import settings from "../../../config.json";
 import { ProductApiDto } from 'src/dto/product.api.dto';
 import { IOrdersRepository } from 'src/repository/iOrders.repository';
+import { EditProductDto } from 'src/dto/product.dto.edit';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
@@ -47,7 +48,6 @@ export class OrdersService implements IOrdersService {
 
     public async findById(orderId: string): Promise<ReadOrderDto> {
         let order = await this.findById_(orderId);
-        console.log(order);
         return await order.toDto();
     }
 
@@ -172,9 +172,9 @@ export class OrdersService implements IOrdersService {
         return orders;
     }
 
-    private validateProducts(productDto: ProductDto[]): void {
+    private validateProducts(productDto: EditProductDto[]): void {
         productDto.forEach(element => {
-            if (element.quantity == null || element.quantity < 1) {
+            if (element.toDelete != true && (element.quantity == null || element.quantity < 1)) {
                 throw new OrdersApiDomainException('At least one of products quantity is invalid')
             }
             if (element.id == null || element.id.length == 0) {

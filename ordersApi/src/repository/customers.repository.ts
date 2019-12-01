@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ICustomersRepository } from "./iCustomers.repository";
 import { Customer } from "src/models/customer.entity";
-import { getRepository } from "typeorm";
+import { getRepository, getMongoRepository } from "typeorm";
 
 @Injectable()
 export class CustomersRepository implements ICustomersRepository {
@@ -17,6 +17,14 @@ export class CustomersRepository implements ICustomersRepository {
 
     async findCustomerById(id: string): Promise<Customer> {
         return getRepository(Customer).findOne(id);
+    }
+
+    async findCustomerByVatNumber(vatNumber: string): Promise<Customer> {
+        let customerRepository = getMongoRepository(Customer);
+        let customer = await customerRepository.findOne({
+            where: { vatNumber: { $eq: vatNumber } }
+        });
+        return customer;
     }
 
 }

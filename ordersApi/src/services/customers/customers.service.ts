@@ -50,7 +50,24 @@ export class CustomersService implements ICustomersService {
 
     public async createCustomer(customerDto: CustomerDto): Promise<CustomerDto> {
         let customer: Customer = await this.dtoToModel(customerDto);
-        let resultCustomer = await this.customersRepository.saveCustomer(customer);
+        let resultCustomer = null;
+        try {
+            resultCustomer = await this.customersRepository.saveCustomer(customer);
+        } catch (error) {
+            if (error.code == 11000 && (<string>error.errmsg).includes(customerDto.vatNumber)) {
+                throw new OrdersApiDomainException('Customer\'s VAT number is invalid');
+            }
+            if (error.code == 11000 && (<string>error.errmsg).includes(customerDto.email)) {
+                throw new OrdersApiDomainException('Customer\'s e-mail address is already owned by another user.');
+            }
+            if (error.code == 11000 && (<string>error.errmsg).includes(customerDto.userId)) {
+                throw new OrdersApiDomainException('Customer\'s user id is invalid');
+            }
+            if (error.code == 11000) {
+                throw new OrdersApiDomainException('Customer\'s user id must be specified');
+            }
+        }
+        console.log(resultCustomer);
         return resultCustomer.toDto();
     }
 
