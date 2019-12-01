@@ -26,4 +26,10 @@ export class ClientService {
       .put<Client[]>(this.url + "customers/" + client._id, client)
       .pipe(catchError(null));
   }
+
+  forgetClient(clientId): Observable<Client[]> {
+    return this.http
+      .post<Client[]>(this.url + "customers/forget/" + clientId, Client)
+      .pipe(catchError(null));
+  }
 }

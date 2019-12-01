@@ -13,21 +13,22 @@ import { OrderService } from "../orders/order.service";
 })
 export class ClientsComponent implements OnInit {
   clients: Client[] = [];
+  client: Client;
   clientsService: ClientService;
   orderService: OrderService;
   hasOrder = new Boolean(false);
   dialog: MatDialog;
   alertMessage: AlertMessage = <AlertMessage>{};
 
-  constructor(_clientsService: ClientService, private myDialog: MatDialog) {
+  constructor(_clientsService: ClientService, private myDialog: MatDialog, _orderService: OrderService) {
     this.clientsService = _clientsService;
+    this.orderService = _orderService;
     this.dialog = myDialog;
     this.alertMessage.showAlertMsg = false;
   }
 
   ngOnInit() {
     this.getClients();
-    this.validatorOrder();
   }
 
   private getClients(): void {
@@ -52,6 +53,7 @@ export class ClientsComponent implements OnInit {
   }
 
   openEditionDialog(selectedClient?) {
+    this.validatorOrder();
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
@@ -83,14 +85,18 @@ export class ClientsComponent implements OnInit {
       .open(ClientRightForgottenDialogComponent, dialogConfig)
       .afterClosed()
       .subscribe(result => {
-        if (!!result) {
-          return this.updateClient(result.data);
-        }
+          return this.forgetClient(this.clients);
       });
   }
 
   updateClient(client) {
     this.clientsService.updateClient(client).subscribe(() => {
+      this.getClients();
+    });
+  }
+
+  forgetClient(client: Client []){
+    this.clientsService.forgetClient(client[0]._id).subscribe(() => {
       this.getClients();
     });
   }

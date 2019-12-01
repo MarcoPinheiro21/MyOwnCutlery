@@ -3,21 +3,22 @@
     <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="name">Name</span>
     <span class="mat-header-cell" mat-sort-header="vatNumber">VAT Number</span>
     <span class="mat-header-cell" mat-sort-header="priority">Priority Client</span>
+    <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+      (click)="openEditionDialog(client)">Edit</button>
     <button type="button" style="margin-right: 25px;" class="btn btn-primary"
       (click)="openRightForgottenDialog(client)">Right to be forgotten</button>
   </section>
 
 
   <mat-expansion-panel *ngFor="let client of clients" [expanded]="true">
-    <mat-expansion-panel-header class="mat-row">
+     
+    <mat-expansion-panel-header class="mat-row" *ngIf="!!clients || client.name ==='XXXXXXXX'"> 
       <span class="mat-cell">{{client.name}}</span>
       <span class="mat-cell">{{client.vatNumber}}</span>
       <span class="mat-cell">{{client.priority}}</span>
-      <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-        (click)="openEditionDialog(client)">Edit</button>
     </mat-expansion-panel-header>
 
-    <div *ngIf="!!clients" class="subRow">
+    <div *ngIf="!!clients || !client.name ==='XXXXXXXX'" class="subRow">
       <table class="table table-sm table-active">
         <thead class="thead-dark">
           <tr>
