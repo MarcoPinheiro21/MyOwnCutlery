@@ -1,4 +1,5 @@
 export class ProductDto {
-    id: string;
-    quantity: number;
+    public id: string;
+    public name:string;
+    public quantity: number;
 }

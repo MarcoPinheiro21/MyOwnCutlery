@@ -1,6 +1,4 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module, HttpModule } from '@nestjs/common';
 import { OrdersController } from './controllers/orders/orders.controller';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Order } from './models/order.entity';
@@ -13,7 +11,7 @@ import { CustomersController } from './controllers/customers/customers.controlle
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
+  imports: [HttpModule, TypeOrmModule.forRoot({
     "type": "mongodb",
     "url": "mongodb+srv://lapr5:yourStrong(!)Password@cluster0-r18xz.mongodb.net/test?retryWrites=true&w=majority",
     "entities": [Order, Product, Customer],
@@ -24,8 +22,7 @@ import { CustomersController } from './controllers/customers/customers.controlle
     OrdersService,
     { provide: 'IOrdersService', useClass: OrdersService } ,
     { provide: 'ICustomersService', useClass: CustomersService } ,
-    CustomersService,
-    AppService, 
+    CustomersService, 
     Repository]
 })
 export class AppModule { }

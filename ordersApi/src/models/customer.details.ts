@@ -20,6 +20,21 @@ export class CustomerDetails {
         this.deliveryAddress = deliveryAddress;
     }
 
+    async updateDeliveryAddress(street?: string, postalCode?: string, town?: string, country?: string) {
+        if (street != null) {
+            this.deliveryAddress.setStreet(street);
+        }
+        if (postalCode != null) {
+            this.deliveryAddress.setPostalCode(postalCode);
+        }
+        if (town != null) {
+            this.deliveryAddress.setTown(town);
+        }
+        if (country != null) {
+            this.deliveryAddress.setCountry(country);
+        }
+    }
+
     public async toDto(): Promise<CustomerDetailsDto> {
         return <CustomerDetailsDto>{
             id: this.id,

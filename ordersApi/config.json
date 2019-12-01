@@ -1,0 +1,4 @@
+{
+    "service": "productionApi",
+    "url": "http://localhost:8091/productionapi/products/"
+}

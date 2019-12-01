@@ -1,4 +1,4 @@
-import { Injectable, HttpException, Inject } from '@nestjs/common';
+import { Injectable, HttpException, Inject, HttpService } from '@nestjs/common';
 import { OrderDto } from '../../dto/order.dto';
 import { Order } from 'src/models/order.entity';
 import { Product } from 'src/models/product.entity';
@@ -10,13 +10,23 @@ import { ReadOrderDto } from 'src/dto/order.read.dto';
 import { CustomerDetails } from 'src/models/customer.details';
 import { CustomersService } from '../customers/customers.service';
 import { OrdersApiDomainException } from 'src/exceptions/domain.exception';
+import { EditOrderDto } from 'src/dto/order.edit.dto';
+import settings from "../../../config.json";
+import { ProductApiDto } from 'src/dto/product.api.dto';
+import { AxiosResponse, AxiosRequestConfig } from 'axios';
 
 
 @Injectable()
 export class OrdersService implements IOrdersService {
 
-    constructor(private readonly customerService: CustomersService) {
+    constructor(
+        private readonly customerService: CustomersService,
+        private readonly httpService: HttpService) {
+        process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = "0";
     }
+    /**
+     * Implemented interface methods 
+     */
 
     public async findAll(includeCancelled: string): Promise<ReadOrderDto[]> {
 
@@ -35,30 +45,15 @@ export class OrdersService implements IOrdersService {
         return ordersDto;
     }
 
-    async findAll_(): Promise<Order[]> {
-        return await getRepository(Order).find();
-    }
-
     public async findById(orderId: string): Promise<ReadOrderDto> {
         let order = await this.findById_(orderId);
+        console.log(order);
         return await order.toDto();
     }
 
-    private async findById_(orderId: string): Promise<Order> {
-        try {
-            let order = await getRepository(Order).findOne(orderId);
-            return order;
-        } catch (errors) {
-            throw new OrdersApiDomainException('Order with given id does not exist.');
-        }
-    }
-
     public async createOrder(orderDto: OrderDto): Promise<ReadOrderDto> {
-        try {
-            let customer = await this.customerService.findById(orderDto.customerId);
-        } catch (errors) {
-            throw new HttpException('User with id does not exist.', 400);
-        }
+
+        await this.customerService.findById(orderDto.customerId);
 
         let order: Order = await this.dtoToModel(orderDto);
         let orderResult = await getRepository(Order).save(order);
@@ -67,7 +62,7 @@ export class OrdersService implements IOrdersService {
 
     public async findOrdersOfCustomerId(custId: string): Promise<ReadOrderDto[]> {
 
-        let repoResult = await this._findOrdersOfCustomerId(custId);
+        let repoResult = await this.findOrdersOfCustomerId_(custId);
 
         let result: ReadOrderDto[] = [];
         repoResult.forEach(async element => {
@@ -77,7 +72,99 @@ export class OrdersService implements IOrdersService {
         return result;
     }
 
-    private async _findOrdersOfCustomerId(custId: string): Promise<Order[]> {
+    public async cancelOrderById(orderId: string): Promise<ReadOrderDto> {
+        let order = await this.findById_(orderId);
+        let resultOrder = await getRepository(Order).save(await order.cancel());
+        return resultOrder.toDto();
+    }
+
+    public async updateOrder(id: string, orderDto: EditOrderDto): Promise<ReadOrderDto> {
+
+        let order = await this.findById_(id);
+
+        if (await order.getState() != OrderStates.INPROGRESS) {
+            throw new OrdersApiDomainException('The order state does not allow edition');
+        }
+
+        if (orderDto.deliveryAddress != null) {
+            let address = orderDto.deliveryAddress;
+            await order.updateDeliveryAddress(address.street,
+                address.postalCode,
+                address.town,
+                address.country);
+        }
+
+        if (orderDto.deliveryDate != null && orderDto.deliveryDate.length > 0) {
+            await order.updateDeliveryDate(orderDto.deliveryDate);
+        }
+
+        if (orderDto.products.length > 0) {
+            this.validateProducts(orderDto.products)
+            for (let element of orderDto.products) {
+
+                let hasProduct: boolean = await order.hasProduct(element.id);
+
+                if (element.toDelete) {
+                    order = await order.deleteProduct(element.id);
+                } else if (hasProduct) {
+                    order = await order.updateProduct(element.id, element.quantity);
+                } else {
+                    order = await order.addProduct(element.id, element.quantity, element.name);
+                }
+            }
+        }
+
+        let orederResult = await getRepository(Order).save(order);
+        return orederResult.toDto();
+    }
+
+    protected async dtoToModel(orderDto: OrderDto): Promise<Order> {
+        return new Order(
+            await this.fillCustomerDetails(orderDto),
+            await this.productsToModel(orderDto.products),
+            orderDto.deliveryDate,
+            await this.getOrderEnumStatus(orderDto.status)
+        )
+    }
+
+    /**
+     * Private methods 
+     */
+    private async productsToModel(productsDto: ProductDto[]): Promise<Product[]> {
+        let products: Product[] = [];
+        for (let element of productsDto) {
+            let productApi = await this.checkProductAvailability(element.id);
+            element.name = productApi.productName;
+            products.push(await this.productDtoToModel(element));
+        }
+        return products;
+    }
+
+    private async productDtoToModel(productDto: ProductDto): Promise<Product> {
+        return new Product(
+            productDto.id,
+            productDto.quantity,
+            productDto.name
+        )
+    }
+
+    private async findAll_(): Promise<Order[]> {
+        return await getRepository(Order).find();
+    }
+
+    private async findById_(orderId: string): Promise<Order> {
+        try {
+            let order = await getRepository(Order).findOne(orderId);
+            if (order == null) {
+                throw new OrdersApiDomainException('Order with given id does not exist.');
+            }
+            return order;
+        } catch (errors) {
+            throw new OrdersApiDomainException('Order with given id does not exist.');
+        }
+    }
+
+    private async findOrdersOfCustomerId_(custId: string): Promise<Order[]> {
         let orderRepository = getMongoRepository(Order);
         let repoResult = await orderRepository.find({
             where: {
@@ -90,22 +177,18 @@ export class OrdersService implements IOrdersService {
         return repoResult;
     }
 
-    public async cancelOrderById(orderId: string): Promise<ReadOrderDto> {
-        let order = await this.findById_(orderId);
-        let resultOrder = await getRepository(Order).save(order.cancel());
-        return resultOrder.toDto();
+    private validateProducts(productDto: ProductDto[]): void {
+        productDto.forEach(element => {
+            if (element.quantity == null || element.quantity < 1) {
+                throw new OrdersApiDomainException('At least one of products quantity is invalid')
+            }
+            if (element.id == null || element.id.length == 0) {
+                throw new OrdersApiDomainException('At least one of products id is invalid')
+            }
+        });
     }
 
-    public async dtoToModel(orderDto: OrderDto): Promise<Order> {
-        return new Order(
-            await this.fillCustomerDetails(orderDto),
-            await this.productsToModel(orderDto.products),
-            orderDto.deliveryDate,
-            await this.getOrderEnumStatus(orderDto.status)
-        )
-    }
-
-    private async fillCustomerDetails(orderDto: OrderDto) : Promise<CustomerDetails>{
+    private async fillCustomerDetails(orderDto: OrderDto): Promise<CustomerDetails> {
         let customer = await this.customerService.findById_(orderDto.customerId);
         return await customer.getDetails();
     }
@@ -120,18 +203,16 @@ export class OrdersService implements IOrdersService {
         return result;
     }
 
-    protected async productDtoToModel(productDto: ProductDto): Promise<Product> {
-        return new Product(
-            productDto.id,
-            productDto.quantity
-        )
-    }
-
-    protected async productsToModel(productsDto: ProductDto[]): Promise<Product[]> {
-        let products: Product[] = [];
-        productsDto.forEach(async element => {
-            products.push(await this.productDtoToModel(element));
-        });
-        return products;
+    private async checkProductAvailability(id: string): Promise<ProductApiDto> {
+        let response = null;
+        try {
+            response = await this.httpService.get(settings.url + id).toPromise();
+        } catch (error) {
+            if (error.code == 'ECONNREFUSED') {
+                throw new OrdersApiDomainException('Could not connect to to Products Service', 503);
+            }
+            throw new OrdersApiDomainException('Product with id: ' + id + ' is not available.');
+        }
+        return response.data;
     }
 }
