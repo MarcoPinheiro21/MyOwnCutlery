@@ -7,6 +7,10 @@ import { Product } from "src/app/models/product.model";
 import { OrderService } from "./order.service";
 import { ProductsService } from "src/app/master-data-web/product/product.service";
 import { Client } from "src/app/models/client.model";
+import { OrderLine } from 'src/app/models/order-line.model';
+import { OrderCreationDialogComponent } from './order-creation-dialog/order-creation-dialog.component';
+import { stringify } from 'querystring';
+
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
@@ -16,7 +20,7 @@ export class OrdersComponent implements OnInit {
   orders: Order[] = [];
   ordersService: OrderService;
   productsService: ProductsService;
-  product: Product[];
+  products: Product[]; //for creation
   dialog: MatDialog;
   alertMessage: AlertMessage = <AlertMessage>{};
   thisClient: Client;
@@ -45,15 +49,66 @@ export class OrdersComponent implements OnInit {
       this.ordersService.getClients().subscribe((data: any) => {
         this.thisClient = data.filter(client => client.userId === userId);
         this.orders = ordersData.filter(
-          order => order.customerId === this.thisClient[0]._id
+          order => order.customerDetails.id === this.thisClient[0]._id
         );
       });
     });
   }
-  createOrder(order) {
-    this.ordersService.createOrder(order).subscribe(() => {
-      this.getOrders();
+
+  openCreationDialog() {
+    this.ordersService.getProducts().subscribe((data: any) => {
+      this.products = data;
+
+      const dialogConfig = new MatDialogConfig();
+
+
+      const order = {
+        clientId: String,
+        products: OrderLine,
+        deliveryDate: Date
+      };
+
+      dialogConfig.data = {
+        products: this.products,
+        client: this.thisClient[0]._id
+      };
+      dialogConfig.width = '600px';
+      dialogConfig.height = '400px';
+
+      this.dialog.open(OrderCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
+        if (result != undefined) {
+          this.ordersService
+            .createOrder(result.data)
+            .subscribe(
+              () => {
+                var mt = result.data.productName;
+                this.generateSuccessMsg(mt);
+                this.alertMessage.success = true;
+                this.getOrders();
+                this.timerHideAlert();
+              },
+              (error: Error) => {
+                this.alertMessage.message = error.message;
+                this.alertMessage.success = false;
+                this.timerHideAlert();
+              }
+            );
+        }
+      });
     });
+  }
+
+  timerHideAlert() {
+    this.alertMessage.showAlertMsg = true;
+    setTimeout(() => this.hideAlert(), 10000);
+  }
+
+  hideAlert() {
+    this.alertMessage.showAlertMsg = false;
+  }
+
+  private generateSuccessMsg(arg: string) {
+    this.alertMessage.message = 'The order ' + arg + ' was successfuly saved.';
   }
 
   openEditionDialog(selectedProduct?, selectedOrder?) {
@@ -62,8 +117,8 @@ export class OrdersComponent implements OnInit {
       order: selectedOrder,
       product: selectedProduct
     };
-    dialogConfig.width = "425px";
-    dialogConfig.height = "550px";
+    dialogConfig.width = "800px";
+    dialogConfig.height = "1000px";
     this.dialog
       .open(OrderEditionDialogComponent, dialogConfig)
       .afterClosed()
@@ -79,13 +134,8 @@ export class OrdersComponent implements OnInit {
       this.getOrders();
     });
   }
-
-  getProductById(productId) {
-    this.ordersService.getProductById(productId).subscribe((data: any) => {
-      this.product = data;
-    });
-  }
 }
+
 export interface CreateOrder {
   customerId: string;
   products: Product[];

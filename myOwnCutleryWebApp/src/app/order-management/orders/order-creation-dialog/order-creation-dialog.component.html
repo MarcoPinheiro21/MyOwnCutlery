@@ -1,3 +1,40 @@
-<p>
-  order-creation-dialog works!
-</p>
+<div class="header">
+  <form class="form">
+    <form>
+      Devivery Date:
+      <input type="date" name="deliveryDate" [(ngModel)]="deliveryDate">
+    </form>
+  </form>
+</div>
+<br>
+<div class="header">Select Products to Order</div>
+<mat-table mat-table [dataSource]="elements">
+
+  <ng-container matColumnDef="checked">
+    <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="productName">
+    <mat-header-cell *matHeaderCellDef> Product </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.productName}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="quantity">
+    <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <input matInput placeholder="Qty" value="" [(ngModel)]="element.quantity">
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{hovered: row.hovered}"
+    (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></mat-row>
+
+</mat-table>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="save()" (click)="checkEmptyProductsList()">Save</button>
+  <mat-error *ngIf="isSelectedProductsEmpty">
+    Please choose at least one operation from the list.
+  </mat-error>
+</mat-dialog-actions>

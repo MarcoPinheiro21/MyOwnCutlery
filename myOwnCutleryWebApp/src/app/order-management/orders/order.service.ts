@@ -43,6 +43,13 @@ export class OrderService {
       this.urlProduction + productId
     )
   }
+
+  getProducts(): Observable<Product> {
+    return this.http.get<Product>(
+      this.urlProduction
+    )
+  }
+
   public getClients(): Observable<Client[]> {
     return this.http.get<Client[]>(this.url + 'customers');
   }

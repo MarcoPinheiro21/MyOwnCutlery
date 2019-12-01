@@ -80,13 +80,13 @@ export class ProductDialogComponent implements OnInit {
       this.product.plan.operations.length == 0;
   }
 
-  private addOperationToMachineType(element: Element) {
+  private addOperationToPlan(element: Element) {
     let op = <CreateOperation>{};
     op.operationId = element.operationId;
     this.product.plan.operations.push(op);
   }
 
-  private removeOperationFromMachineType(element: Element) {
+  private removeOperationFromPlan(element: Element) {
     this.product.plan.operations =
       this.product.plan.operations.filter(op =>
         op.operationId != element.operationId);
@@ -95,9 +95,9 @@ export class ProductDialogComponent implements OnInit {
 
   onCheckClick(element: Element) {
     if (!element.checked) {
-      this.addOperationToMachineType(element);
+      this.addOperationToPlan(element);
     } else {
-      this.removeOperationFromMachineType(element);
+      this.removeOperationFromPlan(element);
     }
   }
 }
