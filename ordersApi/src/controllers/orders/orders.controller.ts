@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Injectable, Inject, UseFilters, HttpException, BadRequestException, Param, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Injectable, Inject, UseFilters, HttpException, BadRequestException, Param, Put, Query, Delete } from '@nestjs/common';
 import { OrdersService } from 'src/services/orders/orders.service';
 import { OrderDto } from '../../dto/order.dto';
 import { AllExceptionsFilter } from 'src/exceptions/http-exception.filter';
@@ -33,11 +33,10 @@ export class OrdersController {
 
     }
 
-    @Put(':id/cancel')
+    @Delete(':id')
     @UseFilters(new AllExceptionsFilter())
     async cancelOrder(@Param('id') id) {
         return await this.ordersService.cancelOrderById(id);
-
     }
 
     @Put(':id')
