@@ -4,7 +4,7 @@ import { EditCustomerDto } from "src/dto/customer.edit.dto";
 
 export interface ICustomersService {
 
-    findAll(): Promise<Customer[]>;
+    findAll(): Promise<CustomerDto[]>;
 
     findById(customerId: string): Promise<CustomerDto>;
 

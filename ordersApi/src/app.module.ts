@@ -8,6 +8,8 @@ import { OrdersService } from './services/orders/orders.service';
 import { CustomersService } from './services/customers/customers.service';
 import { Repository } from 'typeorm';
 import { CustomersController } from './controllers/customers/customers.controller';
+import { CustomersRepository } from './repository/customers.repository';
+import { OrdersRepository } from './repository/orders.repository';
 
 
 @Module({
@@ -20,9 +22,11 @@ import { CustomersController } from './controllers/customers/customers.controlle
   controllers: [OrdersController, CustomersController],
   providers: [
     OrdersService,
-    { provide: 'IOrdersService', useClass: OrdersService } ,
-    { provide: 'ICustomersService', useClass: CustomersService } ,
-    CustomersService, 
+    { provide: 'IOrdersService', useClass: OrdersService },
+    { provide: 'ICustomersService', useClass: CustomersService },
+    { provide: 'IOrdersRepository', useClass: OrdersRepository },
+    { provide: 'ICustomersRepository', useClass: CustomersRepository },
+    CustomersService,
     Repository]
 })
 export class AppModule { }

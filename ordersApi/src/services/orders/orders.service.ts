@@ -3,7 +3,7 @@ import { OrderDto } from '../../dto/order.dto';
 import { Order } from 'src/models/order.entity';
 import { Product } from 'src/models/product.entity';
 import { ProductDto } from '../../dto/product.dto';
-import { getRepository, getMongoRepository, ObjectID } from 'typeorm';
+
 import { IOrdersService } from './iOrders.service';
 import { OrderStates } from 'src/enums/orderStates.enum';
 import { ReadOrderDto } from 'src/dto/order.read.dto';
@@ -13,15 +13,15 @@ import { OrdersApiDomainException } from 'src/exceptions/domain.exception';
 import { EditOrderDto } from 'src/dto/order.edit.dto';
 import settings from "../../../config.json";
 import { ProductApiDto } from 'src/dto/product.api.dto';
-import { AxiosResponse, AxiosRequestConfig } from 'axios';
-
+import { IOrdersRepository } from 'src/repository/iOrders.repository';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
 
     constructor(
         private readonly customerService: CustomersService,
-        private readonly httpService: HttpService) {
+        private readonly httpService: HttpService,
+        @Inject('IOrdersRepository') private readonly ordersRepository: IOrdersRepository) {
         process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = "0";
     }
     /**
@@ -56,7 +56,7 @@ export class OrdersService implements IOrdersService {
         await this.customerService.findById(orderDto.customerId);
 
         let order: Order = await this.dtoToModel(orderDto);
-        let orderResult = await getRepository(Order).save(order);
+        let orderResult = await this.ordersRepository.saveOrder(order);
         return orderResult.toDto();
     }
 
@@ -74,7 +74,7 @@ export class OrdersService implements IOrdersService {
 
     public async cancelOrderById(orderId: string): Promise<ReadOrderDto> {
         let order = await this.findById_(orderId);
-        let resultOrder = await getRepository(Order).save(await order.cancel());
+        let resultOrder = await this.ordersRepository.saveOrder(await order.cancel());
         return resultOrder.toDto();
     }
 
@@ -114,7 +114,7 @@ export class OrdersService implements IOrdersService {
             }
         }
 
-        let orederResult = await getRepository(Order).save(order);
+        let orederResult = await this.ordersRepository.saveOrder(order);
         return orederResult.toDto();
     }
 
@@ -149,12 +149,12 @@ export class OrdersService implements IOrdersService {
     }
 
     private async findAll_(): Promise<Order[]> {
-        return await getRepository(Order).find();
+        return await this.ordersRepository.findAllOrders();
     }
 
     private async findById_(orderId: string): Promise<Order> {
         try {
-            let order = await getRepository(Order).findOne(orderId);
+            let order = await this.ordersRepository.findOrderById(orderId);
             if (order == null) {
                 throw new OrdersApiDomainException('Order with given id does not exist.');
             }
@@ -165,16 +165,11 @@ export class OrdersService implements IOrdersService {
     }
 
     private async findOrdersOfCustomerId_(custId: string): Promise<Order[]> {
-        let orderRepository = getMongoRepository(Order);
-        let repoResult = await orderRepository.find({
-            where: {
-                customerId: { $eq: custId },
-            }
-        });
-        if (repoResult == null || repoResult.length == 0) {
+        let orders = await this.ordersRepository.findOrdersByCustomerId(custId);
+        if (orders == null || orders.length == 0) {
             throw new HttpException('No orders found to the given id', 400);
         }
-        return repoResult;
+        return orders;
     }
 
     private validateProducts(productDto: ProductDto[]): void {
