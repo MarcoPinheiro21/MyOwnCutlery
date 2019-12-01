@@ -104,7 +104,7 @@ export class OrdersService implements IOrdersService {
 
                 let hasProduct: boolean = await order.hasProduct(element.id);
 
-                if (element.toDelete) {
+                if (element.toDelete=='true') {
                     order = await order.deleteProduct(element.id);
                 } else if (hasProduct) {
                     order = await order.updateProduct(element.id, element.quantity);
@@ -174,7 +174,7 @@ export class OrdersService implements IOrdersService {
 
     private validateProducts(productDto: EditProductDto[]): void {
         productDto.forEach(element => {
-            if (element.toDelete != true && (element.quantity == null || element.quantity < 1)) {
+            if (element.toDelete != 'true' && (element.quantity == null || element.quantity < 1)) {
                 throw new OrdersApiDomainException('At least one of products quantity is invalid')
             }
             if (element.id == null || element.id.length == 0) {
