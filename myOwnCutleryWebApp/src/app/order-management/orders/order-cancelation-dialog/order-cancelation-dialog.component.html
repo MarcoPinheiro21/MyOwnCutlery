@@ -1,0 +1,24 @@
+<mat-dialog-content>
+  <h1 mat-dialog-title class="labelIcons" align="center">Cancelation</h1>
+  <div class="col-sm-12">
+    <h4>Your order data is going to be deleted.</h4>
+    <div *ngIf="hasOrder; else template">
+    </div>
+    </div>
+</mat-dialog-content>
+<div class="row">
+  <div class="col-sm-6">
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="close()">No</button>
+    </mat-dialog-actions>
+  </div>
+  <div class="col-sm-6">
+    <mat-dialog-actions>
+      <button mat-button (click)="save()">Yes</button>
+    </mat-dialog-actions>
+  </div>
+</div>
+
+<ng-template #template>
+  <div style="height: 45px;"></div>
+</ng-template>

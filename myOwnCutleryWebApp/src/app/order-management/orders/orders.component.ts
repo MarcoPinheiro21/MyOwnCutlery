@@ -9,7 +9,7 @@ import { ProductsService } from "src/app/master-data-web/product/product.service
 import { Client } from "src/app/models/client.model";
 import { OrderLine } from 'src/app/models/order-line.model';
 import { OrderCreationDialogComponent } from './order-creation-dialog/order-creation-dialog.component';
-
+import { OrderCancelationDialogComponent} from './order-cancelation-dialog/order-cancelation-dialog.component';
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
@@ -28,11 +28,9 @@ export class OrdersComponent implements OnInit {
     this.dialog = myDialog;
     this.alertMessage.showAlertMsg = false;
   }
-
   ngOnInit() {
     this.getOrders();
   }
-
   public getOrders(): void {
     let userId = localStorage.getItem("user_id");
     this.ordersService.getOrders().subscribe((ordersData: any) => {
@@ -53,26 +51,20 @@ export class OrdersComponent implements OnInit {
       });
     });
   }
-
   openCreationDialog() {
     this.ordersService.getProducts().subscribe((data: any) => {
-
       const dialogConfig = new MatDialogConfig();
-
-
       const order = {
         clientId: String,
         products: OrderLine,
         deliveryDate: Date
       };
-
       dialogConfig.data = {
         products: data,
         client: this.thisClient[0]._id
       };
       dialogConfig.width = '800px';
       dialogConfig.height = '400px';
-
       this.dialog.open(OrderCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
         if (result != undefined) {
           this.ordersService
@@ -95,20 +87,16 @@ export class OrdersComponent implements OnInit {
       });
     });
   }
-
   timerHideAlert() {
     this.alertMessage.showAlertMsg = true;
     setTimeout(() => this.hideAlert(), 10000);
   }
-
   hideAlert() {
     this.alertMessage.showAlertMsg = false;
   }
-
   private generateSuccessMsg(arg: string) {
     this.alertMessage.message = 'The order ' + arg + ' was successfuly saved.';
   }
-
   openEditionDialog(selectedOrder?) {
     this.ordersService.getProducts().subscribe((data: any) => {
       const dialogConfig = new MatDialogConfig();
@@ -130,12 +118,31 @@ export class OrdersComponent implements OnInit {
         });
     });
   }
+  openCancelationDialog(selectOrder?){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data ={
 
-  openCancelationDialog(selectedOrder?) {
+      order: this.orders[0]
+    };
+    dialogConfig.width = "555px";
+    dialogConfig.height = "255px";
+   
+    this.dialog
+    .open(OrderCancelationDialogComponent, dialogConfig)
+    .afterClosed()
+    .subscribe(result => {
+      return this.cancelOrder();
+    });
+    }
+  
+    cancelOrder(){
+    this.ordersService.cancelOrder(this.orders[0]._id).subscribe( () => {
+      this.getOrders();
+
+    });
+
   }
-
 }
-
 export interface CreateOrder {
   customerId: string;
   products: Product[];

@@ -44,6 +44,7 @@ import { PrivacyPolicyDialogComponent } from './sign-up/privacy-policy-dialog/pr
 import { OrderCreationDialogComponent } from './order-management/orders/order-creation-dialog/order-creation-dialog.component';
 import { ClientRightForgottenDialogComponent } from './order-management/clients/client-right-forgotten-dialog/client-right-forgotten-dialog.component';
 import { OrderEditionDialogComponent } from './order-management/orders/order-edition-dialog/order-edition-dialog.component';
+import { OrderCancelationDialogComponent } from './order-management/orders/order-cancelation-dialog/order-cancelation-dialog.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -89,7 +90,8 @@ export const AngularMaterialComponents = [
     PrivacyPolicyDialogComponent,
     OrderCreationDialogComponent,
     OrderEditionDialogComponent,
-    ClientRightForgottenDialogComponent
+    ClientRightForgottenDialogComponent,
+    OrderCancelationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -118,7 +120,9 @@ export const AngularMaterialComponents = [
     PrivacyPolicyDialogComponent,
     ClientRightForgottenDialogComponent,
     OrderEditionDialogComponent,
-    OrderCreationDialogComponent
+    OrderCreationDialogComponent,
+    OrderCancelationDialogComponent
+    
   ]
 })
 export class AppModule { }

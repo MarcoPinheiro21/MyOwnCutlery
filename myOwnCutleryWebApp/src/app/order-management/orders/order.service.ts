@@ -13,6 +13,7 @@ import { Client } from 'src/app/models/client.model';
   providedIn: "root"
 })
 export class OrderService {
+ 
   private url = ordersApi.url + "/ordersapi/";
   private urlProduction = productionApi.url + "/productionapi/products/";
 
@@ -59,4 +60,11 @@ export class OrderService {
   public getClients(): Observable<Client[]> {
     return this.http.get<Client[]>(this.url + 'customers');
   }
-}
+
+  cancelOrder(orderId): Observable<Order[]> {
+   return this.http
+   .delete<Order[]>(this.url + 'orders/' + orderId)
+   .pipe(catchError(null));
+  }
+
+    }
