@@ -39,6 +39,9 @@ class PressMachine {
         cubeLeft.position.set(0, 0, 0);
         cubeRigt.position.set(0, 0, 12);
         cubeTop.position.set(0, 7, 6);
+        cubeLeft.userData.parentGroup = this.pressGroup.name;
+        cubeRigt.userData.parentGroup = this.pressGroup.name;
+        cubeTop.userData.parentGroup = this.pressGroup.name;
         this.pressGroup.add(cubeLeft);
         this.pressGroup.add(cubeRigt);
         this.pressGroup.add(cubeTop);
@@ -56,9 +59,11 @@ class PressMachine {
         var cylinderLeft = new THREE.Mesh(geometryCylinder, materialCylinder);
         cylinderLeft.rotation.x = Math.PI / 2;
         cylinderLeft.position.set(0, 0, 0.1);
+        cylinderLeft.userData.parentGroup = this.pressGroup.name;
         /* Left Press*/
         var pressLeft = new THREE.Mesh(geometryPress, materialPress);
         pressLeft.position.set(0, 0, 2.5);
+        pressLeft.userData.parentGroup = this.pressGroup.name;
         /*---*/
         this.leftPressArm.add(cylinderLeft);
         this.leftPressArm.add(pressLeft);
@@ -69,9 +74,11 @@ class PressMachine {
         var cylinderRight = new THREE.Mesh(geometryCylinder, materialCylinder);
         cylinderRight.rotation.x = -Math.PI / 2;
         cylinderRight.position.set(0, 0, -0.1);
+        cylinderRight.userData.parentGroup = this.pressGroup.name;
         /*Left Press*/
         var pressRight = new THREE.Mesh(geometryPress, materialPress);
         pressRight.position.set(0, 0, -2.5);
+        pressRight.userData.parentGroup = this.pressGroup.name;
         /*---*/
         this.rightPressArm.add(cylinderRight);
         this.rightPressArm.add(pressRight);

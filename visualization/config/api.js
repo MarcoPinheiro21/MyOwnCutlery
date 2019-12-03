@@ -7,7 +7,7 @@ configurationsApi = {
         productionLines: 'visualization/productionlines',
         machineTypes: 'visualization/machines/types',
         machines: 'visualization/machines',
-        isEnable: true
+        isEnable: false
     }
 };
 
@@ -66,6 +66,10 @@ function updateMovedMachine(machine)
     return JSON.parse(xmlHttp.responseText);
 }
 
+function getMachineDescriptions() {
+    // TODO fazer integracao
+    return JSON.parse(machinesDescriptionsMock);
+}
 
 const productionLinesMockResponse = `[
     {
@@ -170,3 +174,63 @@ const machineTypeMockResponse = `[
         "visualizationModel": "Robotic Arm"
     }
 ]`;
+
+const machinesDescriptionsMock = `[
+    {
+        "id": 1,
+        "description": "Maquina1",
+        "machineTypeId": 1,
+        "productionLineId": 2,
+        "productionLinePosition": 2
+    },
+    {
+        "id": 2,
+        "description": "Maquina2",
+        "machineTypeId": 2,
+        "productionLineId": 2,
+        "productionLinePosition": 5
+    },
+    {
+        "id": 3,
+        "description": "Maquina3",
+        "machineTypeId": 1,
+        "productionLineId": 2,
+        "productionLinePosition": 6
+    },
+    {
+        "id": 4,
+        "description": "Maquina4",
+        "machineTypeId": 2,
+        "productionLineId": 2,
+        "productionLinePosition": 3
+    },
+    {
+        "id": 5,
+        "description": "Maquina5",
+        "machineTypeId": 1,
+        "productionLineId": 1,
+        "productionLinePosition": 1
+    },
+    {
+        "id": 6,
+        "description": "Maquina6",
+        "machineTypeId": 2,
+        "productionLineId": 1,
+        "productionLinePosition": 4
+    },
+    {
+        "id": 7,
+        "description": "Maquina7",
+        "machineTypeId": 1,
+        "productionLineId": 1,
+        "productionLinePosition": 5
+    },
+    {
+        "id": 8,
+        "description": "Maquina8",
+        "machineTypeId": 2,
+        "productionLineId": 2,
+        "productionLinePosition": 4
+    }
+]`;
+

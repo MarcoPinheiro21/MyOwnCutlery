@@ -69,29 +69,34 @@ class RoboticArm {
         let mat = new THREE.MeshBasicMaterial({ map: texture });
         let cylinder = new THREE.Mesh(cilynderGeometry, mat);
         cilynderGeometry.translate(0, BASE_HEIGHT / 2, 0);
+        cylinder.userData.parentGroup = this.group.name;
 
         //Joint1
         let joint1 = new THREE.Mesh(sphereGeometry, this.jointSphereMaterial  );
         joint1.translateY(BASE_HEIGHT);
         joint1.setRotationFromAxisAngle(new THREE.Vector3(0, 0, 1), SEGMENT1_ANGLE);
+        joint1.userData.parentGroup = this.group.name;
         cylinder.add(joint1);
 
         //Segment 1
         let boxGeometry = new THREE.BoxGeometry(SEGMENT1_WIDTH, SEGMENT1_HEIGHT, SEGMENT1_DEPTH);
         let segment1 = new THREE.Mesh(boxGeometry, this.armMaterial );
         segment1.translateY(SEGMENT1_HEIGHT / 2);
+        segment1.userData.parentGroup = this.group.name;
         joint1.add(segment1);
 
         //this._joint2
         this._joint2 = new THREE.Mesh(sphereGeometry, this.jointSphereMaterial );
         this._joint2.translateY(SEGMENT1_HEIGHT / 2);
         // this._joint2.setRotationFromAxisAngle(new THREE.Vector3(0, 0, 1), SEGMENT2_ANGLE);
+        this._joint2.userData.parentGroup = this.group.name;
         segment1.add(this._joint2);
 
         //Segment 2
         let boxGeometry2 = new THREE.BoxGeometry(SEGMENT2_WIDTH, SEGMENT2_HEIGHT, SEGMENT2_DEPTH);
         let segment2 = new THREE.Mesh(boxGeometry2, this.armMaterial );
         segment2.translateY(SEGMENT2_HEIGHT / 2);
+        segment2.userData.parentGroup = this.group.name;
         this._joint2.add(segment2);
 
         //Joint3
@@ -100,18 +105,21 @@ class RoboticArm {
         cyl1.rotateX(Util.toRad(90));
         joint3.translateY(SEGMENT2_HEIGHT / 2);
         joint3.setRotationFromAxisAngle(new THREE.Vector3(0, 0, 1), WRIST_ANGLE);
+        joint3.userData.parentGroup = this.group.name;
         segment2.add(joint3);
 
         //Wrist
         let boxGeometry3 = new THREE.BoxGeometry(WRIST_WIDTH, WRIST_HEIGHT, WRIST_DEPTH);
         let wrist = new THREE.Mesh(boxGeometry3, this.armMaterial );
         wrist.translateY(WRIST_HEIGHT / 2);
+        wrist.userData.parentGroup = this.group.name;
         joint3.add(wrist);
 
         //Joint4
         let boxGeometry4 = new THREE.BoxGeometry(CLAW_BASE_WIDTH, CLAW_BASE_HEIGHT, CLAW_BASE_DEPTH);
         let joint4 = new THREE.Mesh(boxGeometry4, this.armMaterial );
         joint4.translateY(WRIST_HEIGHT / 2 + CLAW_BASE_HEIGHT / 2);
+        joint4.userData.parentGroup = this.group.name;
         wrist.add(joint4);
 
         //Claws
@@ -123,6 +131,8 @@ class RoboticArm {
         this._claw2.translateY(CLAW_LENGTH / 2);
         claw1.translateZ(CLAW_DISTANCE);
         this._claw2.translateZ(-CLAW_DISTANCE);
+        claw1.userData.parentGroup = this.group.name;
+        this._claw2.userData.parentGroup = this.group.name;
         joint4.add(claw1);
         joint4.add(this._claw2);
 
@@ -132,6 +142,7 @@ class RoboticArm {
         this.group.translateZ(pos.z + OFFSET_Z);
         this.group.rotateY(-Util.toRad(OFFSET_ANGLE));
 
+        this.group.userData.tooltipText = 'text';
         return this.group;
     }
 
