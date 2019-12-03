@@ -105,7 +105,7 @@ export class OrdersComponent implements OnInit {
         products: data
       };
       dialogConfig.width = "800px";
-      dialogConfig.height = "400px";
+      dialogConfig.height = "500px";
       this.dialog
         .open(OrderEditionDialogComponent, dialogConfig)
         .afterClosed()
