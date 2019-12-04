@@ -97,7 +97,7 @@ export class SignUpComponent implements OnInit {
 
   openCreationDialog() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '425px';
+    dialogConfig.width = '710px';
     dialogConfig.height = '550px';
     this.dialog
       .open(PrivacyPolicyDialogComponent, dialogConfig)
