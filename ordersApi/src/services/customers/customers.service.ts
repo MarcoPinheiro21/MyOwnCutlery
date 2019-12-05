@@ -1,12 +1,12 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CustomerDto } from 'src/dto/customer.dto';
-import { Customer } from 'src/models/customer.entity';
-import { AddressDto } from 'src/dto/address.dto';
-import { Address } from 'src/models/address';
 import { ICustomersService } from './iCustomers.service';
 import { OrdersApiDomainException } from 'src/exceptions/domain.exception';
 import { EditCustomerDto } from 'src/dto/customer.edit.dto';
 import { ICustomersRepository } from 'src/repository/iCustomers.repository';
+import { Customer } from 'src/domain/customer.domain';
+import { DomainMapper } from '../mapper/domain.mapper';
+
 
 @Injectable()
 export class CustomersService implements ICustomersService {
@@ -19,7 +19,7 @@ export class CustomersService implements ICustomersService {
         let customers = await this.findAll_();
         let customersDto: CustomerDto[] = [];
         customers.forEach(async element => {
-            customersDto.push(await element.toDto());
+            customersDto.push(await DomainMapper.customerToDto(element));
         });
         return customersDto;
     }
@@ -29,8 +29,8 @@ export class CustomersService implements ICustomersService {
     }
 
     public async findById(customerId: string): Promise<CustomerDto> {
-        let customerResult = await this.findById_(customerId)
-        return await customerResult.toDto();
+        let customerResult = await this.findById_(customerId);
+        return await DomainMapper.customerToDto(customerResult);
     }
 
     async findById_(customerId: string): Promise<Customer> {
@@ -49,8 +49,8 @@ export class CustomersService implements ICustomersService {
     }
 
     public async createCustomer(customerDto: CustomerDto): Promise<CustomerDto> {
-        let customer: Customer = await this.dtoToModel(customerDto);
-        let resultCustomer = null;
+        let customer: Customer = await DomainMapper.customerDtoToDomain(customerDto);
+        let resultCustomer : Customer;
         try {
             resultCustomer = await this.customersRepository.saveCustomer(customer);
         } catch (error) {
@@ -67,8 +67,7 @@ export class CustomersService implements ICustomersService {
                 throw new OrdersApiDomainException('Customer\'s user id must be specified');
             }
         }
-        console.log(resultCustomer);
-        return resultCustomer.toDto();
+        return DomainMapper.customerToDto(resultCustomer);
     }
 
     public async editCustomerData(id: string, customerDto: EditCustomerDto): Promise<CustomerDto> {
@@ -95,36 +94,13 @@ export class CustomersService implements ICustomersService {
             customerDto.address.country);
 
         let resultCustomer = await this.customersRepository.saveCustomer(customer);
-        return resultCustomer.toDto();
+        return DomainMapper.customerToDto(resultCustomer);
     }
 
     public async forgetCustomerData(customerId: string): Promise<CustomerDto> {
         let customerResult = await this.findById_(customerId);
         let resultCustomer = await this.customersRepository.saveCustomer(customerResult.forgetData());
-        return resultCustomer.toDto();
-    }
-
-    public async dtoToModel(customerDto: CustomerDto): Promise<Customer> {
-        let customer = new Customer(
-            customerDto.name,
-            customerDto.vatNumber,
-            this.toAddressModel(customerDto.address),
-            customerDto.phoneNumber,
-            customerDto.email,
-            customerDto.priority,
-            customerDto.userId
-        );
-        return customer;
-    }
-
-    private toAddressModel(addressDto: AddressDto): Address {
-        if (addressDto == null) return null;
-        return new Address(
-            addressDto.street,
-            addressDto.postalCode,
-            addressDto.town,
-            addressDto.country
-        )
+        return DomainMapper.customerToDto(resultCustomer);
     }
 
     private validateField(field: any): boolean {

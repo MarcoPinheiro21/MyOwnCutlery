@@ -1,22 +1,22 @@
 import { Module, HttpModule } from '@nestjs/common';
 import { OrdersController } from './controllers/orders/orders.controller';
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { Order } from './models/order.entity';
-import { Product } from './models/product.entity';
-import { Customer } from './models/customer.entity';
 import { OrdersService } from './services/orders/orders.service';
 import { CustomersService } from './services/customers/customers.service';
 import { Repository } from 'typeorm';
 import { CustomersController } from './controllers/customers/customers.controller';
 import { CustomersRepository } from './repository/customers.repository';
 import { OrdersRepository } from './repository/orders.repository';
+import { OrderModel } from './models/order.entity';
+import { ProductModel } from './models/product.entity';
+import { CustomerModel } from './models/customer.entity';
 
 
 @Module({
   imports: [HttpModule, TypeOrmModule.forRoot({
     "type": "mongodb",
     "url": "mongodb+srv://lapr5:yourStrong(!)Password@cluster0-r18xz.mongodb.net/test?retryWrites=true&w=majority",
-    "entities": [Order, Product, Customer],
+    "entities": [OrderModel, ProductModel, CustomerModel],
     "synchronize": true
   })],
   controllers: [OrdersController, CustomersController],

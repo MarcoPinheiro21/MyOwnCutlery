@@ -1,4 +1,4 @@
-import { Order } from "src/models/order.entity";
+import { Order } from "src/domain/order.domain";
 
 export interface IOrdersRepository {
 

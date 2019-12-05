@@ -1,5 +1,6 @@
 import { getRepository, getMongoRepository } from 'typeorm';
-import { Customer } from 'src/models/customer.entity';
+import { Customer } from 'src/domain/customer.domain';
+
 
 export interface ICustomersRepository {
 

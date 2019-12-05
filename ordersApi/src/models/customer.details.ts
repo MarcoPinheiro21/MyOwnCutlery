@@ -1,46 +1,23 @@
 import { Column } from "typeorm";
-import { Address } from "./address";
+import { AddressModel } from "./address";
 import { CustomerDetailsDto } from "src/dto/customer.details.dto";
 
-export class CustomerDetails {
+export class CustomerDetailsModel {
 
     @Column()
-    private id: string;
+    public id: string;
     @Column()
-    private name: string;
+    public name: string;
     @Column()
-    private vatNumber: string;
-    @Column(type => Address)
-    private deliveryAddress: Address;
+    public vatNumber: string;
+    @Column(type => AddressModel)
+    public deliveryAddress: AddressModel;
 
-    constructor(id: string, name: string, vatNumber: string, deliveryAddress: Address) {
+    constructor(id: string, name: string, vatNumber: string, deliveryAddress: AddressModel) {
         this.id = id;
         this.name = name;
         this.vatNumber = vatNumber;
         this.deliveryAddress = deliveryAddress;
     }
 
-    async updateDeliveryAddress(street?: string, postalCode?: string, town?: string, country?: string) {
-        if (street != null) {
-            this.deliveryAddress.setStreet(street);
-        }
-        if (postalCode != null) {
-            this.deliveryAddress.setPostalCode(postalCode);
-        }
-        if (town != null) {
-            this.deliveryAddress.setTown(town);
-        }
-        if (country != null) {
-            this.deliveryAddress.setCountry(country);
-        }
-    }
-
-    public async toDto(): Promise<CustomerDetailsDto> {
-        return <CustomerDetailsDto>{
-            id: this.id,
-            name: this.name,
-            vatNumber: this.vatNumber,
-            deliveryAddress: await this.deliveryAddress.toDto()
-        };
-    }
 }
