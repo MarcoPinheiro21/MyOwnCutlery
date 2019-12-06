@@ -61,9 +61,9 @@ export class OrderService {
     return this.http.get<Client[]>(this.url + 'customers');
   }
 
-  cancelOrder(orderId): Observable<Order[]> {
+  cancelOrder(order: Order): Observable<Order[]> {
    return this.http
-   .delete<Order[]>(this.url + 'orders/' + orderId)
+   .put<Order[]>(this.url + 'orders/' + order._id+'/cancel',order)
    .pipe(catchError(null));
   }
 
