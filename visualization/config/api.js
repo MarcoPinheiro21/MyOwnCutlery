@@ -169,6 +169,17 @@ const machineTypeMockResponse = `[
                     "executionTime": 30,
                     "setupTime": 6
                 }
+            },
+            {
+                "operationId": 1,
+                "toolId": 1,
+                "tool": "Hammer",
+                "operationType": {
+                    "operationTypeId": 1,
+                    "desc": "op1",
+                    "executionTime": 60,
+                    "setupTime": 5
+                }
             }
         ],
         "visualizationModel": "Robotic Arm"

@@ -46,14 +46,26 @@ function showTooltip() {
     // var scale = new THREE.Vector3();
     // hoveredObj.matrix.decompose(position, quaternion, scale);
   
-    let element = getMachineDescriptions().filter(e =>  {
+    let element = getMachineDescriptions().filter(e =>  { 
+      let machineType = machineTypes.filter(mt => mt.id === e.machineTypeId)[0];
+      e["machineType"] = machineType;
       return hoveredObj.userData.hasOwnProperty("parentGroup") && (e.description == hoveredObj.userData.parentGroup);
     });
 
     $("#machineId").html(element[0].id); 
     $("#description").html(element[0].description); 
-    $("#machineType").html(element[0].machineTypeId); 
-    $("#productionLine").html(element[0].productionLineId); 
+    $("#machineType").html(element[0].machineType.desc); 
+    $("#productionLine").html(element[0].productionLineId);
+    let operationsHtml = "";
+    element[0].machineType.operationList.map(ele => {
+      operationsHtml+=("Description: " + ele.operationType.desc + "<br/>");
+      operationsHtml+=("Tool: " + ele.tool + "<br/>");
+      operationsHtml+=("Execution Time: " + ele.operationType.executionTime + "<br/>");
+      operationsHtml+=("Setup Time:" + ele.operationType.setupTime + "<br/><br/>");
+    });
+    
+    $("#operations").html(operationsHtml);
+
 
     setTimeout(function() {
       divElement.css({
