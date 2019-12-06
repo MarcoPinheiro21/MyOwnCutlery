@@ -156,16 +156,6 @@ export class OrdersService implements IOrdersService {
         return await customer.getDetails();
     }
 
-    private async getOrderEnumStatus(desc: string): Promise<OrderStates> {
-        let result: OrderStates;
-        Object.values(OrderStates).forEach(async e => {
-            if (e.toString() == desc) {
-                result = e;
-            }
-        })
-        return result;
-    }
-
     private async fillProductsAvailability(productsDto: ProductDto[]): Promise<ProductDto[]> {
         for (let element of productsDto) {
             let productApi = await this.checkProductAvailability(element.id);
@@ -188,5 +178,11 @@ export class OrdersService implements IOrdersService {
 
         }
         return response.data;
+    }
+
+    public async deleteOrder(id: string) : Promise<ReadOrderDto>{
+        let order = await this.findById_(id);
+        let deletedOrder = await this.ordersRepository.deleteOrder(order);
+        return await DomainMapper.orderToDto(deletedOrder);
     }
 }

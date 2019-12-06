@@ -10,4 +10,6 @@ export interface IOrdersRepository {
 
     findOrdersByCustomerId(id: string): Promise<Order[]>;
 
+    deleteOrder(order: Order) : Promise<Order>;
+
 }

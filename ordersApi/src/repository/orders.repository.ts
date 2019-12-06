@@ -39,5 +39,10 @@ export class OrdersRepository implements IOrdersRepository {
         return orders;
     }
 
-
+    async deleteOrder(order: Order) : Promise<Order>{
+        let orderModel = await ModelMapper.createOrderModel(order);
+        let result = await getRepository(OrderModel).remove(orderModel);
+        console.log(result);
+        return ModelMapper.createOrderDomain(result);
+    }
 }

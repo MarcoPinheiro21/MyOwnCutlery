@@ -14,7 +14,7 @@ import { Customer } from "src/domain/customer.domain";
 
 export class ModelMapper {
 
-    public static async createOrderModel(order: IOrderDomain): Promise<OrderModel> { 
+    public static async createOrderModel(order: IOrderDomain): Promise<OrderModel> {
         let objectId: ObjectID = order.getId() == undefined ? null : new ObjectID(order.getId());
         return new OrderModel(
             objectId,
@@ -26,7 +26,7 @@ export class ModelMapper {
 
     public static async createOrderDomain(order: OrderModel): Promise<Order> {
         return new Order(
-            order._id.toString(),
+            order._id == null ? null : order._id.toString(),
             await this.customerDetaisToDomain(order.customerDetails),
             await this.productsToDomain(order.products),
             order.deliveryDate,
@@ -48,7 +48,7 @@ export class ModelMapper {
 
     public static async createCustomerDomain(customerModel: CustomerModel): Promise<Customer> {
         return new Customer(
-            customerModel._id.toString(),
+            customerModel._id == null ? null : customerModel._id.toString(),
             customerModel.name,
             customerModel.vatNumber,
             await this.addressToDomain(customerModel.address),
