@@ -13,4 +13,6 @@ export interface ICustomersService {
 
     editCustomerData(id: string, customerDto: EditCustomerDto): Promise<CustomerDto>;
 
+    deleteCustomer(id : string) : Promise<CustomerDto>;
+
 }

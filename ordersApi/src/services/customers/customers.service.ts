@@ -103,7 +103,14 @@ export class CustomersService implements ICustomersService {
         return DomainMapper.customerToDto(resultCustomer);
     }
 
+    public async deleteCustomer(id : string) : Promise<CustomerDto>{
+        let customerResult = await this.findById_(id);
+        let deletedCustomer =  await this.customersRepository.deleteCustomer(customerResult);
+        return await DomainMapper.customerToDto(deletedCustomer);
+    }
+
     private validateField(field: any): boolean {
         return field != null && field.toString().trim().length != 0
     }
+
 }

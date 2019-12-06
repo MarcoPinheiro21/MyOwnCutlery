@@ -12,4 +12,6 @@ export interface ICustomersRepository {
 
     findCustomerByVatNumber(vatNumber: string): Promise<Customer>;
 
+    deleteCustomer(customer: Customer): Promise<Customer>;
+
 }

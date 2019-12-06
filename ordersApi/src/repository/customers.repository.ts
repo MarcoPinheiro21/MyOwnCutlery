@@ -9,7 +9,6 @@ import { ModelMapper } from "./model.mapper";
 export class CustomersRepository implements ICustomersRepository {
 
     async saveCustomer(customer: Customer): Promise<Customer> {
-        console.log(customer);
         let customerModel = await ModelMapper.createCustomerModel(customer);
         let result = await getRepository(CustomerModel).save(customerModel);
         return await ModelMapper.createCustomerDomain(result);
@@ -36,4 +35,11 @@ export class CustomersRepository implements ICustomersRepository {
         });
         return await ModelMapper.createCustomerDomain(customerModel);
     }
+
+    async deleteCustomer(customer: Customer): Promise<Customer>{
+        let customerModel = await ModelMapper.createCustomerModel(customer);
+        let result = await getRepository(CustomerModel).remove(customerModel);
+        return await ModelMapper.createCustomerDomain(result); 
+    }
+
 }
