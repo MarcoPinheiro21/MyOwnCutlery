@@ -1,13 +1,9 @@
 import { Injectable, HttpException, Inject, HttpService } from '@nestjs/common';
 import { OrderDto } from '../../dto/order.dto';
-import { Order } from 'src/models/order.entity';
-import { Product } from 'src/models/product.entity';
 import { ProductDto } from '../../dto/product.dto';
-
 import { IOrdersService } from './iOrders.service';
 import { OrderStates } from 'src/enums/orderStates.enum';
 import { ReadOrderDto } from 'src/dto/order.read.dto';
-import { CustomerDetails } from 'src/models/customer.details';
 import { CustomersService } from '../customers/customers.service';
 import { OrdersApiDomainException } from 'src/exceptions/domain.exception';
 import { EditOrderDto } from 'src/dto/order.edit.dto';
@@ -15,6 +11,10 @@ import settings from "../../../config.json";
 import { ProductApiDto } from 'src/dto/product.api.dto';
 import { IOrdersRepository } from 'src/repository/iOrders.repository';
 import { EditProductDto } from 'src/dto/product.dto.edit';
+import { Order } from 'src/domain/order.domain';
+import { CustomerDetails } from 'src/domain/customer-details.domain';
+import { DomainMapper } from '../mapper/domain.mapper';
+import { Product } from 'src/domain/product.domain';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
@@ -38,26 +38,25 @@ export class OrdersService implements IOrdersService {
         ordersFiltered = (includeCancelled == 'true') ?
             orders :
             orders.filter(e =>
-                (e.getState()) !== OrderStates.CANCELLED)
+                (e.getStatus()) !== OrderStates.CANCELLED)
 
         ordersFiltered.forEach(async element =>
-            ordersDto.push(await element.toDto())
+            ordersDto.push(await DomainMapper.orderToDto(element))
         );
         return ordersDto;
     }
 
     public async findById(orderId: string): Promise<ReadOrderDto> {
         let order = await this.findById_(orderId);
-        return await order.toDto();
+        return await DomainMapper.orderToDto(order);
     }
 
     public async createOrder(orderDto: OrderDto): Promise<ReadOrderDto> {
-
-        await this.customerService.findById(orderDto.customerId);
-
-        let order: Order = await this.dtoToModel(orderDto);
+        let customer = await this.customerService.findById(orderDto.customerId);
+        let products : ProductDto[] = await this.fillProductsAvailability(orderDto.products);
+        let order: Order = await DomainMapper.orderToDomain(orderDto, customer, products);
         let orderResult = await this.ordersRepository.saveOrder(order);
-        return orderResult.toDto();
+        return DomainMapper.orderToDto(orderResult);
     }
 
     public async findOrdersOfCustomerId(custId: string): Promise<ReadOrderDto[]> {
@@ -66,7 +65,7 @@ export class OrdersService implements IOrdersService {
 
         let result: ReadOrderDto[] = [];
         repoResult.forEach(async element => {
-            result.push(await element.toDto())
+            result.push(await DomainMapper.orderToDto(element))
         });
 
         return result;
@@ -75,13 +74,13 @@ export class OrdersService implements IOrdersService {
     public async cancelOrderById(orderId: string): Promise<ReadOrderDto> {
         let order = await this.findById_(orderId);
         let resultOrder = await this.ordersRepository.saveOrder(await order.cancel());
-        return resultOrder.toDto();
+        return DomainMapper.orderToDto(resultOrder);
     }
 
     public async updateOrder(id: string, orderDto: EditOrderDto): Promise<ReadOrderDto> {
         let order = await this.findById_(id);
 
-        if (await order.getState() != OrderStates.INPROGRESS) {
+        if (order.getStatus() != OrderStates.INPROGRESS) {
             throw new OrdersApiDomainException('The order state does not allow edition');
         }
 
@@ -101,48 +100,20 @@ export class OrdersService implements IOrdersService {
             this.validateProducts(orderDto.products)
             for (let element of orderDto.products) {
                 let hasProduct: boolean = await order.hasProduct(element.id);
-                if (element.toDelete=='true') {
+
+                if (element.toDelete == 'true') {
                     order = await order.deleteProduct(element.id);
                 } else if (hasProduct) {
                     order = await order.updateProduct(element.id, element.quantity);
                 } else {
-                    order = await order.addProduct(element.id, element.quantity, element.name);
+                    let prod: ProductApiDto = await this.checkProductAvailability(element.id);
+                    order = await order.addProduct(element.id, element.quantity, prod.productName);
                 }
             }
         }
 
         let orederResult = await this.ordersRepository.saveOrder(order);
-        return orederResult.toDto();
-    }
-
-    protected async dtoToModel(orderDto: OrderDto): Promise<Order> {
-        return new Order(
-            await this.fillCustomerDetails(orderDto),
-            await this.productsToModel(orderDto.products),
-            orderDto.deliveryDate,
-            await this.getOrderEnumStatus(orderDto.status)
-        )
-    }
-
-    /**
-     * Private methods 
-     */
-    private async productsToModel(productsDto: ProductDto[]): Promise<Product[]> {
-        let products: Product[] = [];
-        for (let element of productsDto) {
-            let productApi = await this.checkProductAvailability(element.id);
-            element.name = productApi.productName;
-            products.push(await this.productDtoToModel(element));
-        }
-        return products;
-    }
-
-    private async productDtoToModel(productDto: ProductDto): Promise<Product> {
-        return new Product(
-            productDto.id,
-            productDto.quantity,
-            productDto.name
-        )
+        return DomainMapper.orderToDto(orederResult);
     }
 
     private async findAll_(): Promise<Order[]> {
@@ -185,14 +156,12 @@ export class OrdersService implements IOrdersService {
         return await customer.getDetails();
     }
 
-    private async getOrderEnumStatus(desc: string): Promise<OrderStates> {
-        let result: OrderStates;
-        Object.values(OrderStates).forEach(async e => {
-            if (e.toString() == desc) {
-                result = e;
-            }
-        })
-        return result;
+    private async fillProductsAvailability(productsDto: ProductDto[]): Promise<ProductDto[]> {
+        for (let element of productsDto) {
+            let productApi = await this.checkProductAvailability(element.id);
+            element.name = productApi.productName;
+        }
+        return productsDto;
     }
 
     private async checkProductAvailability(id: string): Promise<ProductApiDto> {
@@ -203,8 +172,17 @@ export class OrdersService implements IOrdersService {
             if (error.code == 'ECONNREFUSED') {
                 throw new OrdersApiDomainException('Could not connect to to Products Service', 503);
             }
-            throw new OrdersApiDomainException('Product with id: ' + id + ' is not available.');
+            if (error.response.status == '404') {
+                throw new OrdersApiDomainException('Product with id: ' + id + ' is not available.');
+            }
+
         }
         return response.data;
+    }
+
+    public async deleteOrder(id: string) : Promise<ReadOrderDto>{
+        let order = await this.findById_(id);
+        let deletedOrder = await this.ordersRepository.deleteOrder(order);
+        return await DomainMapper.orderToDto(deletedOrder);
     }
 }

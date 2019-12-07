@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, UseFilters, BadRequestException, Inject, Query, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, UseFilters, BadRequestException, Inject, Query, Put, Delete } from '@nestjs/common';
 import { CustomerDto } from 'src/dto/customer.dto';
 import { validateOrReject } from 'class-validator';
 import { AllExceptionsFilter } from 'src/exceptions/http-exception.filter';
@@ -36,5 +36,11 @@ export class CustomersController {
     @UseFilters(new AllExceptionsFilter())
     async changeCustomer(@Param('id') customerId, @Body() customer: EditCustomerDto) {
         return await this.customersService.editCustomerData(customerId, customer);
+    }
+
+    @Delete(':id')
+    @UseFilters(new AllExceptionsFilter())
+    async deleteCustomer(@Param('id') id){
+        return await this.customersService.deleteCustomer(id);
     }
 }

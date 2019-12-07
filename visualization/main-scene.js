@@ -263,7 +263,7 @@ function buildWidgets() {
 
     }
     let controllerMachines = gui.addFolder(`Change Machine Position`);
-    let changePL = gui.addFolder(`Switch Machine to a different Production Line`);
+    let changePL = gui.addFolder(`Switch Machine to a different Prod. Line`);
     for (k = 0; k < this.productionLines.length; k++) {
         for (j = 0; j < this.productionLines[k].machinesListDtos.length; j++) {
             let macdesc = this.productionLines[k].machinesListDtos[j].description;

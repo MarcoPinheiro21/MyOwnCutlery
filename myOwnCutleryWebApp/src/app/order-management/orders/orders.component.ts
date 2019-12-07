@@ -136,7 +136,7 @@ export class OrdersComponent implements OnInit {
     }
   
     cancelOrder(){
-    this.ordersService.cancelOrder(this.orders[0]._id).subscribe( () => {
+    this.ordersService.cancelOrder(this.orders[0]).subscribe( () => {
       this.getOrders();
 
     });

@@ -226,3 +226,14 @@ Os testes unitários aos controllers foram desenvolvidos usando um contexto "moc
 #### Create Product
 ![OurProcessViewLevel3_CreateProduct](/Diagrams/OurProcessViewLevel3_CreateProduct.jpg)
 
+# Sprint 3
+
+### Vista Lógica **Gestão de Encomendas**
+![LogicalViewLevel3_CreateOrder](/Diagrams/Sprint3_LogicalView_L3_ordersAPI.png)
+
+### Vista de Processo **Gestão de Encomendas**
+Caso de Uso: Criação de encomenda
+![sequenceViewLevel3_CreateOrder](/Diagrams/Sprint3_SequenceView_L3_ordersAPI.png)
+
+### Vista de Implementação **Gestão de Encomendas**
+![LogicalViewLevel3_CreateOrder](/Diagrams/Sprint3_ImplementationView_L3_ordersAPI.png)

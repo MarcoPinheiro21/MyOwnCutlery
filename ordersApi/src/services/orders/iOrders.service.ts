@@ -16,4 +16,6 @@ export interface IOrdersService {
 
     updateOrder(id: string, orderDto: EditOrderDto): Promise<ReadOrderDto>;
 
+    deleteOrder(id: string) : Promise<ReadOrderDto>;
+
 }

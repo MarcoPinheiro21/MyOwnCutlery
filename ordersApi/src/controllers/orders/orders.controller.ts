@@ -33,7 +33,7 @@ export class OrdersController {
 
     }
 
-    @Delete(':id')
+    @Put(':id/cancel')
     @UseFilters(new AllExceptionsFilter())
     async cancelOrder(@Param('id') id) {
         return await this.ordersService.cancelOrderById(id);
@@ -43,5 +43,11 @@ export class OrdersController {
     @UseFilters(new AllExceptionsFilter())
     async updateOrder(@Param('id') id, @Body() orderEdit: EditOrderDto) {
         return await this.ordersService.updateOrder(id,orderEdit);
+    }
+
+    @Delete(':id')
+    @UseFilters(new AllExceptionsFilter())
+    async deleteOrder(@Param('id') id){
+        return await this.ordersService.deleteOrder(id);
     }
 }

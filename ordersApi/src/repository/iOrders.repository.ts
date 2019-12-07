@@ -1,4 +1,4 @@
-import { Order } from "src/models/order.entity";
+import { Order } from "src/domain/order.domain";
 
 export interface IOrdersRepository {
 
@@ -9,5 +9,7 @@ export interface IOrdersRepository {
     findOrderById(id: string): Promise<Order>;
 
     findOrdersByCustomerId(id: string): Promise<Order[]>;
+
+    deleteOrder(order: Order) : Promise<Order>;
 
 }
