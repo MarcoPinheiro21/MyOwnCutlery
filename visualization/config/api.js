@@ -7,7 +7,8 @@ configurationsApi = {
         productionLines: 'visualization/productionlines',
         machineTypes: 'visualization/machines/types',
         machines: 'factoryapi/machines',
-        isEnable: false
+        visMachines: 'visualization/machines',
+        isEnable: true
     },
     productionApi: {
         url: 'https://localhost:8090/productionapi/',
@@ -86,7 +87,7 @@ function updateMachinePosition(machine)
     var body=JSON.stringify(machine);
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.addEventListener("load", updateVisualizationModelListener);
-    xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines + '/' + machine.id, false );
+    xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.visMachines + '/' + machine.id, false );
     xmlHttp.setRequestHeader('Content-Type', "application/json;charset=UTF-8");  
     xmlHttp.send( body );
     return JSON.parse(xmlHttp.responseText);
@@ -97,7 +98,7 @@ function updateMovedMachine(machine)
     var body=JSON.stringify(machine);
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.addEventListener("load", updateVisualizationModelListener());
-    xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines + '/' + machine.id, false );
+    xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.visMachines + '/' + machine.id, false );
     xmlHttp.setRequestHeader('Content-Type', "application/json;charset=UTF-8");  
     xmlHttp.send( body );
     return JSON.parse(xmlHttp.responseText);
@@ -185,12 +186,12 @@ const machineTypeMockResponse = `[
                 "operationType": {
                     "operationTypeId": 1,
                     "desc": "op1",
-                    "executionTime": 60,
+                    "executionTime": 12,
                     "setupTime": 5
                 }
             }
         ],
-        "visualizationModel": "Robotic Arm"
+        "visualizationModel": "Hydraulic Press"
     },
     {
         "id": 2,
@@ -203,19 +204,8 @@ const machineTypeMockResponse = `[
                 "operationType": {
                     "operationTypeId": 2,
                     "desc": "op2",
-                    "executionTime": 30,
-                    "setupTime": 6
-                }
-            },
-            {
-                "operationId": 1,
-                "toolId": 1,
-                "tool": "Hammer",
-                "operationType": {
-                    "operationTypeId": 1,
-                    "desc": "op1",
-                    "executionTime": 60,
-                    "setupTime": 5
+                    "executionTime": 10,
+                    "setupTime": 2
                 }
             }
         ],

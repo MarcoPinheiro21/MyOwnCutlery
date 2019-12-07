@@ -4,7 +4,7 @@ defaultConfig = {
         "Robotic Arm", "Hydraulic Press"]
     },
     lines:{
-        initialX: 38,
+        initialX: 76,
         finalX: -75,
         lineAY: 15,
         lineBY: -14.5,

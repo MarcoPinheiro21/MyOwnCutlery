@@ -22,7 +22,7 @@ var renderer = new THREE.WebGLRenderer();
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
 var gui = new dat.GUI();
 
-var groupFork = new THREE.Group();
+var groupFork;
 var groupSpoon = new THREE.Group();
 
 var linesX = LINE.initialX;
@@ -60,6 +60,8 @@ this.productionLines = getProductionLines();
 this.machineTypes = getMachineTypes();
 this.machines = getMachines();
 this.products = getProducts();
+getProductPlanToProducts();
+getMachineTypeToMachines();
 buildWidgets();
 buildScene();
 
@@ -69,10 +71,6 @@ camera.position.y = 20;
 controls.update();
 
 animate();
-
-//Timeouts
-timeoutLineA();
-timeoutLineB();
 
 /** 
  * **************************************************************************************************
@@ -118,16 +116,15 @@ function buildTables() {
 }
 
 function buildFork(x, y, z) {
+    groupFork = new THREE.Group();
     var loader = new THREE.ColladaLoader();
     loader.load(API_URL + 'models/fork.dae', collada => {
         collada.scene.scale.set(0.50, 0.8, 1);
-        collada.scene.translateX(x);
-        collada.scene.translateY(y);
-        collada.scene.translateZ(z);
+        collada.scene.position.set(x, y, z);
         collada.scene.rotateZ(Math.PI);
-
         groupFork.add(collada.scene)
     });
+    groupFork.name = 'fork';
     scene.add(groupFork);
 }
 
@@ -204,30 +201,6 @@ function getModelOfMachineType(machineTypeId) {
     return result;
 }
 
-function timeoutLineA() {
-    setTimeout(function () {
-        groupFork.position.x--;
-
-        if (groupFork.position.x == LINE.finalX) {
-            groupFork.position.x = 0;
-        }
-
-        timeoutLineA();
-    }, 300);
-}
-
-function timeoutLineB() {
-    setTimeout(function () {
-        groupSpoon.position.x--;
-
-        if (groupSpoon.position.x == LINE.finalX) {
-            groupSpoon.position.x = 0;
-        }
-
-        timeoutLineB();
-    }, 300);
-}
-
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
@@ -294,23 +267,129 @@ function buildWidgets() {
     }
     let controllerProducts = gui.addFolder(`Begin production of Product`);
     for (r = 0; r < products.length; r++) {
-        var prod= products[r];
+        var prod = products[r];
         var button = {
             add: function () {
-                /*var mtc = getMachineByDesc(macdesc);
-                swapMachine(mtc, parseInt(selectedPosition.Position))
-                mtc.productionLinePosition = parseInt(selectedPosition.Position)
-                if (configurationsApi.factoryApi.isEnable) {
-                    updateMachinePosition(mtc)
-                } else {
-                    updateVisualizationModelListener()
-                }*/
+                initiateProduct(prod);
             }
         };
         var line = controllerProducts.addFolder(prod.productName);
-        line.add(button, 'add').name('Save Change');
+        line.add(button, 'add').name('Initiate');
     }
 
+}
+
+function initiateProduct(product) {
+    var capablePl = checkIsProducible(product.productPlan);
+    if(!capablePl) {
+        window.alert('There is no production line cabable of making that product!');
+        return;
+    }
+
+    var position;
+    if (capablePl['index'] % 2 == 0) {
+        position = { x: -37, y: 6, z: 15 * (capablePl['index'] / 2) };
+    } else {
+        position = { x: -37, y: 6, z: -15 * capablePl['index'] };
+    }
+
+    buildFork(position.x, position.y, position.z);
+    timeout(capablePl, position, 1, product.productPlan);
+}
+
+function timeout(capablePl, position, cont, productPlan) {
+    setTimeout(function () {
+        var productionLinePlacement = (10 * (cont) - 3);
+        let time = checkMachine(productPlan, cont);
+        if((groupFork.position.x === productionLinePlacement) && (cont <= capablePl.machinesListDtos.length)) {
+            if(!!time){
+                timeoutOperation(time, capablePl, position, cont, productPlan);
+            } else {
+                cont++;
+                groupFork.position.x++;
+                timeout(capablePl, position, cont, productPlan);
+            }                  
+        } else if (groupFork.position.x == LINE.initialX) {
+            scene.remove(scene.getObjectByName('fork'));
+            groupFork.position.x = position.x;
+            groupFork.position.y = position.x;
+            groupFork.position.z = position.y;
+        } else {
+            groupFork.position.x++;
+            timeout(capablePl, position, cont, productPlan);
+        }
+    }, 300);
+}
+
+function timeoutOperation(time, capablePl, position, cont, productPlan){
+    setTimeout(function () { 
+        time--;
+        if(time == 0){
+            groupFork.position.x++;
+            cont++;
+            timeout(capablePl, position, cont, productPlan);
+        }else{
+            timeoutOperation(time, capablePl, position, cont, productPlan);
+        }
+    }, 1000);
+}
+
+function checkMachine(productPlan, cont) {
+    let flag = 0;
+    productPlan.map(pp => {
+        if (pp.machine.productionLinePosition === cont) {
+            flag = pp.time;
+            return;
+        }
+    })
+    return flag;
+}
+
+function checkIsProducible(productPlan) {
+    let capablePl;
+    let cont = 0;
+    this.productionLines.map(pl => {
+        pl['flag'] = true;
+        pl['index'] = ++cont;
+        productPlan.map(operation => {
+            operation['flag'] = false;
+            pl.machinesListDtos.map(mac => {
+                mac['machineType'] = machineTypes.filter(mt => mt.id === mac.machineTypeId)[0];
+                let ops = mac.machineType.operationList.filter(op => 
+                    op.tool === operation.tool && 
+                    op.operationType.desc === operation.operationType               
+                    );
+                if(ops.length > 0 ){
+                    operation['flag'] = true;
+                    operation['time'] = ops[0].operationType.executionTime + ops[0].operationType.setupTime;
+                    operation['machine'] = mac;
+                }
+            });
+            if(operation['flag'] === false){
+                pl['flag'] = false;
+                return;
+            }
+        });
+        if(pl['flag'] === false){
+            return;
+        } else {
+            capablePl = pl;
+        }
+    });
+
+    return capablePl;
+}
+
+function getProductPlanToProducts() {
+    this.products.map (prod => {
+        prod['productPlan'] = getProductPlan(prod.productId);
+    });
+}
+
+function getMachineTypeToMachines() {
+    this.machines.map(mac => {
+        mac['machineType'] = machineTypes.filter(mt => mt.id === mac.machineTypeId)[0];
+    })
 }
 
 function swapMachine(machine, position) {
