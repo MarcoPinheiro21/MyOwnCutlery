@@ -71,7 +71,7 @@ Executar os comandos:
 ## Modelo de domínio
 
 Destacam-se os agregados identificados a vermelho:
-![ModelDomain](/Diagrams/ModelDomain.jpg)
+![ModelDomain](/Diagrams/Model_Domain.jpg)
 
 
 ## Decisões de implementação
