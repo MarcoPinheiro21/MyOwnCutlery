@@ -46,6 +46,7 @@ var roboticArms = [];
 var pressMachines = [];
 var productionLines;
 var machineTypes;
+var products;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -56,6 +57,7 @@ scene.add(axesHelper);
 
 this.productionLines = getProductionLines();
 this.machineTypes = getMachineTypes();
+this.products = getProducts();
 buildWidgets();
 buildScene();
 
@@ -83,37 +85,34 @@ function buildScene() {
 
     scene.add(light);
     scene.add(directionalLight);
-
-    buildFork(linesX, lineAY, linesZ);
-    buildSpoon(linesX, lineBY, linesZ);
 }
 
 function buildFloor() {
     let floor = new Floor();
-    scene.add( floor.buildFloor() );
+    scene.add(floor.buildFloor());
 }
 
 function buildTables() {
-    nProductionLines=0;
+    nProductionLines = 0;
     var tables = [];
     var table;
     var i;
     this.productionLines.forEach(function (e) {
-        tables[nProductionLines]=new Table(e.productionLineName);
+        tables[nProductionLines] = new Table(e.productionLineName);
         nProductionLines++;
     });
-    for(i=1;i<=nProductionLines;i++){
-        if(i%2==0){
-            table = tables[i-1].buildProductionLine(0.5, { x: 30, y: 0, z: 15*(i/2) });
+    for (i = 1; i <= nProductionLines; i++) {
+        if (i % 2 == 0) {
+            table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: 15 * (i / 2) });
             scene.add(table);
-        }else{
-            table = tables[i-1].buildProductionLine(0.5, { x: 30, y: 0, z: -15*i });
+        } else {
+            table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: -15 * i });
             scene.add(table);
         }
-        
+
     }
 
-        
+
 }
 
 function buildFork(x, y, z) {
@@ -144,28 +143,28 @@ function buildSpoon(x, y, z) {
     scene.add(groupSpoon);
 }
 
-function buildMachine(machine,productionLineNumber,model) {
-    var productionLinePlacement= -30;
-    productionLinePlacement = productionLinePlacement + (10*(machine.productionLinePosition-1));
+function buildMachine(machine, productionLineNumber, model) {
+    var productionLinePlacement = -30;
+    productionLinePlacement = productionLinePlacement + (10 * (machine.productionLinePosition - 1));
 
     let newSceneObject;
     switch (model) {
         case "Robotic Arm":
             let roboticArm = new RoboticArm(machine.description);
             roboticArms.push(roboticArm);
-            if(productionLineNumber%2==0){
-                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement-8, y: 0, z: (15*(productionLineNumber/2))+10});
-            }else{
-                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement-8, y: 0, z: (-15*productionLineNumber)+10});
+            if (productionLineNumber % 2 == 0) {
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (15 * (productionLineNumber / 2)) + 10 });
+            } else {
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (-15 * productionLineNumber) + 10 });
             }
             break;
         case "Hydraulic Press":
             let pressMachine = new PressMachine(machine.description);
             pressMachines.push(pressMachine);
-            if(productionLineNumber%2==0){
-                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement, y: 5, z: (15*(productionLineNumber/2))-6});
-            }else{
-                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement, y: 5, z: (-15*productionLineNumber)-6});
+            if (productionLineNumber % 2 == 0) {
+                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement, y: 5, z: (15 * (productionLineNumber / 2)) - 6 });
+            } else {
+                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement, y: 5, z: (-15 * productionLineNumber) - 6 });
             }
             break;
     }
@@ -173,21 +172,21 @@ function buildMachine(machine,productionLineNumber,model) {
 }
 
 function buildMachines() {
-    var plCount=0;
+    var plCount = 0;
     this.productionLines.forEach(function (pl) {
         plCount++;
         var count = 1;
         pl.machinesListDtos.forEach(function (machine) {
 
-            if(machine.productionLinePosition ==0){
-                machine.productionLinePosition=count;
-                if(configurationsApi.factoryApi.isEnable){
+            if (machine.productionLinePosition == 0) {
+                machine.productionLinePosition = count;
+                if (configurationsApi.factoryApi.isEnable) {
                     updateMachinePosition(machine);
                 }
             }
 
             var model = getModelOfMachineType(machine.machineTypeId);
-            buildMachine(machine,plCount,model);
+            buildMachine(machine, plCount, model);
             count++;
         });
     });
@@ -196,7 +195,7 @@ function buildMachines() {
 function getModelOfMachineType(machineTypeId) {
     var result;
     this.machineTypes.forEach(function (type) {
-        if(type.id === machineTypeId){
+        if (type.id === machineTypeId) {
             result = type.visualizationModel;
         }
     });
@@ -249,132 +248,151 @@ function buildWidgets() {
     let selectedPosition = {
         Position: ""
     };
-    
+
 
     let controllerMachineTypes = gui.addFolder(`Change Model of Machine Type`)
     for (i = 0; i < this.machineTypes.length; i++) {
         let idx = i;
-        
+
         controllerMachineTypes.addFolder(this.machineTypes[i].desc)
             .add(selectedMachine, 'type', MODELS)
-            .onChange((selectedValue) => 
-                updateModel(idx,selectedValue)
-                );
-        
-        
+            .onChange((selectedValue) =>
+                updateModel(idx, selectedValue)
+            );
+
+
     }
     let controllerMachines = gui.addFolder(`Change Machine Position`);
     let changePL = gui.addFolder(`Switch Machine to a different Production Line`);
     for (k = 0; k < this.productionLines.length; k++) {
         for (j = 0; j < this.productionLines[k].machinesListDtos.length; j++) {
-            let macdesc= this.productionLines[k].machinesListDtos[j].description;
-            var button = { 
-                add:function(){
-                    var mtc=getMachineByDesc(macdesc);
-                    swapMachine(mtc,parseInt(selectedPosition.Position))
-                    mtc.productionLinePosition=parseInt(selectedPosition.Position)
-                    if(configurationsApi.factoryApi.isEnable){
+            let macdesc = this.productionLines[k].machinesListDtos[j].description;
+            var button = {
+                add: function () {
+                    var mtc = getMachineByDesc(macdesc);
+                    swapMachine(mtc, parseInt(selectedPosition.Position))
+                    mtc.productionLinePosition = parseInt(selectedPosition.Position)
+                    if (configurationsApi.factoryApi.isEnable) {
                         updateMachinePosition(mtc)
-                    }else{
+                    } else {
                         updateVisualizationModelListener()
                     }
                 }
             };
-            var line=controllerMachines.addFolder(macdesc);
-                line.add(selectedPosition, 'Position');
-                line.add(button,'add').name('Save Change');
+            var line = controllerMachines.addFolder(macdesc);
+            line.add(selectedPosition, 'Position');
+            line.add(button, 'add').name('Save Change');
 
             changePL.addFolder(macdesc)
                 .add(selectedMachine, 'type', plNames).name('Production Line:')
-                .onChange((selectedValue) => 
-                    updateProductionLines(macdesc,selectedValue)
-                    );
-        }   
+                .onChange((selectedValue) =>
+                    updateProductionLines(macdesc, selectedValue)
+                );
+        }
     }
+    let controllerProducts = gui.addFolder(`Begin production of Product`);
+    for (r = 0; r < products.length; r++) {
+        var prod= products[r];
+        var button = {
+            add: function () {
+                /*var mtc = getMachineByDesc(macdesc);
+                swapMachine(mtc, parseInt(selectedPosition.Position))
+                mtc.productionLinePosition = parseInt(selectedPosition.Position)
+                if (configurationsApi.factoryApi.isEnable) {
+                    updateMachinePosition(mtc)
+                } else {
+                    updateVisualizationModelListener()
+                }*/
+            }
+        };
+        var line = controllerProducts.addFolder(prod.productName);
+        line.add(button, 'add').name('Save Change');
+    }
+
 }
 
-function swapMachine(machine,position) {
-    var oldpos=machine.productionLinePosition;
+function swapMachine(machine, position) {
+    var oldpos = machine.productionLinePosition;
     this.productionLines.forEach(function (pl) {
-        if(pl.productionLineId == machine.productionLineId){
+        if (pl.productionLineId == machine.productionLineId) {
             pl.machinesListDtos.forEach(function (m) {
-                if(m.productionLinePosition==position){
-                    m.productionLinePosition=oldpos;
+                if (m.productionLinePosition == position) {
+                    m.productionLinePosition = oldpos;
                 }
-                if(m==machine){
-                    m.productionLinePosition=position;
+                if (m == machine) {
+                    m.productionLinePosition = position;
                 }
             });
         }
     });
 }
 
-function updateModel(idx,selectedValue) {
-    this.machineTypes[idx].visualizationModel=selectedValue;
-    if(configurationsApi.factoryApi.isEnable){
-        updateVisualizationModel(this.machineTypes[idx]);  
-    }else{
+function updateModel(idx, selectedValue) {
+    this.machineTypes[idx].visualizationModel = selectedValue;
+    if (configurationsApi.factoryApi.isEnable) {
+        updateVisualizationModel(this.machineTypes[idx]);
+    } else {
         updateVisualizationModelListener();
     }
 }
 
-function updateVisualizationModelListener(){
-    
-    scene=new THREE.Scene();
+function updateVisualizationModelListener() {
+
+    scene = new THREE.Scene();
     buildScene();
 }
 
-function updateProductionLines(macdesc, pl){
+function updateProductionLines(macdesc, pl) {
     var machine = getMachineByDesc(macdesc);
     var oldPlIndex;
     var newPlIndex;
     var newPlId;
-    for(i=0; i<productionLines.length;i++){
-        if(productionLines[i].productionLineId==machine.productionLineId){
-            oldPlIndex=i;
+    for (i = 0; i < productionLines.length; i++) {
+        if (productionLines[i].productionLineId == machine.productionLineId) {
+            oldPlIndex = i;
         }
-        if(productionLines[i].productionLineName==pl){
-            newPlIndex=i;
-            newPlId=productionLines[i].productionLineId;
+        if (productionLines[i].productionLineName == pl) {
+            newPlIndex = i;
+            newPlId = productionLines[i].productionLineId;
         }
     }
-    
-    
-    newPlList=productionLines[oldPlIndex].machinesListDtos.filter(mac => mac !== machine);
-    productionLines[oldPlIndex].machinesListDtos=newPlList;
-    machine.productionLineId=newPlId;
-    machine.productionLinePosition=findFirstFree(newPlIndex);
+
+
+    newPlList = productionLines[oldPlIndex].machinesListDtos.filter(mac => mac !== machine);
+    productionLines[oldPlIndex].machinesListDtos = newPlList;
+    machine.productionLineId = newPlId;
+    machine.productionLinePosition = findFirstFree(newPlIndex);
     productionLines[newPlIndex].machinesListDtos.push(machine);
 
-    if(configurationsApi.factoryApi.isEnable){
+    if (configurationsApi.factoryApi.isEnable) {
         updateMovedMachine(machine);
-    }else{
-        updateVisualizationModelListener(); 
+    } else {
+        updateVisualizationModelListener();
     }
 }
 
-function findFirstFree(index){
-    
-    for(c=1; c<200; c++){
-        let b=true
+function findFirstFree(index) {
+
+    for (c = 1; c < 200; c++) {
+        let b = true
         productionLines[index].machinesListDtos.forEach(function (machine) {
-            if(machine.productionLinePosition==c){
-                b=false;
+            if (machine.productionLinePosition == c) {
+                b = false;
             }
         });
-        if(b){
+        if (b) {
             return c;
         }
     }
 }
 
 
-function getMachineByDesc(macdesc){
+function getMachineByDesc(macdesc) {
     var machine;
     productionLines.forEach(e => {
         e.machinesListDtos.forEach(m => {
-            if(m.description==macdesc){
-                machine=m;
+            if (m.description == macdesc) {
+                machine = m;
             }
         });
     });

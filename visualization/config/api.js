@@ -8,6 +8,10 @@ configurationsApi = {
         machineTypes: 'visualization/machines/types',
         machines: 'visualization/machines',
         isEnable: false
+    },
+    productionApi: {
+        url: 'https://localhost:8090/producionapi',
+        products: 'products/',
     }
 };
 
@@ -29,6 +33,28 @@ function getMachineTypes()
     } 
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machineTypes, false );
+    xmlHttp.send( null );
+    return JSON.parse(xmlHttp.responseText);
+}
+
+function getProducts()
+{
+    if(!configurationsApi.factoryApi.isEnable) {
+        return JSON.parse(productsMock);
+    } 
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", configurationsApi.productionApi.url + configurationsApi.productionApi.products, false );
+    xmlHttp.send( null );
+    return JSON.parse(xmlHttp.responseText);
+}
+
+function getProductPlan(id)
+{
+    if(!configurationsApi.factoryApi.isEnable) {
+        return JSON.parse(planMock);
+    } 
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", configurationsApi.productionApi.url + configurationsApi.productionApi.products+id+"/plan", false );
     xmlHttp.send( null );
     return JSON.parse(xmlHttp.responseText);
 }
@@ -234,3 +260,38 @@ const machinesDescriptionsMock = `[
     }
 ]`;
 
+const productsMock = `[
+    {
+        "productId": 1,
+        "productName": "p1",
+        "planId": 1
+    },
+    {
+        "productId": 2,
+        "productName": "p2",
+        "planId": 2
+    },
+    {
+        "productId": 4,
+        "productName": "p3",
+        "planId": 4
+    },
+    {
+        "productId": 13,
+        "productName": "Spork",
+        "planId": 13
+    }
+]`
+
+planMock =`[
+    {
+        "operationId": 1,
+        "tool": "Hammer",
+        "operationType": "op1"
+    },
+    {
+        "operationId": 2,
+        "tool": "Drill",
+        "operationType": "op2"
+    }
+]`
