@@ -174,6 +174,35 @@ Resultado dos diversos testes desenvolvidos:
 
 ![PostmanTestResults](/Diagrams/PostmanResults.png)
 
+### Sprint2
+
+**Testes de integração do módulo de Gestão de Encomendas/Clientes**
+
+Para além dos testes de integração anteriormente desenvolvidos foi necessário criar um cenário de teste que consiga passar por todos os pedidos solicitados ao backend.
+
+Plano de testes:
+
+- Criar User
+- Criar Cliente
+- Criar Encomenda
+
+- Consultar Encomenda
+- Consultar Cliente
+
+- Editar Cliente
+- Editar Encomenda
+- Cancelar Encomenda
+
+- Apagar Cliente
+- Apagar Encomenda
+
+Resultado:
+
+![PostmanTestResultS2](/PostmanTests/S2Result.png)
+
+[Ficheiro da collection do Postman com testes](/PostmanTests/ENVTESTE.postman_environment.json)
+
+
 ## Unitários
 
 Os testes unitários aos controllers foram desenvolvidos usando um contexto "mock" em memória que simula a base de dados MS-SQL que temos configurada.
