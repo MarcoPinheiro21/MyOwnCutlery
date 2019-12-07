@@ -76,7 +76,8 @@ export class ClientsComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
-      client: this.clients[0]
+      client: this.clients[0],
+      hasOrder: this.hasOrder
     };
     dialogConfig.width = "555px";
     dialogConfig.height = "255px";

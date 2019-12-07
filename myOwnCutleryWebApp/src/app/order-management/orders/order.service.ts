@@ -13,7 +13,7 @@ import { Client } from 'src/app/models/client.model';
   providedIn: "root"
 })
 export class OrderService {
- 
+
   private url = ordersApi.url + "/ordersapi/";
   private urlProduction = productionApi.url + "/productionapi/products/";
 
@@ -63,8 +63,8 @@ export class OrderService {
 
   cancelOrder(order: Order): Observable<Order[]> {
    return this.http
-   .put<Order[]>(this.url + 'orders/' + order._id+'/cancel',order)
+   .put<Order[]>(this.url + 'orders/' + order['_id'] + '/cancel', order)
    .pipe(catchError(null));
   }
 
-    }
+}

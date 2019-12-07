@@ -9,12 +9,14 @@ import { Client } from 'src/app/models/client.model';
 })
 export class ClientRightForgottenDialogComponent implements OnInit {
 
-  client : Client;
+  client: Client;
+  hasOrder: boolean;
 
   constructor(
     private dialogRef: MatDialogRef<ClientRightForgottenDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data)  {
       this.client = data.client;
+      this.hasOrder = data.hasOrder;
      }
 
   ngOnInit() {

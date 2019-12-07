@@ -12,10 +12,10 @@ export class OrderCancelationDialogComponent implements OnInit {
     order: Order;
   constructor(
     private dialogRef: MatDialogRef<OrderCancelationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) data){
+    @Inject(MAT_DIALOG_DATA) data) {
       this.order = data.order;
     }
-   
+
 
   ngOnInit() {
   }

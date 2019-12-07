@@ -9,7 +9,7 @@ import { ProductsService } from "src/app/master-data-web/product/product.service
 import { Client } from "src/app/models/client.model";
 import { OrderLine } from 'src/app/models/order-line.model';
 import { OrderCreationDialogComponent } from './order-creation-dialog/order-creation-dialog.component';
-import { OrderCancelationDialogComponent} from './order-cancelation-dialog/order-cancelation-dialog.component';
+import { OrderCancelationDialogComponent } from './order-cancelation-dialog/order-cancelation-dialog.component';
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
@@ -118,27 +118,25 @@ export class OrdersComponent implements OnInit {
         });
     });
   }
-  openCancelationDialog(selectOrder?){
+  openCancelationDialog(selectOrder?) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data ={
-
-      order: this.orders[0]
+    dialogConfig.data = {
+      order: selectOrder
     };
     dialogConfig.width = "555px";
     dialogConfig.height = "255px";
-   
-    this.dialog
-    .open(OrderCancelationDialogComponent, dialogConfig)
-    .afterClosed()
-    .subscribe(result => {
-      return this.cancelOrder();
-    });
-    }
-  
-    cancelOrder(){
-    this.ordersService.cancelOrder(this.orders[0]).subscribe( () => {
-      this.getOrders();
 
+    this.dialog
+      .open(OrderCancelationDialogComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(result => {
+        return this.cancelOrder(result.order);
+      });
+  }
+
+  cancelOrder(order) {
+    this.ordersService.cancelOrder(order).subscribe(() => {
+      this.getOrders();
     });
 
   }
