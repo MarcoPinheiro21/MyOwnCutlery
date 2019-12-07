@@ -6,14 +6,25 @@ configurationsApi = {
         url: 'https://localhost:5001/',
         productionLines: 'visualization/productionlines',
         machineTypes: 'visualization/machines/types',
-        machines: 'visualization/machines',
+        machines: 'factoryapi/machines',
         isEnable: false
     },
     productionApi: {
-        url: 'https://localhost:8090/producionapi',
+        url: 'https://localhost:8090/productionapi/',
         products: 'products/',
     }
 };
+
+function getMachines() {
+    if(!configurationsApi.factoryApi.isEnable) {
+        return JSON.parse(machinesDescriptionsMock);
+    } 
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines, false );
+    console.log(configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines);
+    xmlHttp.send( null );
+    return JSON.parse(xmlHttp.responseText);
+}
 
 function getProductionLines()
 {

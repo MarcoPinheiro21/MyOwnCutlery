@@ -46,7 +46,7 @@ function showTooltip() {
     // var scale = new THREE.Vector3();
     // hoveredObj.matrix.decompose(position, quaternion, scale);
   
-    let element = getMachineDescriptions().filter(e =>  { 
+    let element = machines.filter(e =>  { 
       let machineType = machineTypes.filter(mt => mt.id === e.machineTypeId)[0];
       e["machineType"] = machineType;
       return hoveredObj.userData.hasOwnProperty("parentGroup") && (e.description == hoveredObj.userData.parentGroup);

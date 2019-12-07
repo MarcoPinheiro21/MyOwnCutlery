@@ -45,6 +45,7 @@ var axesHelper = new THREE.AxesHelper(10);
 var roboticArms = [];
 var pressMachines = [];
 var productionLines;
+var machines;
 var machineTypes;
 var products;
 
@@ -57,6 +58,7 @@ scene.add(axesHelper);
 
 this.productionLines = getProductionLines();
 this.machineTypes = getMachineTypes();
+this.machines = getMachines();
 this.products = getProducts();
 buildWidgets();
 buildScene();
