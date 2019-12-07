@@ -266,6 +266,40 @@ Os testes unitários aos controllers foram desenvolvidos usando um contexto "moc
 
 # Sprint 3
 
+### **Nível 1**
+
+#### **Alternativa 1**
+![1ª Alternativa](/Diagrams/AlternativeDesignLevel1.jpg)
+
+Esta alternativa implementa a NoSQL (mongoDB) dentro do sistema
+
+#### **Alternativa Utilizada**
+![Alternativa Utilizada](/Diagrams/OurDesignLevel1.jpg)
+
+Usamos esta implementação com o NoSQL (mongoDB) fora do sistema, que se encontra no mongoDB Atlas
+
+### **Nível 2**
+
+#### **Alternativa 1**
+![1ª Alternativa](/Diagrams/1AlternativeDesignLevel2.jpg)
+
+Alternativa implementa a NoSQL (mongoDB) fora do sistema.
+Base de dados partilhada para productionApi e factoryApi
+
+#### **Alternativa 2**
+![2ª Alternativa](/Diagrams/2AlternativeDesignLevel2.jpg)
+
+Esta alternativa implementa a NoSQL (mongoDB) dentro do sistema.
+Base de dados partilhada para productionApi e factoryApi
+
+#### **Alternativa Utilizada**
+![Alternativa Utilizada](/Diagrams/OurDesignLevel2.jpg)
+
+Usamos esta implementação com o NoSQL (mongoDB) fora do sistema, que se encontra no mongoDB Atlas.
+Criação de duas bases dados, uma para a productionApi e outra para factoryApi.
+
+### **Nível 3**
+
 ### Vista Lógica **Gestão de Encomendas**
 ![LogicalViewLevel3_CreateOrder](/Diagrams/Sprint3_LogicalView_L3_ordersAPI.png)
 
