@@ -13,9 +13,9 @@
       <span class="mat-cell" style="margin-left: 35px;">{{order.deliveryDate}}</span>
       <span class="mat-cell" style="margin-left: 65px;">{{order.status}}</span>
       <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-        (click)="openEditionDialog(order)">Edit</button>
+        (click)="openEditionDialog(order)" [disabled]="order.status === 'Cancelled'">Edit</button>
       <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-        (click)="openCancelationDialog(order)">Cancel</button>
+        (click)="openCancelationDialog(order)" [disabled]="order.status === 'Cancelled'">Cancel</button>
     </mat-expansion-panel-header>
 
     <div *ngIf="!!orders" class="subRow">

@@ -86,7 +86,9 @@ export class ClientsComponent implements OnInit {
       .open(ClientRightForgottenDialogComponent, dialogConfig)
       .afterClosed()
       .subscribe(result => {
+        if(result!=null){
           return this.forgetClient();
+        }
       });
   }
 

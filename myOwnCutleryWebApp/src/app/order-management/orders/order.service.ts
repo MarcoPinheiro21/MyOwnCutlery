@@ -4,7 +4,6 @@ import { Observable } from "rxjs";
 import { Order } from "src/app/models/order.model";
 import { catchError } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
-import { OrderLine } from 'src/app/models/order-line.model';
 import { CreateOrder } from './orders.component';
 import { Product } from 'src/app/models/product.model';
 import { Client } from 'src/app/models/client.model';
@@ -20,7 +19,7 @@ export class OrderService {
   constructor(private http: HttpClient) { }
 
   getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(this.url + 'orders');
+    return this.http.get<Order[]>(this.url + 'orders?includeCancelled=true');
   }
 
   private getOrdersById(Order): Observable<Order> {
