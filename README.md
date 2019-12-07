@@ -31,6 +31,10 @@ O projeto irá ser desenvolvido ao longo de todo o semestre num modo de Project 
     * Visualization
     * Production Planning
 
+* Sprint C
+	* Orders Api
+	* Authentication Api
+
 
 ## Walking Skeleton
 
@@ -44,6 +48,8 @@ A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi
 * Visualization: lei19-20_s5_3na_64/visualization
 * ProductionAPI: lei19-20_s5_3na_64/productionApiSolution
 * Master-data-web: lei19-20_s5_3na_64/myOwnCutleryWebApp
+* AuthenticationAPI: lei19-20_s5_3na_64/authApi
+* OrdersAPI: lei19-20_s5_3na_64/ordersApi
 
 ### Requisitos
 
@@ -52,6 +58,7 @@ A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi
 * Docker 19.03.2
 * Instância Microsoft SQL Server 2017 a correr na porta 1433
     * Para efeitos deste projeto foi utilizada a imagem docker **mcr.microsoft.com/mssql/server:2017-CU8-ubuntu**
+* Base de dados NoSQl (mongoDB) guardada na mongoDB Atlas (mLab)
 
 ### Instalação
 Executar os comandos:
@@ -59,6 +66,7 @@ Executar os comandos:
 * 'dotnet run' dentro do diretório factoryApiSolution/factoryApi e productionApiSolution/productionApi
 * 'ng serve' dentro do dirétorio myOwnCutleryWebApp
 * 'npx serve -l 6001' dentro do diretório  visualization
+* 'npm start' dentro do diretório ordersApi e authApi
 
 ## Modelo de domínio
 
@@ -74,6 +82,7 @@ Destacam-se os agregados identificados a vermelho:
 - Uso de uma camada intermédia denominada "Service" entre o controller e o repositório.
 - Bootstrap de Tools e OperationTypes na instanciação dos respetivos controllers.
 - Utilização de uma única instância de SQL Server com duas bases de dados, uma por cada projecto: FactoryDB e ProductionDB
+- Utilização de duas bases de dados NoSQL (mongoDB) uma para registo de clientes e gestão de encomendas e outra para registo de utilizadores
 
 ## Precedências na criação de Entidades
 - A criação de 'MachineType' e 'Product' requerem a existência de pelo menos uma instância de 'Operation'.
