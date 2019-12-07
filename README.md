@@ -300,6 +300,9 @@ Criação de duas bases dados, uma para a productionApi e outra para factoryApi.
 
 ### **Nível 3**
 
+### Vista Fisíca **Gestão de Encomendas**
+![PhysicalViewLevel3_CreateOrder](/Diagrams/Sprint3_PhysicalView_L3_ordersAPI.png)
+
 ### Vista Lógica **Gestão de Encomendas**
 ![LogicalViewLevel3_CreateOrder](/Diagrams/Sprint3_LogicalView_L3_ordersAPI.png)
 
