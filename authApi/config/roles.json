@@ -1,0 +1,25 @@
+{
+    "roles": {
+        "client": {
+            "createClient": true,
+            "createOrder": true,
+            "editOrder": true,
+            "cancelOrder": false,
+            "consultAllClientFields": true,
+            "checkAllOrders": false,
+            "editClient": true
+        },
+        "clientConfiguration": {
+            "createClient": false,
+            "createOrder": false,
+            "editOrder": true,
+            "cancelOrder": true,
+            "consultAllClientFields": false,
+            "checkAllOrders": true,
+            "editClient": true
+        },
+        "dataAdmin": {},
+        "admin": {},
+        "productionManager": {}
+    }
+}
