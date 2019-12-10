@@ -70,7 +70,7 @@ Executar os comandos:
 
 ## Modelo de domínio
 
-Destacam-se os agregados identificados a vermelho:
+Destacam-se os agregados identificados a azul:
 ![ModelDomain](/Diagrams/Model_Domain.jpg)
 
 
