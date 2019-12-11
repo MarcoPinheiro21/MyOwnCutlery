@@ -3,7 +3,7 @@
         "client": {
             "createClient": true,
             "createOrder": true,
-            "editOrder": true,
+            "editOrder": false,
             "cancelOrder": false,
             "consultAllClientFields": true,
             "checkAllOrders": false,
