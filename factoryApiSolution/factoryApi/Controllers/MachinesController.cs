@@ -44,6 +44,28 @@ namespace factoryApi.Controllers
 
             return Ok(_service.FindAllMachines());
         }
+        
+        // GET: factoryapi/machines
+        [HttpGet ("active")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<MachineDto>))]
+        [ProducesResponseType(404)]
+        public ActionResult GetActivedMachines()
+        {
+            if (null != Request && Request.Query.ContainsKey("active"))
+            {
+                try
+                {
+                    return Ok(_service.FindAllActivedMachines());
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine(e);
+                    return BadRequest("teste!!");
+                }
+            }
+
+            return Ok(_service.FindAllActivedMachines());
+        }
 
         // GET: factoryapi/machines/5
         [HttpGet("{id}")]

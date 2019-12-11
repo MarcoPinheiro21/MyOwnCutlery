@@ -38,7 +38,7 @@ export class MachinesComponent implements OnInit {
       machineTypes: this.machineTypes
     };
     dialogConfig.width = '425px';
-    dialogConfig.height = '225px';
+    dialogConfig.height = '260px';
 
     this.dialog.open(MachineEditionDialogComponent, dialogConfig).afterClosed().subscribe(result => {
       if (!!result) {
@@ -59,7 +59,7 @@ export class MachinesComponent implements OnInit {
       machineTypes: this.machineTypes
     };
     dialogConfig.width = '425px';
-    dialogConfig.height = '225px';
+    dialogConfig.height = '260px';
 
     this.dialog.open(MachineCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
       if (!!result) {

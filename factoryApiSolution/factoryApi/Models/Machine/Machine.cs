@@ -8,6 +8,8 @@ namespace factoryApi.Models.Machine
     public class Machine : Entity
     {
         [Required] public string Description { get; set; }
+        
+        [Required] public Boolean Active { get; set; }
 
         [ForeignKey("MachineType")] public MachineType Type { get; set; }
 
@@ -19,7 +21,7 @@ namespace factoryApi.Models.Machine
         {
         }
 
-        public Machine(string description, MachineType type)
+        public Machine(string description, Boolean active, MachineType type)
         {
             ProductionLinePosition = 0;
             if (null == description || description.Trim().Length == 0)
@@ -32,6 +34,7 @@ namespace factoryApi.Models.Machine
                 throw new ArgumentNullException("Machine should has a machine type");
             }
 
+            Active = active;
             Description = description;
             Type = type;
         }
@@ -40,10 +43,10 @@ namespace factoryApi.Models.Machine
         {
             if (ProductionLine == null)
             {
-                return new MachineDto(Id, Description, Type.Id);
+                return new MachineDto(Id, Description, Active, Type.Id);
             }
 
-            return new MachineDto(Id, Description, Type.Id, ProductionLine.Id, ProductionLinePosition);
+            return new MachineDto(Id, Description, Active, Type.Id, ProductionLine.Id, ProductionLinePosition);
         }
     }
 }

@@ -1,16 +1,24 @@
 <mat-accordion displayMode="flat" multi class="mat-table">
   <section matSort class="mat-elevation-z2 mat-header-row">
     <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Description">Description</span>
+    <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="Active">Active</span>
     <span class="mat-header-cell" mat-sort-header="MachineTypeId">Machine Type</span>
     <span class="mat-header-cell" mat-sort-header="ProductionLineId">Production Line</span>
-    <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openCreationDialog()">New</button>
+    <button type="button" style="margin-right: 25px;" class="btn btn-primary"
+      (click)="openCreationDialog()">New</button>
   </section>
 
   <mat-expansion-panel *ngFor="let machine of machines">
     <mat-expansion-panel-header class="mat-row">
       <span class="mat-cell">{{machine.description}}</span>
+      <span class="mat-cell">
+        <div *ngIf="machine.active; else noTemp">
+          Yes 
+        </div>
+      </span>
       <span class="mat-cell">{{machine.machineType.desc}}</span>
-      <span class="mat-cell" *ngIf="!!machine.productionLine; else blank">{{machine.productionLine.productionLineName}}</span>
+      <span class="mat-cell"
+        *ngIf="!!machine.productionLine; else blank">{{machine.productionLine.productionLineName}}</span>
       <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
         (click)="openEditionDialog(machine)">Edit</button>
     </mat-expansion-panel-header>
@@ -38,4 +46,7 @@
 
 <ng-template #blank>
   <span class="mat-cell"> - </span>
+</ng-template>
+<ng-template #noTemp>
+    No
 </ng-template>

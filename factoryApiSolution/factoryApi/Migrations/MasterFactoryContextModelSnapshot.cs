@@ -25,6 +25,8 @@ namespace factoryApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Active");
+
                     b.Property<string>("Description")
                         .IsRequired();
 
@@ -35,6 +37,8 @@ namespace factoryApi.Migrations
                     b.Property<long>("ProductionLinePosition");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Active");
 
                     b.HasIndex("Description")
                         .IsUnique();

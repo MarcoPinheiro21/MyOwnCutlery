@@ -22,6 +22,7 @@
     <Compile Remove="Model\Operation\OperationTypeDto.cs" />
     <Compile Remove="Model\**" />
     <Compile Remove="Services\MachinesService.cs" />
+    <Compile Remove="Migrations\MasterFactoryContextModelSnapshot.cs" />
   </ItemGroup>
 
   <ItemGroup>

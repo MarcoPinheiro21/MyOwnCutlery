@@ -1,10 +1,9 @@
 <h1 mat-dialog-title class="labelIcons" style="text-align: center;">Edit Machine</h1>
-<mat-dialog-content>
+<mat-dialog-content style="height: 100px;">
   <div class="row">
     <div class="col-sm-6">
       <mat-form-field>
-        <input matInput placeholder="Description" value="{{machine.description}}"
-          [(ngModel)]="machine.description">
+        <input matInput placeholder="Description" value="{{machine.description}}" [(ngModel)]="machine.description">
       </mat-form-field>
     </div>
     <div class="col-sm-6">
@@ -14,6 +13,12 @@
           {{machineType.desc}}
         </mat-option>
       </mat-select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <mat-label>Active</mat-label>
+      <mat-checkbox labelPosition="before" [(ngModel)]="machine.active"></mat-checkbox>
     </div>
   </div>
 </mat-dialog-content>

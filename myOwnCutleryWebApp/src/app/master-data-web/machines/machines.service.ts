@@ -23,6 +23,10 @@ export class MachinesService {
     return this.http.get<Machine[]>(this.url + 'machines');
   }
 
+  private getActiveMachines(): Observable<Machine[]> {
+    return this.http.get<Machine[]>(this.url + 'machines/active');
+  }
+
   private getMachinesByType(id: number): Observable<Machine[]> {
     return this.http.get<Machine[]>(this.url + 'machines' + '?type=' + id);
   }
