@@ -57,6 +57,8 @@ namespace factoryApi.Context
 
             modelBuilder.Entity<Machine>()
                 .HasIndex(i => i.Description).IsUnique();
+            
+            modelBuilder.Entity<Machine>().HasIndex(a => a.Active);
 
             modelBuilder.Entity<MachineType>()
                 .HasIndex(i => i.Desc)

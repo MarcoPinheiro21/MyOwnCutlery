@@ -33,6 +33,12 @@ namespace factoryApi.Services
         {
             return _machineRepository.GetAll();
         }
+        
+        public IEnumerable<MachineDto> FindAllActivedMachines()
+        {
+            return _machineRepository.GetAllActivedMachines();
+        }
+        
 
         public MachineDto AddMachine(CreateMachineDto createMachineDto)
         {

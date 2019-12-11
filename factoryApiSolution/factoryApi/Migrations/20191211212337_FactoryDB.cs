@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace factoryApi.Migrations
 {
-    public partial class Master : Migration
+    public partial class FactoryDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,6 +68,7 @@ namespace factoryApi.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
                     MachineType = table.Column<long>(nullable: true),
                     ProductionLineId = table.Column<long>(nullable: true),
                     ProductionLinePosition = table.Column<long>(nullable: false)
@@ -138,6 +139,11 @@ namespace factoryApi.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Machines_Active",
+                table: "Machines",
+                column: "Active");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Machines_Description",
