@@ -58,10 +58,10 @@ export class ProductionLinesComponent implements OnInit {
 
     dialogConfig.data = {
       productionline,
-      machines: this.machines
+      machines: this.machines.filter(m => m.productionLineId == 0)
     };
-    dialogConfig.width = '425px';
-    dialogConfig.height = '320px';
+    dialogConfig.width = '700px';
+    dialogConfig.height = '500px';
 
     this.dialog.open(ProductionLineDialogComponent, dialogConfig).afterClosed().subscribe(result => {
       if (!!result) {
