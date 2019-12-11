@@ -23,16 +23,20 @@ export class OrdersComponent implements OnInit {
   dialog: MatDialog;
   alertMessage: AlertMessage = <AlertMessage>{};
   thisClient: Client;
+  privileges: any;
+
   constructor(_ordersService: OrderService, private myDialog: MatDialog) {
     this.ordersService = _ordersService;
     this.dialog = myDialog;
     this.alertMessage.showAlertMsg = false;
   }
   ngOnInit() {
+    this.privileges = JSON.parse(localStorage.getItem('user_privileges'));
     this.getOrders();
   }
   public getOrders(): void {
     let userId = localStorage.getItem("user_id");
+    
     this.ordersService.getOrders().subscribe((ordersData: any) => {
       ordersData.forEach(oElement =>
         oElement.products.forEach(pElement =>
@@ -43,12 +47,17 @@ export class OrdersComponent implements OnInit {
             })
         )
       );
-      this.ordersService.getClients().subscribe((data: any) => {
-        this.thisClient = data.filter(client => client.userId === userId);
-        this.orders = ordersData.filter(
-          order => order.customerDetails.id === this.thisClient[0]._id
-        );
-      });
+      
+      if(!this.privileges.checkAllOrders) {
+        this.ordersService.getClients().subscribe((data: any) => {
+          this.thisClient = data.filter(client => client.userId === userId);
+          this.orders = ordersData.filter(
+            order => order.customerDetails.id === this.thisClient[0]._id
+          );
+        });
+      }else{
+        this.orders = ordersData;
+      }
     });
   }
   openCreationDialog() {
@@ -64,7 +73,7 @@ export class OrdersComponent implements OnInit {
         client: this.thisClient[0]._id
       };
       dialogConfig.width = '800px';
-      dialogConfig.height = '400px';
+      dialogConfig.height = '500px';
       this.dialog.open(OrderCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
         if (result != undefined) {
           this.ordersService
@@ -105,7 +114,7 @@ export class OrdersComponent implements OnInit {
         products: data
       };
       dialogConfig.width = "800px";
-      dialogConfig.height = "500px";
+      dialogConfig.height = "525px";
       this.dialog
         .open(OrderEditionDialogComponent, dialogConfig)
         .afterClosed()
