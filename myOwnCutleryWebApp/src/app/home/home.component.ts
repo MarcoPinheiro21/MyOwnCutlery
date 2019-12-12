@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.username = localStorage.getItem('user_name');
     this.homeService.getRoleByToken(localStorage.getItem('token')).subscribe(item => {
+      localStorage.setItem('user_privileges', JSON.stringify(item.privileges));
       this.role = item.role;
     });
   }

@@ -1,50 +1,63 @@
-<mat-accordion displayMode="flat" multi class="mat-table">
-  <section matSort class="mat-elevation-z2 mat-header-row">
-    <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="name">Name</span>
-    <span class="mat-header-cell" mat-sort-header="vatNumber">VAT Number</span>
-    <span class="mat-header-cell" mat-sort-header="priority">Priority Client</span>
-    <button type="button" style="margin-right: 25px;" class="btn btn-primary"
-      (click)="openRightForgottenDialog(client)">Right to be forgotten</button>
-  </section>
-
-
-  <mat-expansion-panel *ngFor="let client of clients" [expanded]="true">
-     
-    <mat-expansion-panel-header class="mat-row" *ngIf="!!clients || client.name ==='XXXXXXXX'"> 
-      <span class="mat-cell">{{client.name}}</span>
-      <span class="mat-cell" style="margin-right: 55px;">{{client.vatNumber}}</span>
-      <span class="mat-cell" style="margin-right: 55px;">{{client.priority}}</span>
-      <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-      (click)="openEditionDialog()">Edit</button>
-    </mat-expansion-panel-header>
-
-    <div *ngIf="!!clients || !client.name ==='XXXXXXXX'" class="subRow">
-      <table class="table table-sm table-active">
-        <thead class="thead-dark">
-          <tr>
-            <th>Street</th>
-            <th>Postal Code</th>
-            <th>Town</th>
-            <th>Country</th>
-            <th>Phone Number</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let client of clients">
-            <td>{{client.address.street}}</td>
-            <td>{{client.address.postalCode}}</td>
-            <td>{{client.address.town}}</td>
-            <td>{{client.address.country}}</td>
-            <td>{{client.phoneNumber}}</td>
-            <td>{{client.email}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </mat-expansion-panel>
-</mat-accordion>
+<div *ngIf="!!privileges.consultAllClientFields; else configTemplate">
+  <mat-accordion displayMode="flat" multi class="mat-table">
+    <section matSort class="mat-elevation-z2 mat-header-row">
+      <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="name">Name</span>
+      <span class="mat-header-cell" mat-sort-header="vatNumber">VAT Number</span>
+      <span class="mat-header-cell" mat-sort-header="priority">Priority Client</span>
+      <button type="button" style="margin-right: 25px;" class="btn btn-primary"
+        (click)="openRightForgottenDialog(client)">Right to be forgotten</button>
+    </section>
+    <mat-expansion-panel *ngFor="let client of clients" [expanded]="!!privileges.consultAllClientFields">
+      <mat-expansion-panel-header class="mat-row" *ngIf="!!clients || client.name ==='XXXXXXXX'"> 
+        <span class="mat-cell">{{client.name}}</span>
+        <span class="mat-cell" style="margin-right: 55px;">{{client.vatNumber}}</span>
+        <span class="mat-cell" style="margin-right: 55px;">{{client.priority}}</span>
+        <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+        (click)="openEditionDialog(client)">Edit</button>
+      </mat-expansion-panel-header>
+      <div *ngIf="!!clients || !client.name ==='XXXXXXXX'" class="subRow">
+        <table class="table table-sm table-active">
+          <thead class="thead-dark">
+            <tr>
+              <th>Street</th>
+              <th>Postal Code</th>
+              <th>Town</th>
+              <th>Country</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{client.address.street}}</td>
+              <td>{{client.address.postalCode}}</td>
+              <td>{{client.address.town}}</td>
+              <td>{{client.address.country}}</td>
+              <td>{{client.phoneNumber}}</td>
+              <td>{{client.email}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
 
 <ng-template #blank>
   <span class="mat-cell"> - </span>
+</ng-template>
+
+<ng-template #configTemplate>
+    <mat-accordion displayMode="flat" multi class="mat-table">
+        <section matSort class="mat-elevation-z2 mat-header-row">
+          <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="name">Name</span>
+        </section>
+        <mat-expansion-panel [disabled]="true" *ngFor="let client of clients" [expanded]="false">        
+          <mat-expansion-panel-header class="mat-row" *ngIf="!!clients || client.name ==='XXXXXXXX'"> 
+            <span class="mat-cell">{{client.name}}</span>
+            <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+            (click)="openEditionDialog(client)">Edit</button>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+      </mat-accordion>
 </ng-template>

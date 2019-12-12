@@ -86,6 +86,21 @@ namespace factoryApi.Repositories
             return machinesDto;
         }
 
+        public IEnumerable<MachineDto> GetAllActivedMachines()
+        {
+            IEnumerable<Machine> machines = GetAllMachines();
+            var machinesDto = new List<MachineDto>();
+            foreach (var machine in machines)
+            {
+                if (machine.Active)
+                {
+                    machinesDto.Add(machine.toDto());
+                }
+            }
+
+            return machinesDto;
+        }
+
         private IEnumerable<Machine> GetAllMachines()
         {
             return _context.Machines.Include(t => t.Type)
@@ -102,7 +117,7 @@ namespace factoryApi.Repositories
             }
 
             var result = _context.Machines
-                .Add(new Machine(createMachineDto.Description, machineType)).Entity;
+                .Add(new Machine(createMachineDto.Description, createMachineDto.Active, machineType)).Entity;
 
             try
             {
@@ -113,8 +128,7 @@ namespace factoryApi.Repositories
                 Console.WriteLine(e);
                 throw new DuplicatedObjectException("A Machine with the same description already exists");
             }
-
-
+            
             return result;
         }
 
@@ -128,6 +142,11 @@ namespace factoryApi.Repositories
             if (Dto.Description != null)
             {
                 machineToUpdate.Description = Dto.Description;
+            }
+
+            if (Dto.Active || Dto.Active == false)
+            {
+                machineToUpdate.Active = Dto.Active;
             }
 
             if (Dto.MachineTypeId != 0)

@@ -10,11 +10,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 export class ClientEditionDialogComponent implements OnInit {
 
   client : Client;
+  privileges: any;
   
   constructor(
     private dialogRef: MatDialogRef<ClientEditionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data) {
     this.client = data.client;
+    this.privileges = data.privileges;
   }
 
   ngOnInit() {

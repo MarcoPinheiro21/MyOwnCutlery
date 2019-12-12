@@ -19,6 +19,7 @@ export class ClientsComponent implements OnInit {
   hasOrder = new Boolean(false);
   dialog: MatDialog;
   alertMessage: AlertMessage = <AlertMessage>{};
+  privileges: any;
 
   constructor(_clientsService: ClientService, private myDialog: MatDialog, _orderService: OrderService) {
     this.clientsService = _clientsService;
@@ -28,13 +29,17 @@ export class ClientsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.privileges = JSON.parse(localStorage.getItem('user_privileges'));
     this.getClients();
   }
 
   private getClients(): void {
     this.clientsService.getClients().subscribe((data: any) => {
       let userId = localStorage.getItem("user_id");
-      this.clients = data.filter(client => client.userId === userId);
+      this.clients = data;
+      if(!!this.privileges.consultAllClientFields){
+        this.clients = data.filter(client => client.userId === userId);
+      }
     });
   }
 
@@ -52,15 +57,16 @@ export class ClientsComponent implements OnInit {
     });
   }
 
-  openEditionDialog() {
+  openEditionDialog(selectedClient) {
     this.validatorOrder();
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.data = {
-      client: this.clients[0]
+      client: selectedClient,
+      privileges: this.privileges
     };
     dialogConfig.width = "425px";
-    dialogConfig.height = "625px";
+    dialogConfig.height = !!this.privileges.consultAllClientFields ? "625px" : "225px";
 
     this.dialog
       .open(ClientEditionDialogComponent, dialogConfig)

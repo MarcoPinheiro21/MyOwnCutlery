@@ -50,7 +50,7 @@
   <ng-container matColumnDef="quantity">
     <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <input matInput placeholder="Desired Quantity:" value="" [(ngModel)]="element.quantity">
+      <input matInput placeholder="Desired Quantity:" value="" type="number" [(ngModel)]="element.quantity">
     </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

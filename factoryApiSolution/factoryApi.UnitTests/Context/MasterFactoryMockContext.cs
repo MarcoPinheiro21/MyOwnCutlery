@@ -101,10 +101,10 @@ namespace factoryApiTest.Context
 
         private static void SeedMachines(MasterFactoryContext dbContext)
         {
-            dbContext.Machines.Add(new Machine("machine1", dbContext.MachineTypes.Find(1L)));
-            dbContext.Machines.Add(new Machine("machine2", dbContext.MachineTypes.Find(2L)));
-            dbContext.Machines.Add(new Machine("machine3", dbContext.MachineTypes.Find(2L)));
-            dbContext.Machines.Add(new Machine("machine4", dbContext.MachineTypes.Find(2L)));
+            dbContext.Machines.Add(new Machine("machine1",active: true ,dbContext.MachineTypes.Find(1L)));
+            dbContext.Machines.Add(new Machine("machine2",active: true , dbContext.MachineTypes.Find(2L)));
+            dbContext.Machines.Add(new Machine("machine3",active: true , dbContext.MachineTypes.Find(2L)));
+            dbContext.Machines.Add(new Machine("machine4",active: true , dbContext.MachineTypes.Find(2L)));
             dbContext.SaveChanges();
         }
     }

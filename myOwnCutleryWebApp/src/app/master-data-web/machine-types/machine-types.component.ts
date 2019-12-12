@@ -80,8 +80,8 @@ export class MachineTypesComponent implements OnInit {
       machinesList: this.machines,
       isEdition: editionMode
     };
-    dialogConfig.width = '35%';
-    dialogConfig.height = '45%';
+    dialogConfig.width = '55%';
+    dialogConfig.height = '65%';
     return dialogConfig;
   }
 

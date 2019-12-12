@@ -12,7 +12,7 @@
     <div class="col-sm-4" *ngIf="role === 'dataAdmin' || role === 'admin'">
       <a class="labelIcons" routerLink='master-data-web' routerLinkActive="active">Master Data Configuration</a>
     </div>
-    <div class="col-sm-3" *ngIf="role === 'client' || role === 'admin'">
+    <div class="col-sm-3" *ngIf="role === 'client' || role === 'clientConfiguration' || role === 'admin'">
       <a class="labelIcons" routerLink='order-management' routerLinkActive="active">Order Management</a>
     </div>
     <div class="col-sm-3" *ngIf="role === 'productionManager' || role === 'admin'">

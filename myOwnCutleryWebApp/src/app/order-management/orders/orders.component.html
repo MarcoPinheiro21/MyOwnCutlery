@@ -1,42 +1,94 @@
-<mat-accordion displayMode="flat" multi class="mat-table">
-  <section matSort class="mat-elevation-z2 mat-header-row">
-    <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="_id">Order Number</span>
-    <span class="mat-header-cell" mat-sort-header="deliveryDate">Delivery Date</span>
-    <span class="mat-header-cell" mat-sort-header="status">Status</span>
-    <button type="button" style="margin-right: 25px;" class="btn btn-primary"
-      (click)="openCreationDialog()">New</button>
-  </section>
-
-  <mat-expansion-panel *ngFor="let order of orders">
-    <mat-expansion-panel-header class="mat-row">
-      <span class="mat-cell">{{order._id}}</span>
-      <span class="mat-cell" style="margin-left: 35px;">{{order.deliveryDate}}</span>
-      <span class="mat-cell" style="margin-left: 65px;">{{order.status}}</span>
-      <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-        (click)="openEditionDialog(order)" [disabled]="order.status === 'Cancelled'">Edit</button>
-      <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-        (click)="openCancelationDialog(order)" [disabled]="order.status === 'Cancelled'">Cancel</button>
-    </mat-expansion-panel-header>
-
-    <div *ngIf="!!orders" class="subRow">
-      <table class="table table-sm table-active">
-        <thead class="thead-dark">
-          <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let orderline of order.products">   
-              <td>{{orderline.productName}}</td>   
-              <td>{{orderline.quantity}}</td>            
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </mat-expansion-panel>
-</mat-accordion>
+<div *ngIf="!privileges.checkAllOrders; else configTemplate">
+  <mat-accordion displayMode="flat" multi class="mat-table">
+    <section matSort class="mat-elevation-z2 mat-header-row">
+      <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="_id">Order Number</span>
+      <span class="mat-header-cell" mat-sort-header="deliveryDate">Delivery Date</span>
+      <span class="mat-header-cell" mat-sort-header="status">Status</span>
+      <button type="button" style="margin-right: 25px;" class="btn btn-primary" 
+        [disabled]="!privileges.createOrder" (click)="openCreationDialog()" 
+        *ngIf="privileges.createOrder; else noButton">New
+      </button>
+    </section>
+    <mat-expansion-panel *ngFor="let order of orders">
+      <mat-expansion-panel-header class="mat-row">
+        <span class="mat-cell">{{order._id}}</span>
+        <span class="mat-cell" style="margin-left: 65px;">{{order.deliveryDate | date:'mediumDate'}}</span>
+        <span class="mat-cell" style="margin-left: 50px;">{{order.status}}</span>
+        <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+          (click)="openEditionDialog(order)" [disabled]="order.status === 'Cancelled'" 
+          *ngIf="privileges.editOrder; else noButton">Edit
+        </button>
+        <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+          (click)="openCancelationDialog(order)" [disabled]="order.status === 'Cancelled'" 
+          *ngIf="privileges.cancelOrder; else noButton">Cancel
+        </button>
+      </mat-expansion-panel-header>
+      <div *ngIf="!!orders" class="subRow">
+        <table class="table table-sm table-active">
+          <thead class="thead-dark">
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let orderline of order.products">   
+                <td>{{orderline.productName}}</td>   
+                <td>{{orderline.quantity}}</td>            
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
 
 <ng-template #blank>
   <span class="mat-cell"> - </span>
+</ng-template>
+
+<ng-template #noButton>
+  <div style="width:70px"></div>
+</ng-template>
+
+<ng-template #configTemplate>
+    <mat-accordion displayMode="flat" multi class="mat-table">
+        <section matSort class="mat-elevation-z2 mat-header-row">
+          <span class="mat-header-cell" style="margin-left: 10px;" mat-sort-header="_id">Order Number</span>
+          <span class="mat-header-cell" style="margin-right: 15px;" mat-sort-header="status">Client name</span>
+          <span class="mat-header-cell" mat-sort-header="deliveryDate">Delivery Date</span>
+          <span class="mat-header-cell" style="margin-right: 40px;" mat-sort-header="status">Status</span>
+          <div style="width:70px"></div>
+        </section>
+        <mat-expansion-panel *ngFor="let order of orders">
+          <mat-expansion-panel-header class="mat-row">
+            <span class="mat-cell">{{order._id}}</span>
+            <span class="mat-cell" style="margin-left: 50px;">{{order.customerDetails.name}}</span>
+            <span class="mat-cell" style="margin-left: 65px;">{{order.deliveryDate | date:'mediumDate'}}</span>
+            <span class="mat-cell" style="margin-left: 50px;">{{order.status}}</span>
+            <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+              (click)="openEditionDialog(order)" [disabled]="order.status === 'Cancelled'">Edit
+            </button>
+            <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+              (click)="openCancelationDialog(order)" [disabled]="order.status === 'Cancelled'" >Cancel
+            </button>
+          </mat-expansion-panel-header>
+          <div *ngIf="!!orders" class="subRow">
+            <table class="table table-sm table-active">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Product Name</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orderline of order.products">   
+                    <td>{{orderline.productName}}</td>   
+                    <td>{{orderline.quantity}}</td>            
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
 </ng-template>
