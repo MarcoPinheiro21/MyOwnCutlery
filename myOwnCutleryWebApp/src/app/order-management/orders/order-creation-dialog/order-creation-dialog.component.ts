@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
 import { OrderLine } from 'src/app/models/order-line.model';
 import { Product } from 'src/app/models/product.model';
 
@@ -16,6 +16,7 @@ export class OrderCreationDialogComponent implements OnInit {
   order: CreateOrder;
   products: Product[];
   elements: Element[] = [];
+  dataSource = new MatTableDataSource<Element>();
   displayedColumns: string[] = [
     'checked',
     'productName',
@@ -42,10 +43,12 @@ export class OrderCreationDialogComponent implements OnInit {
       e["productId"] = op.productId;
       e["productName"] = op.productName;
       e["quantity"] = 0;
+      e["productionTime"]=op.productionTime;
       e["highlighted"] = false;
       e["hovered"] = false;
       this.elements.push(e);
     });
+    this.dataSource.data=this.elements;
   }
 
   close() {
@@ -113,12 +116,27 @@ export class OrderCreationDialogComponent implements OnInit {
     }
   }
 
+  sortByProductionTime() {
+    var list=this.dataSource.data;
+    list.sort(function (a, b) {
+      if (a.productionTime > b.productionTime) {
+          return 1;
+      }
+      if (b.productionTime > a.productionTime) {
+          return -1;
+      }
+      return 0;
+  });
+    this.dataSource.data=list;
+  }
+
 }
 export interface Element {
   checked: boolean;
   productId: number;
   productName: string;
   quantity: number;
+  productionTime:number;
   highlighted?: boolean;
   hovered?: boolean;
 }
