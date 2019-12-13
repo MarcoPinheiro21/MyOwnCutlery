@@ -81,8 +81,8 @@ namespace productionApi.Controllers
         }
 
         // GET: productionapi/products/productiontime
-        [HttpGet("productiontime")]
-        [ProducesResponseType(200, Type = typeof(ICollection<OperationDto>))]
+        [HttpPost("productiontime")]
+        [ProducesResponseType(200, Type = typeof(ICollection<long>))]
         [ProducesResponseType(404)]
         public ActionResult<ICollection<long>> GetProductPlan(ICollection<long> productIdList)
         {

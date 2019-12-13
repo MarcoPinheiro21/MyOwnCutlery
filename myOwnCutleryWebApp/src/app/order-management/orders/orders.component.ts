@@ -36,7 +36,7 @@ export class OrdersComponent implements OnInit {
   }
   public getOrders(): void {
     let userId = localStorage.getItem("user_id");
-    
+
     this.ordersService.getOrders().subscribe((ordersData: any) => {
       ordersData.forEach(oElement =>
         oElement.products.forEach(pElement =>
@@ -47,52 +47,61 @@ export class OrdersComponent implements OnInit {
             })
         )
       );
-      
-      if(!this.privileges.checkAllOrders) {
+
+      if (!this.privileges.checkAllOrders) {
         this.ordersService.getClients().subscribe((data: any) => {
           this.thisClient = data.filter(client => client.userId === userId);
           this.orders = ordersData.filter(
             order => order.customerDetails.id === this.thisClient[0]._id
           );
         });
-      }else{
+      } else {
         this.orders = ordersData;
       }
     });
   }
   openCreationDialog() {
     this.ordersService.getProducts().subscribe((data: any) => {
-      const dialogConfig = new MatDialogConfig();
-      const order = {
-        clientId: String,
-        products: OrderLine,
-        deliveryDate: Date
-      };
-      dialogConfig.data = {
-        products: data,
-        client: this.thisClient[0]._id
-      };
-      dialogConfig.width = '800px';
-      dialogConfig.height = '500px';
-      this.dialog.open(OrderCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
-        if (result != undefined) {
-          this.ordersService
-            .createOrder(result.data)
-            .subscribe(
-              () => {
-                var mt = result.data.productName;
-                this.generateSuccessMsg(mt);
-                this.alertMessage.success = true;
-                this.getOrders();
-                this.timerHideAlert();
-              },
-              (error: Error) => {
-                this.alertMessage.message = error.message;
-                this.alertMessage.success = false;
-                this.timerHideAlert();
-              }
-            );
+      var ids = [];
+      data.forEach(pElement =>
+        ids.push(pElement.productId)
+      );
+      this.ordersService.getProductionTimes(ids).subscribe((pTimes: any) => {
+        for(var i=0;i<ids.length;i++){
+          data[i]['productionTime']=pTimes[i];
         }
+        const dialogConfig = new MatDialogConfig();
+        const order = {
+          clientId: String,
+          products: OrderLine,
+          deliveryDate: Date
+        };
+        dialogConfig.data = {
+          products: data,
+          client: this.thisClient[0]._id
+        };
+        dialogConfig.width = '800px';
+        dialogConfig.height = '500px';
+        this.dialog.open(OrderCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
+          if (result != undefined) {
+            this.ordersService
+              .createOrder(result.data)
+              .subscribe(
+                () => {
+                  var mt = result.data.productName;
+                  this.generateSuccessMsg(mt);
+                  this.alertMessage.success = true;
+                  this.getOrders();
+                  this.timerHideAlert();
+                },
+                (error: Error) => {
+                  this.alertMessage.message = error.message;
+                  this.alertMessage.success = false;
+                  this.timerHideAlert();
+                }
+              );
+          }
+        });
       });
     });
   }

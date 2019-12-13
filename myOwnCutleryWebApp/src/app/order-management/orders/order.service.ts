@@ -55,6 +55,11 @@ export class OrderService {
       this.urlProduction
     )
   }
+  getProductionTimes(ids): Observable<number[]> {
+    return this.http.post<number[]>(
+      this.urlProduction + "productiontime",ids
+    )
+  }
 
   public getClients(): Observable<Client[]> {
     return this.http.get<Client[]>(this.url + 'customers');
