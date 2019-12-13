@@ -33,7 +33,7 @@ namespace productionApi.Services
         public ProductDto Add(CreateProductDto productDto)
         {
             ICollection<CreateOperationDto> newList = _opService.matchOperations(productDto.Plan.OperationList);
-            if (newList.ToList().Count!=0)
+            if (newList.ToList().Count != 0)
             {
                 productDto.Plan.OperationList = newList;
                 var product = _repo.Add(productDto);
@@ -64,6 +64,24 @@ namespace productionApi.Services
 
 
             return result;
+        }
+
+
+        public ICollection<long> CalculateProductionTimeOfProduct(ICollection<long> ids)
+        {
+            ICollection<long> productionTimes=new List<long>();
+            foreach (var id in ids)
+            {
+                var product = _repo.GetById(id);
+                ICollection<OperationDto> plan = _operationRepository.GetByPlanId(product.PlanId);
+                long pTime = 0;
+                foreach (var operation in plan)
+                {
+                    pTime = pTime + operation.ExecutionTime;
+                }
+                productionTimes.Add(pTime);
+            }
+            return productionTimes;
         }
     }
 }
