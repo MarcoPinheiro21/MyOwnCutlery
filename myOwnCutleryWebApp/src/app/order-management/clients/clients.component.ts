@@ -66,7 +66,7 @@ export class ClientsComponent implements OnInit {
       privileges: this.privileges
     };
     dialogConfig.width = "425px";
-    dialogConfig.height = !!this.privileges.consultAllClientFields ? "625px" : "225px";
+    dialogConfig.height = !!this.privileges.consultAllClientFields ? "625px" : "450px";
 
     this.dialog
       .open(ClientEditionDialogComponent, dialogConfig)
