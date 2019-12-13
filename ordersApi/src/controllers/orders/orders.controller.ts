@@ -1,10 +1,8 @@
 import { Controller, Get, Post, Body, Injectable, Inject, UseFilters, HttpException, BadRequestException, Param, Put, Query, Delete } from '@nestjs/common';
-import { OrdersService } from 'src/services/orders/orders.service';
 import { OrderDto } from '../../dto/order.dto';
 import { AllExceptionsFilter } from 'src/exceptions/http-exception.filter';
 import { validateOrReject, validate, ValidationError } from "class-validator";
 import { IOrdersService } from 'src/services/orders/iOrders.service';
-import { EditProductDto } from 'src/dto/product.dto.edit';
 import { EditOrderDto } from 'src/dto/order.edit.dto';
 
 
@@ -17,6 +15,12 @@ export class OrdersController {
     @Get()
     findAll(@Query('includeCancelled') query: string) {
         return this.ordersService.findAll(query);
+    }
+
+    @Get('info')
+    @UseFilters(new AllExceptionsFilter())
+    async orderInfo() {
+        return await this.ordersService.findAllOrdersInfo();
     }
 
     @Get(':id')
@@ -42,12 +46,12 @@ export class OrdersController {
     @Put(':id')
     @UseFilters(new AllExceptionsFilter())
     async updateOrder(@Param('id') id, @Body() orderEdit: EditOrderDto) {
-        return await this.ordersService.updateOrder(id,orderEdit);
+        return await this.ordersService.updateOrder(id, orderEdit);
     }
 
     @Delete(':id')
     @UseFilters(new AllExceptionsFilter())
-    async deleteOrder(@Param('id') id){
+    async deleteOrder(@Param('id') id) {
         return await this.ordersService.deleteOrder(id);
     }
 }

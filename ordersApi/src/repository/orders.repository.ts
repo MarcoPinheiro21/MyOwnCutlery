@@ -3,6 +3,8 @@ import { IOrdersRepository } from './iOrders.repository';
 import { Order } from 'src/domain/order.domain';
 import { OrderModel } from 'src/models/order.entity';
 import { ModelMapper } from './model.mapper';
+import { OrderInfo } from 'src/domain/orderInfo.domain';
+import { OrderInfoModel } from 'src/models/orderInfo.entity';
 
 export class OrdersRepository implements IOrdersRepository {
 
@@ -39,10 +41,32 @@ export class OrdersRepository implements IOrdersRepository {
         return orders;
     }
 
-    async deleteOrder(order: Order) : Promise<Order>{
+    async deleteOrder(order: Order): Promise<Order> {
         let orderModel = await ModelMapper.createOrderModel(order);
         let result = await getRepository(OrderModel).remove(orderModel);
-        console.log(result);
         return ModelMapper.createOrderDomain(result);
+    }
+
+    async findOrdersInfo(): Promise<OrderInfo[]> {
+        let orderInfoModel = await getRepository(OrderInfoModel).find();
+        let orderInfo: OrderInfo[] = [];
+        for (let oi of orderInfoModel) {
+            orderInfo.push(await ModelMapper.createOrderInfoDomain(oi));
+        }
+        return orderInfo;
+    }
+
+    async findOrdersInfoByProductId(productId: string): Promise<OrderInfo> {
+        let orderInfoRepository = getMongoRepository(OrderInfoModel);
+        let result = await orderInfoRepository.find({
+            where: { productId: { $eq: productId } }
+        });
+        return await ModelMapper.createOrderInfoDomain(result[0]);;
+    }
+
+    async saveOrderInfo(orderInfo: OrderInfo): Promise<OrderInfo> {
+        let oi = await ModelMapper.createOrderInfoModel(orderInfo);
+        let result = await getRepository(OrderInfoModel).save(oi);
+        return ModelMapper.createOrderInfoDomain(result);
     }
 }

@@ -14,7 +14,8 @@ import { EditProductDto } from 'src/dto/product.dto.edit';
 import { Order } from 'src/domain/order.domain';
 import { CustomerDetails } from 'src/domain/customer-details.domain';
 import { DomainMapper } from '../mapper/domain.mapper';
-import { Product } from 'src/domain/product.domain';
+import { OrderInfoDto } from 'src/dto/orderInfo.read.dto';
+import { OrderInfo } from 'src/domain/orderInfo.domain';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
@@ -51,11 +52,21 @@ export class OrdersService implements IOrdersService {
         return await DomainMapper.orderToDto(order);
     }
 
+    public async findAllOrdersInfo(): Promise<OrderInfoDto[]> {
+        let orderInfo: OrderInfoDto[] = [];
+        let orderInfoRepo = await this.ordersRepository.findOrdersInfo();
+        for (let oi of orderInfoRepo) {
+            orderInfo.push(await DomainMapper.orderInfoToDto(oi));
+        }
+        return orderInfo;
+    }
+
     public async createOrder(orderDto: OrderDto): Promise<ReadOrderDto> {
         let customer = await this.customerService.findById(orderDto.customerId);
-        let products : ProductDto[] = await this.fillProductsAvailability(orderDto.products);
+        let products: ProductDto[] = await this.fillProductsAvailability(orderDto.products);
         let order: Order = await DomainMapper.orderToDomain(orderDto, customer, products);
         let orderResult = await this.ordersRepository.saveOrder(order);
+        this.generateOrderInfo_(order);
         return DomainMapper.orderToDto(orderResult);
     }
 
@@ -74,6 +85,7 @@ export class OrdersService implements IOrdersService {
     public async cancelOrderById(orderId: string): Promise<ReadOrderDto> {
         let order = await this.findById_(orderId);
         let resultOrder = await this.ordersRepository.saveOrder(await order.cancel());
+        this.extinguishOrderInfo_(order);
         return DomainMapper.orderToDto(resultOrder);
     }
 
@@ -102,18 +114,90 @@ export class OrdersService implements IOrdersService {
                 let hasProduct: boolean = await order.hasProduct(element.id);
 
                 if (element.toDelete == 'true') {
-                    order = await order.deleteProduct(element.id);
+                    order = await this.removeProductFromOrder_(order, element.id);
                 } else if (hasProduct) {
-                    order = await order.updateProduct(element.id, element.quantity);
+                    order = await this.updateProductOfAOrder_(order, element.id, element.quantity)
                 } else {
                     let prod: ProductApiDto = await this.checkProductAvailability(element.id);
                     order = await order.addProduct(element.id, element.quantity, prod.productName);
+                    this.generateOrderInfo_(order);
                 }
             }
         }
 
         let orederResult = await this.ordersRepository.saveOrder(order);
         return DomainMapper.orderToDto(orederResult);
+    }
+
+    private async removeProductFromOrder_(order: Order, productId: string): Promise<Order> {
+        let quantity: number;
+        order.findProduct(productId).then(async (p) => {
+            quantity = p.getQuantity()
+        });
+        let orderInfo = await this.findOrderInfoByProductId_(productId);
+        orderInfo.removeOrder(quantity);
+        this.ordersRepository.saveOrderInfo(orderInfo);
+        return await order.deleteProduct(productId);
+    }
+
+    private async updateProductOfAOrder_(order: Order, productId: string, quantity: number): Promise<Order> {
+
+        let previousQuantity: number;
+
+        order.findProduct(productId).then(async (p) => {
+            previousQuantity = p.getQuantity();
+        });
+
+        let orderInfo = await this.findOrderInfoByProductId_(productId);
+
+        if (previousQuantity > quantity) {
+            orderInfo.decreaseQuantity(previousQuantity-quantity);
+        } else if (previousQuantity < quantity) {
+            orderInfo.increaseQuantity(quantity-previousQuantity);
+        }
+        this.ordersRepository.saveOrderInfo(orderInfo);
+        return await order.updateProduct(productId, quantity);
+    }
+
+    private async generateOrderInfo_(order: Order): Promise<void> {
+        for (let product of order.getProducts()) {
+
+            let orderInfo: OrderInfo;
+
+            try {
+                orderInfo = await this.findOrderInfoByProductId_(product.getId());
+            } catch (error) {
+                console.log('OrderInfo collection does not exists.')
+            }
+
+            if (orderInfo == undefined || orderInfo == null) {
+                orderInfo = new OrderInfo(product.getId());
+            }
+
+            orderInfo.addOrder(product.getQuantity());
+            await this.ordersRepository.saveOrderInfo(orderInfo);
+        }
+    }
+    private async extinguishOrderInfo_(order: Order): Promise<void> {
+        for (let product of order.getProducts()) {
+
+            let orderInfo = await this.findOrderInfoByProductId_(product.getId());
+
+            orderInfo.removeOrder(product.getQuantity());
+            this.ordersRepository.saveOrderInfo(orderInfo);
+        }
+    }
+
+    private async findOrderInfoByProductId_(productId: string): Promise<OrderInfo> {
+        try {
+            let orderInfo = await this.ordersRepository.findOrdersInfoByProductId(productId);
+            if (orderInfo == null) {
+                throw new OrdersApiDomainException('An error occured while getting Orders Information.');
+            }
+            return orderInfo;
+        } catch (errors) {
+            throw new OrdersApiDomainException('An error occured while getting Orders Information.');
+        }
     }
 
     private async findAll_(): Promise<Order[]> {
@@ -180,9 +264,10 @@ export class OrdersService implements IOrdersService {
         return response.data;
     }
 
-    public async deleteOrder(id: string) : Promise<ReadOrderDto>{
+    public async deleteOrder(id: string): Promise<ReadOrderDto> {
         let order = await this.findById_(id);
         let deletedOrder = await this.ordersRepository.deleteOrder(order);
+        this.extinguishOrderInfo_(order);
         return await DomainMapper.orderToDto(deletedOrder);
     }
 }

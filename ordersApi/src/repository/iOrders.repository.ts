@@ -1,4 +1,5 @@
 import { Order } from "src/domain/order.domain";
+import { OrderInfo } from "src/domain/orderInfo.domain";
 
 export interface IOrdersRepository {
 
@@ -10,6 +11,12 @@ export interface IOrdersRepository {
 
     findOrdersByCustomerId(id: string): Promise<Order[]>;
 
-    deleteOrder(order: Order) : Promise<Order>;
+    deleteOrder(order: Order): Promise<Order>;
+
+    findOrdersInfo(): Promise<OrderInfo[]>;
+
+    findOrdersInfoByProductId(productId: string): Promise<OrderInfo>;
+
+    saveOrderInfo(orderInfo: OrderInfo): Promise<OrderInfo>;
 
 }

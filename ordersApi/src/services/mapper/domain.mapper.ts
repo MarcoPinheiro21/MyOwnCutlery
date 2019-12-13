@@ -10,6 +10,8 @@ import { OrderDto } from "src/dto/order.dto";
 import { OrderStates } from "src/enums/orderStates.enum";
 import { Customer } from "src/domain/customer.domain";
 import { CustomerDto } from "src/dto/customer.dto";
+import { OrderInfo } from "src/domain/orderInfo.domain";
+import { OrderInfoDto } from "src/dto/orderInfo.read.dto";
 
 export class DomainMapper {
 
@@ -165,5 +167,26 @@ export class DomainMapper {
             addressDto.town,
             addressDto.country
         )
+    }
+
+    /**
+    * OrderInfo to Domain
+    */
+    public static async orderInfoDtoToDomain(orderInfo: OrderInfoDto): Promise<OrderInfo> {
+        return new OrderInfo(
+            orderInfo.productId,
+            orderInfo.sumQuantity,
+            orderInfo.totalOrders);
+    }
+
+    /**
+    * OrderInfo to DTO
+    */
+    public static async orderInfoToDto(orderInfo: OrderInfo): Promise<OrderInfoDto> {
+        return <OrderInfoDto>{
+            productId: orderInfo.getProductId(),
+            sumQuantity: orderInfo.getSumQuantity(),
+            totalOrders: orderInfo.getTotalOrders()
+        }
     }
 }
