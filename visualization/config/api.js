@@ -7,6 +7,7 @@ configurationsApi = {
         productionLines: 'visualization/productionlines',
         machineTypes: 'visualization/machines/types',
         machines: 'factoryapi/machines',
+        activeMachines: 'factoryapi/machines/active',
         visMachines: 'visualization/machines',
         isEnable: true
     },
@@ -21,8 +22,8 @@ function getMachines() {
         return JSON.parse(machinesDescriptionsMock);
     } 
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines, false );
-    console.log(configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines);
+    xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.activeMachines, false );
+    console.log(configurationsApi.factoryApi.url + configurationsApi.factoryApi.activeMachines);
     xmlHttp.send( null );
     return JSON.parse(xmlHttp.responseText);
 }
@@ -35,7 +36,12 @@ function getProductionLines()
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.productionLines, false );
     xmlHttp.send( null );
-    return JSON.parse(xmlHttp.responseText);
+    var productionLines = JSON.parse(xmlHttp.responseText);
+    productionLines.forEach(pl => {
+        activeMachines = pl.machinesListDtos.filter(machine => machine.active === true);
+        pl.machinesListDtos= activeMachines;
+    });
+    return productionLines;
 }
 
 function getMachineTypes()

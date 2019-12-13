@@ -11,6 +11,8 @@ import { Order } from "src/domain/order.domain";
 import { CustomerModel } from "src/models/customer.entity";
 import { ICustomer } from "src/domain/iCustomer.domain";
 import { Customer } from "src/domain/customer.domain";
+import { OrderInfoModel } from "src/models/orderInfo.entity";
+import { OrderInfo } from "src/domain/orderInfo.domain";
 
 export class ModelMapper {
 
@@ -31,6 +33,22 @@ export class ModelMapper {
             await this.productsToDomain(order.products),
             order.deliveryDate,
             order.status);
+    }
+
+    public static async createOrderInfoDomain(order: OrderInfoModel): Promise<OrderInfo> {
+        return new OrderInfo(
+            order.productId,
+            order.sumQuantity,
+            order.totalOrders,
+            order._id.toString());
+    }
+
+    public static async createOrderInfoModel(orderInfo: OrderInfo): Promise<OrderInfoModel> {
+        return new OrderInfoModel(
+            orderInfo.getProductId(),
+            orderInfo.getSumQuantity(),
+            orderInfo.getTotalOrders(),
+            new ObjectID(orderInfo.getId()));
     }
 
     public static async createCustomerModel(customer: ICustomer): Promise<CustomerModel> {

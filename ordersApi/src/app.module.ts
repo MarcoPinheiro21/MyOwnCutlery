@@ -10,13 +10,14 @@ import { OrdersRepository } from './repository/orders.repository';
 import { OrderModel } from './models/order.entity';
 import { ProductModel } from './models/product.entity';
 import { CustomerModel } from './models/customer.entity';
+import { OrderInfoModel } from './models/orderInfo.entity';
 
 
 @Module({
   imports: [HttpModule, TypeOrmModule.forRoot({
     "type": "mongodb",
     "url": "mongodb+srv://lapr5:yourStrong(!)Password@cluster0-r18xz.mongodb.net/test?retryWrites=true&w=majority",
-    "entities": [OrderModel, ProductModel, CustomerModel],
+    "entities": [OrderModel, ProductModel, CustomerModel, OrderInfoModel],
     "synchronize": true
   })],
   controllers: [OrdersController, CustomersController],
