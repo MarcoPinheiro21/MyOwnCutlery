@@ -17,6 +17,7 @@ export class ClientsComponent implements OnInit {
   clientsService: ClientService;
   orderService: OrderService;
   hasOrder = new Boolean(false);
+  isClient = false;
   dialog: MatDialog;
   alertMessage: AlertMessage = <AlertMessage>{};
   privileges: any;
@@ -30,6 +31,7 @@ export class ClientsComponent implements OnInit {
 
   ngOnInit() {
     this.privileges = JSON.parse(localStorage.getItem('user_privileges'));
+    this.isClient = !!this.privileges.consultAllClientFields && localStorage.getItem('role') === 'client';
     this.getClients();
   }
 
@@ -37,7 +39,7 @@ export class ClientsComponent implements OnInit {
     this.clientsService.getClients().subscribe((data: any) => {
       let userId = localStorage.getItem("user_id");
       this.clients = data;
-      if(!!this.privileges.consultAllClientFields){
+      if(isClient){
         this.clients = data.filter(client => client.userId === userId);
       }
     });
