@@ -58,10 +58,8 @@ scene.add(axesHelper);
 
 this.productionLines = getProductionLines();
 this.machineTypes = getMachineTypes();
-this.machines = getMachines();
 this.products = getProducts();
 getProductPlanToProducts();
-getMachineTypeToMachines();
 buildWidgets();
 buildScene();
 
@@ -244,13 +242,15 @@ function buildWidgets() {
             let macdesc = this.productionLines[k].machinesListDtos[j].description;
             var button = {
                 add: function () {
-                    var mtc = getMachineByDesc(macdesc);
-                    swapMachine(mtc, parseInt(selectedPosition.Position))
-                    mtc.productionLinePosition = parseInt(selectedPosition.Position)
-                    if (configurationsApi.factoryApi.isEnable) {
-                        updateMachinePosition(mtc)
-                    } else {
-                        updateVisualizationModelListener()
+                    if (selectedPosition.Position != "") {
+                        var mtc = getMachineByDesc(macdesc);
+                        swapMachine(mtc, parseInt(selectedPosition.Position))
+                        mtc.productionLinePosition = parseInt(selectedPosition.Position)
+                        if (configurationsApi.factoryApi.isEnable) {
+                            updateMachinePosition(mtc)
+                        } else {
+                            updateVisualizationModelListener()
+                        }
                     }
                 }
             };
@@ -281,7 +281,7 @@ function buildWidgets() {
 
 function initiateProduct(product) {
     var capablePl = checkIsProducible(product.productPlan);
-    if(!capablePl) {
+    if (!capablePl) {
         window.alert('There is no production line cabable of making that product!');
         return;
     }
@@ -301,14 +301,14 @@ function timeout(capablePl, position, cont, productPlan) {
     setTimeout(function () {
         var productionLinePlacement = (10 * (cont) - 3);
         let time = checkMachine(productPlan, cont);
-        if((groupFork.position.x === productionLinePlacement) && (cont <= capablePl.machinesListDtos.length)) {
-            if(!!time){
+        if ((groupFork.position.x === productionLinePlacement) && (cont <= capablePl.machinesListDtos.length)) {
+            if (!!time) {
                 timeoutOperation(time, capablePl, position, cont, productPlan);
             } else {
                 cont++;
                 groupFork.position.x++;
                 timeout(capablePl, position, cont, productPlan);
-            }                  
+            }
         } else if (groupFork.position.x == LINE.initialX) {
             scene.remove(scene.getObjectByName('fork'));
             groupFork.position.x = position.x;
@@ -321,14 +321,14 @@ function timeout(capablePl, position, cont, productPlan) {
     }, 300);
 }
 
-function timeoutOperation(time, capablePl, position, cont, productPlan){
-    setTimeout(function () { 
+function timeoutOperation(time, capablePl, position, cont, productPlan) {
+    setTimeout(function () {
         time--;
-        if(time == 0){
+        if (time == 0) {
             groupFork.position.x++;
             cont++;
             timeout(capablePl, position, cont, productPlan);
-        }else{
+        } else {
             timeoutOperation(time, capablePl, position, cont, productPlan);
         }
     }, 1000);
@@ -355,22 +355,22 @@ function checkIsProducible(productPlan) {
             operation['flag'] = false;
             pl.machinesListDtos.map(mac => {
                 mac['machineType'] = machineTypes.filter(mt => mt.id === mac.machineTypeId)[0];
-                let ops = mac.machineType.operationList.filter(op => 
-                    op.tool === operation.tool && 
-                    op.operationType.desc === operation.operationType               
-                    );
-                if(ops.length > 0 ){
+                let ops = mac.machineType.operationList.filter(op =>
+                    op.tool === operation.tool &&
+                    op.operationType.desc === operation.operationType
+                );
+                if (ops.length > 0) {
                     operation['flag'] = true;
                     operation['time'] = ops[0].operationType.executionTime + ops[0].operationType.setupTime;
                     operation['machine'] = mac;
                 }
             });
-            if(operation['flag'] === false){
+            if (operation['flag'] === false) {
                 pl['flag'] = false;
                 return;
             }
         });
-        if(pl['flag'] === false){
+        if (pl['flag'] === false) {
             return;
         } else {
             capablePl = pl;
@@ -381,15 +381,9 @@ function checkIsProducible(productPlan) {
 }
 
 function getProductPlanToProducts() {
-    this.products.map (prod => {
+    this.products.map(prod => {
         prod['productPlan'] = getProductPlan(prod.productId);
     });
-}
-
-function getMachineTypeToMachines() {
-    this.machines.map(mac => {
-        mac['machineType'] = machineTypes.filter(mt => mt.id === mac.machineTypeId)[0];
-    })
 }
 
 function swapMachine(machine, position) {

@@ -41,23 +41,23 @@ function showTooltip() {
       top: `${tooltipPosition.y - tootipHeight - 5}px`
     });
 
-    // var position = new THREE.Vector3();
-    // var quaternion = new THREE.Quaternion();
-    // var scale = new THREE.Vector3();
-    // hoveredObj.matrix.decompose(position, quaternion, scale);
-  
-    let element = machines.filter(e =>  { 
-      let machineType = machineTypes.filter(mt => mt.id === e.machineTypeId)[0];
-      e["machineType"] = machineType;
-      return hoveredObj.userData.hasOwnProperty("parentGroup") && (e.description == hoveredObj.userData.parentGroup);
-    });
+    var machine=null;
+    for(var w=0;w<productionLines.length;w++){
+      for(var y=0;y<productionLines[w].machinesListDtos.length;y++){
+        if(productionLines[w].machinesListDtos[y].description == hoveredObj.userData.parentGroup){
+          machine=productionLines[w].machinesListDtos[y];
+          let machineType = machineTypes.filter(mt => mt.id === machine.machineTypeId)[0];
+          machine["machineType"] = machineType;
+        }
+      }
+    }
 
-    $("#machineId").html(element[0].id); 
-    $("#description").html(element[0].description); 
-    $("#machineType").html(element[0].machineType.desc); 
-    $("#productionLine").html(element[0].productionLineId);
+    $("#machineId").html(machine.id); 
+    $("#description").html(machine.description); 
+    $("#machineType").html(machine.machineType.desc); 
+    $("#productionLine").html(machine.productionLineId);
     let operationsHtml = "";
-    element[0].machineType.operationList.map(ele => {
+    machine.machineType.operationList.map(ele => {
       operationsHtml+=("Description: " + ele.operationType.desc + "<br/>");
       operationsHtml+=("Tool: " + ele.tool + "<br/>");
       operationsHtml+=("Execution Time: " + ele.operationType.executionTime + "<br/>");

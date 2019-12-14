@@ -8,24 +8,13 @@ configurationsApi = {
         machineTypes: 'visualization/machines/types',
         machines: 'factoryapi/machines',
         visMachines: 'visualization/machines',
-        isEnable: true
+        isEnable: false
     },
     productionApi: {
         url: 'https://localhost:8090/productionapi/',
         products: 'products/',
     }
 };
-
-function getMachines() {
-    if(!configurationsApi.factoryApi.isEnable) {
-        return JSON.parse(machinesDescriptionsMock);
-    } 
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines, false );
-    console.log(configurationsApi.factoryApi.url + configurationsApi.factoryApi.machines);
-    xmlHttp.send( null );
-    return JSON.parse(xmlHttp.responseText);
-}
 
 function getProductionLines()
 {
@@ -171,6 +160,37 @@ const productionLinesMockResponse = `[
                 "productionLinePosition": 0
             }
         ]
+    },
+    {
+        "productionLineId": 3,
+        "productionLineName": "Linha Produção 3",
+        "machinesListDtos": [
+            {
+                "id": 9,
+                "description": "Maquina9",
+                "machineTypeId": 1,
+                "productionLineId": 3,
+                "productionLinePosition": 0
+            },{
+                "id": 10,
+                "description": "Maquina10",
+                "machineTypeId": 2,
+                "productionLineId": 3,
+                "productionLinePosition": 0
+            },{
+                "id": 11,
+                "description": "Maquina11",
+                "machineTypeId": 1,
+                "productionLineId": 3,
+                "productionLinePosition": 0
+            },{
+                "id": 12,
+                "description": "Maquina12",
+                "machineTypeId": 2,
+                "productionLineId": 3,
+                "productionLinePosition": 0
+            }
+        ]
     }
 ]`; 
 
@@ -198,14 +218,14 @@ const machineTypeMockResponse = `[
         "desc": "T2",
         "operationList": [
             {
-                "operationId": 2,
-                "toolId": 2,
-                "tool": "Drill",
+                "operationId": 1,
+                "toolId": 1,
+                "tool": "Hammer",
                 "operationType": {
-                    "operationTypeId": 2,
-                    "desc": "op2",
-                    "executionTime": 10,
-                    "setupTime": 2
+                    "operationTypeId": 1,
+                    "desc": "op1",
+                    "executionTime": 12,
+                    "setupTime": 5
                 }
             }
         ],
@@ -213,83 +233,24 @@ const machineTypeMockResponse = `[
     }
 ]`;
 
-const machinesDescriptionsMock = `[
-    {
-        "id": 1,
-        "description": "Maquina1",
-        "machineTypeId": 1,
-        "productionLineId": 2,
-        "productionLinePosition": 2
-    },
-    {
-        "id": 2,
-        "description": "Maquina2",
-        "machineTypeId": 2,
-        "productionLineId": 2,
-        "productionLinePosition": 5
-    },
-    {
-        "id": 3,
-        "description": "Maquina3",
-        "machineTypeId": 1,
-        "productionLineId": 2,
-        "productionLinePosition": 6
-    },
-    {
-        "id": 4,
-        "description": "Maquina4",
-        "machineTypeId": 2,
-        "productionLineId": 2,
-        "productionLinePosition": 3
-    },
-    {
-        "id": 5,
-        "description": "Maquina5",
-        "machineTypeId": 1,
-        "productionLineId": 1,
-        "productionLinePosition": 1
-    },
-    {
-        "id": 6,
-        "description": "Maquina6",
-        "machineTypeId": 2,
-        "productionLineId": 1,
-        "productionLinePosition": 4
-    },
-    {
-        "id": 7,
-        "description": "Maquina7",
-        "machineTypeId": 1,
-        "productionLineId": 1,
-        "productionLinePosition": 5
-    },
-    {
-        "id": 8,
-        "description": "Maquina8",
-        "machineTypeId": 2,
-        "productionLineId": 2,
-        "productionLinePosition": 4
-    }
-]`;
-
 const productsMock = `[
     {
         "productId": 1,
-        "productName": "p1",
+        "productName": "Spoon",
         "planId": 1
     },
     {
         "productId": 2,
-        "productName": "p2",
+        "productName": "Fork",
         "planId": 2
     },
     {
-        "productId": 4,
-        "productName": "p3",
+        "productId": 3,
+        "productName": "Knife",
         "planId": 4
     },
     {
-        "productId": 13,
+        "productId": 4,
         "productName": "Spork",
         "planId": 13
     }
