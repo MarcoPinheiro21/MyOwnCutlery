@@ -9,7 +9,7 @@ configurationsApi = {
         machines: 'factoryapi/machines',
         activeMachines: 'factoryapi/machines/active',
         visMachines: 'visualization/machines',
-        isEnable: false
+        isEnable: true
     },
     productionApi: {
         url: 'https://localhost:8090/productionapi/',

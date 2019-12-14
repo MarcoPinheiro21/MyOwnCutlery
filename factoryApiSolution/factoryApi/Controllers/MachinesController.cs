@@ -45,7 +45,7 @@ namespace factoryApi.Controllers
             return Ok(_service.FindAllMachines());
         }
         
-        // GET: factoryapi/machines
+        // GET: factoryapi/machines/active
         [HttpGet ("active")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<MachineDto>))]
         [ProducesResponseType(404)]

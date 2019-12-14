@@ -26,7 +26,9 @@ namespace productionApi.Migrations
                     OperationId = table.Column<long>(nullable: false),
                     PlanId = table.Column<long>(nullable: false),
                     Tool = table.Column<string>(nullable: true),
-                    OperationType = table.Column<string>(nullable: true)
+                    OperationType = table.Column<string>(nullable: true),
+                    ExecutionTime = table.Column<long>(nullable: false),
+                    SetupTime = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {

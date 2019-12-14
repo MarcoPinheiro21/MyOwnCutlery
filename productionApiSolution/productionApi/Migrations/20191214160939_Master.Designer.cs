@@ -10,7 +10,7 @@ using productionApi.Context;
 namespace productionApi.Migrations
 {
     [DbContext(typeof(MasterProductionContext))]
-    [Migration("20191114011551_Master")]
+    [Migration("20191214160939_Master")]
     partial class Master
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,11 @@ namespace productionApi.Migrations
 
                     b.Property<long>("OperationId");
 
+                    b.Property<long>("ExecutionTime");
+
                     b.Property<string>("OperationType");
+
+                    b.Property<long>("SetupTime");
 
                     b.Property<string>("Tool");
 
