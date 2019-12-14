@@ -16,12 +16,16 @@ namespace productionApi.Models.Plan
         
         public string Tool { get; set; } 
         public string OperationType { get; set; } 
+        public long ExecutionTime { get; set; } 
+        public long SetupTime { get; set; } 
         
-        public Operation(long OperationId,string tool,string type)
+        public Operation(long OperationId,string tool,string type,long execution, long setup)
         {
             this.OperationId = OperationId;
             this.Tool = tool;
             this.OperationType = type;
+            this.ExecutionTime = execution;
+            this.SetupTime = setup;
         }
 
         protected Operation()
@@ -34,6 +38,8 @@ namespace productionApi.Models.Plan
             dto.OperationId = this.OperationId;
             dto.Tool = this.Tool;
             dto.OperationType = this.OperationType;
+            dto.ExecutionTime = this.ExecutionTime;
+            dto.SetupTime = this.SetupTime;
             return dto;
         }
     }

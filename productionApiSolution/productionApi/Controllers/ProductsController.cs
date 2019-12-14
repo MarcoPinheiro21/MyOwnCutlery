@@ -15,13 +15,13 @@ namespace productionApi.Controllers
     {
         public ProductService _service { get; set; }
 
-        public ProductsController(MasterProductionContext context,HttpClient httpClient)
+        public ProductsController(MasterProductionContext context, HttpClient httpClient)
         {
             _service = new ProductService(
-                new ProductRepository(context), 
+                new ProductRepository(context),
                 new OperationRepository(context),
                 new RestContext(httpClient)
-                );
+            );
         }
 
         // GET productionapi/products/5
@@ -79,7 +79,23 @@ namespace productionApi.Controllers
                 return NotFound(ex.Message);
             }
         }
-        
+
+        // GET: productionapi/products/productiontime
+        [HttpPost("productiontime")]
+        [ProducesResponseType(200, Type = typeof(ICollection<long>))]
+        [ProducesResponseType(404)]
+        public ActionResult<ICollection<long>> GetProductPlan(ICollection<long> productIdList)
+        {
+            try
+            {
+                return Ok(_service.CalculateProductionTimeOfProduct(productIdList));
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
         // DELETE productionapi/products/5
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ProductDto))]

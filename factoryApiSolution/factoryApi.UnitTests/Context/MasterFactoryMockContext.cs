@@ -6,6 +6,7 @@ using factoryApi.Models.ProductionLine;
 using factoryApi.Models.Relationships;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Configuration;
 
 namespace factoryApiTest.Context
 {
@@ -16,8 +17,8 @@ namespace factoryApiTest.Context
             var options = new DbContextOptionsBuilder<MasterFactoryContext>()
                 .UseInMemoryDatabase("TestDB", new InMemoryDatabaseRoot())
                 .Options;
-
-            MasterFactoryContext dbContext = new MasterFactoryContext(null,options);
+            
+            MasterFactoryContext dbContext = new MasterFactoryContext(options);
             SeedOperations(dbContext);
             SeedMachineTypes(dbContext);
             SeedOperationMachineTypes(dbContext);

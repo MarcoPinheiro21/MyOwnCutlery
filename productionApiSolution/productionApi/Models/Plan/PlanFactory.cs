@@ -11,7 +11,7 @@ namespace productionApi.Models.Plan
             List<Operation> operations= new List<Operation>();
             foreach (var VARIABLE in OperationDtos)
             {
-                operations.Add(OperationFactory.Create(VARIABLE.OperationId,VARIABLE.Tool,VARIABLE.Type));
+                operations.Add(OperationFactory.Create(VARIABLE.OperationId,VARIABLE.Tool,VARIABLE.Type,VARIABLE.ExecutionTime,VARIABLE.SetupTime));
             }
             return new Plan(operations);
         }

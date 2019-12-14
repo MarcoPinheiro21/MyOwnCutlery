@@ -52,12 +52,32 @@
         <section matSort class="mat-elevation-z2 mat-header-row">
           <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="name">Name</span>
         </section>
-        <mat-expansion-panel [disabled]="true" *ngFor="let client of clients" [expanded]="false">        
+        <mat-expansion-panel *ngFor="let client of clients" [expanded]="false">        
           <mat-expansion-panel-header class="mat-row" *ngIf="!!clients || client.name ==='XXXXXXXX'"> 
             <span class="mat-cell">{{client.name}}</span>
             <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-            (click)="openEditionDialog(client)">Edit</button>
+            *ngIf="!!privileges.editClient" (click)="openEditionDialog(client)">Edit</button>
           </mat-expansion-panel-header>
+          <div *ngIf="!!clients || !client.name ==='XXXXXXXX'" class="subRow">
+              <table class="table table-sm table-active">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Street</th>
+                    <th>Postal Code</th>
+                    <th>Town</th>
+                    <th>Country</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{client.address.street}}</td>
+                    <td>{{client.address.postalCode}}</td>
+                    <td>{{client.address.town}}</td>
+                    <td>{{client.address.country}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
         </mat-expansion-panel>
       </mat-accordion>
 </ng-template>

@@ -22,12 +22,10 @@ namespace productionApi.Services
             ICollection<CreateOperationDto> newList = new List<CreateOperationDto>();
             try
             {
-                
                 List<FactoryApiOperationDto> operationsResponse = Client.GetOperations();
                 long ids;
                 foreach (var createOperationDto in operations)
                 {
-
                     foreach (var factoryApiDto in operationsResponse)
                     {
                         if (factoryApiDto.operationId.Equals(createOperationDto.OperationId))
@@ -35,18 +33,12 @@ namespace productionApi.Services
                             CreateOperationDto dto = new CreateOperationDto(factoryApiDto.operationId);
                             dto.Tool = factoryApiDto.tool;
                             dto.Type = factoryApiDto.operationType.desc;
+                            dto.ExecutionTime = factoryApiDto.operationType.executionTime;
+                            dto.SetupTime = factoryApiDto.operationType.setupTime;
                             newList.Add(dto);
-
                         }
                     }
-                    
                 }
-
-                /*var asyncHandle = client.ExecuteAsync<Person>(request, response => {
-                    Console.WriteLine(response.Data.Name);
-                });
-                
-                asyncHandle.Abort();*/
             }
             catch (Exception e)
             {

@@ -2,13 +2,14 @@
   <form class="form">
     <form>
       Delivery Date:
-      <input type="date" name="deliveryDate" [(ngModel)]="deliveryDate">
+      <input type="date" name="deliveryDate" min={{this.currentDate}} [(ngModel)]="deliveryDate">
     </form>
   </form>
 </div>
 <br>
 <div class="header">Select Products to Order</div>
-<mat-table mat-table [dataSource]="elements">
+
+<mat-table mat-table [dataSource]="dataSource">
 
   <ng-container matColumnDef="checked">
     <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
@@ -32,9 +33,10 @@
 
 </mat-table>
 <mat-dialog-actions>
-  <button mat-button (click)="close()">Cancel</button>
-  <button mat-button (click)="save()" (click)="checkEmptyProductsList()">Save</button>
+  <button mat-raised-button (click)="close()">Cancel</button>
+  <button mat-raised-button (click)="save()" (click)="checkEmptyProductsList()">Save</button>
   <mat-error *ngIf="isSelectedProductsEmpty">
     Please choose at least one product from the list and specify a valid quantity.
   </mat-error>
+  <button mat-raised-button (click)="sortByProductionTime()">Sort products by production time</button>
 </mat-dialog-actions>

@@ -30,7 +30,7 @@
   <form class="form">
     <form>
       Delivery Date:
-      <input type="date" name="deliveryDate" [(ngModel)]="deliveryDate">
+      <input type="date" name="deliveryDate" min={{this.currentDate}} [(ngModel)]="deliveryDate">
     </form>
   </form>
 </div>

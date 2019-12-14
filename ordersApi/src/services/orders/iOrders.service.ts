@@ -1,6 +1,7 @@
 import { OrderDto } from "src/dto/order.dto";
 import { ReadOrderDto } from "src/dto/order.read.dto";
 import { EditOrderDto } from "src/dto/order.edit.dto";
+import { OrderInfoDto } from "src/dto/orderInfo.read.dto";
 
 export interface IOrdersService {
 
@@ -17,5 +18,7 @@ export interface IOrdersService {
     updateOrder(id: string, orderDto: EditOrderDto): Promise<ReadOrderDto>;
 
     deleteOrder(id: string) : Promise<ReadOrderDto>;
+
+    findAllOrdersInfo(): Promise<OrderInfoDto[]>;
 
 }

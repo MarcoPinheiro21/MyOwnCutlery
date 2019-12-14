@@ -11,10 +11,15 @@ namespace factoryApi.Context
     public class MasterFactoryContext : DbContext
     {
         private string _connection;
-        
+
         public MasterFactoryContext(IConfiguration configuration, DbContextOptions<MasterFactoryContext> options) : base(options)
         {
             _connection = configuration["ConnectionString:factoryDB"];
+
+        }
+        
+        public MasterFactoryContext(DbContextOptions<MasterFactoryContext> options) : base(options)
+        {
 
         }
 

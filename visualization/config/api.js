@@ -7,6 +7,7 @@ configurationsApi = {
         productionLines: 'visualization/productionlines',
         machineTypes: 'visualization/machines/types',
         machines: 'factoryapi/machines',
+        activeMachines: 'factoryapi/machines/active',
         visMachines: 'visualization/machines',
         isEnable: false
     },
@@ -24,7 +25,12 @@ function getProductionLines()
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.productionLines, false );
     xmlHttp.send( null );
-    return JSON.parse(xmlHttp.responseText);
+    var productionLines = JSON.parse(xmlHttp.responseText);
+    productionLines.forEach(pl => {
+        activeMachines = pl.machinesListDtos.filter(machine => machine.active === true);
+        pl.machinesListDtos= activeMachines;
+    });
+    return productionLines;
 }
 
 function getMachineTypes()

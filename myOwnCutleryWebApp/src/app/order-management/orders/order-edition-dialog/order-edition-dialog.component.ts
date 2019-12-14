@@ -10,7 +10,7 @@ import { Order } from 'src/app/models/order.model';
   styleUrls: ['./order-edition-dialog.component.css']
 })
 export class OrderEditionDialogComponent implements OnInit {
-
+  currentDate: string;
   deliveryDate: string;
   client: string;
   isSelectedProductsEmpty: boolean;
@@ -32,6 +32,8 @@ export class OrderEditionDialogComponent implements OnInit {
 
   ngOnInit() {
     this.fillElements();
+    var today = new Date();
+    this.currentDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
   }
 
   private fillElements() {
