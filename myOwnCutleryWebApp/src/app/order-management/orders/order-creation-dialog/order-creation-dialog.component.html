@@ -3,6 +3,14 @@
     <form>
       Delivery Date:
       <input type="date" name="deliveryDate" min={{this.currentDate}} [(ngModel)]="deliveryDate">
+      <br>
+      <mat-error *ngIf="!this.isdateValid">
+        Please choose a delivery date.
+      </mat-error>
+      <br>
+      <mat-error *ngIf="isSelectedProductsEmpty">
+        Please choose at least one product from the list and specify a valid quantity.
+      </mat-error>
     </form>
   </form>
 </div>
@@ -24,9 +32,25 @@
   <ng-container matColumnDef="quantity">
     <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <input matInput placeholder="Desired Quantity:" value="" type="number" [(ngModel)]="element.quantity">
+      <input matInput placeholder="Desired Quantity:" value="" type="number" style="width: 60px;" [(ngModel)]="element.quantity">
     </mat-cell>
   </ng-container>
+
+  <ng-container matColumnDef="productionTime">
+    <mat-header-cell *matHeaderCellDef> Production Time </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.productionTime}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="totalOrders">
+    <mat-header-cell *matHeaderCellDef> Total Orders </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.totalOrders}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="sumQuantity">
+    <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.sumQuantity}} </mat-cell>
+  </ng-container>
+
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{hovered: row.hovered}"
     (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></mat-row>
@@ -35,8 +59,5 @@
 <mat-dialog-actions>
   <button mat-raised-button (click)="close()">Cancel</button>
   <button mat-raised-button (click)="save()" (click)="checkEmptyProductsList()">Save</button>
-  <mat-error *ngIf="isSelectedProductsEmpty">
-    Please choose at least one product from the list and specify a valid quantity.
-  </mat-error>
   <button mat-raised-button (click)="sortByProductionTime()">Sort products by production time</button>
 </mat-dialog-actions>

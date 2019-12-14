@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { Order } from "src/app/models/order.model";
 import { catchError } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
-import { CreateOrder } from './orders.component';
+import { CreateOrder, OrderInfo } from './orders.component';
 import { Product } from 'src/app/models/product.model';
 import { Client } from 'src/app/models/client.model';
 
@@ -59,6 +59,10 @@ export class OrderService {
     return this.http.post<number[]>(
       this.urlProduction + "productiontime",ids
     )
+  }
+
+  getOrdersInfo(): Observable<OrderInfo[]>{
+    return this.http.get<OrderInfo[]>(this.url + "orders/info");
   }
 
   public getClients(): Observable<Client[]> {

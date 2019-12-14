@@ -13,6 +13,7 @@ export class OrderCreationDialogComponent implements OnInit {
   deliveryDate: Date;
   client: string;
   isSelectedProductsEmpty: boolean;
+  isdateValid: boolean = true;
   order: CreateOrder;
   products: Product[];
   elements: Element[] = [];
@@ -20,7 +21,10 @@ export class OrderCreationDialogComponent implements OnInit {
   displayedColumns: string[] = [
     'checked',
     'productName',
-    'quantity'];
+    'quantity',
+    'productionTime',
+    'totalOrders',
+    'sumQuantity'];
 
   constructor(
     private dialogRef: MatDialogRef<OrderCreationDialogComponent>,
@@ -33,8 +37,9 @@ export class OrderCreationDialogComponent implements OnInit {
   ngOnInit() {
     this.fillElements();
     var today = new Date();
-    this.currentDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    this.currentDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
   }
+
 
   private fillElements() {
     this.products.forEach(op => {
@@ -43,12 +48,14 @@ export class OrderCreationDialogComponent implements OnInit {
       e["productId"] = op.productId;
       e["productName"] = op.productName;
       e["quantity"] = 0;
-      e["productionTime"]=op.productionTime;
+      e["productionTime"] = op.productionTime;
+      e["sumQuantity"] = op.sumQuantity;
+      e["totalOrders"] = op.totalOrders;
       e["highlighted"] = false;
       e["hovered"] = false;
       this.elements.push(e);
     });
-    this.dataSource.data=this.elements;
+    this.dataSource.data = this.elements;
   }
 
   close() {
@@ -56,7 +63,7 @@ export class OrderCreationDialogComponent implements OnInit {
   }
 
   save() {
-
+    this.isDateValid()
     this.checkEmptyProductsList();
     if (this.isSelectedProductsEmpty) {
       return;
@@ -73,6 +80,12 @@ export class OrderCreationDialogComponent implements OnInit {
     this.order.deliveryDate = this.deliveryDate.toString() + "T00:00:00";
     this.dialogRef.close({ data: this.order });
     return;
+  }
+
+  isDateValid() {
+    this.isdateValid =
+      (this.deliveryDate == null || this.deliveryDate == undefined) ?
+        false : true;
   }
 
   checkEmptyProductsList() {
@@ -117,17 +130,17 @@ export class OrderCreationDialogComponent implements OnInit {
   }
 
   sortByProductionTime() {
-    var list=this.dataSource.data;
+    var list = this.dataSource.data;
     list.sort(function (a, b) {
       if (a.productionTime > b.productionTime) {
-          return 1;
+        return 1;
       }
       if (b.productionTime > a.productionTime) {
-          return -1;
+        return -1;
       }
       return 0;
-  });
-    this.dataSource.data=list;
+    });
+    this.dataSource.data = list;
   }
 
 }
@@ -136,7 +149,9 @@ export interface Element {
   productId: number;
   productName: string;
   quantity: number;
-  productionTime:number;
+  productionTime: number;
+  sumQuantity: number;
+  totalOrders: number;
   highlighted?: boolean;
   hovered?: boolean;
 }

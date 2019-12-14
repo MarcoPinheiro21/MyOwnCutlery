@@ -10,12 +10,19 @@ import { Client } from "src/app/models/client.model";
 import { OrderLine } from 'src/app/models/order-line.model';
 import { OrderCreationDialogComponent } from './order-creation-dialog/order-creation-dialog.component';
 import { OrderCancelationDialogComponent } from './order-cancelation-dialog/order-cancelation-dialog.component';
+
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
   styleUrls: ["./orders.component.css"]
 })
 export class OrdersComponent implements OnInit {
+
+  private dialogWidth: any = '800px';
+  private dialogHeight: any = '600px';
+  private dialogHeightSmall:any = '255px'
+
+
   orders: Order[] = [];
   ordersService: OrderService;
   productsService: ProductsService;
@@ -24,16 +31,22 @@ export class OrdersComponent implements OnInit {
   alertMessage: AlertMessage = <AlertMessage>{};
   thisClient: Client;
   privileges: any;
+  orderInfo: OrderInfo[] = [];
 
   constructor(_ordersService: OrderService, private myDialog: MatDialog) {
     this.ordersService = _ordersService;
     this.dialog = myDialog;
     this.alertMessage.showAlertMsg = false;
   }
+
   ngOnInit() {
     this.privileges = JSON.parse(localStorage.getItem('user_privileges'));
     this.getOrders();
+    this.ordersService.getOrdersInfo().subscribe((data: any) => {
+      this.orderInfo = data;
+    })
   }
+
   public getOrders(): void {
     let userId = localStorage.getItem("user_id");
 
@@ -60,61 +73,100 @@ export class OrdersComponent implements OnInit {
       }
     });
   }
+
+
   openCreationDialog() {
-    this.ordersService.getProducts().subscribe((data: any) => {
-      var ids = [];
-      data.forEach(pElement =>
-        ids.push(pElement.productId)
-      );
-      this.ordersService.getProductionTimes(ids).subscribe((pTimes: any) => {
-        for(var i=0;i<ids.length;i++){
-          data[i]['productionTime']=pTimes[i];
-        }
-        const dialogConfig = new MatDialogConfig();
-        const order = {
-          clientId: String,
-          products: OrderLine,
-          deliveryDate: Date
-        };
-        dialogConfig.data = {
-          products: data,
-          client: this.thisClient[0]._id
-        };
-        dialogConfig.width = '800px';
-        dialogConfig.height = '500px';
-        this.dialog.open(OrderCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
-          if (result != undefined) {
-            this.ordersService
-              .createOrder(result.data)
-              .subscribe(
-                () => {
-                  var mt = result.data.productName;
-                  this.generateSuccessMsg(mt);
-                  this.alertMessage.success = true;
-                  this.getOrders();
-                  this.timerHideAlert();
-                },
-                (error: Error) => {
-                  this.alertMessage.message = error.message;
-                  this.alertMessage.success = false;
-                  this.timerHideAlert();
-                }
-              );
+
+    this.ordersService.getOrdersInfo().subscribe((data: any) => {
+      this.orderInfo = data;
+
+
+      this.ordersService.getProducts().subscribe((data: any) => {
+        let productInfo = this.responseToProductInfo(data);
+        var ids = [];
+        data.forEach(pElement =>
+          ids.push(pElement.productId)
+        );
+
+        this.fillOrdersInfo(productInfo);
+
+        this.ordersService.getProductionTimes(ids).subscribe((pTimes: any) => {
+          for (var i = 0; i < ids.length; i++) {
+            productInfo[i]['productionTime'] = pTimes[i];
           }
+          const dialogConfig = new MatDialogConfig();
+          const order = {
+            clientId: String,
+            products: OrderLine,
+            deliveryDate: Date
+          };
+          dialogConfig.data = {
+            products: productInfo,
+            client: this.thisClient[0]._id,
+          };
+          dialogConfig.width = this.dialogWidth;
+          dialogConfig.height = this.dialogHeight;
+          this.dialog.open(OrderCreationDialogComponent, dialogConfig).afterClosed().subscribe(result => {
+            if (result != undefined) {
+              this.ordersService
+                .createOrder(result.data)
+                .subscribe(
+                  () => {
+                    var mt = result.data.productName;
+                    this.generateSuccessMsg(mt);
+                    this.alertMessage.success = true;
+                    this.getOrders();
+                    this.timerHideAlert();
+                  },
+                  (error: Error) => {
+                    this.alertMessage.message = error.message;
+                    this.alertMessage.success = false;
+                    this.timerHideAlert();
+                  }
+                );
+            }
+          });
         });
       });
     });
   }
+
+  private responseToProductInfo(data: any): ProductInfo[] {
+    let products: ProductInfo[] = [];
+    data.forEach(element => {
+      products.push(<ProductInfo>{
+        planId: element.planId,
+        productId: element.productId,
+        productName: element.productName,
+        sumQuantity: 0,
+        totalOrders: 0
+      })
+    });
+    return products;
+  }
+
+  private fillOrdersInfo(products: ProductInfo[]): Promise<void> {
+    products.forEach(async element => {
+      let orderInfo = this.orderInfo.find(oInfo => (oInfo.productId == element.productId.toString()));
+      element.sumQuantity = orderInfo == undefined ? 0 : orderInfo.sumQuantity;
+      element.totalOrders = orderInfo == undefined ? 0 : orderInfo.totalOrders;
+    });
+    return;
+  }
+
   timerHideAlert() {
     this.alertMessage.showAlertMsg = true;
     setTimeout(() => this.hideAlert(), 10000);
   }
+
   hideAlert() {
     this.alertMessage.showAlertMsg = false;
   }
+
   private generateSuccessMsg(arg: string) {
     this.alertMessage.message = 'The order ' + arg + ' was successfuly saved.';
   }
+
   openEditionDialog(selectedOrder?) {
     this.ordersService.getProducts().subscribe((data: any) => {
       const dialogConfig = new MatDialogConfig();
@@ -122,8 +174,8 @@ export class OrdersComponent implements OnInit {
         order: selectedOrder,
         products: data
       };
-      dialogConfig.width = "800px";
-      dialogConfig.height = "525px";
+      dialogConfig.width = this.dialogWidth;
+      dialogConfig.height = this.dialogHeight;
       this.dialog
         .open(OrderEditionDialogComponent, dialogConfig)
         .afterClosed()
@@ -136,13 +188,14 @@ export class OrdersComponent implements OnInit {
         });
     });
   }
+
   openCancelationDialog(selectOrder?) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       order: selectOrder
     };
-    dialogConfig.width = "555px";
-    dialogConfig.height = "255px";
+    dialogConfig.width = this.dialogWidth;
+    dialogConfig.height = this.dialogHeightSmall;
 
     this.dialog
       .open(OrderCancelationDialogComponent, dialogConfig)
@@ -163,4 +216,18 @@ export interface CreateOrder {
   customerId: string;
   products: Product[];
   deliveryDate: number;
+}
+
+export class ProductInfo {
+  productId: number;
+  productName: string;
+  planId: number;
+  sumQuantity = 0;
+  totalOrders = 0;
+}
+
+export class OrderInfo {
+  productId: string;
+  sumQuantity: number;
+  totalOrders: number;
 }
