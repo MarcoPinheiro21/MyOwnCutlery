@@ -23,6 +23,7 @@ export class SignUpComponent implements OnInit {
   missingRequiredFields = false;
   privacyPolicyAuthorization = false;
   errorMessage = '';
+  
 
   inputFormControl = new FormControl('', [
     Validators.required,
@@ -74,25 +75,33 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp() {
-    this.signUpService.createUser(
-      this.user
-    ).subscribe(item => {
-      if (!!item.message) {
-        this.client.userId = item.user['_id'];
-        delete this.client['_id'];
-        this.signUpService.saveClient(this.client).subscribe(client => {
-          localStorage.setItem('token', item.token);
-          localStorage.setItem('user_id', item.user['_id']);
-          localStorage.setItem('user_name', item.user.name);
-          this.router.navigateByUrl('/home');
-        }, r => {
-          this.errorMessage = 'There was an error saving your data!';
+    delete this.client['_id'];
+    this.signUpService.saveClient(this.client).subscribe(
+      clientSuccess => {
+      this.client._id = clientSuccess._id;
+        this.signUpService.createUser(this.user).subscribe(
+          userSuccess => {
+            if (!!userSuccess.message) {
+              localStorage.setItem('token', userSuccess.token);
+              localStorage.setItem('user_id', userSuccess.user['_id']);
+              localStorage.setItem('user_name', userSuccess.user.name);
+              this.client.userId = userSuccess.user['_id'];
+              this.signUpService.updateClient(this.client).subscribe(
+                success => {
+                  this.router.navigateByUrl('/home');
+                }
+              )
+            }
+          },
+        userError => {
+          this.errorMessage = userError.error;
+          this.signUpService.deleteClient(this.client).subscribe();
         });
+      }, 
+      clientError => { 
+        this.errorMessage = clientError.error.errors; 
       }
-    },
-      r => {
-        this.errorMessage = r.error;
-      });
+    );
   }
 
   openCreationDialog() {

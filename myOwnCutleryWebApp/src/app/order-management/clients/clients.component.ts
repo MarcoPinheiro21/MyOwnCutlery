@@ -39,7 +39,7 @@ export class ClientsComponent implements OnInit {
     this.clientsService.getClients().subscribe((data: any) => {
       let userId = localStorage.getItem("user_id");
       this.clients = data;
-      if(isClient){
+      if(this.isClient) {
         this.clients = data.filter(client => client.userId === userId);
       }
     });

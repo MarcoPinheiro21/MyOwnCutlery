@@ -7,7 +7,9 @@
             "cancelOrder": false,
             "consultAllClientFields": true,
             "checkAllOrders": false,
-            "editClient": true
+            "editClient": true,
+            "masterDataConfiguration": false,
+            "visualization": false
         },
         "clientConfiguration": {
             "createClient": false,
@@ -16,10 +18,28 @@
             "cancelOrder": true,
             "consultAllClientFields": false,
             "checkAllOrders": true,
-            "editClient": true
+            "editClient": false,
+            "masterDataConfiguration": true,
+            "visualization": false
         },
-        "dataAdmin": {},
-        "admin": {},
-        "productionManager": {}
+        "dataAdmin": {
+            "masterDataConfiguration": true,
+            "visualization": false
+        },
+        "admin": {
+            "createClient": false,
+            "createOrder": false,
+            "editOrder": true,
+            "cancelOrder": true,
+            "consultAllClientFields": false,
+            "checkAllOrders": true,
+            "editClient": false,
+            "masterDataConfiguration": true,
+            "visualization": true
+        },
+        "productionManager": {
+            "masterDataConfiguration": true,
+            "visualization": true
+        }
     }
 }
