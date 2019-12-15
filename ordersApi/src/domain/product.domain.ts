@@ -16,7 +16,7 @@ export class Product {
         return this.id == anotherProductId;
     }
 
-    async updateQuantity(quantity: number) {
+    async updateQuantity(quantity: number) : Promise<void>{
         if (quantity < 1) {
             throw new OrdersApiDomainException('Invalid product quantity');
         }
@@ -31,7 +31,7 @@ export class Product {
         return this.name;
     }
 
-    public getQuantity(): number {
+    public async getQuantity(): Promise<number> {
         return this.quantity;
     }
 

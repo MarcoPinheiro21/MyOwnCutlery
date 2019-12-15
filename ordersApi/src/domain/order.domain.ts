@@ -74,11 +74,13 @@ export class Order implements IOrderDomain {
     }
 
     async updateProduct(id: string, quantity: number): Promise<Order> {
-        this.products.forEach(element => {
-            if (element.equals(id)) {
+
+        for (let element of this.products) {
+            console.log(element);
+            if (await element.equals(id)) {
                 element.updateQuantity(quantity);
             }
-        });
+        }
         return this;
     }
 

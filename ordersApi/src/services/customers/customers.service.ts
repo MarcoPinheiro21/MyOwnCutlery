@@ -87,6 +87,9 @@ export class CustomersService implements ICustomersService {
         if (this.validateField(customerDto.priority)) {
             customer.setPriority(customerDto.priority);
         }
+        if (this.validateField(customerDto.userId)) {
+            customer.setUserId(customerDto.userId);
+        }
 
         await customer.setAddress(customerDto.address.street,
             customerDto.address.postalCode,

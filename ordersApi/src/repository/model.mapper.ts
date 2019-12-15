@@ -95,7 +95,7 @@ export class ModelMapper {
     private static async productsToModel(products: Product[]): Promise<ProductModel[]> {
         let productsModel: ProductModel[] = [];
         for (let p of products) {
-            productsModel.push(new ProductModel(p.getId(), p.getQuantity(), p.getName()))
+            productsModel.push(new ProductModel(p.getId(), await p.getQuantity(), p.getName()))
         }
         return productsModel;
     }

@@ -109,6 +109,8 @@ export class OrdersService implements IOrdersService {
         }
 
         if (orderDto.products.length > 0) {
+
+            await this.validateProducts(orderDto.products)
             this.validateProducts(orderDto.products)
             for (let element of orderDto.products) {
                 let hasProduct: boolean = await order.hasProduct(element.id);
@@ -116,47 +118,48 @@ export class OrdersService implements IOrdersService {
                 if (element.toDelete == 'true') {
                     order = await this.removeProductFromOrder_(order, element.id);
                 } else if (hasProduct) {
-                    order = await this.updateProductOfAOrder_(order, element.id, element.quantity)
+                    order = await this.updateProductOfAOrder_(order, element.id, element.quantity);
                 } else {
                     let prod: ProductApiDto = await this.checkProductAvailability(element.id);
                     order = await order.addProduct(element.id, element.quantity, prod.productName);
-                    this.generateOrderInfo_(order);
+                    await this.generateOrderInfo_(order);
                 }
-            }
+            };
+
         }
 
         let orederResult = await this.ordersRepository.saveOrder(order);
-        return DomainMapper.orderToDto(orederResult);
+        return await DomainMapper.orderToDto(orederResult);
     }
 
     private async removeProductFromOrder_(order: Order, productId: string): Promise<Order> {
-        let quantity: number;
-        order.findProduct(productId).then(async (p) => {
-            quantity = p.getQuantity()
-        });
-        let orderInfo = await this.findOrderInfoByProductId_(productId);
-        orderInfo.removeOrder(quantity);
-        this.ordersRepository.saveOrderInfo(orderInfo);
+
+        order.deleteProduct(productId).then(async () => {
+            let quantity: number;
+            order.findProduct(productId).then(async (p) => {
+                quantity = await p.getQuantity()
+            });
+            let orderInfo = await this.findOrderInfoByProductId_(productId);
+            orderInfo.removeOrder(quantity);
+            await this.ordersRepository.saveOrderInfo(orderInfo);
+        })
+
         return await order.deleteProduct(productId);
     }
 
     private async updateProductOfAOrder_(order: Order, productId: string, quantity: number): Promise<Order> {
-
         let previousQuantity: number;
-
-        order.findProduct(productId).then(async (p) => {
-            previousQuantity = p.getQuantity();
-        });
-
+        let prod = await order.findProduct(productId);
+        previousQuantity = await prod.getQuantity();
         let orderInfo = await this.findOrderInfoByProductId_(productId);
 
         if (previousQuantity > quantity) {
-            orderInfo.decreaseQuantity(previousQuantity-quantity);
+            orderInfo.decreaseQuantity(previousQuantity - quantity);
         } else if (previousQuantity < quantity) {
-            orderInfo.increaseQuantity(quantity-previousQuantity);
+            orderInfo.increaseQuantity(quantity - previousQuantity);
         }
-        this.ordersRepository.saveOrderInfo(orderInfo);
-        return await order.updateProduct(productId, quantity);
+        await this.ordersRepository.saveOrderInfo(orderInfo);
+        return await order.updateProduct(productId, quantity)
     }
 
     private async generateOrderInfo_(order: Order): Promise<void> {
@@ -174,7 +177,7 @@ export class OrdersService implements IOrdersService {
                 orderInfo = new OrderInfo(product.getId());
             }
 
-            orderInfo.addOrder(product.getQuantity());
+            orderInfo.addOrder(await product.getQuantity());
             await this.ordersRepository.saveOrderInfo(orderInfo);
         }
     }
@@ -183,7 +186,7 @@ export class OrdersService implements IOrdersService {
 
             let orderInfo = await this.findOrderInfoByProductId_(product.getId());
 
-            orderInfo.removeOrder(product.getQuantity());
+            orderInfo.removeOrder(await product.getQuantity());
             this.ordersRepository.saveOrderInfo(orderInfo);
         }
     }
@@ -224,7 +227,7 @@ export class OrdersService implements IOrdersService {
         return orders;
     }
 
-    private validateProducts(productDto: EditProductDto[]): void {
+    private validateProducts(productDto: EditProductDto[]): Promise<void> {
         productDto.forEach(element => {
             if (element.toDelete != 'true' && (element.quantity == null || element.quantity < 1)) {
                 throw new OrdersApiDomainException('At least one of products quantity is invalid')
@@ -233,6 +236,7 @@ export class OrdersService implements IOrdersService {
                 throw new OrdersApiDomainException('At least one of products id is invalid')
             }
         });
+        return;
     }
 
     private async fillCustomerDetails(orderDto: OrderDto): Promise<CustomerDetails> {

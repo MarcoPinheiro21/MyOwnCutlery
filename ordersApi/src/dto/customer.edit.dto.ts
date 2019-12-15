@@ -30,6 +30,8 @@ export class EditCustomerDto {
     @IsNumber()
     public priority: number;
 
+    @IsOptional()
+    @IsString()
     public userId: string;
 
 }

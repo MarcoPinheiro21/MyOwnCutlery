@@ -41,7 +41,7 @@ export class DomainMapper {
         return <ProductDto>{
             id: product.getId(),
             name: product.getName(),
-            quantity: product.getQuantity()
+            quantity: await product.getQuantity()
         }
     }
 

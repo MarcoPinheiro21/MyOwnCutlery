@@ -134,6 +134,13 @@ export class Customer implements ICustomer {
         }
     }
 
+    public setUserId(userId: string) {
+        if (userId == null) {
+            throw new OrdersApiDomainException('Customer\'s user ID is invalid');
+        }
+        this.userId = userId;
+    }
+
     public async getDetails(): Promise<CustomerDetails> {
         return new CustomerDetails(
             this._id.toString(),
