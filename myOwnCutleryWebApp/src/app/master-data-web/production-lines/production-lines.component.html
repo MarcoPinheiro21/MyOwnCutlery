@@ -15,12 +15,16 @@
                 <tr>
                     <th>Machine Description</th>
                     <th>Machine Type</th>
+                    <th>Active</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let machine of productionline.machinesListDtos">
                     <td>{{machine.description}}</td>
                     <td>{{machine.machineType.desc}}</td>
+                    <td><div *ngIf="machine.active; else noTemp">
+                      Yes
+                    </div></td>
                 </tr>
             </tbody>
         </table>
@@ -30,4 +34,6 @@
 </mat-accordion>
 
 
-
+<ng-template #noTemp>
+  No
+</ng-template>
