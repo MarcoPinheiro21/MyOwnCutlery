@@ -1,7 +1,7 @@
-import { OrderDto } from "src/dto/order.dto";
-import { ReadOrderDto } from "src/dto/order.read.dto";
-import { EditOrderDto } from "src/dto/order.edit.dto";
-import { OrderInfoDto } from "src/dto/orderInfo.read.dto";
+import { OrderDto } from "../../dto/order.dto";
+import { ReadOrderDto } from "../../dto/order.read.dto";
+import { EditOrderDto } from "../../dto/order.edit.dto";
+import { OrderInfoDto } from "../../dto/orderInfo.read.dto";
 
 export interface IOrdersService {
 

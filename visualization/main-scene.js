@@ -80,6 +80,7 @@ function buildScene() {
     buildFloor();
     buildTables();
     buildMachines();
+  //  buildWorkTables();
 
     scene.add(light);
     scene.add(directionalLight);
@@ -107,10 +108,30 @@ function buildTables() {
             table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: -15 * i });
             scene.add(table);
         }
+    } 
+}
 
+function buildWorkTables (machine){
+    var productionLinePlacement = -30;
+    productionLinePlacement = productionLinePlacement + (20 * (machine.productionLinePosition - 1));
+
+    nProductionLines = 0;
+    var workTables = [];
+    var workTable;
+    var i;
+    this.productionLines.forEach(function (e) {
+        workTables[nProductionLines] = new WorkTable(e.productionLineName);
+        nProductionLines++;
+    });
+    for (i = 1; i <= nProductionLines; i++) {
+        if (i % 2 == 0) {
+            workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: 15 * (i / 2) + 6 });
+            scene.add(workTable);
+        } else {
+            workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: -15 * i + 6});
+            scene.add(workTable);
+        }
     }
-
-
 }
 
 function buildFork(x, y, z) {
@@ -142,7 +163,7 @@ function buildSpoon(x, y, z) {
 
 function buildMachine(machine, productionLineNumber, model) {
     var productionLinePlacement = -30;
-    productionLinePlacement = productionLinePlacement + (10 * (machine.productionLinePosition - 1));
+    productionLinePlacement = productionLinePlacement + (20 * (machine.productionLinePosition - 1));
 
     let newSceneObject;
     switch (model) {
@@ -150,18 +171,18 @@ function buildMachine(machine, productionLineNumber, model) {
             let roboticArm = new RoboticArm(machine.description);
             roboticArms.push(roboticArm);
             if (productionLineNumber % 2 == 0) {
-                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (15 * (productionLineNumber / 2)) + 10 });
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (15 * (productionLineNumber / 2)) + 15 });
             } else {
-                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (-15 * productionLineNumber) + 10 });
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (-15 * productionLineNumber) + 15 });
             }
             break;
         case "Hydraulic Press":
             let pressMachine = new PressMachine(machine.description);
             pressMachines.push(pressMachine);
             if (productionLineNumber % 2 == 0) {
-                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement, y: 5, z: (15 * (productionLineNumber / 2)) - 6 });
+                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement -6, y: 5, z: (15 * (productionLineNumber / 2)) +6 });
             } else {
-                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement, y: 5, z: (-15 * productionLineNumber) - 6 });
+                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement -6, y: 5, z: (-15 * productionLineNumber) +6 });
             }
             break;
     }
@@ -184,6 +205,7 @@ function buildMachines() {
 
             var model = getModelOfMachineType(machine.machineTypeId);
             buildMachine(machine, plCount, model);
+            buildWorkTables (machine);
             count++;
         });
     });

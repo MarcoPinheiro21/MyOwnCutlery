@@ -1,4 +1,4 @@
-import { OrderStates } from "src/enums/orderStates.enum";
+import { OrderStates } from "../enums/orderStates.enum";
 import { Product } from "./product.domain";
 import { CustomerDetails } from "./customer-details.domain";
 

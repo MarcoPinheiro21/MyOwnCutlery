@@ -2,20 +2,20 @@ import { Injectable, HttpException, Inject, HttpService } from '@nestjs/common';
 import { OrderDto } from '../../dto/order.dto';
 import { ProductDto } from '../../dto/product.dto';
 import { IOrdersService } from './iOrders.service';
-import { OrderStates } from 'src/enums/orderStates.enum';
-import { ReadOrderDto } from 'src/dto/order.read.dto';
+import { OrderStates } from '../../enums/orderStates.enum';
+import { ReadOrderDto } from '../../dto/order.read.dto';
 import { CustomersService } from '../customers/customers.service';
-import { OrdersApiDomainException } from 'src/exceptions/domain.exception';
-import { EditOrderDto } from 'src/dto/order.edit.dto';
+import { OrdersApiDomainException } from '../../exceptions/domain.exception';
+import { EditOrderDto } from '../../dto/order.edit.dto';
 import settings from "../../../config.json";
-import { ProductApiDto } from 'src/dto/product.api.dto';
-import { IOrdersRepository } from 'src/repository/iOrders.repository';
-import { EditProductDto } from 'src/dto/product.dto.edit';
-import { Order } from 'src/domain/order.domain';
-import { CustomerDetails } from 'src/domain/customer-details.domain';
+import { ProductApiDto } from '../../dto/product.api.dto';
+import { IOrdersRepository } from '../../repository/iOrders.repository';
+import { EditProductDto } from '../../../src/dto/product.dto.edit';
+import { Order } from '../../domain/order.domain';
+import { CustomerDetails } from '../../domain/customer-details.domain';
 import { DomainMapper } from '../mapper/domain.mapper';
-import { OrderInfoDto } from 'src/dto/orderInfo.read.dto';
-import { OrderInfo } from 'src/domain/orderInfo.domain';
+import { OrderInfoDto } from '../../dto/orderInfo.read.dto';
+import { OrderInfo } from '../../domain/orderInfo.domain';
 
 @Injectable()
 export class OrdersService implements IOrdersService {

@@ -1,5 +1,5 @@
-import { Order } from "src/domain/order.domain";
-import { OrderInfo } from "src/domain/orderInfo.domain";
+import { Order } from "../domain/order.domain";
+import { OrderInfo } from "../domain/orderInfo.domain";
 
 export interface IOrdersRepository {
 

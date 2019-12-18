@@ -1,17 +1,17 @@
-import { Order } from "src/domain/order.domain";
-import { ReadOrderDto } from "src/dto/order.read.dto";
-import { ProductDto } from "src/dto/product.dto";
-import { Product } from "src/domain/product.domain";
-import { CustomerDetails } from "src/domain/customer-details.domain";
-import { CustomerDetailsDto } from "src/dto/customer.details.dto";
-import { Address } from "src/domain/address.domain";
-import { AddressDto } from "src/dto/address.dto";
-import { OrderDto } from "src/dto/order.dto";
-import { OrderStates } from "src/enums/orderStates.enum";
-import { Customer } from "src/domain/customer.domain";
-import { CustomerDto } from "src/dto/customer.dto";
-import { OrderInfo } from "src/domain/orderInfo.domain";
-import { OrderInfoDto } from "src/dto/orderInfo.read.dto";
+import { Order } from "../../domain/order.domain";
+import { ReadOrderDto } from "../../dto/order.read.dto";
+import { ProductDto } from "../../dto/product.dto";
+import { Product } from "../../domain/product.domain";
+import { CustomerDetails } from "../../domain/customer-details.domain";
+import { CustomerDetailsDto } from "../../dto/customer.details.dto";
+import { Address } from "../../domain/address.domain";
+import { AddressDto } from "../../dto/address.dto";
+import { OrderDto } from "../../dto/order.dto";
+import { OrderStates } from "../../enums/orderStates.enum";
+import { Customer } from "../../domain/customer.domain";
+import { CustomerDto } from "../../dto/customer.dto";
+import { OrderInfo } from "../../domain/orderInfo.domain";
+import { OrderInfoDto } from "../../dto/orderInfo.read.dto";
 
 export class DomainMapper {
 

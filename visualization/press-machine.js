@@ -86,6 +86,7 @@ class PressMachine {
         this.pressGroup.add(this.rightPressArm);
         /*----------*/
         this.pressGroup.position.set(position.x, position.y, position.z);
+        this.pressGroup.rotateY(Math.PI /2.0);
         return this.pressGroup;
     }
     timeoutPressArm() {
