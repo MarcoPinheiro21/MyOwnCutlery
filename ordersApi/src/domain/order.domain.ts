@@ -1,7 +1,7 @@
 import { Product } from "./product.domain";
 import { CustomerDetails } from "./customer-details.domain";
-import { OrderStates } from "src/enums/orderStates.enum";
-import { OrdersApiDomainException } from "src/exceptions/domain.exception";
+import { OrderStates } from "../enums/orderStates.enum";
+import { OrdersApiDomainException } from "../exceptions/domain.exception";
 import { IOrderDomain } from "./iOrder.domain"
 
 export class Order implements IOrderDomain {

@@ -1,5 +1,5 @@
-import { CustomerDto } from "src/dto/customer.dto";
-import { EditCustomerDto } from "src/dto/customer.edit.dto";
+import { CustomerDto } from "../../dto/customer.dto";
+import { EditCustomerDto } from "../../dto/customer.edit.dto";
 
 export interface ICustomersService {
 

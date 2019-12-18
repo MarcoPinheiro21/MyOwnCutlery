@@ -1,4 +1,4 @@
-import { OrdersApiDomainException } from "src/exceptions/domain.exception";
+import { OrdersApiDomainException } from "../exceptions/domain.exception";
 
 export class Address {
 

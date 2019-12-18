@@ -1,10 +1,10 @@
 import { getRepository, getMongoRepository } from 'typeorm';
 import { IOrdersRepository } from './iOrders.repository';
-import { Order } from 'src/domain/order.domain';
-import { OrderModel } from 'src/models/order.entity';
+import { Order } from '../domain/order.domain';
+import { OrderModel } from '../models/order.entity';
 import { ModelMapper } from './model.mapper';
-import { OrderInfo } from 'src/domain/orderInfo.domain';
-import { OrderInfoModel } from 'src/models/orderInfo.entity';
+import { OrderInfo } from '../domain/orderInfo.domain';
+import { OrderInfoModel } from '../models/orderInfo.entity';
 
 export class OrdersRepository implements IOrdersRepository {
 

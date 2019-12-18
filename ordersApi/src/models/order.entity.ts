@@ -1,5 +1,5 @@
 import { Entity, ObjectIdColumn, Column, ObjectID } from "typeorm";
-import { OrderStates } from "src/enums/orderStates.enum";
+import { OrderStates } from "../enums/orderStates.enum";
 import { CustomerDetailsModel } from "./customer.details";
 import { ProductModel } from "./product.entity";
 

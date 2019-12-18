@@ -1,9 +1,9 @@
-import { Controller, Get, Param, Post, Body, UseFilters, BadRequestException, Inject, Query, Put, Delete } from '@nestjs/common';
-import { CustomerDto } from 'src/dto/customer.dto';
+import { Controller, Get, Param, Post, Body, UseFilters, Inject, Put, Delete } from '@nestjs/common';
+import { CustomerDto } from '../../dto/customer.dto';
 import { validateOrReject } from 'class-validator';
-import { AllExceptionsFilter } from 'src/exceptions/http-exception.filter';
-import { ICustomersService } from 'src/services/customers/iCustomers.service';
-import { EditCustomerDto } from 'src/dto/customer.edit.dto';
+import { AllExceptionsFilter } from '../../../src/exceptions/http-exception.filter';
+import { ICustomersService } from '../../services/customers/iCustomers.service';
+import { EditCustomerDto } from '../../dto/customer.edit.dto';
 
 @Controller('customers')
 export class CustomersController {
@@ -11,6 +11,7 @@ export class CustomersController {
     constructor(@Inject('ICustomersService') private readonly customersService: ICustomersService) { }
 
     @Get(':id')
+    @UseFilters(new AllExceptionsFilter())
     async findById(@Param('id') id) {
         return this.customersService.findById(id);
     }

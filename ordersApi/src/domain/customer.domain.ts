@@ -1,5 +1,5 @@
 import { Address } from "./address.domain";
-import { OrdersApiDomainException } from "src/exceptions/domain.exception";
+import { OrdersApiDomainException } from "../exceptions/domain.exception";
 import { CustomerDetails } from "./customer-details.domain";
 import { ICustomer } from "./iCustomer.domain";
 

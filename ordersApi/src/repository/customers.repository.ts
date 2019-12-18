@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { ICustomersRepository } from "./iCustomers.repository";
 import { getRepository, getMongoRepository } from "typeorm";
-import { Customer } from "src/domain/customer.domain";
-import { CustomerModel } from "src/models/customer.entity";
+import { Customer } from "../domain/customer.domain";
+import { CustomerModel } from "../models/customer.entity";
 import { ModelMapper } from "./model.mapper";
 
 @Injectable()

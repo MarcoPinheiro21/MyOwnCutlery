@@ -1,4 +1,4 @@
-import { Column, Index, PrimaryGeneratedColumn, Entity, ObjectID, PrimaryColumn, Unique, ObjectIdColumn } from "typeorm";
+import { Column, Index, Entity, ObjectID, ObjectIdColumn } from "typeorm";
 
 @Entity()
 export class OrderInfoModel {

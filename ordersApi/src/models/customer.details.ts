@@ -1,6 +1,5 @@
 import { Column } from "typeorm";
 import { AddressModel } from "./address";
-import { CustomerDetailsDto } from "src/dto/customer.details.dto";
 
 export class CustomerDetailsModel {
 

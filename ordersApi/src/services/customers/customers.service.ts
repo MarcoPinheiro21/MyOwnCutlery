@@ -1,10 +1,10 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { CustomerDto } from 'src/dto/customer.dto';
+import { CustomerDto } from '../../dto/customer.dto';
 import { ICustomersService } from './iCustomers.service';
-import { OrdersApiDomainException } from 'src/exceptions/domain.exception';
-import { EditCustomerDto } from 'src/dto/customer.edit.dto';
-import { ICustomersRepository } from 'src/repository/iCustomers.repository';
-import { Customer } from 'src/domain/customer.domain';
+import { OrdersApiDomainException } from '../../exceptions/domain.exception';
+import { EditCustomerDto } from '../../dto/customer.edit.dto';
+import { ICustomersRepository } from '../../repository/iCustomers.repository';
+import { Customer } from '../../domain/customer.domain';
 import { DomainMapper } from '../mapper/domain.mapper';
 
 
@@ -18,9 +18,10 @@ export class CustomersService implements ICustomersService {
     public async findAll(): Promise<CustomerDto[]> {
         let customers = await this.findAll_();
         let customersDto: CustomerDto[] = [];
-        customers.forEach(async element => {
+        for (let element of customers) {
             customersDto.push(await DomainMapper.customerToDto(element));
-        });
+
+        }
         return customersDto;
     }
 
@@ -50,7 +51,7 @@ export class CustomersService implements ICustomersService {
 
     public async createCustomer(customerDto: CustomerDto): Promise<CustomerDto> {
         let customer: Customer = await DomainMapper.customerDtoToDomain(customerDto);
-        let resultCustomer : Customer;
+        let resultCustomer: Customer;
         try {
             resultCustomer = await this.customersRepository.saveCustomer(customer);
         } catch (error) {
@@ -106,9 +107,9 @@ export class CustomersService implements ICustomersService {
         return DomainMapper.customerToDto(resultCustomer);
     }
 
-    public async deleteCustomer(id : string) : Promise<CustomerDto>{
+    public async deleteCustomer(id: string): Promise<CustomerDto> {
         let customerResult = await this.findById_(id);
-        let deletedCustomer =  await this.customersRepository.deleteCustomer(customerResult);
+        let deletedCustomer = await this.customersRepository.deleteCustomer(customerResult);
         return await DomainMapper.customerToDto(deletedCustomer);
     }
 

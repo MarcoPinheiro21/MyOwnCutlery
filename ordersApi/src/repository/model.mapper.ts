@@ -1,18 +1,18 @@
-import { IOrderDomain } from "src/domain/iOrder.domain";
-import { OrderModel } from "src/models/order.entity";
+import { IOrderDomain } from "../domain/iOrder.domain";
+import { OrderModel } from "../models/order.entity";
 import { ObjectID } from "mongodb";
-import { CustomerDetailsModel } from "src/models/customer.details";
-import { AddressModel } from "src/models/address";
-import { CustomerDetails } from "src/domain/customer-details.domain";
-import { Address } from "src/domain/address.domain";
-import { ProductModel } from "src/models/product.entity";
-import { Product } from "src/domain/product.domain";
-import { Order } from "src/domain/order.domain";
-import { CustomerModel } from "src/models/customer.entity";
-import { ICustomer } from "src/domain/iCustomer.domain";
-import { Customer } from "src/domain/customer.domain";
-import { OrderInfoModel } from "src/models/orderInfo.entity";
-import { OrderInfo } from "src/domain/orderInfo.domain";
+import { CustomerDetailsModel } from "../models/customer.details";
+import { AddressModel } from "../models/address";
+import { CustomerDetails } from "../domain/customer-details.domain";
+import { Address } from "../domain/address.domain";
+import { ProductModel } from "../models/product.entity";
+import { Product } from "../domain/product.domain";
+import { Order } from "../domain/order.domain";
+import { CustomerModel } from "../models/customer.entity";
+import { ICustomer } from "../domain/iCustomer.domain";
+import { Customer } from "../domain/customer.domain";
+import { OrderInfoModel } from "../models/orderInfo.entity";
+import { OrderInfo } from "../domain/orderInfo.domain";
 
 export class ModelMapper {
 
