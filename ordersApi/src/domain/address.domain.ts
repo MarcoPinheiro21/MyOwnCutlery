@@ -47,14 +47,14 @@ export class Address {
 
     async setTown(town: string): Promise<any> {
         if (town == null || town.trim().length == 0) {
-            throw new OrdersApiDomainException('Customer\'s address cannot be empty ');
+            throw new OrdersApiDomainException('Customer\'s town cannot be empty');
         }
         this.town = town;
     }
 
     async setCountry(country: string): Promise<any> {
         if (country == null || country.trim().length == 0) {
-            throw new OrdersApiDomainException('Customer\'s country cannot be empty ');
+            throw new OrdersApiDomainException('Customer\'s country cannot be empty');
         }
         this.country = country;
     }
