@@ -85,8 +85,8 @@ export class Order implements IOrderDomain {
     }
 
     async deleteProduct(id: string): Promise<Order> {
-        this.products.forEach(element => {
-            if (element.equals(id)) {
+        this.products.forEach(async element=> {
+            if (await element.equals(id)) {
                 let i = this.products.indexOf(element);
                 this.products.splice(i);
             }
