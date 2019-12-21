@@ -35,7 +35,7 @@ import { OrderManagementComponent } from './order-management/order-management.co
 import { ClientsComponent } from './order-management/clients/clients.component';
 import { OrdersComponent } from './order-management/orders/orders.component';
 import { LoginComponent } from './login/login.component';
-import { VisualizationWebComponent, SafePipe } from './visualization-web/visualization-web.component';
+import { VisualizationWebComponent, SafePipe } from './production-planning-web/visualization-web/visualization-web.component';
 import { ClientService } from './order-management/clients/client.service';
 import { ClientEditionDialogComponent } from './order-management/clients/client-edition-dialog/client-edition-dialog.component';
 import { HomeComponent } from './home/home.component';
@@ -45,6 +45,8 @@ import { OrderCreationDialogComponent } from './order-management/orders/order-cr
 import { ClientRightForgottenDialogComponent } from './order-management/clients/client-right-forgotten-dialog/client-right-forgotten-dialog.component';
 import { OrderEditionDialogComponent } from './order-management/orders/order-edition-dialog/order-edition-dialog.component';
 import { OrderCancelationDialogComponent } from './order-management/orders/order-cancelation-dialog/order-cancelation-dialog.component';
+import { ProductionPlanningWebComponent } from './production-planning-web/production-planning-web.component';
+import { ProductionPlanningScheduleComponent } from './production-planning-web/production-planning-schedule/production-planning-schedule.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -91,7 +93,9 @@ export const AngularMaterialComponents = [
     OrderCreationDialogComponent,
     OrderEditionDialogComponent,
     ClientRightForgottenDialogComponent,
-    OrderCancelationDialogComponent
+    OrderCancelationDialogComponent,
+    ProductionPlanningWebComponent,
+    ProductionPlanningScheduleComponent
   ],
   imports: [
     BrowserModule,
@@ -122,7 +126,7 @@ export const AngularMaterialComponents = [
     OrderEditionDialogComponent,
     OrderCreationDialogComponent,
     OrderCancelationDialogComponent
-    
+
   ]
 })
 export class AppModule { }

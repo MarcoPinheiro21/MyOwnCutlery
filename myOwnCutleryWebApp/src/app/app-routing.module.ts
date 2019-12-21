@@ -9,9 +9,11 @@ import { ProductionLinesComponent } from './master-data-web/production-lines/pro
 import { OrderManagementComponent } from './order-management/order-management.component';
 import { ClientsComponent } from './order-management/clients/clients.component';
 import { OrdersComponent } from './order-management/orders/orders.component';
-import { VisualizationWebComponent } from './visualization-web/visualization-web.component';
+import { VisualizationWebComponent } from './production-planning-web/visualization-web/visualization-web.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { ProductionPlanningWebComponent } from './production-planning-web/production-planning-web.component';
+import { ProductionPlanningScheduleComponent } from './production-planning-web/production-planning-schedule/production-planning-schedule.component';
 
 const routes: Routes = [
   {
@@ -43,8 +45,12 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'visualization-web',
-        component: VisualizationWebComponent
+        path: 'production-planning',
+        component: ProductionPlanningWebComponent,
+        children: [
+          { path: 'visualization', component: VisualizationWebComponent },
+          { path: 'pplanSchedule', component:  ProductionPlanningScheduleComponent}
+        ]
       }
     ]
   },

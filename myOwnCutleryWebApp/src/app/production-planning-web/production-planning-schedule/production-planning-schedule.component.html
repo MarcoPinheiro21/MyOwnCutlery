@@ -1,0 +1,27 @@
+<div class="header">
+  <form class="form">
+
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-2">
+        <span>Initial Date:</span>
+        <input type="date" name="initialDate" min={{this.currentDate}} [(ngModel)]="selectedInitialDate">
+      </div>
+      <div class="col-md-2">
+        <span>Final Date:</span>
+        <input type="date" name="finalDate" min={{this.currentDate}} [(ngModel)]="selectedFinalDate">
+      </div>
+      <div class="col-md-4" style="margin-top:1%">
+        <button mat-raised-button (click)="schedule()">Schedule</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-error *ngIf="!isDateValid">
+          The final date is empty or is before the initial date.
+        </mat-error>
+      </div>
+    </div>
+  </form>
+</div>
