@@ -14,15 +14,6 @@ namespace productionApi.Controllers
     public class ProductsController : ControllerBase
     {
         public ProductService _service { get; set; }
-
-        public ProductsController(MasterProductionContext context, RestContext restContext)
-        {
-            _service = new ProductService(
-                new ProductRepository(context),
-                new OperationRepository(context),
-                restContext
-            );
-        }
         
         public ProductsController(MasterProductionContext context, HttpClient httpClient)
         {

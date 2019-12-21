@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using productionApi.Context;
@@ -21,7 +22,7 @@ namespace productionApiTest.Controllers
 
         public TestProductController()
         {
-            theController = new ProductsController(_context, _restContext);
+            theController = new ProductsController(_context, new HttpClient());
             theController._service= new ProductService(
                 new ProductRepository(_context), 
                 new OperationRepository(_context),
