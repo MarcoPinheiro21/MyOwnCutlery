@@ -14,7 +14,7 @@ namespace productionApi.Controllers
     public class ProductsController : ControllerBase
     {
         public ProductService _service { get; set; }
-
+        
         public ProductsController(MasterProductionContext context, HttpClient httpClient)
         {
             _service = new ProductService(

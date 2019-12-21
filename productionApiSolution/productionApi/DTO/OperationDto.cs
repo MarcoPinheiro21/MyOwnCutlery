@@ -8,6 +8,7 @@
         public long ExecutionTime{ get; set; }
         public long SetupTime{ get; set; }
         
-        
+        public long Order { get; set; }
+
     }
 }

@@ -28,7 +28,8 @@ namespace productionApi.Migrations
                     Tool = table.Column<string>(nullable: true),
                     OperationType = table.Column<string>(nullable: true),
                     ExecutionTime = table.Column<long>(nullable: false),
-                    SetupTime = table.Column<long>(nullable: false)
+                    SetupTime = table.Column<long>(nullable: false),
+                    Order = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {

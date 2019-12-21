@@ -18,7 +18,8 @@ export class ProductDialogComponent implements OnInit {
   displayedColumns: string[] = [
     'checked',
     'tool',
-    'operationType'];
+    'operationType',
+    'order'];
 
   inputFormControl = new FormControl('', [
       Validators.required,
@@ -45,6 +46,7 @@ export class ProductDialogComponent implements OnInit {
       e["operationType"] = op.operationType.desc;
       e["highlighted"] = false;
       e["hovered"] = false;
+      e["order"];
       this.elements.push(e);
     });
   }
@@ -64,15 +66,15 @@ export class ProductDialogComponent implements OnInit {
   }
 
   save() {
+    this.isSelectedOperationsEmpty = false;
 
-      this.checkEmptyOperationsList();
-      if (this.inputFormControl.hasError('required') ||
-        this.inputFormControl.hasError('minlength') ||
-        this.isSelectedOperationsEmpty) {
-        return;
-      }
+    this.checkEmptyOperationsList();
+    if (this.inputFormControl.hasError('required') ||
+      this.inputFormControl.hasError('minlength') ||
+      this.isSelectedOperationsEmpty) {
+      return;
+    }
     this.dialogRef.close({ data: this.product });
-    return;
   }
 
   checkEmptyOperationsList() {
@@ -83,14 +85,30 @@ export class ProductDialogComponent implements OnInit {
   private addOperationToPlan(element: Element) {
     let op = <CreateOperation>{};
     op.operationId = element.operationId;
+
+    // Production's Plan Order
+    op.order = this.product.plan.operations.length + 1;
+    element.order = op.order;
     this.product.plan.operations.push(op);
   }
 
   private removeOperationFromPlan(element: Element) {
     this.product.plan.operations =
-      this.product.plan.operations.filter(op =>
-        op.operationId != element.operationId);
+      this.product.plan.operations.filter(op => op.operationId != element.operationId);
 
+    // Production's Plan Order
+    const lastUncheckedOrder = element.order;
+    element.order = undefined;
+    this.elements.map(elem => {
+      if (elem.order >= lastUncheckedOrder) {
+        elem.order--;
+      }
+    });
+    this.product.plan.operations.map(oper => {
+      if (oper.order >= lastUncheckedOrder) {
+        oper.order--;
+      }
+    });
   }
 
   onCheckClick(element: Element) {
@@ -108,4 +126,5 @@ export interface Element {
   operationType: string;
   highlighted?: boolean;
   hovered?: boolean;
+  order?: number;
 }

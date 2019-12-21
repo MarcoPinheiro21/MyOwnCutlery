@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace factoryApi.Migrations
 {
-    public partial class FactoryDB : Migration
+    public partial class Master : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

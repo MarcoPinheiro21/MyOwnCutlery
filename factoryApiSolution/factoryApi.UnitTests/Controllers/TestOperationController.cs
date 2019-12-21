@@ -76,7 +76,7 @@ namespace factoryApiTest.Controllers
         public async Task PostOperation_ShouldReturnCreatedOperation()
         {
             //Arrange
-            var operationName = "op1";
+            var operationName = "opt1";
 
             var request = new CreateOperationDto
             {
@@ -118,7 +118,7 @@ namespace factoryApiTest.Controllers
         public async Task PutOperation_ShouldReturnUpdatedOperation()
         {
             //Arrange
-            var operationName = "op2";
+            var operationName = "opt2";
             var operationId = 1;
 
             var body = new CreateOperationDto

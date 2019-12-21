@@ -14,6 +14,12 @@ namespace productionApi.Context
             _connection = configuration["ConnectionString:productionDB"];
         }
         
+        public MasterProductionContext(DbContextOptions<MasterProductionContext> options) : base(options)
+        {
+            
+        }
+                
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

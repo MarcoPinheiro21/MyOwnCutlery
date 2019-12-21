@@ -115,4 +115,5 @@ export interface CreatePlan {
 }
 export interface CreateOperation {
   operationId: number;
+  order: number;
 }

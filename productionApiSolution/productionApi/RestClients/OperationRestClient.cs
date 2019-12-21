@@ -19,9 +19,9 @@ namespace productionApi.RestClients
             _client = new RestClient(httpClient.BaseAddress);
         }
         
-        public OperationRestClient(RestClient client)
+        public OperationRestClient()
         {
-            _client = client;
+            
         }
 
         public virtual List<FactoryApiOperationDto> GetOperations()
