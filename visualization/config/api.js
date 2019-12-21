@@ -99,10 +99,22 @@ function updateMovedMachine(machine)
     return JSON.parse(xmlHttp.responseText);
 }
 
-function getMachineDescriptions() {
-    // TODO fazer integracao
-    return JSON.parse(machinesDescriptionsMock);
+function getAgendas(date)
+{
+    if(!configurationsApi.factoryApi.isEnable) {
+        return planningMock;
+    }else{ 
+    var body=JSON.stringify(date);
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.addEventListener("load", updateVisualizationModelListener());
+    xmlHttp.open( "POST", "http://localhost:1337/production_planning/get_plan", false );
+    xmlHttp.setRequestHeader('Content-Type', "application/json;charset=UTF-8");  
+    xmlHttp.send( body );
+    return JSON.parse(xmlHttp.responseText);
+    }
 }
+
+
 
 const productionLinesMockResponse = `[
     {
@@ -119,7 +131,7 @@ const productionLinesMockResponse = `[
                 "id": 2,
                 "description": "Maquina2",
                 "machineTypeId": 2,
-                "productionLineId": 1,
+                "productionLineId": 2,
                 "productionLinePosition": 0
             },{
                 "id": 3,
@@ -166,37 +178,6 @@ const productionLinesMockResponse = `[
                 "productionLinePosition": 0
             }
         ]
-    },
-    {
-        "productionLineId": 3,
-        "productionLineName": "Linha Produção 3",
-        "machinesListDtos": [
-            {
-                "id": 9,
-                "description": "Maquina9",
-                "machineTypeId": 1,
-                "productionLineId": 3,
-                "productionLinePosition": 0
-            },{
-                "id": 10,
-                "description": "Maquina10",
-                "machineTypeId": 2,
-                "productionLineId": 3,
-                "productionLinePosition": 0
-            },{
-                "id": 11,
-                "description": "Maquina11",
-                "machineTypeId": 1,
-                "productionLineId": 3,
-                "productionLinePosition": 0
-            },{
-                "id": 12,
-                "description": "Maquina12",
-                "machineTypeId": 2,
-                "productionLineId": 3,
-                "productionLinePosition": 0
-            }
-        ]
     }
 ]`; 
 
@@ -224,14 +205,14 @@ const machineTypeMockResponse = `[
         "desc": "T2",
         "operationList": [
             {
-                "operationId": 1,
-                "toolId": 1,
-                "tool": "Hammer",
+                "operationId": 2,
+                "toolId": 2,
+                "tool": "Drill",
                 "operationType": {
-                    "operationTypeId": 1,
-                    "desc": "op1",
-                    "executionTime": 12,
-                    "setupTime": 5
+                    "operationTypeId": 2,
+                    "desc": "op2",
+                    "executionTime": 17,
+                    "setupTime": 4
                 }
             }
         ],
@@ -274,3 +255,21 @@ planMock =`[
         "operationType": "op2"
     }
 ]`
+
+
+planningMock = `[ma*[t(0,5,setup,Hammer),t(5,65,exec,info(p(op1,Hammer),p1,5,o4,t2)),t(90,150,exec,info(p(op1,Hammer),p3,5,o3,t3)),
+    t(175,211,exec,info(p(op1,Hammer),p3,3,o2,t5))],mb*[t(13,17,setup,Drill),t(17,102,exec,info(p(op2,Drill),p1,5,o4,t2)),
+        t(102,187,exec,info(p(op2,Drill),p3,5,o3,t3)),t(187,238,exec,info(p(op2,Drill),p3,3,o2,t5)),
+        t(238,357,exec,info(p(op2,Drill),p2,7,o1,t7))],mc*[t(114,119,setup,Hammer),
+            t(119,199,exec,info(p(op1,Hammer),p3,5,o3,t3)),t(204,250,exec,info(p(op1,Hammer),p3,3,o2,t5)),
+            t(255,369,exec,info(p(op1,Hammer),p2,7,o1,t7))],md*[],me*[t(89,94,setup,Hammer),
+                t(94,178,exec,info(p(op1,Hammer),p3,7,o4,t1)),t(213,237,exec,info(p(op1,Hammer),p1,2,o2,t6)),
+                t(247,307,exec,info(p(op1,Hammer),p1,5,o1,t8))],mf*[t(0,4,setup,Drill),t(4,106,exec,info(p(op2,Drill),p2,6,o3,t4)),
+                    t(106,225,exec,info(p(op2,Drill),p3,7,o4,t1)),
+                    t(225,259,exec,info(p(op2,Drill),p1,2,o2,t6)),
+                    t(259,344,exec,info(p(op2,Drill),p1,5,o1,t8))],mg*[t(16,21,setup,Hammer),
+                        t(21,118,exec,info(p(op1,Hammer),p2,6,o3,t4)),t(123,237,exec,info(p(op1,Hammer),p3,7,o4,t1))],mh*[]]`
+
+
+
+                        
