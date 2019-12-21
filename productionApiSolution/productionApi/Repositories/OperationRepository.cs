@@ -46,12 +46,12 @@ namespace productionApi.Repositories
             ICollection<OperationDto> result =  new List<OperationDto>();
             ICollection<Operation> operations = _context.Operations.Where(x => x.PlanId == id).ToList();
                
-            //var product = _context.Products.ToList().FirstOrDefault(x => x.ProductId == id);
             foreach (var op in operations)
             {
                 result.Add(op.toDto());
             }
-            return result;
+
+            return result.OrderBy(s => s.Order).ToList();
         }
         
     }

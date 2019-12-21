@@ -30,11 +30,12 @@ namespace productionApi.Services
                     {
                         if (factoryApiDto.operationId.Equals(createOperationDto.OperationId))
                         {
-                            CreateOperationDto dto = new CreateOperationDto(factoryApiDto.operationId);
+                            CreateOperationDto dto = new CreateOperationDto(factoryApiDto.operationId, createOperationDto.Order);
                             dto.Tool = factoryApiDto.tool;
                             dto.Type = factoryApiDto.operationType.desc;
                             dto.ExecutionTime = factoryApiDto.operationType.executionTime;
                             dto.SetupTime = factoryApiDto.operationType.setupTime;
+                            dto.Order = createOperationDto.Order;
                             newList.Add(dto);
                         }
                     }

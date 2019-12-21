@@ -2,10 +2,10 @@
 {
     public class OperationFactory
     {
-        public static Operation Create(long id,string tool,string type,long eTime, long sTime)
+        public static Operation Create(long id,string tool,string type,long eTime, long sTime, long order)
         {
             
-            return new Operation(id,tool,type,eTime,sTime);
+            return new Operation(id,tool,type,eTime,sTime, order);
         }
     }
 }

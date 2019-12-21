@@ -21,7 +21,7 @@ namespace productionApiTest.Controllers
 
         public TestProductController()
         {
-            theController = new ProductsController(_context, null);
+            theController = new ProductsController(_context, _restContext);
             theController._service= new ProductService(
                 new ProductRepository(_context), 
                 new OperationRepository(_context),
@@ -86,8 +86,8 @@ namespace productionApiTest.Controllers
         {
             //Arrange
             List<CreateOperationDto> operationsList = new List<CreateOperationDto>();
-            operationsList.Add(new CreateOperationDto(6));
-            operationsList.Add(new CreateOperationDto(7));
+            operationsList.Add(new CreateOperationDto(6,1));
+            operationsList.Add(new CreateOperationDto(7,2));
             
             var productName = "productToTestPost";
             CreatePlanDto plan = new CreatePlanDto(operationsList);
@@ -107,8 +107,8 @@ namespace productionApiTest.Controllers
         public async Task PostProduct_ShouldReturnNotFoundWhenOperationIdIsUnknown()
         {
             List<CreateOperationDto> operationsList = new List<CreateOperationDto>();
-            operationsList.Add(new CreateOperationDto(-1));
-            operationsList.Add(new CreateOperationDto(-2));
+            operationsList.Add(new CreateOperationDto(-1,1));
+            operationsList.Add(new CreateOperationDto(-2,2));
             
             var productName = "productToTestPost";
             CreatePlanDto plan = new CreatePlanDto(operationsList);

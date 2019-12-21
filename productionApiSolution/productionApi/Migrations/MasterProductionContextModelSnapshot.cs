@@ -29,6 +29,8 @@ namespace productionApi.Migrations
 
                     b.Property<string>("OperationType");
 
+                    b.Property<long>("Order");
+
                     b.Property<long>("SetupTime");
 
                     b.Property<string>("Tool");

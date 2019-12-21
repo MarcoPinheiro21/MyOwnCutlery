@@ -28,7 +28,7 @@
   </ng-container>
 
   <ng-container matColumnDef="operationType">
-    <mat-header-cell *matHeaderCellDef> Operation Type </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Oper. Type </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.operationType}} </mat-cell>
   </ng-container>
 
@@ -37,7 +37,10 @@
     <mat-cell *matCellDef="let element"> {{element.tool}} </mat-cell>
   </ng-container>
 
-
+  <ng-container matColumnDef="order">
+    <mat-header-cell *matHeaderCellDef> Order </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.order}} </mat-cell>
+  </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{hovered: row.hovered}"
@@ -46,8 +49,9 @@
 </mat-table>
 <mat-dialog-actions>
   <button mat-button (click)="close()">Cancel</button>
-  <button mat-button (click)="save()" (click)="checkEmptyOperationsList()">Save</button>
+  <button mat-button (click)="save()" >Save</button>
   <mat-error *ngIf="isSelectedOperationsEmpty">
     Please choose at least one operation from the list.
   </mat-error>
+
 </mat-dialog-actions>

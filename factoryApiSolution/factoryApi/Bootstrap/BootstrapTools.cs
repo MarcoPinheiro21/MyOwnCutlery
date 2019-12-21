@@ -7,11 +7,6 @@ namespace factoryApi.Bootstrap
     public class BootstrapTools
     {
         private readonly OperationRepository _operationRepository;
-        private static string TOOL_HAMMER_DESC = "Hammer";
-        private static long TOOL_HAMMER_ID = 1;
-        
-        private static string TOOL_DRILL_DESC = "Drill";
-        private static long TOOL_DRILL_ID = 2;
 
         public BootstrapTools(MasterFactoryContext context)
         {
@@ -19,18 +14,46 @@ namespace factoryApi.Bootstrap
         }
         public void Execute()
         {
-            var hammer = _operationRepository.GetToolById(TOOL_HAMMER_ID);
-            if (hammer == null)
+            var fa = _operationRepository.GetToolById(1);
+            if (fa == null)
             {
-                _operationRepository.addTool(new Tool(TOOL_HAMMER_ID, 
-                    TOOL_HAMMER_DESC));
+                _operationRepository.addTool(new Tool(1, 
+                    "fa"));
             }
             
-            var drill = _operationRepository.GetToolById(TOOL_DRILL_ID);
-            if (drill == null)
+            var fb = _operationRepository.GetToolById(2);
+            if (fb == null)
             {
-                _operationRepository.addTool(new Tool(TOOL_DRILL_ID, 
-                    TOOL_DRILL_DESC));
+                _operationRepository.addTool(new Tool(2, 
+                    "fb"));
+            }
+            
+            var fc = _operationRepository.GetToolById(3);
+            if (fc == null)
+            {
+                _operationRepository.addTool(new Tool(3, 
+                    "fc"));
+            }
+            
+            var fd = _operationRepository.GetToolById(4);
+            if (fd == null)
+            {
+                _operationRepository.addTool(new Tool(4, 
+                    "fd"));
+            }
+            
+            var fe = _operationRepository.GetToolById(5);
+            if (fe == null)
+            {
+                _operationRepository.addTool(new Tool(5, 
+                    "fe"));
+            }
+            
+            var ff = _operationRepository.GetToolById(6);
+            if (ff == null)
+            {
+                _operationRepository.addTool(new Tool(6, 
+                    "ff"));
             }
             
         }
