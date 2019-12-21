@@ -1,0 +1,12 @@
+span {
+  text-decoration: none;
+  text-align: center;
+  font-family: 'Bowlby One SC';
+  font-size: 15px;
+}
+col-md-4 col-md-12{
+  text-align: center;
+}
+button :hover {
+  background-color: grey
+}
