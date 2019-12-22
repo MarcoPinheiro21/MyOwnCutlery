@@ -16,7 +16,7 @@ export class ProductionPlanningScheduleService {
 
   createProductionPlan(request: RequestProductionPlan): Observable<RequestProductionPlan[]> {
     return this.http
-      .post<RequestProductionPlan[]>(this.url + 'begin_plan/', request)
+      .post<RequestProductionPlan[]>(this.url + 'begin_plan', request)
       .pipe(catchError(null));
   }
 }
