@@ -10,6 +10,7 @@ import { RequestProductionPlan } from 'src/app/models/request-production-plan.mo
 export class ProductionPlanningScheduleComponent implements OnInit {
 
   isDateValid = true;
+  success = false;
   selectedInitialDate: Date;
   selectedFinalDate: Date;
   request: RequestProductionPlan;
@@ -35,9 +36,11 @@ export class ProductionPlanningScheduleComponent implements OnInit {
     }
     this.request.initialDate = this.selectedInitialDate.toString() + 'T00:00:00';
     this.request.finalDate = this.selectedFinalDate.toString() + 'T00:00:00';
-
-    this.ppService.createProductionPlan(this.request).subscribe(item => {
-      console.log(item);
+    this.ppService.createProductionPlan(this.request).subscribe(it => {},
+    error => {
+      if (error.error.text === 'Success') {
+        this.timerHideAlert();
+      }
     });
   }
   isValidDates(): boolean {
@@ -46,6 +49,15 @@ export class ProductionPlanningScheduleComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  timerHideAlert() {
+    this.success = true;
+    setTimeout(() => this.hideAlert(), 5000);
+  }
+
+  hideAlert() {
+    this.success = false;
   }
 
 }
