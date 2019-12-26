@@ -1,3 +1,11 @@
+<div class="row" *ngIf="success" >
+  <div class="col-md-12">
+      <span class="col-md-12 alert alert-success" role="alert">
+        Production has been planned between {{this.selectedInitialDate}} and {{this.selectedFinalDate}}
+      </span>
+  </div>
+</div>
+
 <div class="header">
   <form class="form">
 
@@ -16,12 +24,13 @@
         <button mat-raised-button (click)="schedule()">Schedule</button>
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="!isDateValid">
       <div class="col-md-12">
-        <mat-error *ngIf="!isDateValid">
+        <mat-error>
           The final date is empty or is before the initial date.
         </mat-error>
       </div>
     </div>
+
   </form>
 </div>
