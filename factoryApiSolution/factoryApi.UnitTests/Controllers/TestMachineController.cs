@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using factoryApi.Context;
 using factoryApi.Controllers;
 using factoryApi.DTO;
 using factoryApiTest.Context;
 using Microsoft.AspNetCore.Mvc;
+using productionApi.Context;
 using Xunit;
 
 namespace factoryApiTest.Controllers
@@ -12,12 +14,13 @@ namespace factoryApiTest.Controllers
     public class TestMachineController
     {
         private MasterFactoryContext _context = MasterFactoryMockContext.GetMasterFactoryContextMock();
+        private RestContext _restContext = RestMockContext.GetRestContextMock();
 
         private MachinesController theController;
 
         public TestMachineController()
         {
-            theController = new MachinesController(_context);
+            theController = new MachinesController(_context, new HttpClient());
         }
 
         [Fact]
