@@ -143,6 +143,34 @@ export class OrderCreationDialogComponent implements OnInit {
     this.dataSource.data = list;
   }
 
+  sortByUniquePopularity() {
+    var list = this.dataSource.data;
+    list.sort(function (a, b) {
+      if (a.sumQuantity > b.sumQuantity) {
+        return 1;
+      }
+      if (b.sumQuantity > a.sumQuantity) {
+        return -1;
+      }
+      return 0;
+    });
+    this.dataSource.data = list;
+  }
+
+  sortByTotalPopularity() {
+    var list = this.dataSource.data;
+    list.sort(function (a, b) {
+      if (a.totalOrders > b.totalOrders) {
+        return 1;
+      }
+      if (b.totalOrders > a.totalOrders) {
+        return -1;
+      }
+      return 0;
+    });
+    this.dataSource.data = list;
+  }
+
 }
 export interface Element {
   checked: boolean;

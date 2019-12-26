@@ -56,8 +56,18 @@
     (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></mat-row>
 
 </mat-table>
+
 <mat-dialog-actions>
   <button mat-raised-button (click)="close()">Cancel</button>
   <button mat-raised-button (click)="save()" (click)="checkEmptyProductsList()">Save</button>
-  <button mat-raised-button (click)="sortByProductionTime()">Sort products by production time</button>
+
+  <mat-form-field style="margin-left: 50px;width: 250px">
+    <mat-label>Select an option</mat-label>
+    <mat-select [(value)]="selected">
+      <mat-option value="option1" (click)="sortByProductionTime()">Sort by production time</mat-option>
+      <mat-option value="option2" (click)="sortByTotalPopularity()">Sort by popularity (total ordered)</mat-option>
+      <mat-option value="option3" (click)="sortByUniquePopularity()">Sort by popularity (unique orders)</mat-option>
+    </mat-select>
+  </mat-form-field>
+
 </mat-dialog-actions>
