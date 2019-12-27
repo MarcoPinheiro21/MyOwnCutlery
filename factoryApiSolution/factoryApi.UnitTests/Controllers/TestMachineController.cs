@@ -14,7 +14,6 @@ namespace factoryApiTest.Controllers
     public class TestMachineController
     {
         private MasterFactoryContext _context = MasterFactoryMockContext.GetMasterFactoryContextMock();
-        private RestContext _restContext = RestMockContext.GetRestContextMock();
 
         private MachinesController theController;
 

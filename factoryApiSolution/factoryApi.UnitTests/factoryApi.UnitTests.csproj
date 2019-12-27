@@ -25,6 +25,7 @@
     <ItemGroup>
       <Compile Remove="UnitTest1.cs" />
       <Compile Remove="Controllers\Controllers.cs" />
+      <Compile Remove="Context\RestMockContext.cs" />
     </ItemGroup>
 
     <ItemGroup>
