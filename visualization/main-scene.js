@@ -105,7 +105,7 @@ function buildTables() {
     });
     for (i = 1; i <= nProductionLines; i++) {
         if (i % 2 == 0) {
-            table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: 15 * (i / 2) });
+            table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: 15 * (i-1) });
             scene.add(table);
         } else {
             table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: -15 * i });
@@ -128,7 +128,7 @@ function buildWorkTables(machine) {
     });
     for (i = 1; i <= nProductionLines; i++) {
         if (i % 2 == 0) {
-            workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: 15 * (i / 2) + 6 });
+            workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: 15 * (i -1) + 6 });
             scene.add(workTable);
         } else {
             workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: -15 * i + 6 });
@@ -174,7 +174,7 @@ function buildMachine(machine, productionLineNumber, model) {
             let roboticArm = new RoboticArm({ name: machine.description, castShadows: true, receiveShadows: true });
             roboticArms.push(roboticArm);
             if (productionLineNumber % 2 == 0) {
-                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (15 * (productionLineNumber / 2)) + 15 });
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (15 * (productionLineNumber -1)) + 15 });
             } else {
                 newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (-15 * productionLineNumber) + 15 });
             }
