@@ -38,9 +38,13 @@ var axesHelper = new THREE.AxesHelper(10);
 var roboticArms = [];
 var pressMachines = [];
 var productionLines;
-var machines;
+var machines = [];
+var planFiles;
 var machineTypes;
 var products;
+var agendas;
+
+var productionPlans;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
@@ -52,7 +56,8 @@ scene.add(axesHelper);
 this.productionLines = getProductionLines();
 this.machineTypes = getMachineTypes();
 this.products = getProducts();
-getProductPlanToProducts();
+this.planFiles = getPlanFiles();
+
 buildWidgets();
 buildScene();
 
@@ -70,6 +75,7 @@ animate();
  *  */
 
 function buildScene() {
+    machines = [];
     buildFloor();
     buildTables();
     buildMachines();
@@ -82,10 +88,10 @@ function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
     pressMachines.forEach(e => {
-        e.timeoutPressArm();
+        //e.timeoutPressArm();
     });
-    roboticArms.forEach(e => {
-        e.rotateArm();
+    machines.forEach(e => {
+        //e.rotateArm();
     });
 }
 
@@ -171,8 +177,9 @@ function buildMachine(machine, productionLineNumber, model) {
     let newSceneObject;
     switch (model) {
         case "Robotic Arm":
-            let roboticArm = new RoboticArm({ name: machine.description, castShadows: true, receiveShadows: true });
-            roboticArms.push(roboticArm);
+            let roboticArm = new RoboticArm({ name: machine.description, castShadows: true, receiveShadows: true, 
+                                        productionLineNumber: productionLineNumber,  productionLinePosition: machine.productionLinePosition});
+            machines.push(roboticArm);
             if (productionLineNumber % 2 == 0) {
                 newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (15 * (productionLineNumber -1)) + 15 });
             } else {
@@ -181,7 +188,7 @@ function buildMachine(machine, productionLineNumber, model) {
             break;
         case "Hydraulic Press":
             let pressMachine = new PressMachine({ name: machine.description, castShadows: true, receiveShadows: true });
-            pressMachines.push(pressMachine);
+            machines.push(pressMachine);
             if (productionLineNumber % 2 == 0) {
                 newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement - 6, y: 5, z: (15 * (productionLineNumber / 2)) + 6 });
             } else {
@@ -279,36 +286,39 @@ function buildWidgets() {
                 );
         }
     }
-    let controllerProducts = gui.addFolder(`Begin production of Product`);
-    for (r = 0; r < products.length; r++) {
-        var prod = products[r];
+    let controllerProducts = gui.addFolder(`Begin ProductionPlan`);
+    for (r = 0; r < this.planFiles.length; r++) {
+        let fileName = this.planFiles[r];
         var button = {
             add: function () {
-                initiateProduct(prod);
+                initiatePlan(fileName);
             }
         };
-        var line = controllerProducts.addFolder(prod.productName);
+        var line = controllerProducts.addFolder(fileName);
         line.add(button, 'add').name('Initiate');
     }
 
 }
 
-function initiateProduct(product) {
-    var capablePl = checkIsProducible(product.productPlan);
-    if (!capablePl) {
-        window.alert('There is no production line cabable of making that product!');
-        return;
-    }
+function initiatePlan(fileName) {
+    var plan = getPlanByFileName(fileName);
+    var firstMachineName = plan.maquinas[0].nome;
+    var firstMachineIndex; 
+    this.machines.map(mac => {
+        if(mac._properties.name == firstMachineName){
+            firstMachineIndex = mac._properties.productionLineNumber;
+        }
+    })
 
     var position;
-    if (capablePl['index'] % 2 == 0) {
-        position = { x: -37, y: 6, z: 15 * (capablePl['index'] / 2) };
+    if (firstMachineIndex % 2 == 0) {
+        position = { x: -37, y: 6, z: 15 * (firstMachineIndex / 2) };
     } else {
-        position = { x: -37, y: 6, z: -15 * capablePl['index'] };
+        position = { x: -37, y: 6, z: -15 * firstMachineIndex };
     }
 
     buildFork(position.x, position.y, position.z);
-    timeout(capablePl, position, 1, product.productPlan);
+    // timeout(capablePl, position, 1, product.productPlan);
 }
 
 function timeout(capablePl, position, cont, productPlan) {
@@ -359,45 +369,8 @@ function checkMachine(productPlan, cont) {
     return flag;
 }
 
-function checkIsProducible(productPlan) {
-    let capablePl;
-    let cont = 0;
-    this.productionLines.map(pl => {
-        pl['flag'] = true;
-        pl['index'] = ++cont;
-        productPlan.map(operation => {
-            operation['flag'] = false;
-            pl.machinesListDtos.map(mac => {
-                mac['machineType'] = machineTypes.filter(mt => mt.id === mac.machineTypeId)[0];
-                let ops = mac.machineType.operationList.filter(op =>
-                    op.tool === operation.tool &&
-                    op.operationType.desc === operation.operationType
-                );
-                if (ops.length > 0) {
-                    operation['flag'] = true;
-                    operation['time'] = ops[0].operationType.executionTime + ops[0].operationType.setupTime;
-                    operation['machine'] = mac;
-                }
-            });
-            if (operation['flag'] === false) {
-                pl['flag'] = false;
-                return;
-            }
-        });
-        if (pl['flag'] === false) {
-            return;
-        } else {
-            capablePl = pl;
-        }
-    });
-
-    return capablePl;
-}
-
-function getProductPlanToProducts() {
-    this.products.map(prod => {
-        prod['productPlan'] = getProductPlan(prod.productId);
-    });
+function getPlanByFileName(fileName) {
+    return getMachinesAgendas(fileName);
 }
 
 function swapMachine(machine, position) {
