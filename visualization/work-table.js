@@ -18,19 +18,23 @@ var N_BARS = 2;
 
 
 class WorkTable {
-    constructor(name) {
+    constructor(properties) {
+        this._properties = properties;
         this.group = new THREE.Group();
-        this.group.name = name;
+        this.group.name = this._properties.name;
     }
-    buildWorkLine(scale, position){
-        this.group.add(this.buildWorkTable(scale,{ x: position.x, y: position.y, z: position.z }));
+
+    buildWorkLine(scale, position) {
+        this.group.add(this.buildWorkTable(scale, { x: position.x, y: position.y, z: position.z }));
         return this.group;
     }
 
     buildWorkTable(scale, position) {
-        var localGroup = new THREE.Group();
+        let meshArray = [];
+
+        let localGroup = new THREE.Group();
         let legs = [];
-        var i;
+        let i;
         // Get 4 legs
         for (i = 0; i < N_LEGS; i++) {
             let mesh = this._tableLeg();
@@ -68,10 +72,11 @@ class WorkTable {
             refractionRatio: 0.25
         });
         let tableStructure = new THREE.Mesh(tableGeometry, tableMaterial);
+        meshArray.push(tableStructure);
 
         let treadmillGeometry = new THREE.Geometry();
         let centerTable = [];
-        
+
         centerTable.forEach(e => {
             treadmillGeometry.merge(e.geometry);
         });
@@ -85,6 +90,7 @@ class WorkTable {
 
         });
         let treadmill = new THREE.Mesh(treadmillGeometry, treadmillMaterial);
+        meshArray.push(treadmill);
 
         localGroup.add(tableStructure);
         localGroup.add(treadmill);
@@ -93,13 +99,22 @@ class WorkTable {
         localGroup.translateX(position.x);
         localGroup.translateY(position.y);
         localGroup.translateZ(position.z);
+
+        Util.castShadows({
+            meshArray: meshArray,
+            castShadows: this._properties.castShadows,
+            receiveShadows: this._properties.receiveShadows
+        });
+
         return localGroup;
     }
 
     // Legs
     _tableLeg() {
-        var geometry = new THREE.BoxGeometry(TABLE_LEG_WIDTH, TABLE_LEG_HEIGHT, TABLE_LEG_DEPTH);
-        return new THREE.Mesh(geometry);
+        let geometry = new THREE.BoxGeometry(TABLE_LEG_WIDTH, TABLE_LEG_HEIGHT, TABLE_LEG_DEPTH);
+        let mesh = new THREE.Mesh(geometry);
+        mesh.castShadow = true;
+        return mesh;
     }
 
     _repositionLeg(geometry, i) {
@@ -115,18 +130,22 @@ class WorkTable {
 
     // Top
     _tableTopBar() {
-        var geometry = new THREE.BoxGeometry(WORKTABLE_TOP_WIDTH, WORKTABLE_TOP_HEIGHT, WORKTABLE_TOP_DEPTH );
-        return new THREE.Mesh(geometry);
+        let geometry = new THREE.BoxGeometry(WORKTABLE_TOP_WIDTH, WORKTABLE_TOP_HEIGHT, WORKTABLE_TOP_DEPTH);
+        let mesh = new THREE.Mesh(geometry);
+        mesh.castShadow = true;
+        return mesh;
     }
     _tableTopBarCenter() {
-        var geometry = new THREE.BoxGeometry(WORKTABLE_TOP_WIDTH, WORKTABLE_TOP_HEIGHT, WORKTABLE_TOP_DEPTH + 6 );
-        return new THREE.Mesh(geometry);
+        let geometry = new THREE.BoxGeometry(WORKTABLE_TOP_WIDTH, WORKTABLE_TOP_HEIGHT, WORKTABLE_TOP_DEPTH + 6);
+        let mesh = new THREE.Mesh(geometry);
+        mesh.castShadow = true;
+        return mesh;
     }
 
     _repositionBarCenter(geometry, i) {
         let positions = [
-            { x: 0, y: WORKTABLE_LEG_HEIGHT + WORKTABLE_TOP_HEIGHT / 2.0, z: DISTANCE_HEIGHT_BETWEEN_LEGS /4.0 },
-            { x: 0, y: WORKTABLE_LEG_HEIGHT + WORKTABLE_TOP_HEIGHT / 2.0, z: -DISTANCE_HEIGHT_BETWEEN_LEGS /4.0},
+            { x: 0, y: WORKTABLE_LEG_HEIGHT + WORKTABLE_TOP_HEIGHT / 2.0, z: DISTANCE_HEIGHT_BETWEEN_LEGS / 4.0 },
+            { x: 0, y: WORKTABLE_LEG_HEIGHT + WORKTABLE_TOP_HEIGHT / 2.0, z: -DISTANCE_HEIGHT_BETWEEN_LEGS / 4.0 },
         ];
 
         geometry.translate(positions[i].x, positions[i].y, positions[i].z);

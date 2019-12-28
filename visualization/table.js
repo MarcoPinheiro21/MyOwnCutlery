@@ -18,22 +18,27 @@ var N_BARS = 2;
 var N_CYLINDERS = 41;
 
 class Table {
-    constructor(name) {
+    constructor(properties) {
+        this._properties = properties;
         this.group = new THREE.Group();
-        this.group.name = name;
+        this.group.name = this._properties.name;
     }
-    buildProductionLine(scale, position){
-        this.group.add(this.buildTable(scale,{ x: 30, y: position.y, z: position.z }));
-        this.group.add(this.buildTable(scale,{ x: 10, y: position.y, z: position.z }));
-        this.group.add(this.buildTable(scale,{ x: -10, y: position.y, z: position.z }));
-        this.group.add(this.buildTable(scale,{ x: -30, y: position.y, z: position.z }));
+
+
+    buildProductionLine(scale, position) {
+        this.group.add(this.buildTable(scale, { x: 30, y: position.y, z: position.z }));
+        this.group.add(this.buildTable(scale, { x: 10, y: position.y, z: position.z }));
+        this.group.add(this.buildTable(scale, { x: -10, y: position.y, z: position.z }));
+        this.group.add(this.buildTable(scale, { x: -30, y: position.y, z: position.z }));
         return this.group;
     }
 
     buildTable(scale, position) {
-        var localGroup = new THREE.Group();
+        let meshArray = [];
+
+        let localGroup = new THREE.Group();
         let legs = [];
-        var i;
+        let i;
         // Get 4 legs
         for (i = 0; i < N_LEGS; i++) {
             let mesh = this._tableLeg();
@@ -75,6 +80,7 @@ class Table {
             refractionRatio: 0.25
         });
         let tableStructure = new THREE.Mesh(tableGeometry, tableMaterial);
+        meshArray.push(tableStructure);
 
         let treadmillGeometry = new THREE.Geometry();
         cylinders.forEach(e => {
@@ -90,6 +96,7 @@ class Table {
 
         });
         let treadmill = new THREE.Mesh(treadmillGeometry, treadmillMaterial);
+        meshArray.push(treadmill);
 
         localGroup.add(tableStructure);
         localGroup.add(treadmill);
@@ -98,13 +105,22 @@ class Table {
         localGroup.translateX(position.x);
         localGroup.translateY(position.y);
         localGroup.translateZ(position.z);
+
+        Util.castShadows({
+            meshArray: meshArray,
+            castShadows: this._properties.castShadows,
+            receiveShadows: this._properties.receiveShadows
+        });
+
         return localGroup;
     }
 
     // Legs
     _tableLeg() {
-        var geometry = new THREE.BoxGeometry(TABLE_LEG_WIDTH, TABLE_LEG_HEIGHT, TABLE_LEG_DEPTH);
-        return new THREE.Mesh(geometry);
+        let geometry = new THREE.BoxGeometry(TABLE_LEG_WIDTH, TABLE_LEG_HEIGHT, TABLE_LEG_DEPTH);
+        let mesh = new THREE.Mesh(geometry);
+        mesh.castShadow = true;
+        return mesh;
     }
 
     _repositionLeg(geometry, i) {
@@ -120,8 +136,10 @@ class Table {
 
     // Top
     _tableTopBar() {
-        var geometry = new THREE.BoxGeometry(TABLE_TOP_WIDTH, TABLE_TOP_HEIGHT, TABLE_TOP_DEPTH);
-        return new THREE.Mesh(geometry);
+        let geometry = new THREE.BoxGeometry(TABLE_TOP_WIDTH, TABLE_TOP_HEIGHT, TABLE_TOP_DEPTH);
+        let mesh = new THREE.Mesh(geometry);
+        mesh.castShadow = true;
+        return mesh;
     }
 
     _repositionBar(geometry, i) {
@@ -135,8 +153,10 @@ class Table {
 
     // Cylinders
     _cylinder() {
-        var geometry = new THREE.CylinderGeometry(TABLE_TOP_HEIGHT / 2.0, TABLE_TOP_HEIGHT / 2.0, DISTANCE_HEIGHT_BETWEEN_LEGS, 32);
-        return new THREE.Mesh(geometry);
+        let geometry = new THREE.CylinderGeometry(TABLE_TOP_HEIGHT / 2.0, TABLE_TOP_HEIGHT / 2.0, DISTANCE_HEIGHT_BETWEEN_LEGS, 32);
+        let mesh = new THREE.Mesh(geometry);
+        mesh.castShadow = true;
+        return mesh;
     }
 
     _repositionCylinder(geometry, i) {

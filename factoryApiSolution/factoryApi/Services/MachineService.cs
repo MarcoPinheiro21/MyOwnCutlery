@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using factoryApi.DTO;
 using factoryApi.Repositories;
+using factoryApi.RestClients;
+using productionApi.Context;
 
 namespace factoryApi.Services
 {
@@ -9,14 +12,18 @@ namespace factoryApi.Services
         private readonly MachineRepository _machineRepository;
         private readonly MachineTypeRepository _machineTypeRepository;
         private readonly OperationRepository _operationRepository;
+        
+        private ReplanningRestClient Client { get; set; }
+
 
         public MachineService(MachineRepository machineMachineRepository,
             MachineTypeRepository machineTypeRepository,
-            OperationRepository operationRepository)
+            OperationRepository operationRepository, RestContext context)
         {
             _machineRepository = machineMachineRepository;
             _machineTypeRepository = machineTypeRepository;
             _operationRepository = operationRepository;
+            Client = context.client;
         }
 
         public MachineDto FindMachineById(long id)
@@ -48,9 +55,25 @@ namespace factoryApi.Services
 
         public MachineDto UpdateMachine(long id, CreateMachineDto createMachineDto)
         {
+            var machineDto =_machineRepository.GetById(id);
+            if (machineDto.Active != createMachineDto.Active)
+            {
+                Client.Replanning(TriggerPlan());
+            }
             return _machineRepository.UpdateElement(id, createMachineDto);
         }
 
+        public List<String> TriggerPlan()
+        {
+            var initDate = DateTime.Now;
+            var endDate = initDate + TimeSpan.FromDays(3);
+            List<String> dateTimes= new List<String>();
+            dateTimes.Add(initDate.Date.Year+"-"+initDate.Date.Month+"-"+initDate.Date.Day+"T00:00:00");
+            dateTimes.Add(endDate.Date.Year+"-"+endDate.Date.Month+"-"+endDate.Date.Day+"T00:00:00");
+
+            return dateTimes;
+        }
+        
         public MachineDto DeleteMachine(long id)
         {
             return _machineRepository.DeleteElement(id);

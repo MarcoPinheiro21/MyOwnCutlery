@@ -23,6 +23,7 @@ export class ModelMapper {
             await this.customerDetailsToModel(order.getCustomerDetails()),
             await this.productsToModel(order.getProducts()),
             order.getDeliveryDate(),
+            order.getExpectedDeliveryDate() == undefined ? null : order.getExpectedDeliveryDate(),
             order.getStatus());
     }
 
@@ -32,6 +33,7 @@ export class ModelMapper {
             await this.customerDetaisToDomain(order.customerDetails),
             await this.productsToDomain(order.products),
             order.deliveryDate,
+            order.expectedDeliveryDate == undefined ? null : order.expectedDeliveryDate,
             order.status);
     }
 

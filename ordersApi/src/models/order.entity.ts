@@ -15,13 +15,17 @@ export class OrderModel {
     @Column()
     public deliveryDate: string;
     @Column()
+    public expectedDeliveryDate: string;
+    @Column()
     public status: OrderStates;
 
-    constructor(_id: ObjectID, customerDetails: CustomerDetailsModel, products: ProductModel[], deliveryDate?: string, status?: OrderStates) {
+    constructor(_id: ObjectID, customerDetails: CustomerDetailsModel, products: ProductModel[],
+        deliveryDate?: string, expectedDeliveryDate?: string, status?: OrderStates) {
         this._id = _id;
         this.customerDetails = customerDetails;
         this.products = products;
         this.deliveryDate = deliveryDate;
+        this.expectedDeliveryDate = expectedDeliveryDate;
         this.status = status != null ? status : OrderStates.INPROGRESS;
     }
 }

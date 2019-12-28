@@ -12,5 +12,7 @@ export interface IOrderDomain{
 
     getDeliveryDate(): string ;
 
+    getExpectedDeliveryDate(): string;
+
     getCustomerDetails(): CustomerDetails ;
 }

@@ -3,29 +3,26 @@
 var BASE_TEXTURE = './textures/yellowStripes.png';
 
 class PressMachine {
-    constructor(name) {
-        this.armMaterial  = new THREE.MeshStandardMaterial({
-            color: 0xfeff08,
-            flatShading: true,
-            metalness: 0.5,
-            roughness: 0.8,
-            refractionRatio: 0.25
-        });
+    constructor(properties) {
+        this._properties = properties;
 
         this.pressGroup = new THREE.Group();
-        this.pressGroup.name = name;
+        this.pressGroup.name = this._properties.name;
         this.leftPressArm = new THREE.Group();
         this.rightPressArm = new THREE.Group();
         this.isRightExtending = true;
         this.isLeftExtending = true;
     }
+
     buildHydraulicPress(position) {
-        var geometry = new THREE.BoxGeometry(4, 10, 4);
-        var geometryTop = new THREE.BoxGeometry(4, 4, 16);
-        var geometryPress = new THREE.BoxGeometry(2, 2, 1);
+        let meshArray = [];
+
+        let geometry = new THREE.BoxGeometry(4, 10, 4);
+        let geometryTop = new THREE.BoxGeometry(4, 4, 16);
+        let geometryPress = new THREE.BoxGeometry(2, 2, 1);
         let texture = new THREE.TextureLoader().load(BASE_TEXTURE);
-        var materialPress = new THREE.MeshBasicMaterial({ map: texture });
-        var materialMachine = new THREE.MeshStandardMaterial({
+        let materialPress = new THREE.MeshBasicMaterial({ map: texture });
+        let materialMachine = new THREE.MeshStandardMaterial({
             color: 0xfeff08,
             flatShading: true,
             metalness: 0.5,
@@ -33,9 +30,12 @@ class PressMachine {
             refractionRatio: 0.25
         });
         /* Machine structure*/
-        var cubeLeft = new THREE.Mesh(geometry, materialMachine);
-        var cubeRigt = new THREE.Mesh(geometry, materialMachine);
-        var cubeTop = new THREE.Mesh(geometryTop, materialMachine);
+        let cubeLeft = new THREE.Mesh(geometry, materialMachine);
+        let cubeRigt = new THREE.Mesh(geometry, materialMachine);
+        let cubeTop = new THREE.Mesh(geometryTop, materialMachine);
+        meshArray.push(cubeLeft);
+        meshArray.push(cubeRigt);
+        meshArray.push(cubeTop);
         cubeLeft.position.set(0, 0, 0);
         cubeRigt.position.set(0, 0, 12);
         cubeTop.position.set(0, 7, 6);
@@ -46,8 +46,8 @@ class PressMachine {
         this.pressGroup.add(cubeRigt);
         this.pressGroup.add(cubeTop);
         /*----------*/
-        var geometryCylinder = new THREE.CylinderGeometry(0.5, 0.5, 3.8, 32);
-        var materialCylinder = new THREE.MeshStandardMaterial({
+        let geometryCylinder = new THREE.CylinderGeometry(0.5, 0.5, 3.8, 32);
+        let materialCylinder = new THREE.MeshStandardMaterial({
             color: 0x777777,
             flatShading: true,
             metalness: 0.5,
@@ -56,12 +56,14 @@ class PressMachine {
         });
 
         /* Left Arm*/
-        var cylinderLeft = new THREE.Mesh(geometryCylinder, materialCylinder);
+        let cylinderLeft = new THREE.Mesh(geometryCylinder, materialCylinder);
+        meshArray.push(cylinderLeft);
         cylinderLeft.rotation.x = Math.PI / 2;
         cylinderLeft.position.set(0, 0, 0.1);
         cylinderLeft.userData.parentGroup = this.pressGroup.name;
         /* Left Press*/
-        var pressLeft = new THREE.Mesh(geometryPress, materialPress);
+        let pressLeft = new THREE.Mesh(geometryPress, materialPress);
+        meshArray.push(pressLeft);
         pressLeft.position.set(0, 0, 2.5);
         pressLeft.userData.parentGroup = this.pressGroup.name;
         /*---*/
@@ -71,12 +73,14 @@ class PressMachine {
         this.pressGroup.add(this.leftPressArm);
         /*----------*/
         /*Right Arm*/
-        var cylinderRight = new THREE.Mesh(geometryCylinder, materialCylinder);
+        let cylinderRight = new THREE.Mesh(geometryCylinder, materialCylinder);
+        meshArray.push(cylinderRight);
         cylinderRight.rotation.x = -Math.PI / 2;
         cylinderRight.position.set(0, 0, -0.1);
         cylinderRight.userData.parentGroup = this.pressGroup.name;
         /*Left Press*/
-        var pressRight = new THREE.Mesh(geometryPress, materialPress);
+        let pressRight = new THREE.Mesh(geometryPress, materialPress);
+        meshArray.push(pressRight);
         pressRight.position.set(0, 0, -2.5);
         pressRight.userData.parentGroup = this.pressGroup.name;
         /*---*/
@@ -87,8 +91,16 @@ class PressMachine {
         /*----------*/
         this.pressGroup.position.set(position.x, position.y, position.z);
         this.pressGroup.rotateY(Math.PI /2.0);
+
+        Util.castShadows({
+            meshArray: meshArray,
+            castShadows: this._properties.castShadows,
+            receiveShadows: this._properties.receiveShadows
+        });
+
         return this.pressGroup;
     }
+    
     timeoutPressArm() {
         if (this.leftPressArm.position.z == 2.5) {
             this.isLeftExtending = false;

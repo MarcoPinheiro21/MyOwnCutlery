@@ -1,4 +1,6 @@
-﻿using factoryApi.Context;
+﻿using System;
+using System.Net.Http;
+using factoryApi.Context;
 using factoryApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +36,13 @@ namespace factoryApi
                 options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
                 options.HttpsPort = 5001;
             });
+
+            Uri productionEndPoint = new Uri("http://localhost:1337");
+            HttpClient httpClient = new HttpClient()
+            {
+                BaseAddress = productionEndPoint
+            };
+            services.AddSingleton<HttpClient>(httpClient);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

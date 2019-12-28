@@ -18,7 +18,7 @@ const LINE = CONFIG.lines;
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-var renderer = new THREE.WebGLRenderer();
+var renderer = new THREE.WebGLRenderer({ antialias: true });
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
 var gui = new dat.GUI();
 
@@ -32,13 +32,6 @@ var linesZ = LINE.lineZ;
 
 var nProductionLines;
 
-
-// Ambient ligth
-var light = new THREE.AmbientLight(0xC1C1C1); // soft white light
-
-// Directional ligth
-var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-
 // Axis Helper
 var axesHelper = new THREE.AxesHelper(10);
 
@@ -50,11 +43,11 @@ var machineTypes;
 var products;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
 // Add element to the scene
 scene.add(axesHelper);
-
 
 this.productionLines = getProductionLines();
 this.machineTypes = getMachineTypes();
@@ -80,14 +73,24 @@ function buildScene() {
     buildFloor();
     buildTables();
     buildMachines();
-  //  buildWorkTables();
 
-    scene.add(light);
-    scene.add(directionalLight);
+    scene.add(LigthHelper.ambientLight());
+    scene.add(LigthHelper.directionalLigth());
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+    pressMachines.forEach(e => {
+        e.timeoutPressArm();
+    });
+    roboticArms.forEach(e => {
+        e.rotateArm();
+    });
 }
 
 function buildFloor() {
-    let floor = new Floor();
+    let floor = new Floor({ name: 'floor', color: 0x42423e, receiveShadows: true });
     scene.add(floor.buildFloor());
 }
 
@@ -97,7 +100,7 @@ function buildTables() {
     var table;
     var i;
     this.productionLines.forEach(function (e) {
-        tables[nProductionLines] = new Table(e.productionLineName);
+        tables[nProductionLines] = new Table({ name: e.productionLineName, castShadows: true, receiveShadows: true });
         nProductionLines++;
     });
     for (i = 1; i <= nProductionLines; i++) {
@@ -108,10 +111,10 @@ function buildTables() {
             table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: -15 * i });
             scene.add(table);
         }
-    } 
+    }
 }
 
-function buildWorkTables (machine){
+function buildWorkTables(machine) {
     var productionLinePlacement = -30;
     productionLinePlacement = productionLinePlacement + (20 * (machine.productionLinePosition - 1));
 
@@ -120,7 +123,7 @@ function buildWorkTables (machine){
     var workTable;
     var i;
     this.productionLines.forEach(function (e) {
-        workTables[nProductionLines] = new WorkTable(e.productionLineName);
+        workTables[nProductionLines] = new WorkTable({ name: e.productionLineName, castShadows: true, receiveShadows: true });
         nProductionLines++;
     });
     for (i = 1; i <= nProductionLines; i++) {
@@ -128,7 +131,7 @@ function buildWorkTables (machine){
             workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: 15 * (i / 2) + 6 });
             scene.add(workTable);
         } else {
-            workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: -15 * i + 6});
+            workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: -15 * i + 6 });
             scene.add(workTable);
         }
     }
@@ -168,7 +171,7 @@ function buildMachine(machine, productionLineNumber, model) {
     let newSceneObject;
     switch (model) {
         case "Robotic Arm":
-            let roboticArm = new RoboticArm(machine.description);
+            let roboticArm = new RoboticArm({ name: machine.description, castShadows: true, receiveShadows: true });
             roboticArms.push(roboticArm);
             if (productionLineNumber % 2 == 0) {
                 newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (15 * (productionLineNumber / 2)) + 15 });
@@ -177,12 +180,12 @@ function buildMachine(machine, productionLineNumber, model) {
             }
             break;
         case "Hydraulic Press":
-            let pressMachine = new PressMachine(machine.description);
+            let pressMachine = new PressMachine({ name: machine.description, castShadows: true, receiveShadows: true });
             pressMachines.push(pressMachine);
             if (productionLineNumber % 2 == 0) {
-                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement -6, y: 5, z: (15 * (productionLineNumber / 2)) +6 });
+                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement - 6, y: 5, z: (15 * (productionLineNumber / 2)) + 6 });
             } else {
-                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement -6, y: 5, z: (-15 * productionLineNumber) +6 });
+                newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement - 6, y: 5, z: (-15 * productionLineNumber) + 6 });
             }
             break;
     }
@@ -205,7 +208,7 @@ function buildMachines() {
 
             var model = getModelOfMachineType(machine.machineTypeId);
             buildMachine(machine, plCount, model);
-            buildWorkTables (machine);
+            buildWorkTables(machine);
             count++;
         });
     });
@@ -221,17 +224,6 @@ function getModelOfMachineType(machineTypeId) {
     return result;
 }
 
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-    pressMachines.forEach(e => {
-        e.timeoutPressArm();
-    });
-    roboticArms.forEach(e => {
-        //e.rotateBase();
-        e.rotateArm();
-    });
-}
 function buildWidgets() {
     var plNames = [];
     productionLines.forEach(e => {
@@ -495,9 +487,4 @@ function getMachineByDesc(macdesc) {
     });
     return machine;
 }
-
-
-
-
-
 

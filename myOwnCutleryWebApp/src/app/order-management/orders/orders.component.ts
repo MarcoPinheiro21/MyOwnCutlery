@@ -45,6 +45,7 @@ export class OrdersComponent implements OnInit {
     this.ordersService.getOrdersInfo().subscribe((data: any) => {
       this.orderInfo = data;
     })
+    this.ordersService.getPossibleDeliveryDate();
   }
 
   public getOrders(): void {
@@ -209,7 +210,6 @@ export class OrdersComponent implements OnInit {
     this.ordersService.cancelOrder(order).subscribe(() => {
       this.getOrders();
     });
-
   }
 }
 export interface CreateOrder {

@@ -61,6 +61,12 @@ export class OrderService {
     )
   }
 
+  getPossibleDeliveryDate(): Observable<string[]> {
+    return this.http.get<string[]>(
+      this.url + "planning"
+    )
+  }
+
   getOrdersInfo(): Observable<OrderInfo[]>{
     return this.http.get<OrderInfo[]>(this.url + "orders/info");
   }

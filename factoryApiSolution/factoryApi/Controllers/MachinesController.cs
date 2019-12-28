@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Exceptions;
 using factoryApi.Repositories;
 using factoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using productionApi.Context;
 
 namespace factoryApi.Controllers
 {
@@ -15,12 +17,13 @@ namespace factoryApi.Controllers
     {
         private readonly MachineService _service;
 
-        public MachinesController(MasterFactoryContext context)
+        public MachinesController(MasterFactoryContext context, HttpClient httpClient)
         {
             _service = new MachineService(
                 new MachineRepository(context),
                 new MachineTypeRepository(context),
-                new OperationRepository(context));
+                new OperationRepository(context),
+                new RestContext(httpClient));
         }
 
         // GET: factoryapi/machines
@@ -118,6 +121,8 @@ namespace factoryApi.Controllers
                 return BadRequest(e.Message);
             }
         }
+        
+        
 
         // DELETE: factoryapi/machines/5
         [HttpDelete("{id}")]

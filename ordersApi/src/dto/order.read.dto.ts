@@ -11,5 +11,7 @@ export class ReadOrderDto {
 
     public deliveryDate: string;
 
+    public expectedDeliveryDate: string;
+
     public status: string;
 }

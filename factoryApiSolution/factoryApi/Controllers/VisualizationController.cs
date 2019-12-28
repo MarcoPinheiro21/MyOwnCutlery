@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using factoryApi.Context;
 using factoryApi.DTO;
 using factoryApi.Repositories;
 using factoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using productionApi.Context;
 
 namespace factoryApi.Controllers
 {
@@ -15,12 +17,13 @@ namespace factoryApi.Controllers
         private readonly MachineService _machineService;
         private readonly ProductionLineService _productionLineService;
 
-        public VisualizationController(MasterFactoryContext context)
+        public VisualizationController(MasterFactoryContext context,HttpClient httpClient)
         {
             _machineService = new MachineService(
                 new MachineRepository(context),
                 new MachineTypeRepository(context),
-                new OperationRepository(context));
+                new OperationRepository(context),
+                new RestContext(httpClient));
             _productionLineService= new ProductionLineService(
                 new ProductionLineRepository(context));
         }
