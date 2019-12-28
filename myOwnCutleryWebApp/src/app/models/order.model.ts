@@ -6,7 +6,7 @@ export class Order {
     public customerDetails: CustomerDetails,
     public products: OrderLine[],
     public deliveryDate: string,
-    public possibleDeliveryDate: string,
+    public expectedDeliveryDate: string,
     public status: string
   ) {}
 }
@@ -16,7 +16,7 @@ export class CustomerDetails {
     public id: string,
     public name: string,
     public vatNumber: string,
-    public deliveryAddress:DeliveryAddress 
+    public deliveryAddress:DeliveryAddress
   ) {}
 }
 

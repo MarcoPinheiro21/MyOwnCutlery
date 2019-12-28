@@ -11,7 +11,7 @@
         <span class="mat-header-cell" mat-sort-header="status">Status</span>
       </div>
       <div class="col-sm-2">
-        <span class="mat-header-cell" mat-sort-header="status">Preview date</span>
+        <span class="mat-header-cell" mat-sort-header="status">Expected date</span>
       </div>
       <div class="col-sm-2"></div>
       <div class="col-sm-1">
@@ -33,8 +33,8 @@
           <span class="mat-cell">{{order.status}}</span>
         </div>
         <div class="col-sm-2">
-          <div *ngIf="order.possibleDeliveryDate!=null; else template">
-            <span class="mat-cell">{{order.possibleDeliveryDate}}</span>
+          <div *ngIf="order.expectedDeliveryDate!=null; else template">
+            <span class="mat-cell">{{order.expectedDeliveryDate | date:'mediumDate'}}</span>
           </div>
         </div>
         <div class="col-sm-1"></div>
@@ -93,7 +93,7 @@
         <span class="mat-header-cell" mat-sort-header="status">Status</span>
       </div>
       <div class="col-sm-2">
-        <span class="mat-header-cell" mat-sort-header="status">Preview date</span>
+        <span class="mat-header-cell" mat-sort-header="status">Expected date</span>
       </div>
       <div class="col-sm-2"></div>
 
@@ -113,8 +113,8 @@
           <span class="mat-cell">{{order.status}}</span>
         </div>
         <div class="col-sm-2">
-          <div *ngIf="order.possibleDeliveryDate!=null; else template">
-            <span class="mat-cell" style="margin-left: 50px;">{{order.possibleDeliveryDate}}</span>
+          <div *ngIf="order.expectedDeliveryDate!=null; else template">
+            <span class="mat-cell" style="margin-left: 50px;">{{order.expectedDeliveryDate}}</span>
           </div>
         </div>
         <div class="col-sm-2">
