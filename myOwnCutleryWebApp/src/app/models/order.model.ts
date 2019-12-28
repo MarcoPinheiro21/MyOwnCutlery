@@ -6,6 +6,7 @@ export class Order {
     public customerDetails: CustomerDetails,
     public products: OrderLine[],
     public deliveryDate: string,
+    public possibleDeliveryDate: string,
     public status: string
   ) {}
 }
