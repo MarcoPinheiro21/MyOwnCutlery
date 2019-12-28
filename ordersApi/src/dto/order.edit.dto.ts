@@ -11,4 +11,7 @@ export class EditOrderDto {
     @IsDateString()
     public deliveryDate: string;
 
+    @IsDateString()
+    public expectedDeliveryDate: string;
+
 }

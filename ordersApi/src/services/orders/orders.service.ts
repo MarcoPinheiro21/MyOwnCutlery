@@ -43,7 +43,7 @@ export class OrdersService implements IOrdersService {
 
         ordersFiltered.forEach(async element =>
             ordersDto.push(await DomainMapper.orderToDto(element))
-        );
+        ); 
         return ordersDto;
     }
 
@@ -110,8 +110,8 @@ export class OrdersService implements IOrdersService {
 
         if (orderDto.products.length > 0) {
 
-            await this.validateProducts(orderDto.products)
-            this.validateProducts(orderDto.products)
+            await this.validateProducts_(orderDto.products)
+            this.validateProducts_(orderDto.products)
             for (let element of orderDto.products) {
                 let hasProduct: boolean = await order.hasProduct(element.id);
 
@@ -227,7 +227,7 @@ export class OrdersService implements IOrdersService {
         return orders;
     }
 
-    private validateProducts(productDto: EditProductDto[]): Promise<void> {
+    private validateProducts_(productDto: EditProductDto[]): Promise<void> {
         productDto.forEach(element => {
             if (element.toDelete != 'true' && (element.quantity == null || element.quantity < 1)) {
                 throw new OrdersApiDomainException('At least one of products quantity is invalid')
@@ -273,5 +273,12 @@ export class OrdersService implements IOrdersService {
         let deletedOrder = await this.ordersRepository.deleteOrder(order);
         this.extinguishOrderInfo_(order);
         return await DomainMapper.orderToDto(deletedOrder);
+    }
+
+    public async updateExpectedDeliveryDate(orderId: string, date: string): Promise<ReadOrderDto> {
+        let order = await this.findById_(orderId);
+        await order.updateExpectedDeliveryDate(date);
+        await this.ordersRepository.saveOrder(order);
+        return await DomainMapper.orderToDto(order);
     }
 }

@@ -21,4 +21,6 @@ export interface IOrdersService {
 
     findAllOrdersInfo(): Promise<OrderInfoDto[]>;
 
+    updateExpectedDeliveryDate(orderId:string, date:string) : Promise<ReadOrderDto>;
+
 }

@@ -14,6 +14,9 @@ export class OrderDto {
     @IsDateString()
     public deliveryDate: string;
 
+    @IsDateString()
+    public expectedDeliveryDate: string;
+
     @IsEmpty()
     public status: string;
 }

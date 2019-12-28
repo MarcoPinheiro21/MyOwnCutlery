@@ -25,6 +25,7 @@ export class DomainMapper {
             customerDetails: await this.customerDetailsToDto(order.getCustomerDetails()),
             products: await this.productsToDto(order.getProducts()),
             deliveryDate: order.getDeliveryDate(),
+            expectedDeliveryDate: order.getExpectedDeliveryDate(),
             status: order.getStatus() != null ? order.getStatus().toString() : null
         };
     }
@@ -65,6 +66,7 @@ export class DomainMapper {
             new CustomerDetails(customerDto._id, customerDto.name, customerDto.vatNumber, address),
             await this.productsToDomain(products),
             order.deliveryDate,
+            order.expectedDeliveryDate,
             await this.getOrderEnumStatus(order.status)
         )
     }

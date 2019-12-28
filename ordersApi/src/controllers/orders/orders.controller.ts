@@ -49,6 +49,12 @@ export class OrdersController {
         return await this.ordersService.updateOrder(id, orderEdit);
     }
 
+    @Put(':id/:expectedDeliveryDate')
+    @UseFilters(new AllExceptionsFilter())
+    async updateExpectedDeliveryDate(@Param('id') id, @Param('expectedDeliveryDate') date) {
+        return await this.ordersService.updateExpectedDeliveryDate(id, date);
+    }
+
     @Delete(':id')
     @UseFilters(new AllExceptionsFilter())
     async deleteOrder(@Param('id') id) {

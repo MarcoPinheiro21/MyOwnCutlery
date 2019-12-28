@@ -10,14 +10,16 @@ export class Order implements IOrderDomain {
     private customerDetails: CustomerDetails;
     private products: Product[];
     private deliveryDate: string;
+    private expectedDeliveryDate: string;
     private status: OrderStates;
 
     constructor(_id: string, customerDetails: CustomerDetails,
-        products: Product[], deliveryDate?: string, status?: OrderStates) {
+        products: Product[], deliveryDate?: string, expectedDeliveryDate?: string, status?: OrderStates) {
         this._id = _id;
         this.customerDetails = customerDetails;
         this.products = products;
         this.deliveryDate = deliveryDate;
+        this.expectedDeliveryDate = expectedDeliveryDate;
         this.status = status != null ? status : OrderStates.INPROGRESS;
     }
 
@@ -37,6 +39,10 @@ export class Order implements IOrderDomain {
         return this.deliveryDate;
     }
 
+    public getExpectedDeliveryDate(): string {
+        return this.expectedDeliveryDate;
+    }
+
     public getCustomerDetails(): CustomerDetails {
         return this.customerDetails;
     }
@@ -48,9 +54,16 @@ export class Order implements IOrderDomain {
 
     async updateDeliveryDate(date: string): Promise<void> {
         if (!date.match(/^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z)?$/)) {
-            throw new OrdersApiDomainException('Delivery date is invalid.');
+            throw new OrdersApiDomainException('Date format is invalid.');
         }
         this.deliveryDate = date;
+    }
+
+    async updateExpectedDeliveryDate(date: string): Promise<void> {
+        if (!date.match(/^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z)?$/)) {
+            throw new OrdersApiDomainException('Date format is invalid.');
+        }
+        this.expectedDeliveryDate = date;
     }
 
     async hasProduct(id: string): Promise<boolean> {
