@@ -114,7 +114,7 @@
         </div>
         <div class="col-sm-2">
           <div *ngIf="order.expectedDeliveryDate!=null; else template">
-            <span class="mat-cell" style="margin-left: 50px;">{{order.expectedDeliveryDate}}</span>
+            <span class="mat-cell">{{order.expectedDeliveryDate| date:'mediumDate'}}</span>
           </div>
         </div>
         <div class="col-sm-2">
