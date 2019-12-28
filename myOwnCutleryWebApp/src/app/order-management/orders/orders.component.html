@@ -1,30 +1,53 @@
 <div *ngIf="!privileges.checkAllOrders; else configTemplate">
   <mat-accordion displayMode="flat" multi class="mat-table">
     <section matSort class="mat-elevation-z2 mat-header-row">
-      <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="_id">Order Number</span>
-      <span class="mat-header-cell" mat-sort-header="deliveryDate">Delivery Date</span>
-      <span class="mat-header-cell" mat-sort-header="status">Status</span>
-      <span class="mat-header-cell" mat-sort-header="status">Possible delivery date</span>
-      <button type="button" style="margin-right: 25px;" class="btn btn-primary" [disabled]="!privileges.createOrder"
-        (click)="openCreationDialog()" *ngIf="privileges.createOrder; else noButton">New
-      </button>
+      <div class="col-sm-3">
+        <span class="mat-header-cell" style="margin-left: 5px;" mat-sort-header="_id">Order Number</span>
+      </div>
+      <div class="col-sm-2">
+        <span class="mat-header-cell" mat-sort-header="deliveryDate">Delivery Date</span>
+      </div>
+      <div class="col-sm-2">
+        <span class="mat-header-cell" mat-sort-header="status">Status</span>
+      </div>
+      <div class="col-sm-2">
+        <span class="mat-header-cell" mat-sort-header="status">Preview date</span>
+      </div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-1">
+        <button type="button" class="btn btn-primary" [disabled]="!privileges.createOrder"
+          (click)="openCreationDialog()" *ngIf="privileges.createOrder; else noButton">New
+        </button>
+      </div>
+
     </section>
     <mat-expansion-panel *ngFor="let order of orders">
       <mat-expansion-panel-header class="mat-row">
-        <span class="mat-cell">{{order._id}}</span>
-        <span class="mat-cell" style="margin-left: 65px;">{{order.deliveryDate | date:'mediumDate'}}</span>
-        <span class="mat-cell" style="margin-left: 50px;">{{order.status}}</span>
-        <div *ngIf="order.possibleDeliveryDate!=null; else template">
-          <span class="mat-cell" style="margin-left: 50px;">{{order.possibleDeliveryDate}}</span>
+        <div class="col-sm-3">
+          <span class="mat-cell">{{order._id}}</span>
         </div>
-        <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-          (click)="openEditionDialog(order)" [disabled]="order.status === 'Cancelled'"
-          *ngIf="privileges.editOrder; else noButton">Edit
-        </button>
-        <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-          (click)="openCancelationDialog(order)" [disabled]="order.status === 'Cancelled'"
-          *ngIf="privileges.cancelOrder; else noButton">Cancel
-        </button>
+        <div class="col-sm-2">
+          <span class="mat-cell">{{order.deliveryDate | date:'mediumDate'}}</span>
+        </div>
+        <div class="col-sm-2">
+          <span class="mat-cell">{{order.status}}</span>
+        </div>
+        <div class="col-sm-2">
+          <div *ngIf="order.possibleDeliveryDate!=null; else template">
+            <span class="mat-cell">{{order.possibleDeliveryDate}}</span>
+          </div>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-2">
+          <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+            (click)="openEditionDialog(order)" [disabled]="order.status === 'Cancelled'"
+            *ngIf="privileges.editOrder; else noButton">Edit
+          </button>
+          <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+            (click)="openCancelationDialog(order)" [disabled]="order.status === 'Cancelled'"
+            *ngIf="privileges.cancelOrder; else noButton">Cancel
+          </button>
+        </div>
       </mat-expansion-panel-header>
       <div *ngIf="!!orders" class="subRow">
         <table class="table table-sm table-active">
@@ -51,32 +74,59 @@
 </ng-template>
 
 <ng-template #noButton>
-  <div style="width:70px"></div>
+  <div style="width: 70px"></div>
 </ng-template>
 
 <ng-template #configTemplate>
   <mat-accordion displayMode="flat" multi class="mat-table">
     <section matSort class="mat-elevation-z2 mat-header-row">
-      <span class="mat-header-cell" style="margin-left: 10px;" mat-sort-header="_id">Order Number</span>
-      <span class="mat-header-cell" style="margin-right: 15px;" mat-sort-header="status">Client name</span>
-      <span class="mat-header-cell" mat-sort-header="deliveryDate">Delivery Date</span>
-      <span class="mat-header-cell" style="margin-right: 40px;" mat-sort-header="status">Status</span>
-      <span class="mat-header-cell" style="margin-right: 40px;" mat-sort-header="status">Possible delivery date</span>
-      <div style="width:70px"></div>
+      <div class="col-sm-2">
+        <span class="mat-header-cell" mat-sort-header="_id">Order Number</span>
+      </div>
+      <div class="col-sm-2">
+        <span class="mat-header-cell" style="margin-right: 15px;" mat-sort-header="status">Client name</span>
+      </div>
+      <div class="col-sm-2">
+        <span class="mat-header-cell" mat-sort-header="deliveryDate">Delivery Date</span>
+      </div>
+      <div class="col-sm-2">
+        <span class="mat-header-cell" mat-sort-header="status">Status</span>
+      </div>
+      <div class="col-sm-2">
+        <span class="mat-header-cell" mat-sort-header="status">Preview date</span>
+      </div>
+      <div class="col-sm-2"></div>
+
     </section>
     <mat-expansion-panel *ngFor="let order of orders">
       <mat-expansion-panel-header class="mat-row">
-        <span class="mat-cell">{{order._id}}</span>
-        <span class="mat-cell" style="margin-left: 50px;">{{order.customerDetails.name}}</span>
-        <span class="mat-cell" style="margin-left: 65px;">{{order.deliveryDate | date:'mediumDate'}}</span>
-        <span class="mat-cell" style="margin-left: 50px;">{{order.status}}</span>
-        <span class="mat-cell" style="margin-left: 50px;">{{order.possibleDeliveryDate}}</span>
-        <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-          (click)="openEditionDialog(order)" [disabled]="order.status === 'Cancelled'">Edit
-        </button>
-        <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
-          (click)="openCancelationDialog(order)" [disabled]="order.status === 'Cancelled'">Cancel
-        </button>
+        <div class="col-sm-2">
+          <span class="mat-cell">{{order._id}}</span>
+        </div>
+        <div class="col-sm-2">
+          <span class="mat-cell">{{order.customerDetails.name}}</span>
+        </div>
+        <div class="col-sm-2">
+          <span class="mat-cell">{{order.deliveryDate | date:'mediumDate'}}</span>
+        </div>
+        <div class="col-sm-2">
+          <span class="mat-cell">{{order.status}}</span>
+        </div>
+        <div class="col-sm-2">
+          <div *ngIf="order.possibleDeliveryDate!=null; else template">
+            <span class="mat-cell" style="margin-left: 50px;">{{order.possibleDeliveryDate}}</span>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <button type="button" style="margin-right: 15px;" class="btn btn-primary buttonTables"
+            (click)="openEditionDialog(order)" [disabled]="order.status === 'Cancelled'"
+            *ngIf="privileges.editOrder; else noButton">Edit
+          </button>
+          <button type="button" class="btn btn-primary buttonTables" (click)="openCancelationDialog(order)"
+            [disabled]="order.status === 'Cancelled'"
+            *ngIf="privileges.cancelOrder; else noButton">Cancel
+          </button>
+        </div>
       </mat-expansion-panel-header>
       <div *ngIf="!!orders" class="subRow">
         <table class="table table-sm table-active">
@@ -99,5 +149,5 @@
 </ng-template>
 
 <ng-template #template>
-  <span class="mat-cell" style="margin-left: 50px;"> Calculating possible delivery date</span>
+  <span class="mat-cell" style="margin-left: 5px;">Not available</span>
 </ng-template>
