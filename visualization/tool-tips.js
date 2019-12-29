@@ -1,6 +1,6 @@
 var raycaster = new THREE.Raycaster();
 raycaster.params = {
-	Mesh: {}
+  Mesh: {}
 };
 // collect objects for raycasting, 
 // for better performance don't raytrace all scene
@@ -37,37 +37,37 @@ function showTooltip() {
     var tootipHeight = divElement[0].offsetHeight;
 
     divElement.css({
-      left: `${tooltipPosition.x - tootipWidth/2}px`,
+      left: `${tooltipPosition.x - tootipWidth / 2}px`,
       top: `${tooltipPosition.y - tootipHeight - 5}px`
     });
 
-    var machine=null;
-    for(var w=0;w<productionLines.length;w++){
-      for(var y=0;y<productionLines[w].machinesListDtos.length;y++){
-        if(productionLines[w].machinesListDtos[y].description == hoveredObj.userData.parentGroup){
-          machine=productionLines[w].machinesListDtos[y];
+    var machine = null;
+    for (var w = 0; w < productionLines.length; w++) {
+      for (var y = 0; y < productionLines[w].machinesListDtos.length; y++) {
+        if (productionLines[w].machinesListDtos[y].description == hoveredObj.userData.parentGroup) {
+          machine = productionLines[w].machinesListDtos[y];
           let machineType = machineTypes.filter(mt => mt.id === machine.machineTypeId)[0];
           machine["machineType"] = machineType;
         }
       }
     }
 
-    $("#machineId").html(machine.id); 
-    $("#description").html(machine.description); 
-    $("#machineType").html(machine.machineType.desc); 
+    $("#machineId").html(machine.id);
+    $("#description").html(machine.description);
+    $("#machineType").html(machine.machineType.desc);
     $("#productionLine").html(machine.productionLineId);
     let operationsHtml = "";
     machine.machineType.operationList.map(ele => {
-      operationsHtml+=("Description: " + ele.operationType.desc + "<br/>");
-      operationsHtml+=("Tool: " + ele.tool + "<br/>");
-      operationsHtml+=("Execution Time: " + ele.operationType.executionTime + "<br/>");
-      operationsHtml+=("Setup Time:" + ele.operationType.setupTime + "<br/><br/>");
+      operationsHtml += ("Description: " + ele.operationType.desc + "<br/>");
+      operationsHtml += ("Tool: " + ele.tool + "<br/>");
+      operationsHtml += ("Execution Time: " + ele.operationType.executionTime + "<br/>");
+      operationsHtml += ("Setup Time:" + ele.operationType.setupTime + "<br/><br/>");
     });
-    
+
     $("#operations").html(operationsHtml);
 
 
-    setTimeout(function() {
+    setTimeout(function () {
       divElement.css({
         opacity: 1.0
       });
@@ -94,13 +94,11 @@ function updateMouseCoords(event, coordsObj) {
 
 function handleManipulationUpdate() {
   raycaster.setFromCamera(mouse, camera);
-  {
-    let objects = scene.children.filter(e => (e.type == "Group"));
-    var intersects = raycaster.intersectObjects(objects, true);
-    if (intersects.length > 0) {
-      latestMouseProjection = intersects[0].point;
-      hoveredObj = intersects[0].object;
-    }
+  let objects = scene.children.filter(e => (e.type == "Group"));
+  let intersects = raycaster.intersectObjects(objects, true);
+  if (intersects.length > 0) {
+    latestMouseProjection = intersects[0].point;
+    hoveredObj = intersects[0].object;
   }
 
   if (tooltipDisplayTimeout || !latestMouseProjection) {
@@ -110,7 +108,7 @@ function handleManipulationUpdate() {
   }
 
   if (!tooltipDisplayTimeout && latestMouseProjection) {
-    tooltipDisplayTimeout = setTimeout(function() {
+    tooltipDisplayTimeout = setTimeout(function () {
       tooltipDisplayTimeout = undefined;
       showTooltip();
     }, 330);

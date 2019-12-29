@@ -17,4 +17,18 @@ class Util {
             e.receiveShadow = properties.receiveShadows
         });
     }
+
+    static dragAndDrop() {
+        let objects = scene.children.filter(e => (e.type == "Group"));
+        let dragControl = new THREE.DragControls(objects, camera, renderer.domElement);
+
+        // add event listener to highlight dragged objects
+        dragControl.addEventListener('dragstart', function (event) {
+            controls.enabled = false;
+        });
+
+        dragControl.addEventListener('dragend', function (event) {
+            controls.enabled = true;
+        });
+    }
 }

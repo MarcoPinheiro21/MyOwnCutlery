@@ -35,8 +35,6 @@ var nProductionLines;
 // Axis Helper
 var axesHelper = new THREE.AxesHelper(10);
 
-var roboticArms = [];
-var pressMachines = [];
 var productionLines;
 var machines = [];
 var planFiles;
@@ -79,19 +77,22 @@ function buildScene() {
     buildFloor();
     buildTables();
     buildMachines();
-
+    
     scene.add(LigthHelper.ambientLight());
     scene.add(LigthHelper.directionalLigth());
+
+    Util.dragAndDrop();
 }
 
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    pressMachines.forEach(e => {
-        //e.timeoutPressArm();
-    });
     machines.forEach(e => {
-        //e.rotateArm();
+        if(e instanceof RoboticArm) {
+            e.rotateArm();
+        } else if(e instanceof PressMachine) {
+            e.timeoutPressArm();
+        }
     });
 }
 
