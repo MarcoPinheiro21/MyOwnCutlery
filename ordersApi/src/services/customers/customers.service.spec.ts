@@ -6,7 +6,7 @@ import { AddressDto } from '../../dto/address.dto';
 import { Customer } from '../../domain/customer.domain';
 import { Address } from '../../domain/address.domain';
 import { DomainMapper } from '../mapper/domain.mapper';
-import { EditCustomerDto } from 'src/dto/customer.edit.dto';
+import { EditCustomerDto } from '../../dto/customer.edit.dto';
 
 const addressDtoMock: AddressDto = { country: 'PT', postalCode: '4000', street: 'testStreet', town: 'testTown' };
 const customerDtoMock: CustomerDto = {
@@ -39,7 +39,7 @@ const editCustomerDtoMock3: EditCustomerDto = {
 const customerDomainMockArray: Customer[] = [customerDomainMock1, customerDomainMock2];
 const nullCustomer: Customer = null;
 
-const mockCustomersRepo = () => ({
+export const mockCustomersRepo = () => ({
   saveCustomer: jest.fn()
     .mockResolvedValueOnce(customerDomainMock1) //createCustomer
     .mockRejectedValueOnce({ code: 11000, errmsg: customerDtoMock.vatNumber }) //createCustomer
