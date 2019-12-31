@@ -22,7 +22,6 @@ var renderer = new THREE.WebGLRenderer({ antialias: true });
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
 var gui = new dat.GUI();
 
-var groupFork;
 var groupSpoon = new THREE.Group();
 
 var linesX = LINE.initialX;
@@ -40,9 +39,8 @@ var machines = [];
 var machinesWithPlan;
 var planFiles;
 var machineTypes;
-var products;
-var agendas;
-var productionPlans;
+var tasks = [];
+var products = [];
 
 var productionAnimation;
 
@@ -55,7 +53,6 @@ scene.add(axesHelper);
 
 this.productionLines = getProductionLines();
 this.machineTypes = getMachineTypes();
-this.products = getProducts();
 this.planFiles = getPlanFiles();
 
 buildWidgets();
@@ -108,6 +105,7 @@ function buildTables() {
         nProductionLines++;
     });
     for (i = 1; i <= nProductionLines; i++) {
+        this.productionLines[i - 1]["products"] = [];
         if (i % 2 == 0) {
             table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: 15 * (i - 1) });
             scene.add(table);
@@ -140,31 +138,18 @@ function buildWorkTables(machine, plCount) {
 
 }
 
-function buildFork(x, y, z) {
-    groupFork = new THREE.Group();
+function buildFork(x, y, z, name, pl) {
+    var groupFork = new THREE.Group();
     var loader = new THREE.ColladaLoader();
     loader.load(API_URL + 'models/fork.dae', collada => {
         collada.scene.scale.set(0.50, 0.8, 1);
         collada.scene.position.set(x, y, z);
-        collada.scene.rotateZ(Math.PI);
+        collada.scene.rotateZ(Math.PI/2);
         groupFork.add(collada.scene)
     });
-    groupFork.name = 'fork';
+    groupFork.name = name;
+    if(pl !==null){this.productionLines[pl].products.push(groupFork);}
     scene.add(groupFork);
-}
-
-function buildSpoon(x, y, z) {
-    var loader = new THREE.ColladaLoader();
-    loader.load(API_URL + 'models/spoon.dae', collada => {
-        collada.scene.scale.set(0.50, 0.8, 1);
-        collada.scene.translateX(x);
-        collada.scene.translateY(y);
-        collada.scene.translateZ(z);
-        collada.scene.rotateZ(Math.PI);
-
-        groupSpoon.add(collada.scene)
-    });
-    scene.add(groupSpoon);
 }
 
 function buildMachine(machine, productionLineNumber, model) {
@@ -186,7 +171,10 @@ function buildMachine(machine, productionLineNumber, model) {
             }
             break;
         case "Hydraulic Press":
-            let pressMachine = new PressMachine({ name: machine.description, castShadows: true, receiveShadows: true });
+            let pressMachine = new PressMachine({
+                name: machine.description, castShadows: true, receiveShadows: true,
+                productionLineNumber: productionLineNumber, productionLinePosition: machine.productionLinePosition
+            });
             machines.push(pressMachine);
             if (productionLineNumber % 2 == 0) {
                 newSceneObject = pressMachine.buildHydraulicPress({ x: productionLinePlacement - 6, y: 5, z: (15 * (productionLineNumber / 2)) + 6 });
@@ -296,7 +284,23 @@ function buildWidgets() {
         var line = controllerProducts.addFolder(fileName);
         line.add(button, 'add').name('Initiate');
     }
+}
 
+function containsTask(task) {
+    for (let i = 0; i < this.tasks.length; i++) {
+        if (tasks[i].product === task.product && tasks[i].order === task.order) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function indexOfTask(task) {
+    for (let i = 0; i < this.tasks.length; i++) {
+        if (tasks[i].product === task.product && tasks[i].order === task.order) {
+            return i;
+        }
+    }
 }
 
 function initiatePlan(fileName) {
@@ -305,11 +309,23 @@ function initiatePlan(fileName) {
         for (let j = 0; j < this.machines.length; j++) {
             if (this.machines[j]._properties.name == plan[i].nome && plan[i].tarefas.length !== 0) {
                 this.machines[j]["schedule"] = plan[i].tarefas;
+                for (const key in plan[i].tarefas) {
+                    if (plan[i].tarefas[key].tipo !== "setup") {
+                        let newtask = {
+                            product: plan[i].tarefas[key].produto,
+                            quantity: plan[i].tarefas[key].repeticoes,
+                            order: plan[i].tarefas[key].encomenda
+                        }
+                        if (!containsTask(newtask)) {
+                            this.tasks.push(newtask);
+                        }
+                    }
+                }
             }
         }
     }
-    this.machinesWithPlan = this.machines.filter(m => m.schedule !== undefined);
 
+    this.machinesWithPlan = this.machines.filter(m => m.schedule !== undefined);
     clearInterval(this.productionAnimation);
     this.currentTime = 0;
     this.productionAnimation = setInterval(animationTimeout, CONFIG.timeflow);
@@ -317,9 +333,24 @@ function initiatePlan(fileName) {
 
 function animationTimeout() {
     this.machinesWithPlan.map(m => {
-        var currentTarefas = containsTarefaAtTime(m.schedule, this.currentTime);
+        var currentTarefas = taskAtTime(m.schedule, this.currentTime);
         if (currentTarefas.length !== 0) {
             m.timeout();
+            let newtask = { product: currentTarefas[0].produto, quantity: currentTarefas[0].repeticoes, order: currentTarefas[0].encomenda };
+            if (containsTask(newtask)) {
+                var currentAmount = productionLines[m._properties.productionLineNumber - 1].products.length
+                if (m._properties.productionLineNumber % 2 == 0) {
+                    var ply = (15 * (m._properties.productionLineNumber - 1));
+                } else {
+                    var ply =(-15 * m._properties.productionLineNumber);
+                }
+                for (let c = 0; c < newtask.quantity-1; c++) {
+                    buildFork(-45 + (currentAmount *3) , 6, ply, newtask.product, m._properties.productionLineNumber - 1);
+                    currentAmount++;
+                }
+                buildFork(-30 + (20 * (m._properties.productionLinePosition - 1)), 6, ply+6, newtask.product, null);
+                this.tasks.splice(this.indexOfTask(newtask), 1);
+            }
         }
     });
 
@@ -345,21 +376,8 @@ function animationTimeout() {
     this.currentTime += ((CONFIG.timeflow / 1000) * CONFIG.speed);
 }
 
-function containsTarefaAtTime(schedule, time) {
+function taskAtTime(schedule, time) {
     return schedule.filter(element => element.inicio <= time && element.fim >= time);
-}
-
-function timeoutOperation(time, capablePl, position, cont, productPlan) {
-    setTimeout(function () {
-        time--;
-        if (time == 0) {
-            groupFork.position.x++;
-            cont++;
-            timeout(capablePl, position, cont, productPlan);
-        } else {
-            timeoutOperation(time, capablePl, position, cont, productPlan);
-        }
-    }, 1000);
 }
 
 function checkMachine(productPlan, cont) {
