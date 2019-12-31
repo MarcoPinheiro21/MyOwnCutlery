@@ -169,7 +169,7 @@ class RoboticArm {
         return this._group;
     }
 
-    rotateArm() {
+    timeout() {
         if(this._joint2.rotation.z >= 0) {
             this._joint2Direction = -1;
         }

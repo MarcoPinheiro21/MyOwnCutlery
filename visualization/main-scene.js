@@ -34,15 +34,17 @@ var nProductionLines;
 
 // Axis Helper
 var axesHelper = new THREE.AxesHelper(10);
-
+var currentTime;
 var productionLines;
 var machines = [];
+var machinesWithPlan;
 var planFiles;
 var machineTypes;
 var products;
 var agendas;
-
 var productionPlans;
+
+var productionAnimation;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
@@ -63,8 +65,9 @@ buildScene();
 camera.position.z = 50;
 camera.position.y = 20;
 controls.update();
-
 animate();
+
+
 
 /** 
  * **************************************************************************************************
@@ -72,28 +75,22 @@ animate();
  * **************************************************************************************************
  *  */
 
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+
+
 function buildScene() {
     machines = [];
     buildFloor();
     buildTables();
     buildMachines();
-    
+
     scene.add(LigthHelper.ambientLight());
     scene.add(LigthHelper.directionalLigth());
 
     Util.dragAndDrop();
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-    machines.forEach(e => {
-        if(e instanceof RoboticArm) {
-            e.rotateArm();
-        } else if(e instanceof PressMachine) {
-            e.timeoutPressArm();
-        }
-    });
 }
 
 function buildFloor() {
@@ -112,7 +109,7 @@ function buildTables() {
     });
     for (i = 1; i <= nProductionLines; i++) {
         if (i % 2 == 0) {
-            table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: 15 * (i-1) });
+            table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: 15 * (i - 1) });
             scene.add(table);
         } else {
             table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: -15 * i });
@@ -121,27 +118,26 @@ function buildTables() {
     }
 }
 
-function buildWorkTables(machine) {
+function buildWorkTables(machine, plCount) {
     var productionLinePlacement = -30;
     productionLinePlacement = productionLinePlacement + (20 * (machine.productionLinePosition - 1));
 
     nProductionLines = 0;
     var workTables = [];
     var workTable;
-    var i;
     this.productionLines.forEach(function (e) {
         workTables[nProductionLines] = new WorkTable({ name: e.productionLineName, castShadows: true, receiveShadows: true });
         nProductionLines++;
     });
-    for (i = 1; i <= nProductionLines; i++) {
-        if (i % 2 == 0) {
-            workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: 15 * (i -1) + 6 });
-            scene.add(workTable);
-        } else {
-            workTable = workTables[i - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: -15 * i + 6 });
-            scene.add(workTable);
-        }
+
+    if (plCount % 2 == 0) {
+        workTable = workTables[plCount - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: 15 * (plCount - 1) + 6 });
+        scene.add(workTable);
+    } else {
+        workTable = workTables[plCount - 1].buildWorkLine(0.5, { x: productionLinePlacement, y: 0, z: -15 * plCount + 6 });
+        scene.add(workTable);
     }
+
 }
 
 function buildFork(x, y, z) {
@@ -178,11 +174,13 @@ function buildMachine(machine, productionLineNumber, model) {
     let newSceneObject;
     switch (model) {
         case "Robotic Arm":
-            let roboticArm = new RoboticArm({ name: machine.description, castShadows: true, receiveShadows: true, 
-                                        productionLineNumber: productionLineNumber,  productionLinePosition: machine.productionLinePosition});
+            let roboticArm = new RoboticArm({
+                name: machine.description, castShadows: true, receiveShadows: true,
+                productionLineNumber: productionLineNumber, productionLinePosition: machine.productionLinePosition
+            });
             machines.push(roboticArm);
             if (productionLineNumber % 2 == 0) {
-                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (15 * (productionLineNumber -1)) + 15 });
+                newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (15 * (productionLineNumber - 1)) + 15 });
             } else {
                 newSceneObject = roboticArm.buildRobotArm({ x: productionLinePlacement - 8, y: 0, z: (-15 * productionLineNumber) + 15 });
             }
@@ -216,7 +214,7 @@ function buildMachines() {
 
             var model = getModelOfMachineType(machine.machineTypeId);
             buildMachine(machine, plCount, model);
-            buildWorkTables(machine);
+            buildWorkTables(machine, plCount);
             count++;
         });
     });
@@ -303,47 +301,52 @@ function buildWidgets() {
 
 function initiatePlan(fileName) {
     var plan = getPlanByFileName(fileName);
-    var firstMachineName = plan.maquinas[0].nome;
-    var firstMachineIndex; 
-    this.machines.map(mac => {
-        if(mac._properties.name == firstMachineName){
-            firstMachineIndex = mac._properties.productionLineNumber;
+    for (let i = 0; i < plan.length; i++) {
+        for (let j = 0; j < this.machines.length; j++) {
+            if (this.machines[j]._properties.name == plan[i].nome && plan[i].tarefas.length !== 0) {
+                this.machines[j]["schedule"] = plan[i].tarefas;
+            }
         }
-    })
-
-    var position;
-    if (firstMachineIndex % 2 == 0) {
-        position = { x: -37, y: 6, z: 15 * (firstMachineIndex / 2) };
-    } else {
-        position = { x: -37, y: 6, z: -15 * firstMachineIndex };
     }
+    this.machinesWithPlan = this.machines.filter(m => m.schedule !== undefined);
 
-    buildFork(position.x, position.y, position.z);
-    // timeout(capablePl, position, 1, product.productPlan);
+    clearInterval(this.productionAnimation);
+    this.currentTime = 0;
+    this.productionAnimation = setInterval(animationTimeout, CONFIG.timeflow);
 }
 
-function timeout(capablePl, position, cont, productPlan) {
-    setTimeout(function () {
-        var productionLinePlacement = (10 * (cont) - 3);
-        let time = checkMachine(productPlan, cont);
-        if ((groupFork.position.x === productionLinePlacement) && (cont <= capablePl.machinesListDtos.length)) {
-            if (!!time) {
-                timeoutOperation(time, capablePl, position, cont, productPlan);
-            } else {
-                cont++;
-                groupFork.position.x++;
-                timeout(capablePl, position, cont, productPlan);
-            }
-        } else if (groupFork.position.x == LINE.initialX) {
-            scene.remove(scene.getObjectByName('fork'));
-            groupFork.position.x = position.x;
-            groupFork.position.y = position.x;
-            groupFork.position.z = position.y;
-        } else {
-            groupFork.position.x++;
-            timeout(capablePl, position, cont, productPlan);
+function animationTimeout() {
+    this.machinesWithPlan.map(m => {
+        var currentTarefas = containsTarefaAtTime(m.schedule, this.currentTime);
+        if (currentTarefas.length !== 0) {
+            m.timeout();
         }
-    }, 300);
+    });
+
+    //var productionLinePlacement = (10 * (cont) - 3);
+    //let time = checkMachine(productPlan, cont);
+    //if ((groupFork.position.x === productionLinePlacement) && (cont <= capablePl.machinesListDtos.length)) {
+    //  if (!!time) {
+    //    timeoutOperation(time, capablePl, position, cont, productPlan);
+    //} else {
+    //  cont++;
+    //groupFork.position.x++;
+    /*timeout(capablePl, position, cont, productPlan);
+    }
+    } else if (groupFork.position.x == LINE.initialX) {
+    scene.remove(scene.getObjectByName('fork'));
+    groupFork.position.x = position.x;
+    groupFork.position.y = position.x;
+    groupFork.position.z = position.y;
+    } else {
+    groupFork.position.x++;
+    timeout(capablePl, position, cont, productPlan);
+    }*/
+    this.currentTime += ((CONFIG.timeflow / 1000) * CONFIG.speed);
+}
+
+function containsTarefaAtTime(schedule, time) {
+    return schedule.filter(element => element.inicio <= time && element.fim >= time);
 }
 
 function timeoutOperation(time, capablePl, position, cont, productPlan) {
@@ -435,7 +438,6 @@ function updateProductionLines(macdesc, pl) {
 }
 
 function findFirstFree(index) {
-
     for (c = 1; c < 200; c++) {
         let b = true
         productionLines[index].machinesListDtos.forEach(function (machine) {

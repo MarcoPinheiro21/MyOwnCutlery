@@ -13,7 +13,7 @@ class PlanParser {
         //removeWrappers
         this._plan = this._plan.substring(1, this.getSize() - 1);
         //splitByMachines
-        this.splitByMachines();
+        return this.splitByMachines();
     }
     splitByMachines() {
         let plan = this._plan.split(/\[*\],/);

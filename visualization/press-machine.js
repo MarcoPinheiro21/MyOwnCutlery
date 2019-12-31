@@ -101,7 +101,7 @@ class PressMachine {
         return this.pressGroup;
     }
     
-    timeoutPressArm() {
+    timeout() {
         if (this.leftPressArm.position.z == 2.5) {
             this.isLeftExtending = false;
         }

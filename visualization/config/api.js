@@ -9,7 +9,7 @@ configurationsApi = {
         machines: 'factoryapi/machines',
         activeMachines: 'factoryapi/machines/active',
         visMachines: 'visualization/machines',
-        isEnable: true
+        isEnable: false
     },
     productionApi: {
         url: 'https://localhost:8090/productionapi/',
@@ -107,7 +107,9 @@ function getPlanFiles() {
     };
 
     if (!configurationsApi.factoryApi.isEnable) {
-      return JSON.parse(planningMock);
+        var p = new PlanParser(planningMock)
+        var parsed= p.parsePlan();
+        return parsed;
     } else {
       var body = JSON.stringify(jsonFile);
       var xmlHttp = new XMLHttpRequest();
@@ -122,9 +124,10 @@ function getPlanFiles() {
       );
       xmlHttp.send(body);
 
-      //Aqui adicionar serviço para parse do text.
-    //   return JSON.parse(xmlHttp.responseText);
-      return JSON.parse(planningMock)
+      var p = new PlanParser(xmlHttp.responseText)
+      var parsed= p.parsePlan();
+
+      return parsed;
     }
   }
 
@@ -301,45 +304,14 @@ planMock =`[
     }
 ]`
 
-planningMock = `
-{
-    "maquinas": [{
-        "nome": "ma",
-        "tarefas": [{
-                "inicio": "0",
-                "fim": "5",
-                "tipo": "setup",
-                "produto": "",
-                "repeticoes": "",
-                "encomenda": ""
-            },
-            {
-                "inicio": "5",
-                "fim": "65",
-                "tipo": "exec",
-                "produto": "p1",
-                "repeticoes": "5",
-                "encomenda": "o4"
-            },
-            {
-                "inicio": "90",
-                "fim": "150",
-                "tipo": "exec",
-                "produto": "p3",
-                "repeticoes": "5",
-                "encomenda": "o3"
-            },
-            {
-                "inicio": "175",
-                "fim": "211",
-                "tipo": "exec",
-                "produto": "p3",
-                "repeticoes": "3",
-                "encomenda": "o2"
-            }
-        ]
-    }]
-}
-`;
+planningMock = `[Maquina1*[t(0,5,setup,Hammer),t(5,65,exec,info(p(op1,Hammer),p1,5,o4,t2)),t(90,150,exec,info(p(op1,Hammer),p3,5,o3,t3)),
+    t(175,211,exec,info(p(op1,Hammer),p3,3,o2,t5))],Maquina2*[t(13,17,setup,Drill),t(17,102,exec,info(p(op2,Drill),p1,5,o4,t2)),
+        t(102,187,exec,info(p(op2,Drill),p3,5,o3,t3)),t(187,238,exec,info(p(op2,Drill),p3,3,o2,t5)),t(238,357,exec,info(p(op2,Drill),p2,7,o1,t7))],
+        Maquina3*[t(114,119,setup,Hammer),t(119,199,exec,info(p(op1,Hammer),p3,5,o3,t3)),
+            t(204,250,exec,info(p(op1,Hammer),p3,3,o2,t5)),t(255,369,exec,info(p(op1,Hammer),p2,7,o1,t7))],
+            Maquina4*[],Maquina5*[t(89,94,setup,Hammer),t(94,178,exec,info(p(op1,Hammer),p3,7,o4,t1)),t(213,237,exec,info(p(op1,Hammer),p1,2,o2,t6)),
+                t(247,307,exec,info(p(op1,Hammer),p1,5,o1,t8))],Maquina6*[t(0,4,setup,Drill),t(4,106,exec,info(p(op2,Drill),p2,6,o3,t4)),t(106,225,exec,info(p(op2,Drill),p3,7,o4,t1)),
+                    t(225,259,exec,info(p(op2,Drill),p1,2,o2,t6)),t(259,344,exec,info(p(op2,Drill),p1,5,o1,t8))],Maquina7*[t(16,21,setup,Hammer),
+                        t(21,118,exec,info(p(op1,Hammer),p2,6,o3,t4)),t(123,237,exec,info(p(op1,Hammer),p3,7,o4,t1))],Maquina8*[]]`;
 
 planFiles = ['26-12-2019 to 01-01-2020'];

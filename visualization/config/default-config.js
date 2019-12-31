@@ -9,5 +9,7 @@ defaultConfig = {
         lineAY: 15,
         lineBY: -14.5,
         lineZ: 6
-    }
+    },
+    timeflow:15, //framerate, when timeflow==1000 frames are updated every second
+    speed:5 //number of simulation seconds that pass every real second
 };
