@@ -105,7 +105,6 @@ function buildTables() {
         nProductionLines++;
     });
     for (i = 1; i <= nProductionLines; i++) {
-        this.productionLines[i - 1]["products"] = [];
         if (i % 2 == 0) {
             table = tables[i - 1].buildProductionLine(0.5, { x: 30, y: 0, z: 15 * (i - 1) });
             scene.add(table);
@@ -144,11 +143,12 @@ function buildFork(x, y, z, name, pl) {
     loader.load(API_URL + 'models/fork.dae', collada => {
         collada.scene.scale.set(0.50, 0.8, 1);
         collada.scene.position.set(x, y, z);
-        collada.scene.rotateZ(Math.PI/2);
+        collada.scene.rotateZ(Math.PI / 2);
         groupFork.add(collada.scene)
     });
     groupFork.name = name;
-    if(pl !==null){this.productionLines[pl].products.push(groupFork);}
+    if (pl !== null) { this.productionLines[pl].products.push(groupFork); }
+    this.products.push(groupFork);
     scene.add(groupFork);
 }
 
@@ -161,7 +161,7 @@ function buildMachine(machine, productionLineNumber, model) {
         case "Robotic Arm":
             let roboticArm = new RoboticArm({
                 name: machine.description, castShadows: true, receiveShadows: true,
-                productionLineNumber: productionLineNumber, productionLinePosition: machine.productionLinePosition
+                productionLineNumber: productionLineNumber, productionLinePosition: machine.productionLinePosition,currentTask:null
             });
             machines.push(roboticArm);
             if (productionLineNumber % 2 == 0) {
@@ -173,7 +173,7 @@ function buildMachine(machine, productionLineNumber, model) {
         case "Hydraulic Press":
             let pressMachine = new PressMachine({
                 name: machine.description, castShadows: true, receiveShadows: true,
-                productionLineNumber: productionLineNumber, productionLinePosition: machine.productionLinePosition
+                productionLineNumber: productionLineNumber, productionLinePosition: machine.productionLinePosition, currentTask:null
             });
             machines.push(pressMachine);
             if (productionLineNumber % 2 == 0) {
@@ -325,6 +325,14 @@ function initiatePlan(fileName) {
         }
     }
 
+    this.products.forEach(p => {
+        scene.remove(scene.getObjectByName(p.name));
+    });
+
+    this.productionLines.forEach(pl => {
+        pl["products"] = []
+    });
+
     this.machinesWithPlan = this.machines.filter(m => m.schedule !== undefined);
     clearInterval(this.productionAnimation);
     this.currentTime = 0;
@@ -335,22 +343,31 @@ function animationTimeout() {
     this.machinesWithPlan.map(m => {
         var currentTarefas = taskAtTime(m.schedule, this.currentTime);
         if (currentTarefas.length !== 0) {
+
+            if (m._properties.productionLineNumber % 2 == 0) {
+                var ply = (15 * (m._properties.productionLineNumber - 1));
+            } else {
+                var ply = (-15 * m._properties.productionLineNumber);
+            }
+
             m.timeout();
+
             let newtask = { product: currentTarefas[0].produto, quantity: currentTarefas[0].repeticoes, order: currentTarefas[0].encomenda };
             if (containsTask(newtask)) {
                 var currentAmount = productionLines[m._properties.productionLineNumber - 1].products.length
-                if (m._properties.productionLineNumber % 2 == 0) {
-                    var ply = (15 * (m._properties.productionLineNumber - 1));
-                } else {
-                    var ply =(-15 * m._properties.productionLineNumber);
-                }
-                for (let c = 0; c < newtask.quantity-1; c++) {
-                    buildFork(-45 + (currentAmount *3) , 6, ply, newtask.product, m._properties.productionLineNumber - 1);
+                for (let c = 0; c < newtask.quantity; c++) {
+                    buildFork(-45 + (currentAmount * 3), 6, ply, newtask.product+" - "+newtask.order, m._properties.productionLineNumber - 1);
                     currentAmount++;
                 }
-                buildFork(-30 + (20 * (m._properties.productionLinePosition - 1)), 6, ply+6, newtask.product, null);
                 this.tasks.splice(this.indexOfTask(newtask), 1);
             }
+
+            if(m._properties.currentTask!==currentTarefas[0] && currentTarefas[0].tipo==="exec"){
+                scene.remove(scene.getObjectByName(currentTarefas[0].produto+" - "+currentTarefas[0].encomenda));
+                buildFork(-30 + (20 * (m._properties.productionLinePosition - 1)), 6, ply + 6, currentTarefas[0].produto+" - "+currentTarefas[0].encomenda, null);
+            }
+            m._properties.currentTask=currentTarefas[0];  
+                
         }
     });
 
