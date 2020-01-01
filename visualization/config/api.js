@@ -304,14 +304,14 @@ planMock =`[
     }
 ]`
 
-planningMock = `[Maquina1*[t(0,5,setup,Hammer),t(5,65,exec,info(p(op1,Hammer),Fork,5,o4,t2)),t(90,150,exec,info(p(op1,Hammer),Knife,5,o3,t3)),
-    t(175,211,exec,info(p(op1,Hammer),Knife,3,o2,t5))],Maquina2*[t(13,17,setup,Drill),t(17,102,exec,info(p(op2,Drill),Fork,5,o4,t2)),
-        t(102,187,exec,info(p(op2,Drill),Knife,5,o3,t3)),t(187,238,exec,info(p(op2,Drill),Knife,3,o2,t5)),t(238,357,exec,info(p(op2,Drill),Spoon,7,o1,t7))],
-        Maquina3*[t(114,119,setup,Hammer),t(119,199,exec,info(p(op1,Hammer),Knife,5,o3,t3)),
-            t(204,250,exec,info(p(op1,Hammer),Knife,3,o2,t5)),t(255,369,exec,info(p(op1,Hammer),Spoon,7,o1,t7))],
-            Maquina4*[],Maquina5*[t(89,94,setup,Hammer),t(94,178,exec,info(p(op1,Hammer),Knife,7,o4,t1)),t(213,237,exec,info(p(op1,Hammer),Fork,2,o2,t6)),
-                t(247,307,exec,info(p(op1,Hammer),Fork,5,o1,t8))],Maquina6*[t(0,4,setup,Drill),t(4,106,exec,info(p(op2,Drill),Spoon,6,o3,t4)),t(106,225,exec,info(p(op2,Drill),Knife,7,o4,t1)),
-                    t(225,259,exec,info(p(op2,Drill),Fork,2,o2,t6)),t(259,344,exec,info(p(op2,Drill),Fork,5,o1,t8))],Maquina7*[t(16,21,setup,Hammer),
-                        t(21,118,exec,info(p(op1,Hammer),Spoon,6,o3,t4)),t(123,237,exec,info(p(op1,Hammer),Knife,7,o4,t1))],Maquina8*[]]`;
+planningMock = 
+            `[Maquina1*[t(0,5,setup,Hammer),t(5,65,exec,info(p(op1,Hammer),Fork,5,o4,t2)),t(90,150,exec,info(p(op1,Hammer),Knife,5,o3,t3)),t(175,211,exec,info(p(op1,Hammer),Knife,3,o2,t5))],
+            Maquina2*[t(13,17,setup,Drill),t(17,102,exec,info(p(op2,Drill),Fork,5,o4,t2)),t(102,187,exec,info(p(op2,Drill),Knife,5,o3,t3)),t(187,238,exec,info(p(op2,Drill),Knife,3,o2,t5)),t(238,357,exec,info(p(op2,Drill),Spoon,7,o1,t7))],
+            Maquina3*[t(114,119,setup,Hammer),t(119,199,exec,info(p(op1,Hammer),Knife,5,o3,t3)),t(204,250,exec,info(p(op1,Hammer),Knife,3,o2,t5)),t(255,369,exec,info(p(op1,Hammer),Spoon,7,o1,t7))],
+            Maquina4*[],
+            Maquina5*[t(89,94,setup,Hammer),t(94,178,exec,info(p(op1,Hammer),Knife,7,o4,t1)),t(213,237,exec,info(p(op1,Hammer),Fork,2,o2,t6)),t(247,307,exec,info(p(op1,Hammer),Fork,5,o1,t8))],
+            Maquina6*[t(0,4,setup,Drill),t(4,106,exec,info(p(op2,Drill),Spoon,6,o3,t4)),t(106,225,exec,info(p(op2,Drill),Knife,7,o4,t1)),t(225,259,exec,info(p(op2,Drill),Fork,2,o2,t6)),t(259,344,exec,info(p(op2,Drill),Fork,5,o1,t8))],
+            Maquina7*[t(16,21,setup,Hammer),t(21,118,exec,info(p(op1,Hammer),Spoon,6,o3,t4)),t(123,237,exec,info(p(op1,Hammer),Knife,7,o4,t1))],
+            Maquina8*[]]`;
 
 planFiles = ['26-12-2019 to 01-01-2020'];
