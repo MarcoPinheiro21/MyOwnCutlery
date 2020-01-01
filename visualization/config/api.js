@@ -20,52 +20,48 @@ configurationsApi = {
     }
 };
 
-function getProductionLines()
-{
-    if(!configurationsApi.factoryApi.isEnable) {
+function getProductionLines() {
+    if (!configurationsApi.factoryApi.isEnable) {
         return JSON.parse(productionLinesMockResponse);
     }
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.productionLines, false );
-    xmlHttp.send( null );
+    xmlHttp.open("GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.productionLines, false);
+    xmlHttp.send(null);
     var productionLines = JSON.parse(xmlHttp.responseText);
     productionLines.forEach(pl => {
         activeMachines = pl.machinesListDtos.filter(machine => machine.active === true);
-        pl.machinesListDtos= activeMachines;
+        pl.machinesListDtos = activeMachines;
     });
     return productionLines;
 }
 
-function getMachineTypes()
-{
-    if(!configurationsApi.factoryApi.isEnable) {
+function getMachineTypes() {
+    if (!configurationsApi.factoryApi.isEnable) {
         return JSON.parse(machineTypeMockResponse);
     }
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machineTypes, false );
-    xmlHttp.send( null );
+    xmlHttp.open("GET", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machineTypes, false);
+    xmlHttp.send(null);
     return JSON.parse(xmlHttp.responseText);
 }
 
-function getProducts()
-{
-    if(!configurationsApi.factoryApi.isEnable) {
+function getProducts() {
+    if (!configurationsApi.factoryApi.isEnable) {
         return JSON.parse(productsMock);
     }
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", configurationsApi.productionApi.url + configurationsApi.productionApi.products, false );
-    xmlHttp.send( null );
+    xmlHttp.open("GET", configurationsApi.productionApi.url + configurationsApi.productionApi.products, false);
+    xmlHttp.send(null);
     return JSON.parse(xmlHttp.responseText);
 }
 
-function getProductPlan(id)
-{
-    if(!configurationsApi.factoryApi.isEnable) {
+function getProductPlan(id) {
+    if (!configurationsApi.factoryApi.isEnable) {
         return JSON.parse(planMock);
     }
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", configurationsApi.productionApi.url + configurationsApi.productionApi.products+id+"/plan", false );
-    xmlHttp.send( null );
+    xmlHttp.open("GET", configurationsApi.productionApi.url + configurationsApi.productionApi.products + id + "/plan", false);
+    xmlHttp.send(null);
     return JSON.parse(xmlHttp.responseText);
 }
 
@@ -75,92 +71,89 @@ function getPlanFiles() {
     }
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open(
-      "GET",
-      configurationsApi.productionPlanningApi.url +
+        "GET",
+        configurationsApi.productionPlanningApi.url +
         "get_all_plans",
-      false
+        false
     );
     xmlHttp.send(null);
-    var files = xmlHttp.responseText.substring(1,xmlHttp.responseText.length -1 ).split(",");
+    var files = xmlHttp.responseText.substring(1, xmlHttp.responseText.length - 1).split(",");
     return convertDates(files);
-  }
+}
 
-  function convertDates(files){
+function convertDates(files) {
     let names = [];
-    for(let i = 0; i < files.length; i++){
-        let file = files[i].substring(0,files[i].length-4).split('_');
+    for (let i = 0; i < files.length; i++) {
+        let file = files[i].substring(0, files[i].length - 4).split('_');
         let initialDateISO = new Date(parseInt(file[1]) * 1000).toISOString();
         let finalDateISO = new Date(parseInt(file[2]) * 1000).toISOString();
         names.push(initialDateISO.substring(0, initialDateISO.length - 14) + ' to ' + finalDateISO.substring(0, finalDateISO.length - 14));
     }
     return names;
-  }
+}
 
-  function getMachinesAgendas(dates) {
+function getMachinesAgendas(dates) {
     let splitted = dates.split(' to ')
     let initialDate = splitted[0];
     let finalDate = splitted[1];
 
     let jsonFile = {
-      inicio: initialDate + "T00:00:00",
-      fim: finalDate + "T00:00:00"
+        inicio: initialDate + "T00:00:00",
+        fim: finalDate + "T00:00:00"
     };
 
     if (!configurationsApi.factoryApi.isEnable) {
         var p = new PlanParser(planningMock)
-        var parsed= p.parsePlan();
+        var parsed = p.parsePlan();
         return parsed;
     } else {
-      var body = JSON.stringify(jsonFile);
-      var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open(
-        "POST",
-        "http://localhost:1337/production_planning/get_plan",
-        false
-      );
-      xmlHttp.setRequestHeader(
-        "Content-Type",
-        "application/json;charset=UTF-8"
-      );
-      xmlHttp.send(body);
+        var body = JSON.stringify(jsonFile);
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open(
+            "POST",
+            "http://localhost:1337/production_planning/get_plan",
+            false
+        );
+        xmlHttp.setRequestHeader(
+            "Content-Type",
+            "application/json;charset=UTF-8"
+        );
+        xmlHttp.send(body);
 
-      var p = new PlanParser(xmlHttp.responseText)
-      var parsed= p.parsePlan();
+        var p = new PlanParser(xmlHttp.responseText)
+        var parsed = p.parsePlan();
 
-      return parsed;
+        return parsed;
     }
-  }
+}
 
-function updateVisualizationModel(machinetype)
-{
-    var body=JSON.stringify(machinetype);
+function updateVisualizationModel(machinetype) {
+    var body = JSON.stringify(machinetype);
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.addEventListener("load", updateVisualizationModelListener);
-    xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machineTypes + '/' + machinetype.id, false );
+    xmlHttp.open("PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.machineTypes + '/' + machinetype.id, false);
     xmlHttp.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
-    xmlHttp.send( body );
+    xmlHttp.send(body);
     return JSON.parse(xmlHttp.responseText);
 }
 
-function updateMachinePosition(machine)
-{
-    var body=JSON.stringify(machine);
+function updateMachinePosition(machine) {
+    var body = JSON.stringify(machine);
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.addEventListener("load", updateVisualizationModelListener);
-    xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.visMachines + '/' + machine.id, false );
+    xmlHttp.open("PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.visMachines + '/' + machine.id, false);
     xmlHttp.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
-    xmlHttp.send( body );
+    xmlHttp.send(body);
     return JSON.parse(xmlHttp.responseText);
 }
 
-function updateMovedMachine(machine)
-{
-    var body=JSON.stringify(machine);
+function updateMovedMachine(machine) {
+    var body = JSON.stringify(machine);
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.addEventListener("load", updateVisualizationModelListener());
-    xmlHttp.open( "PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.visMachines + '/' + machine.id, false );
+    xmlHttp.open("PUT", configurationsApi.factoryApi.url + configurationsApi.factoryApi.visMachines + '/' + machine.id, false);
     xmlHttp.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
-    xmlHttp.send( body );
+    xmlHttp.send(body);
     return JSON.parse(xmlHttp.responseText);
 }
 

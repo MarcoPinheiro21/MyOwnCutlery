@@ -41,6 +41,7 @@ var planFiles;
 var machineTypes;
 var tasks = [];
 var products = [];
+var taskEnds;
 
 var productionAnimation;
 
@@ -137,7 +138,7 @@ function buildWorkTables(machine, plCount) {
 
 }
 
-function buildFork(x, y, z, name, pl) {
+function buildFork(x, y, z, name, pl, tod) {
     if (pl !== null) {
         var realX = -48;
         do {
@@ -162,6 +163,7 @@ function buildFork(x, y, z, name, pl) {
     });
     groupFork.name = name;
     groupFork['realPosition'] = { x: realX, y: y, z: z };
+    groupFork['timeOfDeath'] = tod;
     if (pl !== null) {
         this.productionLines[pl].products.push(groupFork);
     }
@@ -323,6 +325,8 @@ function indexOfTask(task) {
 
 function initiatePlan(fileName) {
     var plan = getPlanByFileName(fileName);
+    this.taskEnds = [];
+
     for (let i = 0; i < plan.length; i++) {
         for (let j = 0; j < this.machines.length; j++) {
             if (this.machines[j]._properties.name == plan[i].nome && plan[i].tarefas.length !== 0) {
@@ -337,6 +341,7 @@ function initiatePlan(fileName) {
                         if (!containsTask(newtask)) {
                             this.tasks.push(newtask);
                         }
+                        updateTaskEnds(plan[i].tarefas[key]);
                     }
                 }
             }
@@ -374,41 +379,77 @@ function animationTimeout() {
             let newtask = { product: currentTarefas[0].produto, quantity: currentTarefas[0].repeticoes, order: currentTarefas[0].encomenda };
             if (containsTask(newtask)) {
                 var currentAmount = this.productionLines[m._properties.productionLineNumber - 1].products.length
+                var b = getCurrentBegining(newtask.product, newtask.order);
+                var e = getCurrentEnd(newtask.product, newtask.order);
+                tod = b + ((e - b) / newtask.quantity);
                 for (let c = 0; c < newtask.quantity; c++) {
-                    buildFork(-45 + (currentAmount * 3), 6, ply, newtask.product + " - " + newtask.order, m._properties.productionLineNumber - 1);
+                    buildFork(-45 + (currentAmount * 3), 6, ply, newtask.product + " - " + newtask.order, m._properties.productionLineNumber - 1, tod);
                     currentAmount++;
+                    tod += (e - b) / newtask.quantity;
                 }
                 this.tasks.splice(this.indexOfTask(newtask), 1);
             }
 
             if (m._properties.currentTask !== currentTarefas[0] && currentTarefas[0].tipo === "exec") {
                 if (!!m._properties.productBeingWorked && m._properties.productBeingWorked !== null) {
-                    buildFork(-45 + (this.productionLines[m._properties.productionLineNumber - 1].products.length * 3), 6, ply, m._properties.productBeingWorked.name, m._properties.productionLineNumber - 1);
+                    buildFork(-45 + (this.productionLines[m._properties.productionLineNumber - 1].products.length * 3), 6, ply, m._properties.productBeingWorked.name, m._properties.productionLineNumber - 1, m._properties.productBeingWorked.timeOfDeath);
                     scene.remove(m._properties.productBeingWorked);
+                    this.products.splice(this.products.indexOf(m._properties.productBeingWorked), 1);
                 }
                 var temp = getProductByName(m._properties.productionLineNumber - 1, currentTarefas[0].produto + " - " + currentTarefas[0].encomenda);
                 scene.remove(temp);
+                this.products.splice(this.products.indexOf(temp), 1);
                 this.productionLines[m._properties.productionLineNumber - 1].products.splice(this.productionLines[m._properties.productionLineNumber - 1].products.indexOf(temp), 1);
-                m._properties["productBeingWorked"] = buildFork(-30 + (20 * (m._properties.productionLinePosition - 1)), 6, ply + 6, currentTarefas[0].produto + " - " + currentTarefas[0].encomenda, null);
+                m._properties["productBeingWorked"] = buildFork(-30 + (20 * (m._properties.productionLinePosition - 1)), 6, ply + 6, currentTarefas[0].produto + " - " + currentTarefas[0].encomenda, null, temp.timeOfDeath);
+            }
+            if (!!m._properties.productBeingWorked && m._properties.productBeingWorked !== null && this.currentTime >= m._properties.productBeingWorked.timeOfDeath) {
+                scene.remove(m._properties.productBeingWorked);
+                this.products.splice(this.products.indexOf(m._properties.productBeingWorked), 1);
+                m._properties.productBeingWorked = null;
+            }
+            if (m._properties.productBeingWorked === null) {
+                var temp = getProductByName(m._properties.productionLineNumber - 1, currentTarefas[0].produto + " - " + currentTarefas[0].encomenda);
+                if (temp.timeOfDeath !== 0) {
+                    scene.remove(temp);
+                    this.products.splice(this.products.indexOf(temp), 1);
+                    this.productionLines[m._properties.productionLineNumber - 1].products.splice(this.productionLines[m._properties.productionLineNumber - 1].products.indexOf(temp), 1);
+                    m._properties["productBeingWorked"] = buildFork(-30 + (20 * (m._properties.productionLinePosition - 1)), 6, ply + 6, currentTarefas[0].produto + " - " + currentTarefas[0].encomenda, null, temp.timeOfDeath);
+                }
             }
             m._properties.currentTask = currentTarefas[0];
 
         } else {
             if (m._properties.currentTask !== null) {
                 m._properties.currentTask = null;
-                buildFork(-45 + (productionLines[m._properties.productionLineNumber - 1].products.length * 3), 6, ply, m._properties.productBeingWorked.name, m._properties.productionLineNumber - 1);
+                buildFork(-45 + (productionLines[m._properties.productionLineNumber - 1].products.length * 3), 6, ply, m._properties.productBeingWorked.name, m._properties.productionLineNumber - 1, m._properties.productBeingWorked.timeOfDeath);
                 scene.remove(m._properties.productBeingWorked);
+                this.products.splice(this.products.indexOf(m._properties.productBeingWorked), 1);
                 m._properties.productBeingWorked = null;
             }
         }
     });
+
+    for (let w = 0; w < this.productionLines.length; w++) {
+        for (let v = 0; v < this.productionLines[w].products.length; v++) {
+            if (this.currentTime >= this.productionLines[w].products[v].timeOfDeath) {
+                scene.remove(this.productionLines[w].products[v]);
+                this.products.splice(this.products.indexOf(this.productionLines[w].products[v]), 1);
+                this.productionLines[w].products.splice(this.productionLines[w].products.indexOf(this.productionLines[w].products[v]), 1);
+            }
+        }
+    }
+
     this.currentTime += ((CONFIG.timeflow / 1000) * CONFIG.speed);
 }
 
 function getProductByName(pl, name) {
+    var result = { timeOfDeath: 0 };
     for (let i = this.productionLines[pl].products.length - 1; i >= 0; i--) {
-        if (this.productionLines[pl].products[i].name === name) { return this.productionLines[pl].products[i]; }
+        if (this.productionLines[pl].products[i].name === name && this.productionLines[pl].products[i].timeOfDeath > result.timeOfDeath) {
+            result = this.productionLines[pl].products[i];
+        }
     }
+    return result;
 }
 
 function taskAtTime(schedule, time) {
@@ -517,3 +558,35 @@ function getMachineByDesc(macdesc) {
     return machine;
 }
 
+//v Possible task ends solution v
+
+function updateTaskEnds(task) {
+    var currentEnd = getCurrentEnd(task.produto, task.encomenda);
+    if (!!currentEnd && currentEnd < task.fim) {
+        changeTaskEnd(task.produto, task.encomenda, task.inicio, task.fim);
+    } else if (currentEnd === undefined) {
+        this.taskEnds.push({ product: task.produto, order: task.encomenda, begining: task.inicio, end: task.fim });
+    }
+}
+function getCurrentBegining(p, o) {
+    for (const key in this.taskEnds) {
+        if (this.taskEnds[key].product === p && this.taskEnds[key].order === o) {
+            return this.taskEnds[key].begining;
+        }
+    }
+}
+function getCurrentEnd(p, o) {
+    for (const key in this.taskEnds) {
+        if (this.taskEnds[key].product === p && this.taskEnds[key].order === o) {
+            return this.taskEnds[key].end;
+        }
+    }
+}
+function changeTaskEnd(p, o, newBegining, newEnd) {
+    for (const key in this.taskEnds) {
+        if (this.taskEnds[key].product === p && this.taskEnds[key].order === o) {
+            this.taskEnds[key].end = newEnd;
+            this.taskEnds[key].begining = newBegining;
+        }
+    }
+}

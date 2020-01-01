@@ -22,7 +22,7 @@ class PlanParser {
             let m = new Maquina();
             let splitted = element.split('*');
             m.nome = splitted[0];
-            m.tarefas = !!splitted[1] ? this.splitTasks(splitted[1].substring(1,splitted[1].length)) : [];
+            m.tarefas = !!splitted[1] ? this.splitTasks(splitted[1].substring(1, splitted[1].length)) : [];
             machines.push(m);
         })
         return machines;
@@ -33,20 +33,20 @@ class PlanParser {
         for (i = 0; i < tasks.length; i++) {
             if (tasks[i].match(/t[0-9]*/) && tasks[i + 2] == 'setup') {
                 let t = new Tarefa();
-                t.inicio = tasks[i].substring(1, tasks[i].length);
-                t.fim = tasks[i + 1];
+                t.inicio = parseInt(tasks[i].substring(1, tasks[i].length));
+                t.fim = parseInt(tasks[i + 1]);
                 t.tipo = tasks[i + 2]
                 result.push(t);
             }
             if (tasks[i].match(/t[0-9]*/) && tasks[i + 2] == 'exec') {
                 let t = new Tarefa();
-                t.inicio = tasks[i].substring(1, tasks[i].length);
-                t.fim = tasks[i + 1];
+                t.inicio = parseInt(tasks[i].substring(1, tasks[i].length));
+                t.fim = parseInt(tasks[i + 1]);
                 t.tipo = tasks[i + 2];
                 t.tipoOperacao = tasks[i + 3].replace(/infop/, "");
                 t.ferramenta = tasks[i + 4];
                 t.produto = tasks[i + 5];
-                t.repeticoes = tasks[i + 6];
+                t.repeticoes = parseInt(tasks[i + 6]);
                 t.encomenda = tasks[i + 7];
                 result.push(t);
             }
