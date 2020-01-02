@@ -304,6 +304,7 @@ function buildWidgets() {
         var line = controllerProducts.addFolder(fileName);
         line.add(button, 'add').name('Initiate');
     }
+    controllerProducts.add(CONFIG,'speed',1,10).name('Simulation speed')
 }
 
 function containsTask(task) {
