@@ -40,7 +40,7 @@ O projeto irá ser desenvolvido ao longo de todo o semestre num modo de Project 
 
 A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi a da imagem seguinte:
 
-![WalkingSkeleton](/Diagrams/WalkingSkeleton.png)
+![WalkingSkeleton](/Diagrams/WalkingSkeleton.jpg)
 
 ### Localização dos componentes
 
@@ -312,3 +312,14 @@ Caso de Uso: Criação de encomenda
 
 ### Vista de Implementação **Gestão de Encomendas**
 ![LogicalViewLevel3_CreateOrder](/Diagrams/Sprint3_ImplementationView_L3_ordersAPI.png)
+
+
+# Sprint 3
+
+### **Nível 2**
+
+### Vista Lógica
+![LogicalViewLevel2](/Diagrams/LogicalViewDiagramLvl2.jpg)
+
+### Vista de Implementação
+![ImplementationnViewLevel2](/Diagrams/ImplementationViewDiagramLvl2.jpg)
