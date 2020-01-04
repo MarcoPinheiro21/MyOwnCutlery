@@ -46,9 +46,9 @@ export class ProductionLineService {
       .pipe(catchError(null));
   }
 
-  updateProductionLine(productionline: ProductionLine): Observable<ProductionLine[]> {
+  updateProductionLine(productionline: ProductionLine, id: number): Observable<ProductionLine[]> {
     return this.http.put<ProductionLine[]>(
-      this.url + 'productionlines/' + productionline.productionLineId, productionline)
+      this.url + 'productionlines/' + id, productionline)
       .pipe(catchError(null));
   }
 

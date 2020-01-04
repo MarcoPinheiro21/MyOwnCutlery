@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { MatDialog, MatDialogConfig } from "@angular/material";
 import { OperationsService } from "./operations.service";
 import { Operation } from "src/app/models/operation.model";
@@ -11,7 +11,7 @@ import { OperationType } from "src/app/models/operationType.model";
   templateUrl: "./operations.component.html",
   styleUrls: ["./operations.component.css"]
 })
-export class OperationsComponent implements OnInit {
+export class OperationsComponent implements OnInit, AfterViewInit {
   operations: Operation[] = [];
   operationService: OperationsService;
   dialog: MatDialog;
@@ -28,6 +28,9 @@ export class OperationsComponent implements OnInit {
 
   ngOnInit() {
     this.getOperations();
+  }
+
+  ngAfterViewInit() {
     this.getTools();
     this.getOperationTypes();
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MachineType } from 'src/app/models/machineType.model';
 import { MachineTypeService } from './machine-type.service';
 import { MatDialogConfig, MatDialog } from '@angular/material';
@@ -16,7 +16,7 @@ import { Promise } from 'q';
   templateUrl: './machine-types.component.html',
   styleUrls: ['./machine-types.component.css']
 })
-export class MachineTypesComponent implements OnInit {
+export class MachineTypesComponent implements OnInit, AfterViewInit {
 
   machineTypes: MachineType[] = [];
   operations: Operation[] = [];
@@ -41,6 +41,9 @@ export class MachineTypesComponent implements OnInit {
 
   ngOnInit() {
     this.getMachineTypes();
+  }
+
+  ngAfterViewInit() {
     this.getOperations();
   }
 
