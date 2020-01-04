@@ -5,3 +5,4 @@ start OrderApi.bat
 start AuthApi.bat
 start myOwnCutleryWebApp.bat
 start visualization.bat
+start productionplanning.bat

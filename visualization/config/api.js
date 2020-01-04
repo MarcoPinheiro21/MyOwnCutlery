@@ -9,7 +9,7 @@ configurationsApi = {
         machines: 'factoryapi/machines',
         activeMachines: 'factoryapi/machines/active',
         visMachines: 'visualization/machines',
-        isEnable: false
+        isEnable: true
     },
     productionApi: {
         url: 'https://localhost:8090/productionapi/',
@@ -89,7 +89,8 @@ function convertDates(files) {
         let finalDateISO = new Date(parseInt(file[2]) * 1000).toISOString();
         names.push(initialDateISO.substring(0, initialDateISO.length - 14) + ' to ' + finalDateISO.substring(0, finalDateISO.length - 14));
     }
-    return names;
+
+    return names.filter(function (item, pos) { return names.indexOf(item) === pos });
 }
 
 function getMachinesAgendas(dates) {
@@ -284,7 +285,7 @@ const productsMock = `[
     }
 ]`
 
-planMock =`[
+planMock = `[
     {
         "operationId": 1,
         "tool": "Hammer",
@@ -297,8 +298,8 @@ planMock =`[
     }
 ]`
 
-planningMock = 
-            `[Maquina1*[t(0,5,setup,Hammer),t(5,65,exec,info(p(op1,Hammer),Fork,5,o4,t2)),t(90,150,exec,info(p(op1,Hammer),Knife,5,o3,t3)),t(175,211,exec,info(p(op1,Hammer),Knife,3,o2,t5))],
+planningMock =
+    `[Maquina1*[t(0,5,setup,Hammer),t(5,65,exec,info(p(op1,Hammer),Fork,5,o4,t2)),t(90,150,exec,info(p(op1,Hammer),Knife,5,o3,t3)),t(175,211,exec,info(p(op1,Hammer),Knife,3,o2,t5))],
             Maquina2*[t(13,17,setup,Drill),t(17,102,exec,info(p(op2,Drill),Fork,5,o4,t2)),t(102,187,exec,info(p(op2,Drill),Knife,5,o3,t3)),t(187,238,exec,info(p(op2,Drill),Knife,3,o2,t5)),t(238,357,exec,info(p(op2,Drill),Spoon,7,o1,t7))],
             Maquina3*[t(114,119,setup,Hammer),t(119,199,exec,info(p(op1,Hammer),Knife,5,o3,t3)),t(204,250,exec,info(p(op1,Hammer),Knife,3,o2,t5)),t(255,369,exec,info(p(op1,Hammer),Spoon,7,o1,t7))],
             Maquina4*[],
