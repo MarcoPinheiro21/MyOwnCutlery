@@ -23,8 +23,8 @@ O tipo de fábrica onde o sistema será implementado fabrica produtos que seguem
 O projeto irá ser desenvolvido ao longo de todo o semestre num modo de Project Based Learning (PBL), divindo-se em 4 Sprints.
 
 * Sprint A
-    * Master Data Fabrica
-    * Master Data Produção
+    * FactoryApi
+    * ProductionApi
 
 * Sprint B
     * Master Data Web
@@ -32,9 +32,17 @@ O projeto irá ser desenvolvido ao longo de todo o semestre num modo de Project 
     * Production Planning
 
 * Sprint C
-	* Orders Api
-	* Authentication Api
+    * OrdersApi
+	  * AuthApi
+    * Visualization
 
+* Sprint D
+    * AuthApi
+    * OrdersApi
+    * Visualization
+    * FactoryApi
+    * Master Data Web
+    * Production Planning
 
 ## Walking Skeleton
 
@@ -55,18 +63,20 @@ A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi
 
 * Node v12.12.0
 * DotNet 2.2.401
-* Docker 19.03.2
 * Instância Microsoft SQL Server 2017 a correr na porta 1433
-    * Para efeitos deste projeto foi utilizada a imagem docker **mcr.microsoft.com/mssql/server:2017-CU8-ubuntu**
 * Base de dados NoSQl (mongoDB) guardada na mongoDB Atlas (mLab)
 
 ### Instalação
 Executar os comandos:
 
 * 'dotnet run' dentro do diretório factoryApiSolution/factoryApi e productionApiSolution/productionApi
-* 'ng serve' dentro do dirétorio myOwnCutleryWebApp
+* 'ng serve' dentro do diretório myOwnCutleryWebApp
 * 'npx serve -l 6001' dentro do diretório  visualization
 * 'npm start' dentro do diretório ordersApi e authApi
+* 'swipl -l productionplanning.pl -g server' dentro do diretório algav
+
+Em caso de MAC/LINUX: 'bashScript.sh' para executar todos os comandos.
+Em caso de WINDOWS: 'runAllBats.bat' para executar todos os comandos.
 
 ## Modelo de domínio
 
@@ -88,6 +98,8 @@ Destacam-se os agregados identificados a azul:
 - A criação de 'MachineType' e 'Product' requerem a existência de pelo menos uma instância de 'Operation'.
 - A criação de 'Machine' requer a existência de pelo menos uma instância de 'MachineType'.
 - A criação de 'Production Line' requer a existência de pelo menos uma instância de 'Machine'.
+- A criação de 'Product' requer a existência de pelo menos uma instância de 'Operation'.
+- A criação de 'Order' requer a existência de pelo menos uma instância de 'Product'.
 
 # C4 Model
 
@@ -153,10 +165,10 @@ Destacam-se os agregados identificados a azul:
 ![D10](/Diagrams/ImplementationView_D10.jpg)
 
 
-
 ### Vista Lógica **ProductionAPI**
 
 ![D11](/Diagrams/LogicalView_D11.jpg)
+
 
 ### Vista de Processo **ProductionAPI**
 
