@@ -5,6 +5,7 @@ import { Machine } from 'src/app/models/machine.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ProductionLineDialogComponent } from './production-line-dialog/production-line-dialog.component';
 import { MachineType } from 'src/app/models/machineType.model';
+import { ProductionLineEditionDialogComponent } from './production-line-edition-dialog/production-line-edition-dialog.component';
 
 
 @Component({
@@ -49,6 +50,12 @@ export class ProductionLinesComponent implements OnInit {
     });
   }
 
+  updateProductionLine(productionline: ProductionLine, id: number) {
+    this.productionLineService.updateProductionLine(productionline, id).subscribe(() => {
+      this.getAllInfo();
+    });
+  }
+
   openCreationDialog() {
     const dialogConfig = new MatDialogConfig();
     const productionline: CreateProductionLine = {
@@ -69,6 +76,24 @@ export class ProductionLinesComponent implements OnInit {
       }
     });
   }
+
+  openEditionDialog(productionLine: ProductionLine) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.data = {
+      productionLine,
+      machines: this.machines
+    };
+    dialogConfig.width = '700px';
+    dialogConfig.height = '500px';
+
+    this.dialog.open(ProductionLineEditionDialogComponent, dialogConfig).afterClosed().subscribe(result => {
+      if (!!result) {
+        return this.updateProductionLine(result.data, productionLine.productionLineId);
+      }
+    });
+  }
+
 
 }
 
