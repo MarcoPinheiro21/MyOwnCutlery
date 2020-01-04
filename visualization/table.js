@@ -26,8 +26,8 @@ class Table {
 
 
     buildProductionLine(scale, position) {
-        this.group.add(this.buildTable(scale, { x: 30, y: position.y, z: position.z }));
-        this.group.add(this.buildTable(scale, { x: 10, y: position.y, z: position.z }));
+        this.group.add(this.buildTable(scale, { x: 50, y: position.y, z: position.z }));
+        this.group.add(this.buildTable(scale, { x: 20, y: position.y, z: position.z }));
         this.group.add(this.buildTable(scale, { x: -10, y: position.y, z: position.z }));
         this.group.add(this.buildTable(scale, { x: -30, y: position.y, z: position.z }));
         return this.group;
