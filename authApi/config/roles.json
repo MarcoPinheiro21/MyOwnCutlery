@@ -38,7 +38,7 @@
             "visualization": true
         },
         "productionManager": {
-            "masterDataConfiguration": true,
+            "masterDataConfiguration": false,
             "visualization": true
         }
     }
