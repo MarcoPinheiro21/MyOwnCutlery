@@ -56,8 +56,9 @@ A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi
 * Visualization: lei19-20_s5_3na_64/visualization
 * ProductionAPI: lei19-20_s5_3na_64/productionApiSolution
 * Master-data-web: lei19-20_s5_3na_64/myOwnCutleryWebApp
-* AuthenticationAPI: lei19-20_s5_3na_64/authApi
+* AuthAPI: lei19-20_s5_3na_64/authApi
 * OrdersAPI: lei19-20_s5_3na_64/ordersApi
+* Production Planning: lei19-20_s5_3na_64/algav
 
 ### Requisitos
 
