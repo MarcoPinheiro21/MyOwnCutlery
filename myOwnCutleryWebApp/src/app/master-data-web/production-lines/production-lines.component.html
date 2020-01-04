@@ -7,6 +7,7 @@
     <mat-expansion-panel *ngFor="let productionline of productionLines">
     <mat-expansion-panel-header class="mat-row">
         <span class="mat-cell">{{productionline.productionLineName}}</span>
+        <button type="button" style="margin-right: 25px;" class="btn btn-primary" (click)="openEditionDialog(productionline)">Edit</button>
     </mat-expansion-panel-header>
 
     <div class="subRow">

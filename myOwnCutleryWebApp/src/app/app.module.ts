@@ -47,6 +47,7 @@ import { OrderEditionDialogComponent } from './order-management/orders/order-edi
 import { OrderCancelationDialogComponent } from './order-management/orders/order-cancelation-dialog/order-cancelation-dialog.component';
 import { ProductionPlanningWebComponent } from './production-planning-web/production-planning-web.component';
 import { ProductionPlanningScheduleComponent } from './production-planning-web/production-planning-schedule/production-planning-schedule.component';
+import { ProductionLineEditionDialogComponent } from './master-data-web/production-lines/production-line-edition-dialog/production-line-edition-dialog.component';
 
 export const AngularMaterialComponents = [
   MatButtonModule,
@@ -95,7 +96,8 @@ export const AngularMaterialComponents = [
     ClientRightForgottenDialogComponent,
     OrderCancelationDialogComponent,
     ProductionPlanningWebComponent,
-    ProductionPlanningScheduleComponent
+    ProductionPlanningScheduleComponent,
+    ProductionLineEditionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -125,8 +127,8 @@ export const AngularMaterialComponents = [
     ClientRightForgottenDialogComponent,
     OrderEditionDialogComponent,
     OrderCreationDialogComponent,
-    OrderCancelationDialogComponent
-
+    OrderCancelationDialogComponent,
+    ProductionLineEditionDialogComponent
   ]
 })
 export class AppModule { }

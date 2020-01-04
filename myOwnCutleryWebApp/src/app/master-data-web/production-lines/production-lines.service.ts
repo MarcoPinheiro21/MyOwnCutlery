@@ -46,5 +46,11 @@ export class ProductionLineService {
       .pipe(catchError(null));
   }
 
+  updateProductionLine(productionline: ProductionLine): Observable<ProductionLine[]> {
+    return this.http.put<ProductionLine[]>(
+      this.url + 'productionlines/' + productionline.productionLineId, productionline)
+      .pipe(catchError(null));
+  }
+
 }
 
