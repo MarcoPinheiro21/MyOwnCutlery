@@ -332,6 +332,9 @@ Caso de Uso: Criação de encomenda
 
 ### **Nível 2**
 
+### Vista de Fisíca
+![PhysicalViewLevel2](/Diagrams/PhysicalViewDiagramLvl2.jpg)
+
 ### Vista Lógica
 ![LogicalViewLevel2](/Diagrams/LogicalViewDiagramLvl2.jpg)
 
@@ -340,6 +343,3 @@ Caso de Uso: Criação de encomenda
 
 ### Vista de Processo
 ![ProcessViewLevel2](/Diagrams/ProcessViewDiagramLvl2.jpg)
-
-### Vista de Implementação
-![ImplementationViewLevel2](/Diagrams/ImplementationViewDiagramLvl2.jpg)
