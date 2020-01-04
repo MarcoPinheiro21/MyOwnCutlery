@@ -336,4 +336,10 @@ Caso de Uso: Criação de encomenda
 ![LogicalViewLevel2](/Diagrams/LogicalViewDiagramLvl2.jpg)
 
 ### Vista de Implementação
-![ImplementationnViewLevel2](/Diagrams/ImplementationViewDiagramLvl2.jpg)
+![ImplementationViewLevel2](/Diagrams/ImplementationViewDiagramLvl2.jpg)
+
+### Vista de Processo
+![ProcessViewLevel2](/Diagrams/ProcessViewDiagramLvl2.jpg)
+
+### Vista de Implementação
+![ImplementationViewLevel2](/Diagrams/ImplementationViewDiagramLvl2.jpg)
