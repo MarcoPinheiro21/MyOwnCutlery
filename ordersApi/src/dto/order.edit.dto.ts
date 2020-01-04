@@ -1,4 +1,4 @@
-import { IsDateString } from "class-validator";
+import { IsDateString, IsOptional } from "class-validator";
 import { EditProductDto } from "./product.dto.edit";
 import { EditAddressDto } from "./address.edit.dto";
 
@@ -11,6 +11,7 @@ export class EditOrderDto {
     @IsDateString()
     public deliveryDate: string;
 
+    @IsOptional()
     @IsDateString()
     public expectedDeliveryDate: string;
 

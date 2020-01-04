@@ -1,5 +1,5 @@
 import { ProductDto } from "./product.dto";
-import { IsString, MinLength, IsEmpty, IsDateString } from "class-validator";
+import { IsString, MinLength, IsEmpty, IsDateString, IsOptional } from "class-validator";
 
 export class OrderDto {
 
@@ -14,6 +14,7 @@ export class OrderDto {
     @IsDateString()
     public deliveryDate: string;
 
+    @IsOptional()
     @IsDateString()
     public expectedDeliveryDate: string;
 
