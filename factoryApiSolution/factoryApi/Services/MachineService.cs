@@ -65,11 +65,34 @@ namespace factoryApi.Services
 
         public List<String> TriggerPlan()
         {
-            var initDate = DateTime.Now;
-            var endDate = initDate + TimeSpan.FromDays(3);
+            var initDate = DateTime.Now + TimeSpan.FromDays(13);
+            var endDate = initDate + TimeSpan.FromDays(16);
+            String dayWithZero = "";
+            String monthWithZero = "";
             List<String> dateTimes= new List<String>();
-            dateTimes.Add(initDate.Date.Year+"-"+initDate.Date.Month+"-"+initDate.Date.Day+"T00:00:00");
-            dateTimes.Add(endDate.Date.Year+"-"+endDate.Date.Month+"-"+endDate.Date.Day+"T00:00:00");
+            
+            if (initDate.Date.Month < 10)
+            {
+                monthWithZero = "0";
+            }
+
+            if (initDate.Date.Day < 10)
+            {
+                dayWithZero = "0";
+            }
+
+            dateTimes.Add(initDate.Date.Year + "-" + monthWithZero + initDate.Date.Month + "-" + dayWithZero + initDate.Date.Day + "T00:00:00");
+            
+            if (endDate.Date.Month < 10)
+            {
+                monthWithZero = "0";
+            }
+            if (endDate.Date.Day < 10)
+            {
+                dayWithZero = "0";
+            }
+            
+            dateTimes.Add(endDate.Date.Year + "-" + monthWithZero + endDate.Date.Month + "-" + dayWithZero + endDate.Date.Day + "T00:00:00");
 
             return dateTimes;
         }

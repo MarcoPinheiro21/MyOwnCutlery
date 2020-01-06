@@ -63,9 +63,10 @@ A arquitectura definida para seguir o "proof of concept" do Walking Skeleton foi
 ### Requisitos
 
 * Node v12.12.0
-* DotNet 2.2.401
+* DotNet v2.2.401
 * Instância Microsoft SQL Server 2017 a correr na porta 1433
 * Base de dados NoSQl (mongoDB) guardada na mongoDB Atlas (mLab)
+* Angular v7.0
 
 ### Instalação
 Executar os comandos:
@@ -331,8 +332,14 @@ Caso de Uso: Criação de encomenda
 
 ### **Nível 2**
 
+### Vista de Fisíca
+![PhysicalViewLevel2](/Diagrams/PhysicalViewDiagramLvl2.jpg)
+
 ### Vista Lógica
 ![LogicalViewLevel2](/Diagrams/LogicalViewDiagramLvl2.jpg)
 
 ### Vista de Implementação
-![ImplementationnViewLevel2](/Diagrams/ImplementationViewDiagramLvl2.jpg)
+![ImplementationViewLevel2](/Diagrams/ImplementationViewDiagramLvl2.jpg)
+
+### Vista de Processo
+![ProcessViewLevel2](/Diagrams/ProcessViewDiagramLvl2.jpg)
